@@ -1,0 +1,8 @@
+URL: https://zookeeper.apache.org/doc/r3.3.3/releasenotes.html
+
+Apache>Hadoop>ZooKeeperProjectWikiZooKeeper 3.3 DocumentationOverviewWelcomeOverviewGetting StartedRelease NotesDeveloperAPI DocsProgrammer's GuideJava ExampleBarrier and Queue TutorialRecipesBookKeeperGetting startedOverviewSetup guideProgrammer's guideAdmin & OpsAdministrator's GuideQuota GuideJMXObservers GuideContributorZooKeeper InternalsMiscellaneousWikiFAQMailing ListsPDFZooKeeper 3.3.3 Release NotesChanges Since ZooKeeper 3.3.2These release notes include new developer and user facing
+incompatibilities, features, and major improvements.See3.0
+release notes and migration instructionsif you are upgrading
+from version 2 of ZooKeeper (SourceForge) to version 3 or
+later.Changes Since ZooKeeper 3.3.2Changes Since ZooKeeper 3.3.2Changes Since ZooKeeper 3.3.2IssueNotesBug[ZOOKEEPER-882]Startup loads last transaction from snapshot[ZOOKEEPER-888]c-client / zkpython: Double free corruption on node watcher[ZOOKEEPER-913]Version parser fails to parse "3.3.2-dev" from build.xml.[ZOOKEEPER-917]Leader election selected incorrect leader[ZOOKEEPER-919]Ephemeral nodes remains in one of ensemble after deliberate SIGKILL[ZOOKEEPER-921]zkPython incorrectly checks for existence of required ACL elements[ZOOKEEPER-957]zkCleanup.sh doesn't do anything[ZOOKEEPER-962]leader/follower coherence issue when follower is receiving a DIFF[ZOOKEEPER-963]Make Forrest work with JDK6[ZOOKEEPER-985]Test BookieRecoveryTest fails on trunk.Improvement[ZOOKEEPER-960]Publish BookKeeper jars into maven.New Feature[ZOOKEEPER-465]Ledger size in bytes[ZOOKEEPER-712]Bookie recoveryCopyright ©
+         2008The Apache Software Foundation.

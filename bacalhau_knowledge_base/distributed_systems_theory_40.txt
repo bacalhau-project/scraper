@@ -1,0 +1,4 @@
+URL: https://www.the-paper-trail.org/post/2009-01-27-tuesday-links-27th-january-2009/
+
+Paper TrailBlogTuesday Links, 27th January 2009January 27, 2009Web highlights discovered in the last week or so:The C10K problem- detailed discussion of how to do IO on a server that you want to handle 10000 simultaneous connections.Scalability by Design - Coding for Systems With Large CPU Counts- via High ScalabilityAnti-RDBMS: A list of distributed key-value stores- good, if superficial, survey.Mark Russinovich: Inside Windows 7- kernel level look at what’s new in WindowsProject Voldemort- Dynamo-a-like fromLinkedInlinkdump©  - 2023 ·Paper Trail·
+  ThemeSimplenessPowered byHugo·

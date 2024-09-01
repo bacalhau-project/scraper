@@ -1,0 +1,89 @@
+URL: https://cassandra.apache.org/doc/latest/cassandra/architecture/streaming.html
+
+Get StartedCassandra BasicsQuickstartEcosystemDocumentationCommunityWelcomeDiscussionsGovernanceContributeMeet the CommunityCatalyst ProgramEventsLearnCassandra 5.0Case StudiesResourcesBlogDownload NowCassandra DocumentationVersion:5.0mastertrunk5.04.14.03.11MainGlossaryHow to report bugsContact usDevelopmentGetting startedBuilding and IDE integrationTestingContributing code changesCode styleReview checklistHow to commitWorking on documentationJenkins CI environmentDependency managementRelease processCassandraFAQGetting StartedCassandra QuickstartSAI QuickstartVector Search QuickstartInstalling CassandraConfiguring CassandraInserting and queryingClient driversProduction recommendationsWhat’s newSupport for JavaArchitectureOverviewDynamoStorage EngineGuaranteesImproved Internode MessagingImproved StreamingData ModelingIntroductionConceptual data modelingRDBMS designDefining application queriesLogical data modelingPhysical data modelingEvaluating and refining data modelsDefining database schemaCassandra data modeling toolsCassandra Query Language (CQL)DefinitionsData typesData definition (DDL)Data manipulation (DML)Dynamic Data Masking (DDM)OperatorsIndexing conceptsSAI OverviewConceptsSAI QuickstartSAI FAQWorking with SAISAI operationsSecondary indexes (2i) overviewConceptsWorking with 2iRebuild 2iMaterialized viewsFunctionsJSONSecurityTriggersAppendicesChangesSASISingle file of CQL informationVector Search overviewConceptsData ModelingVector Search QuickstartWorking with Vector SearchManagingConfiguringcassandra.yamlcassandra-rackdc.propertiescassandra-env.shcassandra-topologies.propertiescommitlog-archiving.propertieslogback.xmljvm-* filesLiberating cassandra.yaml Parameters' Names from Their UnitsOperatingBackupsBloom filtersBulk loadingChange Data Capture (CDC)CompactionCompressionHardwareHintsLoggingAudit loggingAudit logging 2Full query loggingMonitoring metricsRepairRead repairSecuritySnitchesTopology changesTransient replicationVirtual tablesToolscqlsh: the CQL shellnodetoolSSTable toolscassandra-stressTroubleshootingFinding misbehaving nodesReading Cassandra logsUsing nodetoolUsing external tools to deep-diveReferenceALTER TABLECREATE INDEXCREATE CUSTOM INDEXCREATE TABLEDROP INDEXDROP TABLEPlug-insYou are viewing the documentation for a prerelease version.View LatestCassandraArchitectureImproved StreamingEditImproved StreamingApache Cassandra 4.0 has made several improvements to streaming.
+Streaming is the process used by nodes of a cluster to exchange data in
+the form of SSTables. Streaming of SSTables is performed for several
+operations, such as:SSTable RepairHost ReplacementRange movementsBootstrappingRebuildCluster expansionStreaming based on NettyStreaming in Cassandra 4.0 is based on Non-blocking Input/Output (NIO)
+with Netty
+(CASSANDRA-12229).
+It replaces the single-threaded (or sequential), synchronous, blocking
+model of streaming messages and transfer of files. Netty supports
+non-blocking, asynchronous, multi-threaded streaming with which multiple
+connections are opened simultaneously. Non-blocking implies that threads
+are not blocked as they donât wait for a response for a sent request. A
+response could be returned in a different thread. With asynchronous,
+connections and threads are decoupled and do not have a 1:1 relation.
+Several more connections than threads may be opened.Zero Copy StreamingPre-4.0, during streaming Cassandra reifies the SSTables into objects.
+This creates unnecessary garbage and slows down the whole streaming
+process as some SSTables can be transferred as a whole file rather than
+individual partitions. Cassandra 4.0 has added support for streaming
+entire SSTables when possible
+(CASSANDRA-14556)
+for faster Streaming using ZeroCopy APIs. If enabled, Cassandra will use
+ZeroCopy for eligible SSTables significantly speeding up transfers and
+increasing throughput. A zero-copy path avoids bringing data into
+user-space on both sending and receiving side. Any streaming related
+operations will notice corresponding improvement. Zero copy streaming is
+hardware bound; only limited by the hardware limitations (Network and
+Disk IO ).High AvailabilityIn benchmark tests Zero Copy Streaming is 5x faster than partitions
+based streaming. Faster streaming provides the benefit of improved
+availability. A clusterâs recovery mainly depends on the streaming
+speed, Cassandra clusters with failed nodes will be able to recover much
+more quickly (5x faster). If a node fails, SSTables need to be streamed
+to a replacement node. During the replacement operation, the new
+Cassandra node streams SSTables from the neighboring nodes that hold
+copies of the data belonging to this new nodeâs token range. Depending
+on the amount of data stored, this process can require substantial
+network bandwidth, taking some time to complete. The longer these range
+movement operations take, the more the cluster availability is lost.
+Failure of multiple nodes would reduce high availability greatly. The
+faster the new node completes streaming its data, the faster it can
+serve traffic, increasing the availability of the cluster.Enabling Zero Copy StreamingZero copy streaming is enabled by setting the following setting incassandra.yaml.stream_entire_sstables: trueBy default zero copy streaming is enabled.SSTables Eligible for Zero Copy StreamingZero copy streaming is used if all partitions within the SSTable need to
+be transmitted. This is common when usingLeveledCompactionStrategyor
+when partitioning SSTables by token range has been enabled. All
+partition keys in the SSTables are iterated over to determine the
+eligibility for Zero Copy streaming.Benefits of Zero Copy StreamingWhen enabled, it permits Cassandra to zero-copy stream entire eligible
+SSTables between nodes, including every component. This speeds up the
+network transfer significantly subject to throttling specified bystream_throughput_outbound.Enabling this will reduce the GC pressure on sending and receiving node.
+While this feature tries to keep the disks balanced, it cannot guarantee
+it. This feature will be automatically disabled if internode encryption
+is enabled. Currently this can be used with Leveled Compaction.Configuring for Zero Copy StreamingThrottling would reduce the streaming speed. Thestream_throughput_outboundthrottles all outbound
+streaming file transfers on a node to the given total throughput in
+Mbps. When unset, the default is 200 Mbps or 24 MiB/s.stream_throughput_outbound: 24MiB/sTo run any Zero Copy streaming benchmark thestream_throughput_outboundmust be set to a really
+high value otherwise, throttling will be significant and the benchmark
+results will not be meaningful.Theinter_dc_stream_throughput_outboundthrottles all
+streaming file transfer between the datacenters, this setting allows
+users to throttle inter dc stream throughput in addition to throttling
+all network stream traffic as configured withstream_throughput_outbound. When unset, the default
+is 200 Mbps or 25 MB/s.inter_dc_stream_throughput_outbound: 24MiB/sSSTable Components Streamed with Zero Copy StreamingZero Copy Streaming streams entire SSTables. SSTables are made up of
+multiple components in separate files. SSTable components streamed are
+listed in Table 1.Table 1. SSTable ComponentsSSTable ComponentDescriptionData.dbThe base data for an SSTable: the remaining components can be
+regenerated based on the data component.Index.dbIndex of the row keys with pointers to their positions in the
+data file.Filter.dbSerialized bloom filter for the row keys in the SSTable.CompressionInfo.dbFile to hold information about uncompressed data
+length, chunk offsets etc.Statistics.dbStatistical metadata about the content of the SSTable.Digest.crc32Holds CRC32 checksum of the data file size_bytes.CRC.dbHolds the CRC32 for chunks in an uncompressed file.Summary.dbHolds SSTable Index Summary (sampling of Index component)TOC.txtTable of contents, stores the list of all components for the
+SSTable.Custom component, used by e.g. custom compaction strategy may also be
+included.Repair Streaming PreviewRepair withnodetool repairinvolves streaming of repaired SSTables
+and a repair preview has been added to provide an estimate of the amount
+of repair streaming that would need to be performed. Repair preview
+(CASSANDRA-13257)
+is invoke withnodetool repair --previewusing option:-prv, --previewIt determines ranges and amount of data to be streamed, but doesn’t
+actually perform repair.Parallelizing of Streaming of KeyspacesThe streaming of the different keyspaces for bootstrap and rebuild has
+been parallelized in Cassandra 4.0
+(CASSANDRA-4663).Unique nodes for Streaming in Multi-DC deploymentRange Streamer picks unique nodes to stream data from when number of
+replicas in each DC is three or more
+(CASSANDRA-4650).
+What the optimization does is to even out the streaming load across the
+cluster. Without the optimization, some node can be picked up to stream
+more data than others. This patch allows to select dedicated node to
+stream only one range.This will increase the performance of bootstrapping a node and will also
+put less pressure on nodes serving the data. This does not affect if N <
+3 in each DC as then it streams data from only 2 nodes.Stream Operation TypesIt is important to know the type or purpose of a certain stream. Version
+4.0
+(CASSANDRA-13064)
+adds anenumto distinguish between the different types of streams.
+Stream types are available both in a stream request and a stream task.
+The different stream types are:Restore replica countUnbootstrapRelocationBootstrapRebuildBulk LoadRepairDisallow Decommission when number of Replicas will drop below configured RFCASSANDRA-12510guards against decommission that will drop # of replicas below
+configured replication factor (RF), and adds the--forceoption that
+allows decommission to continue if intentional; force decommission of
+this node even when it reduces the number of replicas to below
+configured RF.Get started with Cassandra, fast.Quickstart GuideApache Cassandrapowers mission-critical deployments with improved performance and unparalleled levels of scale in the cloud.HomeCassandra BasicsQuickstartEcosystemDocumentationCommunityCase StudiesResourcesBlogFoundationEventsLicenseThanksSecurityPrivacySponsorshipÂ© 2009-The Apache Software Foundationunder the terms of the Apache License 2.0.  Apache, the Apache feather logo, Apache Cassandra, Cassandra, and the Cassandra logo, are either registered trademarks or trademarks of The Apache Software Foundation.

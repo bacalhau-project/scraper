@@ -1,0 +1,5 @@
+URL: https://hadoop.apache.org/version_control.html
+
+Toggle navigationApache HadoopDownloadDocumentationCurrent (trunk)LatestStable3.4.03.3.62.10.2WikiCommunityBylawsCriteria for CommittershipMailing listsPublished CVEsWho We areDevelopmentHow to ContributeIssue TrackingVersion ControlVersioningHelpBuy StuffSponsorshipThanksApache Software FoundationHadoop Version Control SystemOverviewThe Hadoop source code resides in the Apache git repository, and available from here:https://gitbox.apache.org/repos/asf?p=hadoop.gitThe changes are also mirrored to the github repositoryhttps://github.com/apache/hadoopHdfs, Yarn, Mapreduce and other components all are parts of this one repository.Apache Hadoop, Hadoop, Apache, the Apache feather logo,
+    and the Apache Hadoop project logo are either registered trademarks or trademarks of the Apache Software Foundation
+     in the United States and other countriesCopyright Â© 2006-2024 The Apache Software FoundationPrivacy policy

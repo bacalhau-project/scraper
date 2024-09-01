@@ -1,0 +1,19 @@
+URL: https://kafka.apache.org/books-and-papers#books
+
+Apache KafkaToggle navigationGet StartedIntroductionQuickstartUse CasesBooks & PapersVideosPodcastsDocsKey ConceptsAPIsConfigurationDesignImplementationOperationsSecurityClientsKafka ConnectKafka StreamsPowered ByCommunityBlogKafka SummitProject InfoTrademarkEcosystemEventsContact usApacheLicenseDonateSponsorsSecurityPrivacyApache.orgDownload KafkaBooks and PapersBooksThe following books cover Apache Kafka and/or the subject of event
+        streaming in general.Academic References and PapersThe following academic papers and publications cover Apache Kafka and/or
+        the subject of event streaming in general.KSQL: Streaming SQL Engine for Apache Kafkaby Hojjat Jafarpour, Rohan Desai, Damian Guy; EDBT '19: Proceedings of
+          the 22nd International Conference on Extending Database Technology,
+          2019Streams and Tables: Two Sides of the Same Coinby Matthias J. Sax, Guozhang Wang, Matthias Weidlich, Johann-Christoph
+          Freytag; BIRTE '18: Proceedings of the International Workshop on
+          Real-Time Business Intelligence and Analytics, 2018Apache Kafkaby Matthias J. Sax; Encyclopedia of Big Data Technologies, Springer,
+          Cham, 2018Building a Replicated Logging System with Apache Kafkaby Guozhang Wang, Joel Koshy, Sriram Subramanian, Kartik Paramasivam,
+          Mammad Zadeh, Neha Narkhede, Jun Rao, Jay Kreps, Joe Stein; VLDB
+          Endowment '15: Proceedings of the VLDB Endowment,Vol. 8, No. 12, 2015Liquid: Unifying Nearline and Offline Big Data Integrationby Raul Castro Fernandez, Peter R. Pietzuch, Jay Kreps, Neha Narkhede,
+          Jun Rao, Joel Koshy, Dong Lin, Chris Riccomini, Guozhang Wang; CIDR
+          '15: 7th Biennial Conference on Innovative Data Systems Research, 2015Kafka, Samza and the Unix Philosophy of Distributed Databy Martin Kleppmann, Jay Kreps, Bulletin of the IEEE Computer Society
+          Technical Committee on Data Engineering, 2015The Log: What every software engineer should know about real-time
+            data's unifying abstraction, by Jay Kreps, 2013Building LinkedInâs Real-time Activity Data Pipelineby Ken Goodhope, Joel Koshy, Jay Kreps, Neha Narkhede, Richard Park,
+          Jun Rao, Victor Yang Ye; Bulletin of the IEEE Computer Society
+          Technical Committee on Data Engineering, 2012Data Infrastructure at LinkedInby Aditya Auradkar et al.; IEEE 28th International Conference on Data
+          Engineering, 2012Kafka: a Distributed Messaging System for Log Processingby Jay Kreps, Neha Narkhede, Jun Rao; NetDB workshop '11, 2011The contents of this website are © 2024Apache Software Foundationunder the terms of theApache License v2.Apache Kafka, Kafka, and the Kafka logo are either registered trademarks or trademarks of The Apache Software Foundationin the United States and other countries.Security|Donate|Thanks|Events|License|Privacy

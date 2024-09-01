@@ -1,0 +1,64 @@
+URL: https://www.nomadproject.io/docs/integrations/consul-integration
+
+HashiDaysOne conference. Three cities.Find a city near youDismiss alertHashiCorp DeveloperHashiCorp Cloud PlatformTerraformPackerConsulVaultBoundaryNomadWaypointVagrantNomadInstallIntroTutorialsDocumentationAPIToolsPluginsIntegrationsSearchCommand or control keyK keySign inSign upThemeNomad HomeDocumentationDocumentationInstall NomadUpgradingRelease NotesIntegrationsOverviewConsulOverviewACLService MeshVaultConceptsConfigurationCommands (CLI)GlossaryJob SpecificationOther SpecificationsTask DriversDevice PluginsSchedulersRuntimeNetworkingAutoscalingOperationsNomad vs. KubernetesNomad EcosystemNomad PartnershipsWho Uses NomadNomad EnterpriseFAQResourcesTutorial LibraryCommunity Forum(opens in new tab)Support(opens in new tab)GitHub(opens in new tab)DeveloperNomadDocumentationIntegrationsConsulv1.8.x (latest)Nomadv1.7.xConsul IntegrationConsulis a tool for discovering and configuring services in your
+infrastructure. Consul's key features include service discovery, health checking,
+a KV store, and robust support for multi-datacenter deployments. Nomad's integration
+with Consul enables automatic clustering, built-in service registration, and
+dynamic rendering of configuration files and environment variables. The sections
+below describe the integration in more detail.ConfigurationIn order to use Consul with Nomad, you will need to configure and install Consul
+on your nodes alongside Nomad, or schedule it as a system job. Nomad does not
+run Consul for you.To enable Consul integration, please refer to theNomad agent Consul
+configurationdocumentation.Automatic Clustering with ConsulNomad servers and clients will be automatically informed of each other's
+existence when a running Consul cluster already exists and the Consul agent is
+installed and configured on each host. Please refer to theAutomatic Clustering
+with Consulguide for more information.Service DiscoveryNomad schedules workloads of various types across a cluster of generic hosts.
+Because of this, placement is not known in advance and you will need to use
+service discovery to connect tasks to other services deployed across your
+cluster. Nomad integrates with Consul to provide service discovery and
+monitoring.To configure a job to register with service discovery, please refer to theservicejob specification documentation.Service MeshConsul service mesh provides service-to-service connection authorization and
+encryption using mutual Transport Layer Security (TLS). Nomad can automatically
+provision the components necessary to securely connect your tasks to Consul's
+service mesh.Refer to theConsul Service Mesh integration pagefor more
+information.Dynamic ConfigurationNomad's job specification includes atemplateblock that uses a Consul
+ecosystem tool calledConsul Template. This mechanism creates a convenient
+way to ship configuration files that are populated from environment variables,
+Consul data, Vault secrets, or just general configurations within a Nomad task.For more information on Nomad's template block and how it leverages Consul
+Template, please see thetemplatejob specification documentation.DNSTo provide Consul DNS to Nomad workloads usingbridge or CNI networking
+mode, you will need to configure Consul's DNS listener to be exposed to the
+workload network namespace, or configuresystemd-resolved,dnsmasq, or
+similar DNS stub resolvers to forward DNS. SeeForward DNS for Consul service
+discoveryfor details.You can avoid exposing the Consul agent on a public IP by setting the Consulbind_addrto bind on a private IP address (the default is to use theclient_addr). You will also need to either have Consul bind to port 53 for
+DNS if you are not using DNS forwarding.You will also need to set thenameserverto the address. This address is
+exposed as theconsul.dns.addrnode attribute or theDNSStubListenerconfiguration value forsystemd-resolved.An simpler solution is to use Consul Connecttransparent proxymode to
+automatically configure tasks to use Consul DNS.Consul ACLThe Consul ACL system protects the cluster from unauthorized access. When
+enabled, both Consul and Nomad must be properly configured in order for their
+integrations to work.Refer to theConsul ACL integration pagefor more
+information.Consul NamespacesEnterpriseEnterpriseNomad provides integration withConsul Namespacesfor
+service registrations specified inserviceblocks and Consul KV reads intemplateblocks.By default, Nomad will not specify a Consul namespace on service registrations
+or KV store reads, which Consul then implicitly resolves to the"default"namespace.  This default namespace behavior can be modified by setting thenamespacefield in the Nomad agent Consul
+configuration block.For more control over Consul namespaces, Nomad Enterprise supports configuring
+the Consulnamespaceat the group or task level in
+the Nomad job spec as well as the-consul-namespacecommand line argument forjob run.The Consul namespace used for a set of group or task service registrations
+within a group, as well astemplateKV store access is determined from the
+following hierarchy from highest to lowest precedence:group and task configuration: Consulnamespace fielddefined in the job at the task or
+group level.job run command option: Consul namespace defined in the-consul-namespacecommand line option on job
+submission.job run command environment various: Consul namespace defined as theCONSUL_NAMESPACEenvironment variable on job
+submission.agent configuration: Consul namespace defined in thenamespaceNomad agent Consul configuration
+parameter.Consul default: If no Consul namespace options are configured, Consul will
+automatically make use of the"default"namespace.Multiple Consul ClustersEnterpriseEnterpriseNomad Enterprise supports access to multiple Consul clusters. They can be
+configured using multipleconsulblocks with differentnamevalues. If anameis not provided, the cluster configuration is calleddefault. Nomad automatic clustering uses thedefaultcluster for service
+discovery.Jobs that need access to Consul may specify which Consul cluster to use with
+theconsul.clusterparameter.AssumptionsEach Nomad client should have a local Consul agent running on the same host,
+reachable by Nomad. Nomad clients should never share a Consul agent or talk
+directly to the Consul servers. Nomad is not compatible withConsul Data
+Plane.The service discovery feature in Nomad depends on operators making sure that
+the Nomad client can reach the Consul agent.Tasks running inside Nomad also need to reach out to the Consul agent if
+they want to use any of the Consul APIs. Ex: A task running inside a docker
+container in the bridge mode won't be able to talk to a Consul Agent running
+on the loopback interface of the host since the container in the bridge mode
+has its own network interface and doesn't see interfaces on the global
+network namespace of the host. There are a couple of ways to solve this, one
+way is to run the container in the host networking mode, or make the Consul
+agent listen on an interface in the network namespace of the container.Theconsulbinary must be present in Nomad's$PATHto run the Envoy
+proxy sidecar on client nodes.Consul service mesh using network namespaces is only supported on Linux.CompatibilityAll currently supported versions of Nomad are compatible with recent versions of
+Consul, with some exceptions.Nomad is not compatible with Consul Data Plane.Consul 1.17.0+Consul 1.18.0+Consul 1.19.0+Nomad 1.8.0+✅✅✅Nomad 1.7.0+✅✅✅Nomad 1.6.0+✅✅✅Edit this page on GitHubOn this page:Consul IntegrationConfigurationAutomatic Clustering with ConsulService DiscoveryService MeshDynamic ConfigurationDNSConsul ACLConsul NamespacesMultiple Consul ClustersAssumptionsCompatibilityThemeCertificationsSystem StatusCookie ManagerTerms of UseSecurityPrivacyTrademark PolicyTrade ControlsAccessibilityGive Feedback(opens in new tab)

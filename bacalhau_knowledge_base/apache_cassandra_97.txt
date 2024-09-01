@@ -1,0 +1,171 @@
+URL: https://cassandra.apache.org/doc/latest/cassandra/developing/cql/security.html
+
+Get StartedCassandra BasicsQuickstartEcosystemDocumentationCommunityWelcomeDiscussionsGovernanceContributeMeet the CommunityCatalyst ProgramEventsLearnCassandra 5.0Case StudiesResourcesBlogDownload NowCassandra DocumentationVersion:5.0mastertrunk5.04.14.03.11MainGlossaryHow to report bugsContact usDevelopmentGetting startedBuilding and IDE integrationTestingContributing code changesCode styleReview checklistHow to commitWorking on documentationJenkins CI environmentDependency managementRelease processCassandraFAQGetting StartedCassandra QuickstartSAI QuickstartVector Search QuickstartInstalling CassandraConfiguring CassandraInserting and queryingClient driversProduction recommendationsWhat’s newSupport for JavaArchitectureOverviewDynamoStorage EngineGuaranteesImproved Internode MessagingImproved StreamingData ModelingIntroductionConceptual data modelingRDBMS designDefining application queriesLogical data modelingPhysical data modelingEvaluating and refining data modelsDefining database schemaCassandra data modeling toolsCassandra Query Language (CQL)DefinitionsData typesData definition (DDL)Data manipulation (DML)Dynamic Data Masking (DDM)OperatorsIndexing conceptsSAI OverviewConceptsSAI QuickstartSAI FAQWorking with SAISAI operationsSecondary indexes (2i) overviewConceptsWorking with 2iRebuild 2iMaterialized viewsFunctionsJSONSecurityTriggersAppendicesChangesSASISingle file of CQL informationVector Search overviewConceptsData ModelingVector Search QuickstartWorking with Vector SearchManagingConfiguringcassandra.yamlcassandra-rackdc.propertiescassandra-env.shcassandra-topologies.propertiescommitlog-archiving.propertieslogback.xmljvm-* filesLiberating cassandra.yaml Parameters' Names from Their UnitsOperatingBackupsBloom filtersBulk loadingChange Data Capture (CDC)CompactionCompressionHardwareHintsLoggingAudit loggingAudit logging 2Full query loggingMonitoring metricsRepairRead repairSecuritySnitchesTopology changesTransient replicationVirtual tablesToolscqlsh: the CQL shellnodetoolSSTable toolscassandra-stressTroubleshootingFinding misbehaving nodesReading Cassandra logsUsing nodetoolUsing external tools to deep-diveReferenceALTER TABLECREATE INDEXCREATE CUSTOM INDEXCREATE TABLEDROP INDEXDROP TABLEPlug-insYou are viewing the documentation for a prerelease version.CassandraCassandra Query Language (CQL)SecurityEditDatabase RolesCQL uses database roles to represent users and group of users.
+Syntactically, a role is defined by:role_name ::= identifier | stringCREATE ROLECreating a role uses theCREATE ROLEstatement:create_role_statement ::= CREATE ROLE [ IF NOT EXISTS ] role_name
+                          [ WITH role_options# ]
+role_options ::= role_option ( AND role_option)*
+role_option ::= PASSWORD '=' string
+                | HASHED PASSWORD '=' string
+                | LOGIN '=' boolean
+                | SUPERUSER '=' boolean
+                | OPTIONS '=' map_literal
+                | ACCESS TO DATACENTERS set_literal
+                | ACCESS TO ALL DATACENTERS
+                | ACCESS FROM CIDRS set_literal
+                | ACCESS FROM ALL CIDRSFor instance:CREATE ROLE new_role;
+CREATE ROLE alice WITH PASSWORD = 'password_a' AND LOGIN = true;
+CREATE ROLE alice WITH HASHED PASSWORD = '$2a$10$JSJEMFm6GeaW9XxT5JIheuEtPvat6i7uKbnTcxX3c1wshIIsGyUtG' AND LOGIN = true;
+CREATE ROLE bob WITH PASSWORD = 'password_b' AND LOGIN = true AND SUPERUSER = true;
+CREATE ROLE carlos WITH OPTIONS = { 'custom_option1' : 'option1_value', 'custom_option2' : 99 };
+CREATE ROLE alice WITH PASSWORD = 'password_a' AND LOGIN = true AND ACCESS TO DATACENTERS {'DC1', 'DC3'};
+CREATE ROLE alice WITH PASSWORD = 'password_a' AND LOGIN = true AND ACCESS TO ALL DATACENTERS;
+CREATE ROLE bob WITH LOGIN = true and PASSWORD = 'password_d' AND ACCESS FROM CIDRS { 'region1', 'region2' };
+CREATE ROLE hob WITH LOGIN = true and PASSWORD = 'password_c' AND ACCESS FROM ALL CIDRS;By default roles do not possessLOGINprivileges orSUPERUSERstatus.Permissionson database resources are granted to
+roles; types of resources include keyspaces, tables, functions and roles
+themselves. Roles may be granted to other roles to create hierarchical
+permissions structures; in these hierarchies, permissions andSUPERUSERstatus are inherited, but theLOGINprivilege is not.If a role has theLOGINprivilege, clients may identify as that role
+when connecting. For the duration of that connection, the client will
+acquire any roles and privileges granted to that role.Only a client with with theCREATEpermission on the database roles
+resource may issueCREATE ROLErequests (see therelevant section), unless the client is aSUPERUSER. Role management in Cassandra is pluggable and custom
+implementations may support only a subset of the listed options.Role names should be quoted if they contain non-alphanumeric characters.Setting credentials for internal authenticationUse theWITH PASSWORDclause to set a password for internal
+authentication, enclosing the password in single quotation marks.If internal authentication has not been set up or the role does not haveLOGINprivileges, theWITH PASSWORDclause is not necessary.USEWITH HASHED PASSWORDto provide the jBcrypt hashed password directly. See thehash_passwordtool.Restricting connections to specific datacentersIf anetwork_authorizerhas been configured, you can restrict login
+roles to specific datacenters with theACCESS TO DATACENTERSclause
+followed by a set literal of datacenters the user can access. Not
+specifiying datacenters implicitly grants access to all datacenters. The
+clauseACCESS TO ALL DATACENTERScan be used for explicitness, but
+there’s no functional difference.Restricting connections from specific CIDR groupsIf acidr_authorizerhas been configured, you can restrict roles to login
+only from specific regions, aka CIDR groups, with theACCESS FROM CIDRSclause
+followed by a set literal of CIDR groups the user can access from. Not
+specifying CIDR groups implicitly grants access from all CIDR groups. The
+clauseACCESS FROM ALL CIDRScan be used for explicitness, but there’s no
+functional difference. This clause can be also be used to remove any CIDR
+groups restrictions. Valid CIDR groups should be used withACCESS FROM CIDRSclause.nodetool list-cidrgroupscommand can be used to see available CIDR groups
+in the Cluster.Creating a role conditionallyAttempting to create an existing role results in an invalid query
+condition unless theIF NOT EXISTSoption is used. If the option is
+used and the role exists, the statement is a no-op:CREATE ROLE other_role;
+CREATE ROLE IF NOT EXISTS other_role;ALTER ROLEAltering a role options uses theALTER ROLEstatement:alter_role_statement ::= ALTER ROLE [ IF EXISTS ] role_name WITH role_optionsFor example:ALTER ROLE bob WITH PASSWORD = 'PASSWORD_B' AND SUPERUSER = false;
+ALTER ROLE bob WITH HASHED PASSWORD = '$2a$10$JSJEMFm6GeaW9XxT5JIheuEtPvat6i7uKbnTcxX3c1wshIIsGyUtG' AND SUPERUSER = false;
+ALTER ROLE rob WITH LOGIN = true and PASSWORD = 'password_c' AND ACCESS FROM ALL CIDRS;
+ALTER ROLE hob WITH LOGIN = true and PASSWORD = 'password_d' AND ACCESS FROM CIDRS { 'region1' };If the role does not exist, the statement will return an error, unlessIF EXISTSis used in which case the operation is a no-op.USEWITH HASHED PASSWORDto provide the jBcrypt hashed password directly. See thehash_passwordtool.Restricting connections to specific datacentersIf anetwork_authorizerhas been configured, you can restrict login
+roles to specific datacenters with theACCESS TO DATACENTERSclause
+followed by a set literal of datacenters the user can access. To remove
+any data center restrictions, use theACCESS TO ALL DATACENTERSclause.Restricting connections from specific CIDR groupsIf acidr_authorizerhas been configured, you can restrict roles to login
+only from specific regions, aka CIDR groups, with theACCESS FROM CIDRSclause
+followed by a set literal of CIDR groups the user can access from. Not
+specifying CIDR groups implicitly grants access from all CIDR groups. The
+clauseACCESS FROM ALL CIDRScan be used for explicitness, but there’s no
+functional difference. This clause can be also be used to remove any CIDR
+groups restrictions. Valid CIDR groups should be used withACCESS FROM CIDRSclause.nodetool list-cidrgroupscommand can be used to see available CIDR groups
+in the Cluster.Conditions on executingALTER ROLEstatements:a client must haveSUPERUSERstatus to alter theSUPERUSERstatus
+of another rolea client cannot alter theSUPERUSERstatus of any role it currently
+holdsa client can only modify certain properties of the role with which it
+identified at login (e.g.PASSWORD)to modify properties of a role, the client must be grantedALTERpermission <cql-permissions>on that roleDROP ROLEDropping a role uses theDROP ROLEstatement:drop_role_statement ::= DROP ROLE [ IF EXISTS ] role_nameDROP ROLErequires the client to haveDROPpermission <cql-permissions>on the role in question. In addition,
+client may notDROPthe role with which it identified at login.
+Finally, only a client withSUPERUSERstatus mayDROPanotherSUPERUSERrole.Attempting to drop a role which does not exist results in an invalid
+query condition unless theIF EXISTSoption is used. If the option is
+used and the role does not exist the statement is a no-op.DROP ROLE intentionally does not terminate any open user sessions.
+Currently connected sessions will remain connected and will retain the
+ability to perform any database actions which do not requireauthorization.
+However, if authorization is enabled,permissionsof the dropped role are also revoked,
+subject to thecaching optionsconfigured incassandra-yamlfile.
+Should a dropped role be subsequently recreated and have newpermissionsorroles` granted to it, any client sessions still
+connected will acquire the newly granted permissions and roles.GRANT ROLEGranting a role to another uses theGRANT ROLEstatement:grant_role_statement ::= GRANT role_name TO role_nameFor example:GRANT report_writer TO alice;This statement grants thereport_writerrole toalice. Any
+permissions granted toreport_writerare also acquired byalice.Roles are modelled as a directed acyclic graph, so circular grants are
+not permitted. The following examples result in error conditions:GRANT role_a TO role_b;
+GRANT role_b TO role_a;
+
+GRANT role_a TO role_b;
+GRANT role_b TO role_c;
+GRANT role_c TO role_a;REVOKE ROLERevoking a role uses theREVOKE ROLEstatement:revoke_role_statement ::= REVOKE role_name FROM role_nameFor example:REVOKE report_writer FROM alice;This statement revokes thereport_writerrole fromalice. Any
+permissions thatalicehas acquired via thereport_writerrole are
+also revoked.LIST ROLESAll the known roles (in the system or granted to specific role) can be
+listed using theLIST ROLESstatement:list_roles_statement ::= LIST ROLES [ OF role_name] [ NORECURSIVE ]For instance:LIST ROLES;returns all known roles in the system, this requiresDESCRIBEpermission on the database roles resource.This example enumerates all roles granted toalice, including those transitively
+acquired:LIST ROLES OF alice;This example lists all roles directly granted tobobwithout including any of the
+transitively acquired ones:LIST ROLES OF bob NORECURSIVE;UsersPrior to the introduction of roles in Cassandra 2.2, authentication and
+authorization were based around the concept of aUSER. For backward
+compatibility, the legacy syntax has been preserved withUSERcentric
+statements becoming synonyms for theROLEbased equivalents. In other
+words, creating/updating a user is just a different syntax for
+creating/updating a role.CREATE USERCreating a user uses theCREATE USERstatement:create_user_statement ::= CREATE USER [ IF NOT EXISTS ] role_name
+                          [ WITH [ HASHED ] PASSWORD string ]
+                          [ user_option ]
+user_option: SUPERUSER | NOSUPERUSERFor example:CREATE USER alice WITH PASSWORD 'password_a' SUPERUSER;
+CREATE USER bob WITH PASSWORD 'password_b' NOSUPERUSER;
+CREATE USER bob WITH HASHED PASSWORD '$2a$10$JSJEMFm6GeaW9XxT5JIheuEtPvat6i7uKbnTcxX3c1wshIIsGyUtG' NOSUPERUSER;TheCREATE USERcommand is equivalent toCREATE ROLEwhere theLOGINoption istrue.
+So, the following pairs of statements are equivalent:CREATE USER alice WITH PASSWORD 'password_a' SUPERUSER;
+CREATE ROLE alice WITH PASSWORD = 'password_a' AND LOGIN = true AND SUPERUSER = true;
+
+CREATE USER IF NOT EXISTS alice WITH PASSWORD 'password_a' SUPERUSER;
+CREATE ROLE IF NOT EXISTS alice WITH PASSWORD = 'password_a' AND LOGIN = true AND SUPERUSER = true;
+
+CREATE USER alice WITH PASSWORD 'password_a' NOSUPERUSER;
+CREATE ROLE alice WITH PASSWORD = 'password_a' AND LOGIN = true AND SUPERUSER = false;
+
+CREATE USER alice WITH PASSWORD 'password_a' NOSUPERUSER;
+CREATE ROLE alice WITH PASSWORD = 'password_a' AND LOGIN = true;
+
+CREATE USER alice WITH PASSWORD 'password_a';
+CREATE ROLE alice WITH PASSWORD = 'password_a' AND LOGIN = true;
+
+CREATE ROLE rob WITH LOGIN = true and PASSWORD = 'password_c' AND ACCESS FROM ALL CIDRS;
+CREATE ROLE hob WITH LOGIN = true and PASSWORD = 'password_d' AND ACCESS FROM CIDRS { 'region1' };ALTER USERAltering the options of a user uses theALTER USERstatement:alter_user_statement ::= ALTER USER [ IF EXISTS ] role_name [ WITH [ HASHED ] PASSWORD string] [ user_option]If the role does not exist, the statement will return an error, unlessIF EXISTSis used in which case the operation is a no-op.
+For example:ALTER USER alice WITH PASSWORD 'PASSWORD_A';
+ALTER USER alice WITH HASHED PASSWORD '$2a$10$JSJEMFm6GeaW9XxT5JIheuEtPvat6i7uKbnTcxX3c1wshIIsGyUtG';
+ALTER USER bob SUPERUSER;DROP USERDropping a user uses theDROP USERstatement:drop_user_statement ::= DROP USER [ IF EXISTS ] role_nameLIST USERSExisting users can be listed using theLIST USERSstatement:list_users_statement::= LIST USERSNote that this statement is equivalent toLIST ROLES, but only roles with the `LOGINprivilege are included in the output.Data ControlPermissionsPermissions on resources are granted to roles; there are several
+different types of resources in Cassandra and each type is modelled
+hierarchically:The hierarchy of Data resources, Keyspaces and Tables has the
+structureALL KEYSPACES→KEYSPACE→TABLE.Function resources have the structureALL FUNCTIONS→KEYSPACE→FUNCTIONResources representing roles have the structureALL ROLES→ROLEResources representing JMX ObjectNames, which map to sets of
+MBeans/MXBeans, have the structureALL MBEANS→MBEANPermissions can be granted at any level of these hierarchies and they
+flow downwards. So granting a permission on a resource higher up the
+chain automatically grants that same permission on all resources lower
+down. For example, grantingSELECTon aKEYSPACEautomatically
+grants it on allTABLESin thatKEYSPACE. Likewise, granting a
+permission onALL FUNCTIONSgrants it on every defined function,
+regardless of which keyspace it is scoped in. It is also possible to
+grant permissions on all functions scoped to a particular keyspace.Modifications to permissions are visible to existing client sessions;
+that is, connections need not be re-established following permissions
+changes.The full set of available permissions is:CREATEALTERDROPSELECTMODIFYAUTHORIZEDESCRIBEEXECUTEUNMASKSELECT_MASKEDNot all permissions are applicable to every type of resource. For
+instance,EXECUTEis only relevant in the context of functions or
+mbeans; grantingEXECUTEon a resource representing a table is
+nonsensical. Attempting toGRANTa permission on resource to which it
+cannot be applied results in an error response. The following
+illustrates which permissions can be granted on which types of resource,
+and which statements are enabled by that permission.PermissionResourceOperationsCREATEALL KEYSPACESCREATE KEYSPACEandCREATE TABLEin any keyspaceCREATEKEYSPACECREATE TABLEin specified keyspaceCREATEALL FUNCTIONSCREATE FUNCTIONin any keyspace andCREATE AGGREGATEin any keyspaceCREATEALL FUNCTIONS IN KEYSPACECREATE FUNCTIONandCREATE AGGREGATEin specified keyspaceCREATEALL ROLESCREATE ROLEALTERALL KEYSPACESALTER KEYSPACEandALTER TABLEin any keyspaceALTERKEYSPACEALTER KEYSPACEandALTER TABLEin specified keyspaceALTERTABLEALTER TABLEALTERALL FUNCTIONSCREATE FUNCTIONandCREATE AGGREGATE: replacing any existingALTERALL FUNCTIONS IN KEYSPACECREATE FUNCTIONandCREATE AGGREGATE: replacing existing in specified keyspaceALTERFUNCTIONCREATE FUNCTIONandCREATE AGGREGATE: replacing existingALTERALL ROLESALTER ROLEon any roleALTERROLEALTER ROLEDROPALL KEYSPACESDROP KEYSPACEandDROP TABLEin any keyspaceDROPKEYSPACEDROP TABLEin specified keyspaceDROPTABLEDROP TABLEDROPALL FUNCTIONSDROP FUNCTIONandDROP AGGREGATEin any keyspaceDROPALL FUNCTIONS IN KEYSPACEDROP FUNCTIONandDROP AGGREGATEin specified keyspaceDROPFUNCTIONDROP FUNCTIONDROPALL ROLESDROP ROLEon any roleDROPROLEDROP ROLESELECTALL KEYSPACESSELECTon any tableSELECTKEYSPACESELECTon any table in specified keyspaceSELECTTABLESELECTon specified tableSELECTALL MBEANSCall getter methods on any mbeanSELECTMBEANSCall getter methods on any mbean matching a wildcard patternSELECTMBEANCall getter methods on named mbeanMODIFYALL KEYSPACESINSERT,UPDATE,DELETEandTRUNCATEon any tableMODIFYKEYSPACEINSERT,UPDATE,DELETEandTRUNCATEon any table in specified
+keyspaceMODIFYTABLEINSERT,UPDATE,DELETEandTRUNCATEon specified tableMODIFYALL MBEANSCall setter methods on any mbeanMODIFYMBEANSCall setter methods on any mbean matching a wildcard patternMODIFYMBEANCall setter methods on named mbeanAUTHORIZEALL KEYSPACESGRANT PERMISSIONandREVOKE PERMISSIONon any tableAUTHORIZEKEYSPACEGRANT PERMISSIONandREVOKE PERMISSIONon any table in specified keyspaceAUTHORIZETABLEGRANT PERMISSIONandREVOKE PERMISSIONon specified tableAUTHORIZEALL FUNCTIONSGRANT PERMISSIONandREVOKE PERMISSIONon any functionAUTHORIZEALL FUNCTIONS IN KEYSPACEGRANT PERMISSIONandREVOKE PERMISSIONin specified keyspaceAUTHORIZEFUNCTIONGRANT PERMISSIONandREVOKE PERMISSIONon specified functionAUTHORIZEALL MBEANSGRANT PERMISSIONandREVOKE PERMISSIONon any mbeanAUTHORIZEMBEANSGRANT PERMISSIONandREVOKE PERMISSIONon any mbean matching a wildcard patternAUTHORIZEMBEANGRANT PERMISSIONandREVOKE PERMISSIONon named mbeanAUTHORIZEALL ROLESGRANT ROLEandREVOKE ROLEon any roleAUTHORIZEROLESGRANT ROLEandREVOKE ROLEon specified rolesDESCRIBEALL ROLESLIST ROLESon all roles or only roles granted to another, specified roleDESCRIBEALL MBEANSRetrieve metadata about any mbean from the platform’s MBeanServerDESCRIBEMBEANSRetrieve metadata about any mbean matching a wildcard patter from the
+platform’s MBeanServerDESCRIBEMBEANRetrieve metadata about a named mbean from the platform’s MBeanServerEXECUTEALL FUNCTIONSSELECT,INSERTandUPDATEusing any function, and use of any
+function inCREATE AGGREGATEEXECUTEALL FUNCTIONS IN KEYSPACESELECT,INSERTandUPDATEusing any function in specified keyspace
+and use of any function in keyspace inCREATE AGGREGATEEXECUTEFUNCTIONSELECT,INSERTandUPDATEusing specified function and use of the function inCREATE AGGREGATEEXECUTEALL MBEANSExecute operations on any mbeanEXECUTEMBEANSExecute operations on any mbean matching a wildcard patternEXECUTEMBEANExecute operations on named mbeanUNMASKALL KEYSPACESSee the clear contents of masked columns on any tableUNMASKKEYSPACESee the clear contents of masked columns on any table in keyspaceUNMASKTABLESee the clear contents of masked columns on the specified tableSELECT_MASKEDALL KEYSPACESSELECTrestricting masked columns on any tableSELECT_MASKEDKEYSPACESELECTrestricting masked columns on any table in specified keyspaceSELECT_MASKEDTABLESELECTrestricting masked columns on the specified tableGRANT PERMISSIONGranting a permission uses theGRANT PERMISSIONstatement:grant_permission_statement ::= GRANT permissions ON resource TO role_name
+permissions ::= ALL [ PERMISSIONS ] | permission [ PERMISSION ]
+permission ::= CREATE | ALTER | DROP | SELECT | MODIFY | AUTHORIZE | DESCRIBE | EXECUTE | UNMASK | SELECT_MASKED
+resource ::=    ALL KEYSPACES
+                | KEYSPACE keyspace_name
+                | [ TABLE ] table_name
+                | ALL ROLES
+                | ROLE role_name
+                | ALL FUNCTIONS [ IN KEYSPACE keyspace_name ]
+                | FUNCTION function_name '(' [ cql_type( ',' cql_type )* ] ')'
+                | ALL MBEANS
+                | ( MBEAN | MBEANS ) stringFor example:GRANT SELECT ON ALL KEYSPACES TO data_reader;This example gives any user with the roledata_readerpermission to executeSELECTstatements on any table across all keyspaces:GRANT MODIFY ON KEYSPACE keyspace1 TO data_writer;To give any user with the roledata_writerpermission to performUPDATE,INSERT,UPDATE,DELETEandTRUNCATEqueries on all
+tables in thekeyspace1keyspace:GRANT DROP ON keyspace1.table1 TO schema_owner;To give any user with theschema_ownerrole permissions toDROPa specifickeyspace1.table1:GRANT EXECUTE ON FUNCTION keyspace1.user_function( int ) TO report_writer;This command grants any user with thereport_writerrole permission to executeSELECT,INSERTandUPDATEqueries which use the functionkeyspace1.user_function( int ):GRANT DESCRIBE ON ALL ROLES TO role_admin;This grants any user with therole_adminrole permission to view any
+and all roles in the system with aLIST ROLESstatement.GRANT ALLWhen theGRANT ALLform is used, the appropriate set of permissions is
+determined automatically based on the target resource.Automatic GrantingWhen a resource is created, via aCREATE KEYSPACE,CREATE TABLE,CREATE FUNCTION,CREATE AGGREGATEorCREATE ROLEstatement, the
+creator (the role the database user who issues the statement is
+identified as), is automatically granted all applicable permissions on
+the new resource.REVOKE PERMISSIONRevoking a permission from a role uses theREVOKE PERMISSIONstatement:revoke_permission_statement ::= REVOKE permissions ON resource FROM role_nameFor example:REVOKE SELECT ON ALL KEYSPACES FROM data_reader;
+REVOKE MODIFY ON KEYSPACE keyspace1 FROM data_writer;
+REVOKE DROP ON keyspace1.table1 FROM schema_owner;
+REVOKE EXECUTE ON FUNCTION keyspace1.user_function( int ) FROM report_writer;
+REVOKE DESCRIBE ON ALL ROLES FROM role_admin;Because of their function in normal driver operations, certain tables
+cannot have theirSELECTpermissions revoked. The
+following tables will be available to all authorized users regardless of
+their assigned role:* `system_schema.keyspaces`
+* `system_schema.columns`
+* `system_schema.tables`
+* `system.local`
+* `system.peers`LIST PERMISSIONSListing granted permissions uses theLIST PERMISSIONSstatement:list_permissions_statement ::= LIST permissions [ ON resource] [ OF role_name[ NORECURSIVE ] ]For example:LIST ALL PERMISSIONS OF alice;Show all permissions granted toalice, including those acquired
+transitively from any other roles:LIST ALL PERMISSIONS ON keyspace1.table1 OF bob;Show all permissions onkeyspace1.table1granted tobob, including
+those acquired transitively from any other roles. This also includes any
+permissions higher up the resource hierarchy which can be applied tokeyspace1.table1. For example, shouldbobhaveALTERpermission onkeyspace1, that would be included in the results of this query. Adding
+theNORECURSIVEswitch restricts the results to only those permissions
+which were directly granted tobobor one of `bob’s roles:LIST SELECT PERMISSIONS OF carlos;Show any permissions granted tocarlosor any ofcarlos’s roles,
+limited to `SELECTpermissions on any resource.Get started with Cassandra, fast.Quickstart GuideApache Cassandrapowers mission-critical deployments with improved performance and unparalleled levels of scale in the cloud.HomeCassandra BasicsQuickstartEcosystemDocumentationCommunityCase StudiesResourcesBlogFoundationEventsLicenseThanksSecurityPrivacySponsorshipÂ© 2009-The Apache Software Foundationunder the terms of the Apache License 2.0.  Apache, the Apache feather logo, Apache Cassandra, Cassandra, and the Cassandra logo, are either registered trademarks or trademarks of The Apache Software Foundation.

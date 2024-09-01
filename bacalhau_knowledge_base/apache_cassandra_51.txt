@@ -1,0 +1,103 @@
+URL: https://cassandra.apache.org/doc/latest/cassandra/getting-started/sai-quickstart.html
+
+Get StartedCassandra BasicsQuickstartEcosystemDocumentationCommunityWelcomeDiscussionsGovernanceContributeMeet the CommunityCatalyst ProgramEventsLearnCassandra 5.0Case StudiesResourcesBlogDownload NowCassandra DocumentationVersion:5.0mastertrunk5.04.14.03.11MainGlossaryHow to report bugsContact usDevelopmentGetting startedBuilding and IDE integrationTestingContributing code changesCode styleReview checklistHow to commitWorking on documentationJenkins CI environmentDependency managementRelease processCassandraFAQGetting StartedCassandra QuickstartSAI QuickstartVector Search QuickstartInstalling CassandraConfiguring CassandraInserting and queryingClient driversProduction recommendationsWhat’s newSupport for JavaArchitectureOverviewDynamoStorage EngineGuaranteesImproved Internode MessagingImproved StreamingData ModelingIntroductionConceptual data modelingRDBMS designDefining application queriesLogical data modelingPhysical data modelingEvaluating and refining data modelsDefining database schemaCassandra data modeling toolsCassandra Query Language (CQL)DefinitionsData typesData definition (DDL)Data manipulation (DML)Dynamic Data Masking (DDM)OperatorsIndexing conceptsSAI OverviewConceptsSAI QuickstartSAI FAQWorking with SAISAI operationsSecondary indexes (2i) overviewConceptsWorking with 2iRebuild 2iMaterialized viewsFunctionsJSONSecurityTriggersAppendicesChangesSASISingle file of CQL informationVector Search overviewConceptsData ModelingVector Search QuickstartWorking with Vector SearchManagingConfiguringcassandra.yamlcassandra-rackdc.propertiescassandra-env.shcassandra-topologies.propertiescommitlog-archiving.propertieslogback.xmljvm-* filesLiberating cassandra.yaml Parameters' Names from Their UnitsOperatingBackupsBloom filtersBulk loadingChange Data Capture (CDC)CompactionCompressionHardwareHintsLoggingAudit loggingAudit logging 2Full query loggingMonitoring metricsRepairRead repairSecuritySnitchesTopology changesTransient replicationVirtual tablesToolscqlsh: the CQL shellnodetoolSSTable toolscassandra-stressTroubleshootingFinding misbehaving nodesReading Cassandra logsUsing nodetoolUsing external tools to deep-diveReferenceALTER TABLECREATE INDEXCREATE CUSTOM INDEXCREATE TABLEDROP INDEXDROP TABLEPlug-insYou are viewing the documentation for a prerelease version.CassandraGetting StartedSAI QuickstartEditStorage-attached Indexing (SAI) QuickstartTo get started with Storage-Attached Indexing (SAI), we’ll do the following steps:Create a keyspace.Create a table.Create anindex using SAI.Add data.Create and run a query using SAI.The examples in this quickstart topic show SAI indexes with non-partition key columns.Create a keyspaceIncqlsh, define thecyclingkeyspace to try the commands in a test environment:CREATE KEYSPACE IF NOT EXISTS cycling
+   WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : '1' };Create a database tableUsingcqlshor the CQL Console, create acyclist_semi_prodatabasetablein thecyclingkeyspace or the keyspace name of your choice:CREATE TABLE IF NOT EXISTS cycling.cyclist_semi_pro (
+  id int,
+  firstname text,
+  lastname text,
+  age int,
+  affiliation text,
+  country text,
+  registration date,
+  PRIMARY KEY (id));Create SAI indexes on the database tableTo test a non-trivial query, you’ll need some SAI indexes.
+UseCREATE CUSTOM INDEXcommands to create SAI indexes on a few non-primary-key columns in thecyclist_semi_protable:CREATE INDEX lastname_sai_idx ON cycling.cyclist_semi_pro (lastname)
+USING 'sai'
+WITH OPTIONS = {'case_sensitive': 'false', 'normalize': 'true', 'ascii': 'true'};
+
+CREATE INDEX age_sai_idx ON cycling.cyclist_semi_pro (age)
+USING 'sai';
+
+CREATE INDEX country_sai_idx ON cycling.cyclist_semi_pro (country)
+USING 'sai'
+WITH OPTIONS = {'case_sensitive': 'false', 'normalize': 'true', 'ascii': 'true'};
+
+CREATE INDEX registration_sai_idx ON cycling.cyclist_semi_pro (registration)
+USING 'sai';Let’s take a look at the description of the table and its indexes:QueryResultDESCRIBE TABLE cycling.cyclist_semi_pro;CREATE TABLE cycling.cyclist_semi_pro (
+    id int PRIMARY KEY,
+    affiliation text,
+    age int,
+    country text,
+    firstname text,
+    lastname text,
+    registration date
+) WITH additional_write_policy = '99PERCENTILE'
+    AND bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'chunk_length_in_kb': '64', 'class': 'org.apache.cassandra.io.compress.LZ4Compressor'}
+    AND crc_check_chance = 1.0
+    AND default_time_to_live = 0
+    AND gc_grace_seconds = 864000
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND nodesync = {'enabled': 'true', 'incremental': 'true'}
+    AND read_repair = 'BLOCKING'
+    AND speculative_retry = '99PERCENTILE';
+CREATE INDEX registration_sai_idx ON cycling.cyclist_semi_pro (registration) USING 'sai';
+CREATE INDEX country_sai_idx ON cycling.cyclist_semi_pro (country) USING 'sai' WITH OPTIONS = {'normalize': 'true', 'case_sensitive': 'false', 'ascii': 'true'};
+CREATE INDEX age_sai_idx ON cycling.cyclist_semi_pro (age) USING 'sai';
+CREATE INDEX lastname_sai_idx ON cycling.cyclist_semi_pro (lastname) USING 'sai' WITH OPTIONS = {'normalize': 'true', 'case_sensitive': 'false', 'ascii': 'true'};Add data to your tableUse CQLSHINSERTcommands to add some data to thecyclist_semi_prodatabase table:INSERT INTO cycling.cyclist_semi_pro (id, firstname, lastname, age, affiliation, country, registration) VALUES (1, 'Carlos', 'Perotti', 22, 'Recco Club', 'ITA', '2020-01-12');
+INSERT INTO cycling.cyclist_semi_pro (id, firstname, lastname, age, affiliation, country, registration) VALUES (2, 'Giovani', 'Pasi', 19, 'Venezia VelocitÃ ', 'ITA', '2016-05-15');
+INSERT INTO cycling.cyclist_semi_pro (id, firstname, lastname, age, affiliation, country, registration) VALUES (3, 'Frances', 'Giardello', 24, 'Menaggio Campioni', 'ITA', '2018-07-29');
+INSERT INTO cycling.cyclist_semi_pro (id, firstname, lastname, age, affiliation, country, registration) VALUES (4, 'Mark', 'Pastore', 19, 'Portofino Ciclisti', 'ITA', '2017-06-16');
+INSERT INTO cycling.cyclist_semi_pro (id, firstname, lastname, age, affiliation, country, registration) VALUES (5, 'Irene', 'Cantona', 24, 'Como VelocitÃ ', 'ITA', '2012-07-22');
+INSERT INTO cycling.cyclist_semi_pro (id, firstname, lastname, age, affiliation, country, registration) VALUES (6, 'Hugo', 'Herrera', 23, 'Bellagio Ciclisti', 'ITA', '2004-02-12');
+INSERT INTO cycling.cyclist_semi_pro (id, firstname, lastname, age, affiliation, country, registration) VALUES (7, 'Marcel', 'Silva', 21, 'Paris Cyclistes', 'FRA', '2018-04-28');
+INSERT INTO cycling.cyclist_semi_pro (id, firstname, lastname, age, affiliation, country, registration) VALUES (8, 'Theo', 'Bernat', 19, 'Nice Cavaliers', 'FRA', '2007-05-15');
+INSERT INTO cycling.cyclist_semi_pro (id, firstname, lastname, age, affiliation, country, registration) VALUES (9, 'Richie', 'Draxler', 24, 'Normandy Club', 'FRA', '2011-02-26');
+INSERT INTO cycling.cyclist_semi_pro (id, firstname, lastname, age, affiliation, country, registration) VALUES (10, 'Agnes', 'Cavani', 22, 'Chamonix Hauteurs', 'FRA', '2020-01-02');
+INSERT INTO cycling.cyclist_semi_pro (id, firstname, lastname, age, affiliation, country, registration) VALUES (11, 'Pablo', 'Verratti', 19, 'Chamonix Hauteurs', 'FRA', '2006-05-15');
+INSERT INTO cycling.cyclist_semi_pro (id, firstname, lastname, age, affiliation, country, registration) VALUES (12, 'Charles', 'Eppinger', 24, 'Chamonix Hauteurs', 'FRA', '2018-07-29');
+INSERT INTO cycling.cyclist_semi_pro (id, firstname, lastname, age, affiliation, country, registration) VALUES (13, 'Stanley', 'Trout', 30, 'Bolder Boulder', 'USA', '2016-02-12');
+INSERT INTO cycling.cyclist_semi_pro (id, firstname, lastname, age, affiliation, country, registration) VALUES (14, 'Juan', 'Perez', 31, 'Rutgers Alumni Riders', 'USA', '2017-06-16');
+INSERT INTO cycling.cyclist_semi_pro (id, firstname, lastname, age, affiliation, country, registration) VALUES (15, 'Thomas', 'Fulton', 27, 'Exeter Academy', 'USA', '2012-12-15');
+INSERT INTO cycling.cyclist_semi_pro (id, firstname, lastname, age, affiliation, country, registration) VALUES (16, 'Jenny', 'Hamler', 28, 'CU Alums Crankworkz', 'USA', '2012-07-22');
+INSERT INTO cycling.cyclist_semi_pro (id, firstname, lastname, age, affiliation, country, registration) VALUES (17, 'Alice', 'McCaffrey', 26, 'Pennan Power', 'GBR', '2020-02-12');
+INSERT INTO cycling.cyclist_semi_pro (id, firstname, lastname, age, affiliation, country, registration) VALUES (18, 'Nicholas', 'Burrow', 26, 'Aberdeen Association', 'GBR', '2016-02-12');
+INSERT INTO cycling.cyclist_semi_pro (id, firstname, lastname, age, affiliation, country, registration) VALUES (19, 'Tyler', 'Higgins', 24, 'Highclere Agents', 'GBR', '2019-07-31');
+INSERT INTO cycling.cyclist_semi_pro (id, firstname, lastname, age, affiliation, country, registration) VALUES (20, 'Leslie', 'Boyd', 18, 'London Cyclists', 'GBR', '2012-12-15');Adding data in this quickstart topic shows simpleINSERTcommands.
+To load databases with many rows, consider usingDataStax Bulk Loader for Apache Cassandra.Try out CQL queriesUse the CQLSHSELECTcommand to submit queries.The supported query operators for tables with SAI indexes:
+* Numerics:=,<,>,⇐,>=,AND,OR,IN* Strings:=,CONTAINS,CONTAINS KEY,AND,OR,IN* Strings or Numerics:LIKEFind a specific semi-pro cyclist:QueryResultSELECT * FROM cycling.cyclist_semi_pro WHERE lastname = 'Eppinger';id | affiliation       | age | country | firstname | lastname | registration
+----+-------------------+-----+---------+-----------+----------+--------------
+ 12 | Chamonix Hauteurs |  24 |     FRA |   Charles | Eppinger |   2018-07-29
+
+(1 rows)Find semi-pro cyclists whose age is less than or equal to 23:QueryResultSELECT * FROM cycling.cyclist_semi_pro WHERE age <= 23;id | affiliation        | age | country | firstname | lastname | registration
+----+--------------------+-----+---------+-----------+----------+--------------
+ 10 |  Chamonix Hauteurs |  22 |     FRA |     Agnes |   Cavani |   2020-01-02
+ 11 |  Chamonix Hauteurs |  19 |     FRA |     Pablo | Verratti |   2006-05-15
+  1 |         Recco Club |  22 |     ITA |    Carlos |  Perotti |   2020-01-12
+  8 |     Nice Cavaliers |  19 |     FRA |      Theo |   Bernat |   2007-05-15
+  2 |   Venezia VelocitÃ  |  19 |     ITA |   Giovani |     Pasi |   2016-05-15
+  4 | Portofino Ciclisti |  19 |     ITA |      Mark |  Pastore |   2017-06-16
+ 20 |    London Cyclists |  18 |     GBR |    Leslie |     Boyd |   2012-12-15
+  7 |    Paris Cyclistes |  21 |     FRA |    Marcel |    Silva |   2018-04-28
+  6 |  Bellagio Ciclisti |  23 |     ITA |      Hugo |  Herrera |   2004-02-12
+
+(9 rows)Find semi-pro cyclists from Great Britain:QueryResultSELECT * FROM cycling.cyclist_semi_pro WHERE country = 'GBR';id | affiliation          | age | country | firstname | lastname  | registration
+----+----------------------+-----+---------+-----------+-----------+--------------
+ 19 |     Highclere Agents |  24 |     GBR |     Tyler |   Higgins |   2019-07-31
+ 18 | Aberdeen Association |  26 |     GBR |  Nicholas |    Burrow |   2016-02-12
+ 20 |      London Cyclists |  18 |     GBR |    Leslie |      Boyd |   2012-12-15
+ 17 |         Pennan Power |  26 |     GBR |     Alice | McCaffrey |   2020-02-12
+
+(4 rows)Find semi-pro cyclists who registered between a given date range:QueryResultSELECT * FROM cycling.cyclist_semi_pro WHERE registration > '2010-01-01' AND registration < '2015-12-31' LIMIT 10;id | affiliation         | age | country | firstname | lastname | registration
+----+---------------------+-----+---------+-----------+----------+--------------
+  5 |       Como VelocitÃ  |  24 |     ITA |     Irene |  Cantona |   2012-07-22
+ 16 | CU Alums Crankworkz |  28 |     USA |     Jenny |   Hamler |   2012-07-22
+ 15 |      Exeter Academy |  27 |     USA |    Thomas |   Fulton |   2012-12-15
+ 20 |     London Cyclists |  18 |     GBR |    Leslie |     Boyd |   2012-12-15
+  9 |       Normandy Club |  24 |     FRA |    Richie |  Draxler |   2011-02-26
+
+(5 rows)For query examples withCONTAINSclauses that take advantage of SAI collection maps, lists, and sets, be sure to seeSAI collection map examples with keys, values, and entries.Removing an SAI indexTo remove an SAI index, useDROP INDEX.Example:DROP INDEX IF EXISTS cycling.age_sai_idx;ResourcesSAI overviewGet started with Cassandra, fast.Quickstart GuideApache Cassandrapowers mission-critical deployments with improved performance and unparalleled levels of scale in the cloud.HomeCassandra BasicsQuickstartEcosystemDocumentationCommunityCase StudiesResourcesBlogFoundationEventsLicenseThanksSecurityPrivacySponsorshipÂ© 2009-The Apache Software Foundationunder the terms of the Apache License 2.0.  Apache, the Apache feather logo, Apache Cassandra, Cassandra, and the Cassandra logo, are either registered trademarks or trademarks of The Apache Software Foundation.

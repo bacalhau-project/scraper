@@ -1,0 +1,55 @@
+URL: https://hadoop.apache.org/mailing_lists.html
+
+Toggle navigationApache HadoopDownloadDocumentationCurrent (trunk)LatestStable3.4.03.3.62.10.2WikiCommunityBylawsCriteria for CommittershipMailing listsPublished CVEsWho We areDevelopmentHow to ContributeIssue TrackingVersion ControlVersioningHelpBuy StuffSponsorshipThanksApache Software FoundationHadoop Mailing ListsUserThe user@ mailing list is the preferred mailing list for end-user
+questions and discussion.Please use the specific module’s -dev@ mailing list to address developers on a specific technical question.
+The Hadoop user mailing list is :user@hadoop.apache.org.Subscribe to ListUnsubscribe from ListArchivesä¸­æç¨æ·å¯å©ç¨user-zhé®ä»¶åè¡¨ä»¥ä¸­æåé®è®¢éé®ä»¶åè¡¨åæ¶è®¢éå½æ¡£é®ä»¶In order to post to the list, it is necessary to first subscribe to it.SecurityThe security mailing list is a private list for discussion of potential
+security vulnerabilities issues. Please post potential security
+vulnerabilities to this list so that they may be investigated and fixed
+before the vulnerabilities is published.This mailing list isNOTfor end-user questions and discussion on
+security. Please use the user mailing list for such issues.
+The Hadoop security mailing list is :security@hadoop.apache.org.In order to post to the list, it isNOTnecessary to first subscribe
+to it.For information on published vulnerabilities please see ourCVE list.This mailing list is only for discussing security vulnerabilities in hadoop ‘source’ code,NOTsecurity advisories for thirdparty libraries. For security issues related to thirdparty libraries use the dev/user mailing lists.
+However, when after analysis it turns out the advisory impacts Hadoop, that should be discussed on the security list.The thirdparty library versions in the upcoming releases can be checked here:3.4.x3.3.xNote:Not all vulnerabilities coming from thirdparty libraries impact hadoop and it isn’t possible to update every thirdparty library. Read a hadoop developer’s point of view on upgrading thirdparty librarieshereGeneralThis mailing list isNOTfor end-user questions and discussion.
+Please use the user mailing list for such issues.
+The general mailing list is for announcements and project management.
+All Apache Hadoop releases are also announced on this list.The Hadoop general mailing list is :general@hadoop.apache.org.Subscribe to ListUnsubscribe from
+ListArchivesIn order to post to the list, it is necessary to first subscribe to it.CommonDevelopersIf you’d like to contribute to Hadoop Common, please subscribe to the
+Hadoop developer mailing list.The Hadoop Common developer mailing list is:common-dev@hadoop.apache.org.Subscribe to ListUnsubscribe from
+ListArchivesCommitsIf you’d like to see changes made in the Hadoop Commonversion control
+system, please subscribe to the Hadoop Common
+commits mailing list.The Hadoop Common commits mailing list is:common-commits@hadoop.apache.org.Subscribe to
+ListUnsubscribe from
+ListArchivesIssuesIf you’d like to see changes made in the Hadoop Commonissue tracking
+system, please subscribe to the Hadoop Common
+issues mailing list.The Hadoop Common issues mailing list is:common-issues@hadoop.apache.org.Subscribe to
+ListUnsubscribe from
+ListArchivesHDFSDevelopersIf you’d like to contribute to HDFS, please subscribe to the HDFS
+developer mailing list.The HDFS developer mailing list is:hdfs-dev@hadoop.apache.org.Subscribe to ListUnsubscribe from
+ListArchivesCommitsIf you’d like to see changes made in the HDFSversion control
+system, please subscribe to the HDFS commits
+mailing list.The HDFS commits mailing list is:hdfs-commits@hadoop.apache.org.Subscribe to ListUnsubscribe from
+ListArchivesIssuesIf you’d like to see changes made in the Hadoop HDFSissue tracking
+system, please subscribe to the Hadoop Hdfs issues
+mailing list.The Hadoop HDFS issues mailing list is:hdfs-issues@hadoop.apache.org.Subscribe to ListUnsubscribe from
+ListArchivesYARNDevelopersIf you’d like to contribute to YARN, please subscribe to the YARN
+developer mailing list.The YARN developer mailing list is:yarn-dev@hadoop.apache.org.Subscribe to ListUnsubscribe from
+ListArchivesCommitsIf you’d like to see changes made in the YARNversion control
+system, please subscribe to the YARN commits
+mailing list.The YARN commits mailing list is:yarn-commits@hadoop.apache.org.Subscribe to ListUnsubscribe from
+ListArchivesIssuesIf you’d like to see changes made in the Hadoop YARNissue tracking
+system, please subscribe to the Hadoop Yarn issues
+mailing list.The Hadoop YARN issues mailing list is:yarn-issues@hadoop.apache.org.Subscribe to ListUnsubscribe from
+ListArchivesMapReduceDevelopersIf you’d like to contribute to Hadoop MapReduce, please subscribe to the
+Hadoop developer mailing list.The Hadoop MapReduce developer mailing list is:mapreduce-dev@hadoop.apache.org.Subscribe to
+ListUnsubscribe from
+ListArchivesCommitsIf you’d like to see changes made in the Hadoop MapReduceversion
+control system, please subscribe to the Hadoop
+MapReduce commits mailing list.The Hadoop MapReduce commits mailing list is:mapreduce-commits@hadoop.apache.org.Subscribe to
+ListUnsubscribe from
+ListArchivesIssuesIf you’d like to see changes made in the Hadoop MapReduceissue
+tracking system, please subscribe to the Hadoop
+MapReduce issues mailing list.The Hadoop MapReduce issues mailing list is:mapreduce-issues@hadoop.apache.org.Subscribe to
+ListUnsubscribe from
+ListArchivesApache Hadoop, Hadoop, Apache, the Apache feather logo,
+    and the Apache Hadoop project logo are either registered trademarks or trademarks of the Apache Software Foundation
+     in the United States and other countriesCopyright Â© 2006-2024 The Apache Software FoundationPrivacy policy

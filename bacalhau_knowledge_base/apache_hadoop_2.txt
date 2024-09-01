@@ -1,0 +1,13 @@
+URL: https://hadoop.apache.org/releases.html
+
+Toggle navigationApache HadoopDownloadDocumentationCurrent (trunk)LatestStable3.4.03.3.62.10.2WikiCommunityBylawsCriteria for CommittershipMailing listsPublished CVEsWho We areDevelopmentHow to ContributeIssue TrackingVersion ControlVersioningHelpBuy StuffSponsorshipThanksApache Software FoundationDownloadHadoop is released as source code tarballs with corresponding binary
+  tarballs for convenience. The downloads are distributed via mirror sites
+  and should be checked for tampering using GPG or SHA-512.VersionRelease dateSource downloadBinary downloadRelease notes3.4.02024 Mar 17source(checksumsignature)binary(checksumsignature)binary-aarch64(checksumsignature)Announcement3.3.62023 Jun 23source(checksumsignature)binary(checksumsignature)binary-aarch64(checksumsignature)Announcement2.10.22022 May 31source(checksumsignature)binary(checksumsignature)AnnouncementTo verify Apache HadoopÂ® releases using GPG:Download the release hadoop-X.Y.Z-src.tar.gz from amirror
+site.Download the signature file hadoop-X.Y.Z-src.tar.gz.asc fromApache.Download theHadoop
+KEYSfile.gpg --import KEYSgpg --verify hadoop-X.Y.Z-src.tar.gz.ascTo perform a quick check using SHA-512:Download the release hadoop-X.Y.Z-src.tar.gz from amirror
+site.Download the checksum hadoop-X.Y.Z-src.tar.gz.sha512 or hadoop-X.Y.Z-src.tar.gz.mds fromApache.shasum -a 512 hadoop-X.Y.Z-src.tar.gzAll previous releases of Apache Hadoop are available from theApache release
+archivesite.Many third parties distribute products that include Apache Hadoop and
+related tools. Some of these are listed on theDistributions wiki
+page.LicenseThe software licensed underApache License 2.0Apache Hadoop, Hadoop, Apache, the Apache feather logo,
+    and the Apache Hadoop project logo are either registered trademarks or trademarks of the Apache Software Foundation
+     in the United States and other countriesCopyright Â© 2006-2024 The Apache Software FoundationPrivacy policy

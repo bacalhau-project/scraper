@@ -1,0 +1,8 @@
+URL: https://zookeeper.apache.org/doc/r3.1.2/releasenotes.html
+
+Apache>Hadoop>ZooKeeperProjectWikiZooKeeper 3.1 DocumentationOverviewWelcomeOverviewGetting StartedRelease NotesDeveloperAPI DocsProgrammer's GuideJava ExampleBarrier and Queue TutorialRecipesAdmin & OpsAdministrator's GuideQuota GuideJMXContributorZooKeeper InternalsMiscellaneousWikiFAQMailing ListsPDFZooKeeper 3.1.2 Release NotesChanges Since ZooKeeper 3.1.1These release notes include new developer and user facing
+incompatibilities, features, and major improvements.See3.0
+release notes and migration instructionsif you are upgrading
+from version 2 of ZooKeeper (SourceForge) to version 3 or
+later.Changes Since ZooKeeper 3.1.1Changes Since ZooKeeper 3.1.1Changes Since ZooKeeper 3.1.1IssueNotesBugZOOKEEPER-582ZooKeeper can revert to old data when a snapshot is created outside of normal processingZOOKEEPER-562c client can flood server with pings if tcp send queue filledZOOKEEPER-597ASyncHammerTest is failing intermittently on hudson trunk.ZOOKEEPER-611hudson build failiureCopyright ©
+         2008The Apache Software Foundation.

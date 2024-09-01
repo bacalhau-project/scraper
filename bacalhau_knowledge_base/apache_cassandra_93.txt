@@ -1,0 +1,913 @@
+URL: https://cassandra.apache.org/doc/latest/cassandra/developing/cql/cql_singlefile.html
+
+Get StartedCassandra BasicsQuickstartEcosystemDocumentationCommunityWelcomeDiscussionsGovernanceContributeMeet the CommunityCatalyst ProgramEventsLearnCassandra 5.0Case StudiesResourcesBlogDownload NowCassandra DocumentationVersion:5.0mastertrunk5.04.14.03.11MainGlossaryHow to report bugsContact usDevelopmentGetting startedBuilding and IDE integrationTestingContributing code changesCode styleReview checklistHow to commitWorking on documentationJenkins CI environmentDependency managementRelease processCassandraFAQGetting StartedCassandra QuickstartSAI QuickstartVector Search QuickstartInstalling CassandraConfiguring CassandraInserting and queryingClient driversProduction recommendationsWhat’s newSupport for JavaArchitectureOverviewDynamoStorage EngineGuaranteesImproved Internode MessagingImproved StreamingData ModelingIntroductionConceptual data modelingRDBMS designDefining application queriesLogical data modelingPhysical data modelingEvaluating and refining data modelsDefining database schemaCassandra data modeling toolsCassandra Query Language (CQL)DefinitionsData typesData definition (DDL)Data manipulation (DML)Dynamic Data Masking (DDM)OperatorsIndexing conceptsSAI OverviewConceptsSAI QuickstartSAI FAQWorking with SAISAI operationsSecondary indexes (2i) overviewConceptsWorking with 2iRebuild 2iMaterialized viewsFunctionsJSONSecurityTriggersAppendicesChangesSASISingle file of CQL informationVector Search overviewConceptsData ModelingVector Search QuickstartWorking with Vector SearchManagingConfiguringcassandra.yamlcassandra-rackdc.propertiescassandra-env.shcassandra-topologies.propertiescommitlog-archiving.propertieslogback.xmljvm-* filesLiberating cassandra.yaml Parameters' Names from Their UnitsOperatingBackupsBloom filtersBulk loadingChange Data Capture (CDC)CompactionCompressionHardwareHintsLoggingAudit loggingAudit logging 2Full query loggingMonitoring metricsRepairRead repairSecuritySnitchesTopology changesTransient replicationVirtual tablesToolscqlsh: the CQL shellnodetoolSSTable toolscassandra-stressTroubleshootingFinding misbehaving nodesReading Cassandra logsUsing nodetoolUsing external tools to deep-diveReferenceALTER TABLECREATE INDEXCREATE CUSTOM INDEXCREATE TABLEDROP INDEXDROP TABLEPlug-insYou are viewing the documentation for a prerelease version.CassandraCassandra Query Language (CQL)Single file of CQL informationEditCassandra Query Language (CQL) v3.4.3\{toc:maxLevel=3}CQL SyntaxPreambleThis document describes the Cassandra Query Language (CQL) version 3.
+CQL v3 is not backward compatible with CQL v2 and differs from it in
+numerous ways. Note that this document describes the last version of the
+languages. However, thechangessection provides the diff
+between the different versions of CQL v3.CQL v3 offers a model very close to SQL in the sense that data is put intablescontainingrowsofcolumns. For that reason, when used in
+this document, these terms (tables, rows and columns) have the same
+definition than they have in SQL. But please note that as such, they donotrefer to the concept of rows and columns found in the internal
+implementation of Cassandra and in the thrift and CQL v2 API.ConventionsTo aid in specifying the CQL syntax, we will use the following
+conventions in this document:Language rules will be given in aBNF-like
+notation:bc(syntax). ::= TERMINALNonterminal symbols will have<angle brackets>.As additional shortcut notations to BNF, weâll use traditional regular
+expressionâs symbols (?,+and*) to signify that a given symbol
+is optional and/or can be repeated. Weâll also allow parentheses to
+group symbols and the[<characters>]notation to represent any one of<characters>.The grammar is provided for documentation purposes and leave some
+minor details out. For instance, the last column definition in aCREATE TABLEstatement is optional but supported if present even
+though the provided grammar in this document suggest it is not
+supported.Sample code will be provided in a code block:bc(sample). SELECT sample_usage FROM cql;References to keywords or pieces of CQL code in running text will be
+shown in afixed-width font.Identifiers and keywordsThe CQL language usesidentifiers(ornames) to identify tables,
+columns and other objects. An identifier is a token matching the regular
+expression[a-zA-Z0-9_]*.A number of such identifiers, likeSELECTorWITH, arekeywords.
+They have a fixed meaning for the language and most are reserved. The
+list of those keywords can be found inAppendix A.Identifiers and (unquoted) keywords are case insensitive. ThusSELECTis the same thanselectorsElEcT, andmyIdis the same thanmyidorMYIDfor instance. A convention often used (in particular by
+the samples of this documentation) is to use upper case for keywords and
+lower case for other identifiers.There is a second kind of identifiers calledquoted identifiersdefined by enclosing an arbitrary sequence of characters in
+double-quotes("). Quoted identifiers are never keywords. Thus"select"is not a reserved keyword and can be used to refer to a
+column, whileselectwould raise a parse error. Also, contrarily to
+unquoted identifiers and keywords, quoted identifiers are case sensitive
+("My Quoted Id"isdifferentfrom"my quoted id"). A fully
+lowercase quoted identifier that matches[a-zA-Z0-9_]*is
+equivalent to the unquoted identifier obtained by removing the
+double-quote (so"myid"is equivalent tomyidand tomyIdbut
+different from"myId"). Inside a quoted identifier, the double-quote
+character can be repeated to escape it, so"foo "" bar"is a valid
+identifier.Warning:quoted identifiersallows to declare columns with arbitrary
+names, and those can sometime clash with specific names used by the
+server. For instance, when using conditional update, the server will
+respond with a result-set containing a special result named"[applied]". If youâve declared a column with such a name, this could
+potentially confuse some tools and should be avoided. In general,
+unquoted identifiers should be preferred but if you use quoted
+identifiers, it is strongly advised to avoid any name enclosed by
+squared brackets (like"[applied]") and any name that looks like a
+function call (like"f(x)").ConstantsCQL defines the following kind ofconstants: strings, integers,
+floats, booleans, uuids and blobs:A string constant is an arbitrary sequence of characters characters
+enclosed by single-quote('). One can include a single-quote in a
+string by repeating it, e.g.'It''s raining today'. Those are not to
+be confused with quoted identifiers that use double-quotes.An integer constant is defined by'-'?[0-9]+.A float constant is defined by'-'?[0-9]+('.'[0-9]*)?([eE][+-]?[0-9+])?. On top of that,NaNandInfinityare also float constants.A boolean constant is eithertrueorfalseup to
+case-insensitivity (i.e.Trueis a valid boolean constant).AUUIDconstant is defined byhex{8}-hex{4}-hex{4}-hex{4}-hex{12}wherehexis an hexadecimal character, e.g.[0-9a-fA-F]and{4}is the number
+of such characters.A blob constant is an hexadecimal number defined by0[xX](hex)+wherehexis an hexadecimal character, e.g.[0-9a-fA-F].For how these constants are typed, see thedata types
+section.TermsCQL has the notion of aterm, which denotes the kind of values that
+CQL support. Terms are defined by:term::= constant | literal | function_call | arithmetic_operation | type_hint | bind_marker
+literal::= collection_literal | vector_literal | udt_literal | tuple_literal
+function_call::= identifier '(' [ term (',' term)* ] ')'
+arithmetic_operation::= '-' term | term ('+' | '-' | '*' | '/' | '%') term
+type_hint::= '(' cql_type ')' term
+bind_marker::= '?' | ':' identifierA term is thus one of:AconstantA literal for either acollection, avector,
+auser-defined typeor atupleAfunctioncall, either anative functionor auser-defined functionAnarithmetic operationbetween termsA type hintA bind marker, which denotes a variable to be bound at execution time.
+See the section onprepared-statementsfor details. A bind marker can
+be either anonymous (?) or named (:some_name). The latter form
+provides a more convenient way to refer to the variable for binding it
+and should generally be preferred.CommentsA comment in CQL is a line beginning by either double dashes (--) or
+double slash (//).Multi-line comments are also supported through enclosure within/and/(but nesting is not supported).bc(sample).â This is a comment/* This isa multi-line comment */StatementsCQL consists of statements. As in SQL, these statements can be divided
+in 3 categories:Data definition statements, that allow to set and change the way data
+is stored.Data manipulation statements, that allow to change dataQueries, to look up dataAll statements end with a semicolon (;) but that semicolon can be
+omitted when dealing with a single statement. The supported statements
+are described in the following sections. When describing the grammar of
+said statements, we will reuse the non-terminal symbols defined below:bc(syntax)..::= any quoted or unquoted identifier, excluding reserved keywords::= ( `.')?::= a string constant::= an integer constant::= a float constant::= |::= a uuid constant::= a boolean constant::= a blob constant::=||||::=?'| `:'::=||| `(' ( (,' )*)? `)'::=||::= `\{' ( `:' ( `,' `:' )* )? `}'::= `\{' ( ( `,' )* )? `}'::= `[' ( ( `,' )* )? `]'::=::= (AND )*::==' ( | | )p.Please note that not every possible productions of the grammar above
+will be valid in practice. Most notably, `<variable>and nested<collection-literal>are currently not allowed inside<collection-literal>.A<variable>can be either anonymous (a question mark (?)) or named
+(an identifier preceded by:). Both declare a bind variables forprepared statements. The only difference
+between an anymous and a named variable is that a named one will be
+easier to refer to (how exactly depends on the client driver used).The<properties>production is use by statement that create and alter
+keyspaces and tables. Each<property>is either asimpleone, in
+which case it just has a value, or amapone, in which case itâs value
+is a map grouping sub-options. The following will refer to one or the
+other as thekind(simpleormap) of the property.A<tablename>will be used to identify a table. This is an identifier
+representing the table name that can be preceded by a keyspace name. The
+keyspace name, if provided, allow to identify a table in another
+keyspace than the currently active one (the currently active keyspace is
+set through theUSEstatement).For supported<function>, see the section onfunctions.Strings can be either enclosed with single quotes or two dollar
+characters. The second syntax has been introduced to allow strings that
+contain single quotes. Typical candidates for such strings are source
+code fragments for user-defined functions.Sample:bc(sample)..`some string value'double-dollar string can contain single â quotesp.Prepared StatementCQL supportsprepared statements. Prepared statement is an
+optimization that allows to parse a query only once but execute it
+multiple times with different concrete values.In a statement, each time a column value is expected (in the data
+manipulation and query statements), a<variable>(see above) can be
+used instead. A statement with bind variables must then beprepared.
+Once it has been prepared, it can executed by providing concrete values
+for the bind variables. The exact procedure to prepare a statement and
+execute a prepared statement depends on the CQL driver used and is
+beyond the scope of this document.In addition to providing column values, bind markers may be used to
+provide values forLIMIT,TIMESTAMP, andTTLclauses. If anonymous
+bind markers are used, the names for the query parameters will be[limit],[timestamp], and[ttl], respectively.Data DefinitionCREATE KEYSPACESyntax:bc(syntax)..::= CREATE KEYSPACE (IF NOT EXISTS)? WITHp.Sample:bc(sample)..CREATE KEYSPACE ExcelsiorWITH replication = \{âclassâ: `SimpleStrategy', `replication_factor' :
+3};CREATE KEYSPACE ExcaliburWITH replication = \{âclassâ:NetworkTopologyStrategy', `DC1' : 1,
+`DC2' : 3}AND durable_writes = false;p.The `CREATE KEYSPACEstatement creates a new top-levelkeyspace. A
+keyspace is a namespace that defines a replication strategy and some
+options for a set of tables. Valid keyspaces names are identifiers
+composed exclusively of alphanumerical characters and whose length is
+lesser or equal to 32. Note that as identifiers, keyspace names are case
+insensitive: use a quoted identifier for case sensitive keyspace names.The supported<properties>forCREATE KEYSPACEare:namekindmandatorydefaultdescriptionreplicationmapyesThe replication strategy and options to
+use for the keyspace.durable_writessimplenotrueWhether to use the commit log for
+updates on this keyspace (disable this option at your own risk!).Thereplication<property>is mandatory. It must at least contains
+the'class'sub-option which defines the replication strategy class to
+use. The rest of the sub-options depends on that replication strategy
+class. By default, Cassandra support the following'class':'SimpleStrategy': A simple strategy that defines a simple
+replication factor for the whole cluster. The only sub-options supported
+is'replication_factor'to define that replication factor and is
+mandatory.'NetworkTopologyStrategy': A replication strategy that allows to set
+the replication factor independently for each data-center. The rest of
+the sub-options are key-value pairs where each time the key is the name
+of a datacenter and the value the replication factor for that
+data-center.Attempting to create an already existing keyspace will return an error
+unless theIF NOT EXISTSoption is used. If it is used, the statement
+will be a no-op if the keyspace already exists.USESyntax:bc(syntax). ::= USESample:bc(sample). USE myApp;TheUSEstatement takes an existing keyspace name as argument and set
+it as the per-connection current working keyspace. All subsequent
+keyspace-specific actions will be performed in the context of the
+selected keyspace, unlessotherwise specified, until
+another USE statement is issued or the connection terminates.ALTER KEYSPACESyntax:bc(syntax)..::= ALTER KEYSPACE (IF EXISTS)? WITHp.Sample:bc(sample)..ALTER KEYSPACE ExcelsiorWITH replication = \{âclassâ: `SimpleStrategy', `replication_factor' :
+4};TheALTER KEYSPACEstatement alters the properties of an existing
+keyspace. The supported<properties>are the same as for theCREATE KEYSPACEstatement.DROP KEYSPACESyntax:bc(syntax). ::= DROP KEYSPACE ( IF EXISTS )?Sample:bc(sample). DROP KEYSPACE myApp;ADROP KEYSPACEstatement results in the immediate, irreversible
+removal of an existing keyspace, including all column families in it,
+and all data contained in those column families.If the keyspace does not exists, the statement will return an error,
+unlessIF EXISTSis used in which case the operation is a no-op.CREATE TABLESyntax:bc(syntax)..::= CREATE ( TABLE | COLUMNFAMILY ) ( IF NOT EXISTS )?`(' ( `,' )* `)'( WITH ( AND )* )?::= ( STATIC )? ( PRIMARY KEY )?| PRIMARY KEY `(' ( `,' )* `)'::=|(' (,' )* `)'::=| COMPACT STORAGE| CLUSTERING ORDERp.Sample:bc(sample)..CREATE TABLE monkeySpecies (species text PRIMARY KEY,common_name text,population varint,average_size int) WITH comment=`Important biological records';CREATE TABLE timeline (userid uuid,posted_month int,posted_time uuid,body text,posted_by text,PRIMARY KEY (userid, posted_month, posted_time)) WITH compaction = \{class' : `LeveledCompactionStrategy' };p.The `CREATE TABLEstatement creates a new table. Each such table is a
+set ofrows(usually representing related entities) for which it
+defines a number of properties. A table is defined by aname, it defines the columns composing rows of
+the table and have a number ofoptions. Note
+that theCREATE COLUMNFAMILYsyntax is supported as an alias forCREATE TABLE(for historical reasons).Attempting to create an already existing table will return an error
+unless theIF NOT EXISTSoption is used. If it is used, the statement
+will be a no-op if the table already exists.<tablename>Valid table names are the same as validkeyspace names(up to 32 characters long
+alphanumerical identifiers). If the table name is provided alone, the
+table is created within the current keyspace (seeUSE), but if it is
+prefixed by an existing keyspace name (see<tablename>grammar), it is created in the specified
+keyspace (but doesnotchange the current keyspace).<column-definition>ACREATE TABLEstatement defines the columns that rows of the table
+can have. Acolumnis defined by its name (an identifier) and its type
+(see thedata typessection for more details on allowed
+types and their properties).Within a table, a row is uniquely identified by itsPRIMARY KEY(or
+more simply the key), and hence all table definitionsmustdefine a
+PRIMARY KEY (and only one). APRIMARY KEYis composed of one or more
+of the columns defined in the table. If thePRIMARY KEYis only one
+column, this can be specified directly after the column definition.
+Otherwise, it must be specified by followingPRIMARY KEYby the
+comma-separated list of column names composing the key within
+parenthesis. Note that:bc(sample).CREATE TABLE t (k int PRIMARY KEY,other text)is equivalent tobc(sample).CREATE TABLE t (k int,other text,PRIMARY KEY (k))Partition key and clustering columnsIn CQL, the order in which columns are defined for thePRIMARY KEYmatters. The first column of the key is called thepartition key. It
+has the property that all the rows sharing the same partition key (even
+across table in fact) are stored on the same physical node. Also,
+insertion/update/deletion on rows sharing the same partition key for a
+given table are performedatomicallyand inisolation. Note that it
+is possible to have a composite partition key, i.e. a partition key
+formed of multiple columns, using an extra set of parentheses to define
+which columns forms the partition key.The remaining columns of thePRIMARY KEYdefinition, if any, are
+called __clustering columns. On a given physical node, rows for a given
+partition key are stored in the order induced by the clustering columns,
+making the retrieval of rows in that clustering order particularly
+efficient (seeSELECT).STATICcolumnsSome columns can be declared asSTATICin a table definition. A column
+that is static will be ``shared'' by all the rows belonging to the same
+partition (having the same partition key). For instance, in:bc(sample).CREATE TABLE test (pk int,t int,v text,s text static,PRIMARY KEY (pk, t));INSERT INTO test(pk, t, v, s) VALUES (0, 0, `val0', `static0');INSERT INTO test(pk, t, v, s) VALUES (0, 1, `val1', `static1');SELECT * FROM test WHERE pk=0 AND t=0;the last query will return'static1'as value fors, sincesis
+static and thus the 2nd insertion modified this`shared'' value. Note
+however that static columns are only static within a given partition,
+and if in the example above both rows where from different partitions
+(i.e. if they had different value for `pk), then the 2nd insertion
+would not have modified the value ofsfor the first row.A few restrictions applies to when static columns are allowed:tables with theCOMPACT STORAGEoption (see below) cannot have thema table without clustering columns cannot have static columns (in a
+table without clustering columns, every partition has only one row, and
+so every column is inherently static).only nonPRIMARY KEYcolumns can be static<option>TheCREATE TABLEstatement supports a number of options that controls
+the configuration of a new table. These options can be specified after
+theWITHkeyword.The first of these option isCOMPACT STORAGE. This option is mainly
+targeted towards backward compatibility for definitions created before
+CQL3 (seewww.datastax.com/dev/blog/thrift-to-cql3for more details). The option also provides a slightly more compact
+layout of data on disk but at the price of diminished flexibility and
+extensibility for the table. Most notably,COMPACT STORAGEtables
+cannot have collections nor static columns and aCOMPACT STORAGEtable
+with at least one clustering column supports exactly one (as in not 0
+nor more than 1) column not part of thePRIMARY KEYdefinition (which
+imply in particular that you cannot add nor remove columns after
+creation). For those reasons,COMPACT STORAGEis not recommended
+outside of the backward compatibility reason evoked above.Another option isCLUSTERING ORDER. It allows to define the ordering
+of rows on disk. It takes the list of the clustering column names with,
+for each of them, the on-disk order (Ascending or descending). Note that
+this option affectswhatORDER BYare allowed
+duringSELECT.Table creation supports the following other<property>:optionkinddefaultdescriptioncommentsimplenoneA free-form, human-readable comment.gc_grace_secondssimple864000Time to wait before garbage
+collecting tombstones (deletion markers).bloom_filter_fp_chancesimple0.00075The target probability of
+false positive of the sstable bloom filters. Said bloom filters will be
+sized to provide the provided probability (thus lowering this value
+impact the size of bloom filters in-memory and on-disk)default_time_to_livesimple0The default expiration time
+(``TTL'') in seconds for a table.compactionmapsee belowCompaction options, seebelow.compressionmapsee belowCompression options, seebelow.cachingmapsee belowCaching options, seebelow.crc_check_chancesimple1.0This option defines the probability with which checksums
+should be checked during reads to detect bit rot and prevent the propagation of corruption
+to other replicas. The default value is 1 to apply a checksum every time a data chunk is read.
+Set to 0 to disable checksum checking and to 0.5 for instance to check every other read.Due to technical limitations we only currently apply this for compressed files.
+If compression is not enabled on the table, no checksums will be verified.Compaction optionsThecompactionproperty must at least define the'class'sub-option,
+that defines the compaction strategy class to use. The default supported
+class are'SizeTieredCompactionStrategy','LeveledCompactionStrategy'and'TimeWindowCompactionStrategy'. Custom strategy can be provided by
+specifying the full class name as astring constant.
+The rest of the sub-options depends on the chosen class. The sub-options
+supported by the default classes are:optionsupported compaction strategydefaultdescriptionenabledalltrueA boolean denoting whether compaction should be
+enabled or not.tombstone_thresholdall0.2A ratio such that if a sstable has
+more than this ratio of gcable tombstones over all contained columns,
+the sstable will be compacted (with no other sstables) for the purpose
+of purging those tombstones.tombstone_compaction_intervalall1 dayThe minimum time to wait
+after an sstable creation time before considering it fortombstone
+compaction'', wheretombstone compaction'' is the compaction triggered
+if the sstable has more gcable tombstones thantombstone_threshold.unchecked_tombstone_compactionallfalseSetting this to true
+enables more aggressive tombstone compactions - single sstable tombstone
+compactions will run without checking how likely it is that they will be
+successful.min_sstable_sizeSizeTieredCompactionStrategy50MBThe size tiered
+strategy groups SSTables to compact in buckets. A bucket groups SSTables
+that differs from less than 50% in size. However, for small sizes, this
+would result in a bucketing that is too fine grained.min_sstable_sizedefines a size threshold (in bytes) below which all SSTables belong to
+one unique bucketmin_thresholdSizeTieredCompactionStrategy4Minimum number of
+SSTables needed to start a minor compaction.max_thresholdSizeTieredCompactionStrategy32Maximum number of
+SSTables processed by one minor compaction.bucket_lowSizeTieredCompactionStrategy0.5Size tiered consider
+sstables to be within the same bucket if their size is within
+[average_size *bucket_low, average_size *bucket_high] (i.e the
+default groups sstable whose sizes diverges by at most 50%)bucket_highSizeTieredCompactionStrategy1.5Size tiered consider
+sstables to be within the same bucket if their size is within
+[average_size *bucket_low, average_size *bucket_high] (i.e the
+default groups sstable whose sizes diverges by at most 50%).sstable_size_in_mbLeveledCompactionStrategy5MBThe target size
+(in MB) for sstables in the leveled strategy. Note that while sstable
+sizes should stay less or equal tosstable_size_in_mb, it is possible
+to exceptionally have a larger sstable as during compaction, data for a
+given partition key are never split into 2 sstablestimestamp_resolutionTimeWindowCompactionStrategyMICROSECONDSThe
+timestamp resolution used when inserting data, could be MILLISECONDS,
+MICROSECONDS etc (should be understandable by Java TimeUnit) - donât
+change this unless you do mutations with USING TIMESTAMP (or equivalent
+directly in the client)compaction_window_unitTimeWindowCompactionStrategyDAYSThe Java
+TimeUnit used for the window size, set in conjunction withcompaction_window_size. Must be one of DAYS, HOURS, MINUTEScompaction_window_sizeTimeWindowCompactionStrategy1The number
+ofcompaction_window_unitunits that make up a time window.unsafe_aggressive_sstable_expirationTimeWindowCompactionStrategyfalseExpired sstables will be dropped without checking its data is
+shadowing other sstables. This is a potentially risky option that can
+lead to data loss or deleted data re-appearing, going beyond whatunchecked_tombstone_compactiondoes for single sstable compaction. Due
+to the risk the jvm must also be started with-Dcassandra.unsafe_aggressive_sstable_expiration=true.Compression optionsFor thecompressionproperty, the following sub-options are available:optiondefaultdescriptionclassLZ4CompressorThe compression algorithm to use. Default
+compressor are: LZ4Compressor, SnappyCompressor and DeflateCompressor.
+Use'enabled' : falseto disable compression. Custom compressor can be
+provided by specifying the full class name as astring
+constant.enabledtrueBy default compression is enabled. To disable it, setenabledtofalsechunk_length_in_kb64KBOn disk SSTables are
+compressed by block (to allow random reads). This defines the size (in
+KB) of said block. Bigger values may improve the compression rate, but
+increases the minimum size of data to be read from disk for a readCaching optionsFor thecachingproperty, the following sub-options are available:optiondefaultdescriptionkeysALLWhether to cache keys (`key cache'') for this table.
+Valid values are: `ALLandNONE.rows_per_partitionNONEThe amount of rows to cache per partition
+(`row cache''). If an integer `nis specified, the firstnqueried
+rows of a partition will be cached. Other possible options areALL, to
+cache all rows of a queried partition, orNONEto disable row caching.Other considerations:Wheninserting/updatinga given
+row, not all columns needs to be defined (except for those part of the
+key), and missing columns occupy no space on disk. Furthermore, adding
+new columns (seeALTER TABLE) is a constant time operation. There is
+thus no need to try to anticipate future usage (or to cry when you
+havenât) when creating a table.ALTER TABLESyntax:bc(syntax)..::= ALTER (TABLE | COLUMNFAMILY) (IF EXISTS)?::= ADD (IF NOT EXISTS)?| ADD  (IF NOT EXISTS)? ( ( , )* )| DROP (IF EXISTS)?| DROP (IF EXISTS)? ( ( , )* )| RENAME (IF EXISTS)? TO (AND TO)*| WITH ( AND )*p.Sample:bc(sample)..ALTER TABLE addamsFamilyALTER TABLE addamsFamilyADD gravesite varchar;ALTER TABLE addamsFamilyWITH comment =A most excellent and useful column family';p.The `ALTERstatement is used to manipulate table definitions. It allows
+for adding new columns, dropping existing ones, or updating the table
+options. As with table creation,ALTER COLUMNFAMILYis allowed as an
+alias forALTER TABLE.
+If the table does not exist, the statement will return an error, unlessIF EXISTSis used in which case the operation is a no-op.The<tablename>is the table name optionally preceded by the keyspace
+name. The<instruction>defines the alteration to perform:ADD: Adds a new column to the table. The<identifier>for the new
+column must not conflict with an existing column. Moreover, columns
+cannot be added to tables defined with theCOMPACT STORAGEoption.
+If the new column already exists, the statement will return an error, unlessIF NOT EXISTSis used in which case the operation is a no-op.DROP: Removes a column from the table. Dropped columns will
+immediately become unavailable in the queries and will not be included
+in compacted sstables in the future. If a column is readded, queries
+wonât return values written before the column was last dropped. It is
+assumed that timestamps represent actual time, so if this is not your
+case, you should NOT read previously dropped columns. Columns canât be
+dropped from tables defined with theCOMPACT STORAGEoption.
+If the dropped column does not already exist, the statement will return an error, unlessIF EXISTSis used in which case the operation is a no-op.RENAMEa primary key column of a table. Non primary key columns cannot be renamed.
+Furthermore, renaming a column to another name which already exists isn’t allowed.
+It’s important to keep in mind that renamed columns shouldn’t have dependent seconday indexes.
+If the renamed column does not already exist, the statement will return an error, unlessIF EXISTSis used in which case the operation is a no-op.WITH: Allows to update the options of the table. Thesupported<option>(and syntax) are the same
+as for theCREATE TABLEstatement except thatCOMPACT STORAGEis not
+supported. Note that setting anycompactionsub-options has the effect
+of erasing all previouscompactionoptions, so you need to re-specify
+all the sub-options if you want to keep them. The same note applies to
+the set ofcompressionsub-options.CQL type compatibility:CQL data types may be converted only as the following table.Data type may be altered to:Data typetimestampbigintascii, bigint, boolean, date, decimal, double, float, inet, int,
+smallint, text, time, timestamp, timeuuid, tinyint, uuid, varchar,
+varintblobintdateascii, varchartextbiginttimebiginttimestamptimeuuiduuidascii, textvarcharbigint, int, timestampvarintClustering columns have stricter requirements, only the below
+conversions are allowed.Data type may be altered to:Data typeascii, text, varcharblobascii, varchartextascii, textvarcharDROP TABLESyntax:bc(syntax). ::= DROP TABLE ( IF EXISTS )?Sample:bc(sample). DROP TABLE worldSeriesAttendees;TheDROP TABLEstatement results in the immediate, irreversible
+removal of a table, including all data contained in it. As for table
+creation,DROP COLUMNFAMILYis allowed as an alias forDROP TABLE.If the table does not exist, the statement will return an error, unlessIF EXISTSis used in which case the operation is a no-op.TRUNCATESyntax:bc(syntax). ::= TRUNCATE ( TABLE | COLUMNFAMILY )?Sample:bc(sample). TRUNCATE superImportantData;TheTRUNCATEstatement permanently removes all data from a table.CREATE INDEXTheCREATE INDEXstatement is used to create a new
+secondary index for a given (existing) column in a given table. A name
+for the index itself can be specified before theONkeyword, if
+desired.Syntax:bc(syntax)..::= CREATE ( CUSTOM )? INDEX ( IF NOT EXISTS )? ( )?ON `(' `)'( USING ( WITH OPTIONS = )? )?::=| keys( )p.Sample:bc(sample).CREATE INDEX userIndex ON NerdMovies (user);CREATE INDEX ON Mutants (abilityId);CREATE INDEX ON users (keys(favs));CREATE INDEX ON users (age) USING 'sai';CREATE CUSTOM INDEX ON users (email) USING `path.to.the.IndexClass';CREATE CUSTOM INDEX ON users (email) USING `path.to.the.IndexClass' WITH
+OPTIONS = \{âstorageâ: `/mnt/ssd/indexes/'};If data already exists for the column, it will be indexed
+asynchronously. After the index is created, new data for the column is
+indexed automatically at insertion time. Attempting to create an already
+existing index will return an error unless theIF NOT EXISTSoption is used.
+If it is used, the statement will be a no-op if the index already exists.Index TypesTheUSINGkeyword optionally specifies an index type. There are two built-in types:legacy_local_table - (default) legacy secondary index, implemented as a hidden local tablesai - "storage-attched" index, implemented via optimized SSTable/Memtable-attached indexesTo create a custom index, a fully qualified class name must be specified.Indexes on Map KeysWhen creating an index on amap column, you may index either
+the keys or the values. If the column identifier is placed within thekeys()function, the index will be on the map keys, allowing you to
+useCONTAINS KEYinWHEREclauses. Otherwise, the index will be on
+the map values.DROP INDEXSyntax:bc(syntax). ::= DROP INDEX ( IF EXISTS )? ( `.' )?Sample:bc(sample)..DROP INDEX userIndex;DROP INDEX userkeyspace.address_index;p.TheDROP INDEXstatement is used to drop an existing secondary index.
+The argument of the statement is the index name, which may optionally
+specify the keyspace of the index.If the index does not exists, the statement will return an error, unlessIF EXISTSis used in which case the operation is a no-op.CREATE MATERIALIZED VIEWSyntax:bc(syntax)..::= CREATE MATERIALIZED VIEW ( IF NOT EXISTS )? ASSELECT ( `(' ( `,' ) * `)' | `' )FROM( WHERE )?PRIMARY KEY `(' ( `,' )`)'( WITH ( AND )* )?p.Sample:bc(sample)..CREATE MATERIALIZED VIEW monkeySpecies_by_population ASSELECT *FROM monkeySpeciesWHERE population IS NOT NULL AND species IS NOT NULLPRIMARY KEY (population, species)WITH comment=Allow query by population instead of species';p.The `CREATE MATERIALIZED VIEWstatement creates a new materialized
+view. Each such view is a set ofrowswhich corresponds to rows which
+are present in the underlying, or base, table specified in theSELECTstatement. A materialized view cannot be directly updated, but updates
+to the base table will cause corresponding updates in the view.Attempting to create an already existing materialized view will return
+an error unless theIF NOT EXISTSoption is used. If it is used, the
+statement will be a no-op if the materialized view already exists.WHEREClauseThe<where-clause>is similar to thewhere clause of
+aSELECTstatement, with a few differences. First, the where clause
+must contain an expression that disallowsNULLvalues in columns in
+the viewâs primary key. If no other restriction is desired, this can be
+accomplished with anIS NOT NULLexpression. Second, only columns
+which are in the base tableâs primary key may be restricted with
+expressions other thanIS NOT NULL. (Note that this second restriction
+may be lifted in the future.)ALTER MATERIALIZED VIEWSyntax:bc(syntax). ::= ALTER MATERIALIZED VIEWWITH ( AND )*TheALTER MATERIALIZED VIEWstatement allows options to be update;
+these options are the same asCREATE TABLEâs options.DROP MATERIALIZED VIEWSyntax:bc(syntax). ::= DROP MATERIALIZED VIEW ( IF EXISTS )?Sample:bc(sample). DROP MATERIALIZED VIEW monkeySpecies_by_population;TheDROP MATERIALIZED VIEWstatement is used to drop an existing
+materialized view.If the materialized view does not exists, the statement will return an
+error, unlessIF EXISTSis used in which case the operation is a
+no-op.CREATE TYPESyntax:bc(syntax)..::= CREATE TYPE ( IF NOT EXISTS )?`(' ( `,' )* `)'::= ( `.' )?::=Sample:bc(sample)..CREATE TYPE address (street_name text,street_number int,city text,state text,zip int)CREATE TYPE work_and_home_addresses (home_address address,work_address address)p.TheCREATE TYPEstatement creates a new user-defined type. Each type
+is a set of named, typed fields. Field types may be any valid type,
+including collections and other existing user-defined types.Attempting to create an already existing type will result in an error
+unless theIF NOT EXISTSoption is used. If it is used, the statement
+will be a no-op if the type already exists.<typename>Valid type names are identifiers. The names of existing CQL types andreserved type namesmay not be used.If the type name is provided alone, the type is created with the current
+keyspace (seeUSE). If it is prefixed by an existing keyspace name,
+the type is created within the specified keyspace instead of the current
+keyspace.ALTER TYPESyntax:bc(syntax)..::= ALTER TYPE (IF EXISTS)?::= ADD (IF NOT EXISTS)?| RENAME (IF EXISTS)? TO ( AND TO )*p.Sample:bc(sample)..ALTER TYPE address ADD country textALTER TYPE address RENAME zip TO zipcode AND street_name TO streetp.TheALTER TYPEstatement is used to manipulate type definitions. It
+allows for adding new fields, renaming existing fields, or changing the
+type of existing fields. If the type does not exist, the statement will return an error, unlessIF EXISTSis used in which case the operation is a no-op.DROP TYPESyntax:bc(syntax)..::= DROP TYPE ( IF EXISTS )?p.TheDROP TYPEstatement results in the immediate, irreversible removal
+of a type. Attempting to drop a type that is still in use by another
+type or a table will result in an error.If the type does not exist, an error will be returned unlessIF EXISTSis used, in which case the operation is a no-op.CREATE TRIGGERSyntax:bc(syntax)..::= CREATE TRIGGER ( IF NOT EXISTS )? ( )?ONUSINGSample:bc(sample).CREATE TRIGGER myTrigger ON myTable USING
+`org.apache.cassandra.triggers.InvertedIndex';The actual logic that makes up the trigger can be written in any Java
+(JVM) language and exists outside the database. You place the trigger
+code in alib/triggerssubdirectory of the Cassandra installation
+directory, it loads during cluster startup, and exists on every node
+that participates in a cluster. The trigger defined on a table fires
+before a requested DML statement occurs, which ensures the atomicity of
+the transaction.DROP TRIGGERSyntax:bc(syntax)..::= DROP TRIGGER ( IF EXISTS )? ( )?ONp.Sample:bc(sample).DROP TRIGGER myTrigger ON myTable;DROP TRIGGERstatement removes the registration of a trigger created
+usingCREATE TRIGGER.CREATE FUNCTIONSyntax:bc(syntax)..::= CREATE ( OR REPLACE )?FUNCTION ( IF NOT EXISTS )?( `.' )?`(' ( `,' )* `)'( CALLED | RETURNS NULL ) ON NULL INPUTRETURNSLANGUAGEASSample:bc(sample).CREATE OR REPLACE FUNCTION somefunction( somearg int, anotherarg text, complexarg frozen, listarg list )RETURNS NULL ON NULL INPUTRETURNS textLANGUAGE javaAS  +
+;CREATE FUNCTION akeyspace.fname IF NOT EXISTS( someArg int )CALLED ON NULL INPUTRETURNS textLANGUAGE javaAS  +
+;CREATE FUNCTIONcreates or replaces a user-defined function.Function SignatureSignatures are used to distinguish individual functions. The signature
+consists of:The fully qualified function name - i.ekeyspaceplusfunction-nameThe concatenated list of all argument typesNote that keyspace names, function names and argument types are subject
+to the default naming conventions and case-sensitivity rules.CREATE FUNCTIONwith the optionalOR REPLACEkeywords either creates
+a function or replaces an existing one with the same signature. ACREATE FUNCTIONwithoutOR REPLACEfails if a function with the same
+signature already exists.Behavior on invocation withnullvalues must be defined for each
+function. There are two options:RETURNS NULL ON NULL INPUTdeclares that the function will always
+returnnullif any of the input arguments isnull.CALLED ON NULL INPUTdeclares that the function will always be
+executed.If the optionalIF NOT EXISTSkeywords are used, the function will
+only be created if another function with the same signature does not
+exist.OR REPLACEandIF NOT EXISTcannot be used together.Functions belong to a keyspace. If no keyspace is specified in<function-name>, the current keyspace is used (i.e. the keyspace
+specified using theUSEstatement). It is not possible
+to create a user-defined function in one of the system keyspaces.See the section onuser-defined functionsfor more
+information.DROP FUNCTIONSyntax:bc(syntax)..::= DROP FUNCTION ( IF EXISTS )?( `.' )?( `(' ( `,' )* `)' )?Sample:bc(sample).DROP FUNCTION myfunction;DROP FUNCTION mykeyspace.afunction;DROP FUNCTION afunction ( int );DROP FUNCTION afunction ( text );DROP FUNCTIONstatement removes a function created usingCREATE FUNCTION.You must specify the argument types (signature) of the function to drop if there are multiple functions with the same
+name but a different signature (overloaded functions).DROP FUNCTIONwith the optionalIF EXISTSkeywords drops a function
+if it exists.CREATE AGGREGATESyntax:bc(syntax)..::= CREATE ( OR REPLACE )?AGGREGATE ( IF NOT EXISTS )?( `.' )?`(' ( `,' )* `)'SFUNCSTYPE( FINALFUNC )?( INITCOND )?p.Sample:bc(sample).CREATE AGGREGATE myaggregate ( val text )SFUNC myaggregate_stateSTYPE textFINALFUNC myaggregate_finalINITCOND `foo';See the section onuser-defined aggregatesfor a complete
+example.CREATE AGGREGATEcreates or replaces a user-defined aggregate.CREATE AGGREGATEwith the optionalOR REPLACEkeywords either
+creates an aggregate or replaces an existing one with the same
+signature. ACREATE AGGREGATEwithoutOR REPLACEfails if an
+aggregate with the same signature already exists.CREATE AGGREGATEwith the optionalIF NOT EXISTSkeywords either
+creates an aggregate if it does not already exist.OR REPLACEandIF NOT EXISTcannot be used together.Aggregates belong to a keyspace. If no keyspace is specified in<aggregate-name>, the current keyspace is used (i.e. the keyspace
+specified using theUSEstatement). It is not possible
+to create a user-defined aggregate in one of the system keyspaces.Signatures for user-defined aggregates follow thesame rulesas for user-defined functions.STYPEdefines the type of the state value and must be specified.The optionalINITCONDdefines the initial state value for the
+aggregate. It defaults tonull. A non-nullINITCONDmust be
+specified for state functions that are declared withRETURNS NULL ON NULL INPUT.SFUNCreferences an existing function to be used as the state
+modifying function. The type of first argument of the state function
+must matchSTYPE. The remaining argument types of the state function
+must match the argument types of the aggregate function. State is not
+updated for state functions declared withRETURNS NULL ON NULL INPUTand called withnull.The optionalFINALFUNCis called just before the aggregate result is
+returned. It must take only one argument with typeSTYPE. The return
+type of theFINALFUNCmay be a different type. A final function
+declared withRETURNS NULL ON NULL INPUTmeans that the aggregateâs
+return value will benull, if the last state isnull.If noFINALFUNCis defined, the overall return type of the aggregate
+function isSTYPE. If aFINALFUNCis defined, it is the return type
+of that function.See the section onuser-defined aggregatesfor more
+information.DROP AGGREGATESyntax:bc(syntax)..::= DROP AGGREGATE ( IF EXISTS )?( `.' )?( `(' ( `,' )* `)' )?p.Sample:bc(sample).DROP AGGREGATE myAggregate;DROP AGGREGATE myKeyspace.anAggregate;DROP AGGREGATE someAggregate ( int );DROP AGGREGATE someAggregate ( text );TheDROP AGGREGATEstatement removes an aggregate created usingCREATE AGGREGATE. You must specify the argument types of the aggregate
+to drop if there are multiple aggregates with the same name but a
+different signature (overloaded aggregates).DROP AGGREGATEwith the optionalIF EXISTSkeywords drops an
+aggregate if it exists, and does nothing if a function with the
+signature does not exist.Signatures for user-defined aggregates follow thesame rulesas for user-defined functions.Data ManipulationINSERTSyntax:bc(syntax)..::= INSERT INTO( ( VALUES )| ( JSON ))( IF NOT EXISTS )?( USING ( AND )* )?::= `(' ( `,' )* `)'::= `(' ( `,' )* `)'::= TIMESTAMP| TTLp.Sample:bc(sample)..INSERT INTO NerdMovies (movie, director, main_actor, year)VALUES (`Serenity', `Joss Whedon', `Nathan Fillion', 2005)USING TTL 86400;INSERT INTO NerdMovies JSON\{movie'':Serenity'',director'':Joss Whedon'', ``year'': 2005}'p.The `INSERTstatement writes one or more columns for a given row in a
+table. Note that since a row is identified by itsPRIMARY KEY, at
+least the columns composing it must be specified. The list of columns to
+insert to must be supplied when using theVALUESsyntax. When using
+theJSONsyntax, they are optional. See the section onINSERT JSONfor more details.Note that unlike in SQL,INSERTdoes not check the prior existence of
+the row by default: the row is created if none existed before, and
+updated otherwise. Furthermore, there is no mean to know which of
+creation or update happened.It is however possible to use theIF NOT EXISTScondition to only
+insert if the row does not exist prior to the insertion. But please note
+that usingIF NOT EXISTSwill incur a non negligible performance cost
+(internally, Paxos will be used) so this should be used sparingly.All updates for anINSERTare applied atomically and in isolation.Please refer to theUPDATEsection for
+information on the<option>available and to thecollectionssection for use of<collection-literal>. Also note thatINSERTdoes not support
+counters, whileUPDATEdoes.UPDATESyntax:bc(syntax)..::= UPDATE( USING ( AND )* )?SET ( `,' )*WHERE( IF ( AND condition )* )?::=='| `=' (+' | `-') ( | | )| `=' `+'| `[' `]' `='| `.' `='::=| CONTAINS (KEY)?| IN| `[' `]'| `[' `]' IN| `.'| `.' IN::= `<' | `⇐' | `=' | `!=' | `>=' | `>'::= ( | `(' ( ( `,' )* )? `)')::= ( AND )*::=='| `(' (,' )*)' `='| IN `(' ( ( `,' )* )? `)'| IN| `(' (,' )*)' IN `(' ( ( `,' )* )? `)'| `(' (,' )* `)' IN::= TIMESTAMP| TTLp.Sample:bc(sample)..UPDATE NerdMovies USING TTL 400SET director = `Joss Whedon',main_actor = `Nathan Fillion',year = 2005WHERE movie = `Serenity';UPDATE UserActions SET total = total + 2 WHERE user =
+B70DE1D0-9908-4AE3-BE34-5573E5B09F14 AND action =click';p.The `UPDATEstatement writes one or more columns for a given row in a
+table. The<where-clause>is used to select the row to update and must
+include all columns composing thePRIMARY KEY. Other columns values
+are specified through<assignment>after theSETkeyword.Note that unlike in SQL,UPDATEdoes not check the prior existence of
+the row by default (except through the use of<condition>, see below):
+the row is created if none existed before, and updated otherwise.
+Furthermore, there are no means to know whether a creation or update
+occurred.It is however possible to use the conditions on some columns throughIF, in which case the row will not be updated unless the conditions
+are met. But, please note that usingIFconditions will incur a
+non-negligible performance cost (internally, Paxos will be used) so this
+should be used sparingly.In anUPDATEstatement, all updates within the same partition key are
+applied atomically and in isolation.Thec = c + 3form of<assignment>is used to increment/decrement
+counters. The identifier after the `=' signmustbe the same than the
+one before the `=' sign (Only increment/decrement is supported on
+counters, not the assignment of a specific value).Theid = id + <collection-literal>andid[value1] = value2forms of<assignment>are for collections. Please refer to therelevant sectionfor more details.Theid.field = <term>form of<assignemt>is for setting the value
+of a single field on a non-frozen user-defined types.<options>TheUPDATEandINSERTstatements support the following options:TIMESTAMP: sets the timestamp for the operation. If not specified,
+the coordinator will use the current time (in microseconds) at the start
+of statement execution as the timestamp. This is usually a suitable
+default.TTL: specifies an optional Time To Live (in seconds) for the
+inserted values. If set, the inserted values are automatically removed
+from the database after the specified time. Note that the TTL concerns
+the inserted values, not the columns themselves. This means that any
+subsequent update of the column will also reset the TTL (to whatever TTL
+is specified in that update). By default, values never expire. A TTL of
+0 is equivalent to no TTL. If the table has a default_time_to_live, a
+TTL of 0 will remove the TTL for the inserted or updated values.DELETESyntax:bc(syntax)..::= DELETE ( ( `,' )* )?FROM( USING TIMESTAMP )?WHERE( IF ( EXISTS | ( ( AND )*) ) )?::=| `[' `]'| `.'::= ( AND )*::=|(' (,' )*)'| IN `(' ( ( `,' )* )? `)'| IN| `(' (,' )*)' IN `(' ( ( `,' )* )? `)'| `(' (,' )* `)' IN::= `=' | `<' | `>' | `⇐' | `>='::= ( | `(' ( ( `,' )* )? `)')::= ( | `!=')| CONTAINS (KEY)?| IN| `[' `]' ( | `!=')| `[' `]' IN| `.' ( | `!=')| `.' INSample:bc(sample)..DELETE FROM NerdMovies USING TIMESTAMP 1240003134 WHERE movie =
+`Serenity';DELETE phone FROM Users WHERE userid IN
+(C73DE1D3-AF08-40F3-B124-3FF3E5109F22,
+B70DE1D0-9908-4AE3-BE34-5573E5B09F14);p.TheDELETEstatement deletes columns and rows. If column names are
+provided directly after theDELETEkeyword, only those columns are
+deleted from the row indicated by the<where-clause>. Theid[value]syntax in<selection>is for non-frozen collections (please refer to
+thecollection sectionfor more details). Theid.fieldsyntax is for the deletion of non-frozen user-defined types.
+Otherwise, whole rows are removed. The<where-clause>specifies which
+rows are to be deleted. Multiple rows may be deleted with one statement
+by using anINclause. A range of rows may be deleted using an
+inequality operator (such as>=).DELETEsupports theTIMESTAMPoption with the same semantics as theUPDATEstatement.In aDELETEstatement, all deletions within the same partition key are
+applied atomically and in isolation.ADELETEoperation can be conditional through the use of anIFclause, similar toUPDATEandINSERTstatements. However, as withINSERTandUPDATEstatements, this will incur a non-negligible
+performance cost (internally, Paxos will be used) and so should be used
+sparingly.BATCHSyntax:bc(syntax)..::= BEGIN ( UNLOGGED | COUNTER ) BATCH( USING ( AND )* )?( `;' )*APPLY BATCH::=||::= TIMESTAMPp.Sample:bc(sample).BEGIN BATCHINSERT INTO users (userid, password, name) VALUES (`user2', `ch@ngem3b',
+`second user');UPDATE users SET password = `ps22dhds' WHERE userid = `user3';INSERT INTO users (userid, password) VALUES (`user4', `ch@ngem3c');DELETE name FROM users WHERE userid = `user1';APPLY BATCH;TheBATCHstatement group multiple modification statements
+(insertions/updates and deletions) into a single statement. It serves
+several purposes:It saves network round-trips between the client and the server (and
+sometimes between the server coordinator and the replicas) when batching
+multiple updates.All updates in aBATCHbelonging to a given partition key are
+performed in isolation.By default, all operations in the batch are performed asLOGGED, to
+ensure all mutations eventually complete (or none will). See the notes
+onUNLOGGEDfor more details.Note that:BATCHstatements may only containUPDATE,INSERTandDELETEstatements.Batches arenota full analogue for SQL transactions.If a timestamp is not specified for each operation, then all
+operations will be applied with the same timestamp. Due to Cassandraâs
+conflict resolution procedure in the case oftimestamp ties,
+operations may be applied in an order that is different from the order
+they are listed in theBATCHstatement. To force a particular
+operation ordering, you must specify per-operation timestamps.UNLOGGEDBy default, Cassandra uses a batch log to ensure all operations in a
+batch eventually complete or none will (note however that operations are
+only isolated within a single partition).There is a performance penalty for batch atomicity when a batch spans
+multiple partitions. If you do not want to incur this penalty, you can
+tell Cassandra to skip the batchlog with theUNLOGGEDoption. If theUNLOGGEDoption is used, a failed batch might leave the patch only
+partly applied.COUNTERUse theCOUNTERoption for batched counter updates. Unlike other
+updates in Cassandra, counter updates are not idempotent.<option>BATCHsupports both theTIMESTAMPoption, with similar semantic to
+the one described in theUPDATEstatement (the
+timestamp applies to all the statement inside the batch). However, if
+used,TIMESTAMPmust notbe used in the statements within the batch.QueriesSELECTSyntax:bc(syntax)..::= SELECT ( JSON )?FROM( WHERE )?( GROUP BY )?( ORDER BY )?( PER PARTITION LIMIT )?( LIMIT )?( ALLOW FILTERING )?::= DISTINCT?::= (AS )? ( `,' (AS )? )*| `*'::=|| WRITETIME(' `)'| MAXWRITETIME `(' `)'| COUNT `(' `' `)'| TTL `(' `)'| CAST `(' AS `)'| `(' ( (,' ))? `)'| `.'| `[' `]'| `[' ? .. ? `]'::= ( AND )*::=|(' (,' )*)'| IN `(' ( ( `,' )* )? `)'| `(' (,' )* `)' IN `(' ( ( `,' )* )? `)'| TOKEN `(' ( `,' )* `)'::==' | `<' | `>' | `⇐' | `>=' | CONTAINS | CONTAINS KEY::= (,' )*::= (,' )*::= ( ASC | DESC )?::= `(' (,' )* `)'p.Sample:bc(sample)..SELECT name, occupation FROM users WHERE userid IN (199, 200, 207);SELECT JSON name, occupation FROM users WHERE userid = 199;SELECT name AS user_name, occupation AS user_occupation FROM users;SELECT time, valueFROM eventsWHERE event_type = `myEvent'AND time > `2011-02-03'AND time ⇐ `2012-01-01'SELECT COUNT (*) FROM users;SELECT COUNT (*) AS user_count FROM users;TheSELECTstatements reads one or more columns for one or more rows
+in a table. It returns a result-set of rows, where each row contains the
+collection of columns corresponding to the query. If theJSONkeyword
+is used, the results for each row will contain only a single column
+named`json''. See the section on`SELECT JSONfor
+more details.<select-clause>The<select-clause>determines which columns needs to be queried and
+returned in the result-set. It consists of either the comma-separated
+list of or the wildcard character (*) to select all the columns
+defined for the table. Please note that for wildcardSELECTqueries
+the order of columns returned is not specified and is not guaranteed to
+be stable between Cassandra versions.A<selector>is either a column name to retrieve or a<function>of
+one or more<term>`s. The function allowed are the same as for `<term>and are described in thefunction section. In addition
+to these generic functions, theWRITETIMEandMAXWRITETIME(resp.TTL)
+function allows to select the timestamp of when the column was inserted (resp.
+the time to live (in seconds) for the column (or null if the column has
+no expiration set)) and theCASTfunction can be used
+to convert one data type to another. TheWRITETIMEandTTLfunctions
+can’t be used on multi-cell columns such as non-frozen collections or
+non-frozen user-defined types.Additionally, individual values of maps and sets can be selected using[ <term> ]. For maps, this will return the value corresponding to the
+key, if such entry exists. For sets, this will return the key that is
+selected if it exists and is thus mainly a way to check element
+existence. It is also possible to select a slice of a set or map with
+`[ <term> …​ <term> `], where both bound can be omitted.Any<selector>can be aliased usingASkeyword (see examples).
+Please note that<where-clause>and<order-by>clause should refer
+to the columns by their original names and not by their aliases.TheCOUNTkeyword can be used with parenthesis enclosing*. If so,
+the query will return a single result: the number of rows matching the
+query. Note thatCOUNT(1)is supported as an alias.<where-clause>The<where-clause>specifies which rows must be queried. It is
+composed of relations on the columns that are part of thePRIMARY KEYand/or have asecondary indexdefined on them.Not all relations are allowed in a query. For instance, non-equal
+relations (whereINis considered as an equal relation) on a partition
+key are not supported (but see the use of theTOKENmethod below to do
+non-equal queries on the partition key). Moreover, for a given partition
+key, the clustering columns induce an ordering of rows and relations on
+them is restricted to the relations that allow to select acontiguous(for the ordering) set of rows. For instance, givenbc(sample).CREATE TABLE posts (userid text,blog_title text,posted_at timestamp,entry_title text,content text,category int,PRIMARY KEY (userid, blog_title, posted_at))The following query is allowed:bc(sample).SELECT entry_title, content FROM posts WHERE userid=`john doe' AND
+blog_title=`John'`s Blog' AND posted_at >= `2012-01-01' AND posted_at <
+`2012-01-31'But the following one is not, as it does not select a contiguous set of
+rows (and we suppose no secondary indexes are set):bc(sample).SELECT entry_title, content FROM posts WHERE userid=`john doe' AND
+posted_at >= `2012-01-01' AND posted_at < `2012-01-31'When specifying relations, theTOKENfunction can be used on thePARTITION KEYcolumn to query. In that case, rows will be selected
+based on the token of theirPARTITION_KEYrather than on the value.
+Note that the token of a key depends on the partitioner in use, and that
+in particular the RandomPartitioner wonât yield a meaningful order. Also
+note that ordering partitioners always order token values by bytes (so
+even if the partition key is of type int,token(-1) > token(0)in
+particular). Example:bc(sample).SELECT * FROM posts WHERE token(userid) > token(`tom') AND token(userid)
+< token(`bob')Moreover, theINrelation is only allowed on the last column of the
+partition key and on the last column of the full primary key.It is also possible to`group'' `CLUSTERING COLUMNStogether in a
+relation using the tuple notation. For instance:bc(sample).SELECT * FROM posts WHERE userid=`john doe' AND (blog_title, posted_at)
+> (`John'`s Blog', `2012-01-01')will request all rows that sorts after the one having`Johnâs Blog'' as
+`blog_tileand2012-01-01' for `posted_atin the clustering order. In
+particular, rows having apost_at ⇐ '2012-01-01'will be returned as
+long as theirblog_title > 'John''s Blog', which wouldnât be the case
+for:bc(sample).SELECT * FROM posts WHERE userid=`john doe' AND blog_title > `John'`s
+Blog' AND posted_at > `2012-01-01'The tuple notation may also be used forINclauses onCLUSTERING COLUMNS:bc(sample).SELECT * FROM posts WHERE userid=`john doe' AND (blog_title, posted_at)
+IN `John'`s Blog', `2012-01-01), (âExtreme Chess', `2014-06-01'TheCONTAINSoperator may only be used on collection columns (lists,
+sets, and maps). In the case of maps,CONTAINSapplies to the map
+values. TheCONTAINS KEYoperator may only be used on map columns and
+applies to the map keys.<order-by>TheORDER BYoption allows to select the order of the returned
+results. It takes as argument a list of column names along with the
+order for the column (ASCfor ascendant andDESCfor descendant,
+omitting the order being equivalent toASC). Currently the possible
+orderings are limited (which depends on the tableCLUSTERING ORDER):if the table has been defined without any specificCLUSTERING ORDER,
+then then allowed orderings are the order induced by the clustering
+columns and the reverse of that one.otherwise, the orderings allowed are the order of theCLUSTERING ORDERoption and the reversed one.<group-by>TheGROUP BYoption allows to condense into a single row all selected
+rows that share the same values for a set of columns.Using theGROUP BYoption, it is only possible to group rows at the
+partition key level or at a clustering column level. By consequence, theGROUP BYoption only accept as arguments primary key column names in
+the primary key order. If a primary key column is restricted by an
+equality restriction it is not required to be present in theGROUP BYclause.Aggregate functions will produce a separate value for each group. If noGROUP BYclause is specified, aggregates functions will produce a
+single value for all the rows.If a column is selected without an aggregate function, in a statement
+with aGROUP BY, the first value encounter in each group will be
+returned.LIMITandPER PARTITION LIMITTheLIMIToption to aSELECTstatement limits the number of rows
+returned by a query, while thePER PARTITION LIMIToption limits the
+number of rows returned for a given partition by the query. Note that
+both type of limit can used in the same statement.ALLOW FILTERINGBy default, CQL only allows select queries that donât involvefiltering'' server side, i.e. queries where we know that all (live)
+record read will be returned (maybe partly) in the result set. The
+reasoning is that thosenon filtering'' queries have predictable
+performance in the sense that they will execute in a time that is
+proportional to the amount of datareturnedby the query (which can be
+controlled throughLIMIT).TheALLOW FILTERINGoption allows to explicitly allow (some) queries
+that require filtering. Please note that a query usingALLOW FILTERINGmay thus have unpredictable performance (for the definition above), i.e.
+even a query that selects a handful of recordsmayexhibit performance
+that depends on the total amount of data stored in the cluster.For instance, considering the following table holding user profiles with
+their year of birth (with a secondary index on it) and country of
+residence:bc(sample)..CREATE TABLE users (username text PRIMARY KEY,firstname text,lastname text,birth_year int,country text)CREATE INDEX ON users(birth_year);p.Then the following queries are valid:bc(sample).SELECT * FROM users;SELECT firstname, lastname FROM users WHERE birth_year = 1981;because in both case, Cassandra guarantees that these queries
+performance will be proportional to the amount of data returned. In
+particular, if no users are born in 1981, then the second query
+performance will not depend of the number of user profile stored in the
+database (not directly at least: due to secondary index implementation
+consideration, this query may still depend on the number of node in the
+cluster, which indirectly depends on the amount of data stored.
+Nevertheless, the number of nodes will always be multiple number of
+magnitude lower than the number of user profile stored). Of course, both
+query may return very large result set in practice, but the amount of
+data returned can always be controlled by adding aLIMIT.However, the following query will be rejected:bc(sample).SELECT firstname, lastname FROM users WHERE birth_year = 1981 AND
+country = `FR';because Cassandra cannot guarantee that it wonât have to scan large
+amount of data even if the result to those query is small. Typically, it
+will scan all the index entries for users born in 1981 even if only a
+handful are actually from France. However, if you`know what you are
+doing'', you can force the execution of this query by using
+`ALLOW FILTERINGand so the following query is valid:bc(sample).SELECT firstname, lastname FROM users WHERE birth_year = 1981 AND
+country = `FR' ALLOW FILTERING;Database RolesCREATE ROLESyntax:bc(syntax)..::= CREATE ROLE ( IF NOT EXISTS )? ( WITH ( AND )* )?::= PASSWORD =| LOGIN =| SUPERUSER =| OPTIONS =p.Sample:bc(sample).CREATE ROLE new_role;CREATE ROLE alice WITH PASSWORD = `password_a' AND LOGIN = true;CREATE ROLE bob WITH PASSWORD = `password_b' AND LOGIN = true AND
+SUPERUSER = true;CREATE ROLE carlos WITH OPTIONS = \{ `custom_option1' : `option1_value',
+`custom_option2' : 99 };By default roles do not possessLOGINprivileges orSUPERUSERstatus.Permissionson database resources are granted to
+roles; types of resources include keyspaces, tables, functions and roles
+themselves. Roles may be granted to other roles to create hierarchical
+permissions structures; in these hierarchies, permissions andSUPERUSERstatus are inherited, but theLOGINprivilege is not.If a role has theLOGINprivilege, clients may identify as that role
+when connecting. For the duration of that connection, the client will
+acquire any roles and privileges granted to that role.Only a client with with theCREATEpermission on the database roles
+resource may issueCREATE ROLErequests (see therelevant sectionbelow), unless the client is aSUPERUSER. Role management in Cassandra is pluggable and custom
+implementations may support only a subset of the listed options.Role names should be quoted if they contain non-alphanumeric characters.Setting credentials for internal authenticationUse theWITH PASSWORDclause to set a password for internal
+authentication, enclosing the password in single quotation marks.If internal authentication has not been set up or the role does not haveLOGINprivileges, theWITH PASSWORDclause is not necessary.Creating a role conditionallyAttempting to create an existing role results in an invalid query
+condition unless theIF NOT EXISTSoption is used. If the option is
+used and the role exists, the statement is a no-op.bc(sample).CREATE ROLE other_role;CREATE ROLE IF NOT EXISTS other_role;ALTER ROLESyntax:bc(syntax)..::= ALTER ROLE (IF EXISTS)? ( WITH ( AND )* )?::= PASSWORD =| LOGIN =| SUPERUSER =| OPTIONS =p.Sample:bc(sample).ALTER ROLE bob WITH PASSWORD = `PASSWORD_B' AND SUPERUSER = false;If the role does not exist, the statement will return an error, unlessIF EXISTSis used in which case the operation is a no-op.Conditions on executingALTER ROLEstatements:A client must haveSUPERUSERstatus to alter theSUPERUSERstatus
+of another roleA client cannot alter theSUPERUSERstatus of any role it currently
+holdsA client can only modify certain properties of the role with which it
+identified at login (e.g.PASSWORD)To modify properties of a role, the client must be grantedALTERpermissionon that roleDROP ROLESyntax:bc(syntax)..::= DROP ROLE ( IF EXISTS )?p.Sample:bc(sample).DROP ROLE alice;DROP ROLE IF EXISTS bob;DROP ROLErequires the client to haveDROPpermissionon the role in question. In addition,
+client may notDROPthe role with which it identified at login.
+Finaly, only a client withSUPERUSERstatus mayDROPanotherSUPERUSERrole.Attempting to drop a role which does not exist results in an invalid
+query condition unless theIF EXISTSoption is used. If the option is
+used and the role does not exist the statement is a no-op.GRANT ROLESyntax:bc(syntax).::= GRANT TOSample:bc(sample).GRANT report_writer TO alice;This statement grants thereport_writerrole toalice. Any
+permissions granted toreport_writerare also acquired byalice.Roles are modelled as a directed acyclic graph, so circular grants are
+not permitted. The following examples result in error conditions:bc(sample).GRANT role_a TO role_b;GRANT role_b TO role_a;bc(sample).GRANT role_a TO role_b;GRANT role_b TO role_c;GRANT role_c TO role_a;REVOKE ROLESyntax:bc(syntax).::= REVOKE FROMSample:bc(sample).REVOKE report_writer FROM alice;This statement revokes thereport_writerrole fromalice. Any
+permissions thatalicehas acquired via thereport_writerrole are
+also revoked.LIST ROLESSyntax:bc(syntax).::= LIST ROLES ( OF )? ( NORECURSIVE )?Sample:bc(sample).LIST ROLES;Return all known roles in the system, this requiresDESCRIBEpermission on the database roles resource.bc(sample).LIST ROLES OFalice;Enumerate all roles granted toalice, including those transitively
+aquired.bc(sample).LIST ROLES OFbobNORECURSIVEList all roles directly granted tobob.CREATE USERPrior to the introduction of roles in Cassandra 2.2, authentication and
+authorization were based around the concept of aUSER. For backward
+compatibility, the legacy syntax has been preserved withUSERcentric
+statments becoming synonyms for theROLEbased equivalents.Syntax:bc(syntax)..::= CREATE USER ( IF NOT EXISTS )? ( WITH PASSWORD )? ()?::= SUPERUSER| NOSUPERUSERp.Sample:bc(sample).CREATE USER alice WITH PASSWORD `password_a' SUPERUSER;CREATE USER bob WITH PASSWORD `password_b' NOSUPERUSER;CREATE USERis equivalent toCREATE ROLEwhere theLOGINoption istrue. So, the following pairs of statements are equivalent:bc(sample)..CREATE USER alice WITH PASSWORD `password_a' SUPERUSER;CREATE ROLE alice WITH PASSWORD = `password_a' AND LOGIN = true AND
+SUPERUSER = true;CREATE USER IF NOT EXISTS alice WITH PASSWORD `password_a' SUPERUSER;CREATE ROLE IF NOT EXISTS alice WITH PASSWORD = `password_a' AND LOGIN =
+true AND SUPERUSER = true;CREATE USER alice WITH PASSWORD `password_a' NOSUPERUSER;CREATE ROLE alice WITH PASSWORD = `password_a' AND LOGIN = true AND
+SUPERUSER = false;CREATE USER alice WITH PASSWORD `password_a' NOSUPERUSER;CREATE ROLE alice WITH PASSWORD = `password_a' AND LOGIN = true;CREATE USER alice WITH PASSWORD `password_a';CREATE ROLE alice WITH PASSWORD = `password_a' AND LOGIN = true;p.ALTER USERSyntax:bc(syntax)..::= ALTER USER (IF EXISTS)? ( WITH PASSWORD )? ( )?::= SUPERUSER| NOSUPERUSERp.bc(sample).ALTER USER alice WITH PASSWORD `PASSWORD_A';ALTER USER bob SUPERUSER;If the user does not exist, the statement will return an error, unlessIF EXISTSis used in which case the operation is a no-op.DROP USERSyntax:bc(syntax)..::= DROP USER ( IF EXISTS )?p.Sample:bc(sample).DROP USER alice;DROP USER IF EXISTS bob;LIST USERSSyntax:bc(syntax).::= LIST USERS;Sample:bc(sample).LIST USERS;This statement is equivalent tobc(sample).LIST ROLES;but only roles with theLOGINprivilege are included in the output.Database IdentitiesADD IDENTITYSyntax:bc(syntax)..::= ADD IDENTITY ( IF NOT EXISTS )? TO ROLE ?Sample:bc(sample).ADD IDENTITY 'id1' TO ROLE 'role1';Only a user with privileges to add roles can add identitiesRole names & Identity names should be quoted if they contain non-alphanumeric characters.Adding an identity conditionallyAttempting to add an existing identity results in an invalid query
+condition unless theIF NOT EXISTSoption is used. If the option is
+used and the identity exists, the statement is a no-op.bc(sample).ADD IDENTITY IF NOT EXISTS 'id1' TO ROLE 'role1';DROP IDENTITYSyntax:bc(syntax)..::= DROP IDENTITY ( IF EXISTS )?p.Sample:bc(sample).DROP IDENTITY 'testIdentity';DROP IDENTITY IF EXISTS 'testIdentity';Only a user with privileges to drop roles can remove identitiesAttempting to drop an Identity which does not exist results in an invalid
+query condition unless theIF EXISTSoption is used. If the option is
+used and the identity does not exist the statement is a no-op.Data ControlPermissionsPermissions on resources are granted to roles; there are several
+different types of resources in Cassandra and each type is modelled
+hierarchically:The hierarchy of Data resources, Keyspaces and Tables has the
+structureALL KEYSPACES→KEYSPACE→TABLEFunction resources have the structureALL FUNCTIONS→KEYSPACE→FUNCTIONResources representing roles have the structureALL ROLES→ROLEResources representing JMX ObjectNames, which map to sets of
+MBeans/MXBeans, have the structureALL MBEANS→MBEANPermissions can be granted at any level of these hierarchies and they
+flow downwards. So granting a permission on a resource higher up the
+chain automatically grants that same permission on all resources lower
+down. For example, grantingSELECTon aKEYSPACEautomatically
+grants it on allTABLESin thatKEYSPACE. Likewise, granting a
+permission onALL FUNCTIONSgrants it on every defined function,
+regardless of which keyspace it is scoped in. It is also possible to
+grant permissions on all functions scoped to a particular keyspace.Modifications to permissions are visible to existing client sessions;
+that is, connections need not be re-established following permissions
+changes.The full set of available permissions is:CREATEALTERDROPSELECTMODIFYAUTHORIZEDESCRIBEEXECUTEUNMASKSELECT_MASKEDNot all permissions are applicable to every type of resource. For
+instance,EXECUTEis only relevant in the context of functions or
+mbeans; grantingEXECUTEon a resource representing a table is
+nonsensical. Attempting toGRANTa permission on resource to which it
+cannot be applied results in an error response. The following
+illustrates which permissions can be granted on which types of resource,
+and which statements are enabled by that permission.permissionresourceoperationsCREATEALL KEYSPACESCREATE KEYSPACE<br>CREATE TABLEin any
+keyspaceCREATEKEYSPACECREATE TABLEin specified keyspaceCREATEALL FUNCTIONSCREATE FUNCTIONin any keyspace <br>CREATE AGGREGATEin any keyspaceCREATEALL FUNCTIONS IN KEYSPACECREATE FUNCTIONin keyspace
+<br>CREATE AGGREGATEin keyspaceCREATEALL ROLESCREATE ROLEALTERALL KEYSPACESALTER KEYSPACE<br>ALTER TABLEin any
+keyspaceALTERKEYSPACEALTER KEYSPACE<br>ALTER TABLEin keyspaceALTERTABLEALTER TABLEALTERALL FUNCTIONSCREATE FUNCTIONreplacing any existing <br>CREATE AGGREGATEreplacing any existingALTERALL FUNCTIONS IN KEYSPACECREATE FUNCTIONreplacing
+existing in keyspace <br>CREATE AGGREGATEreplacing any existing in
+keyspaceALTERFUNCTIONCREATE FUNCTIONreplacing existing <br>CREATE AGGREGATEreplacing existingALTERALL ROLESALTER ROLEon any roleALTERROLEALTER ROLEDROPALL KEYSPACESDROP KEYSPACE<br>DROP TABLEin any
+keyspaceDROPKEYSPACEDROP TABLEin specified keyspaceDROPTABLEDROP TABLEDROPALL FUNCTIONSDROP FUNCTIONin any keyspace <br>DROP AGGREGATEin any existingDROPALL FUNCTIONS IN KEYSPACEDROP FUNCTIONin keyspace <br>DROP AGGREGATEin existingDROPFUNCTIONDROP FUNCTIONDROPALL ROLESDROP ROLEon any roleDROPROLEDROP ROLESELECTALL KEYSPACESSELECTon any tableSELECTKEYSPACESELECTon any table in keyspaceSELECTTABLESELECTon specified tableSELECTALL MBEANSCall getter methods on any mbeanSELECTMBEANSCall getter methods on any mbean matching a
+wildcard patternSELECTMBEANCall getter methods on named mbeanMODIFYALL KEYSPACESINSERTon any table <br>UPDATEon any
+table <br>DELETEon any table <br>TRUNCATEon any tableMODIFYKEYSPACEINSERTon any table in keyspace <br>UPDATEon any table in keyspace <br>DELETEon any table in keyspace <br>TRUNCATEon any table in keyspaceMODIFYTABLEINSERT<br>UPDATE<br>DELETE<br>TRUNCATEMODIFYALL MBEANSCall setter methods on any mbeanMODIFYMBEANSCall setter methods on any mbean matching a
+wildcard patternMODIFYMBEANCall setter methods on named mbeanAUTHORIZEALL KEYSPACESGRANT PERMISSIONon any table <br>REVOKE PERMISSIONon any tableAUTHORIZEKEYSPACEGRANT PERMISSIONon table in keyspace <br>REVOKE PERMISSIONon table in keyspaceAUTHORIZETABLEGRANT PERMISSION<br>REVOKE PERMISSIONAUTHORIZEALL FUNCTIONSGRANT PERMISSIONon any function <br>REVOKE PERMISSIONon any functionAUTHORIZEALL FUNCTIONS IN KEYSPACEGRANT PERMISSIONin
+keyspace <br>REVOKE PERMISSIONin keyspaceAUTHORIZEALL FUNCTIONS IN KEYSPACEGRANT PERMISSIONin
+keyspace <br>REVOKE PERMISSIONin keyspaceAUTHORIZEFUNCTIONGRANT PERMISSION<br>REVOKE PERMISSIONAUTHORIZEALL MBEANSGRANT PERMISSIONon any mbean <br>REVOKE PERMISSIONon any mbeanAUTHORIZEMBEANSGRANT PERMISSIONon any mbean matching a
+wildcard pattern <br>REVOKE PERMISSIONon any mbean matching a
+wildcard patternAUTHORIZEMBEANGRANT PERMISSIONon named mbean <br>REVOKE PERMISSIONon named mbeanAUTHORIZEALL ROLESGRANT ROLEgrant any role <br>REVOKE ROLErevoke any roleAUTHORIZEROLESGRANT ROLEgrant role <br>REVOKE ROLErevoke
+roleDESCRIBEALL ROLESLIST ROLESall roles or only roles granted
+to another, specified roleDESCRIBE@ALL MBEANSRetrieve metadata about any mbean from the
+platformâs MBeanServerDESCRIBE@MBEANSRetrieve metadata about any mbean matching a
+wildcard patter from the platformâs MBeanServerDESCRIBE@MBEANRetrieve metadata about a named mbean from the
+platformâs MBeanServerEXECUTEALL FUNCTIONSSELECT,INSERT,UPDATEusing any
+function <br> use of any function inCREATE AGGREGATEEXECUTEALL FUNCTIONS IN KEYSPACESELECT,INSERT,UPDATEusing any function in keyspace <br> use of any function in keyspace inCREATE AGGREGATEEXECUTEFUNCTIONSELECT,INSERT,UPDATEusing function <br>
+use of function inCREATE AGGREGATEEXECUTEALL MBEANSExecute operations on any mbeanEXECUTEMBEANSExecute operations on any mbean matching a
+wildcard patternEXECUTEMBEANExecute operations on named mbeanUNMASKALL KEYSPACESSee the clear contents of masked columns on any tableUNMASKKEYSPACESee the clear contents of masked columns on any table in keyspaceUNMASKTABLESee the clear contents of masked columns on the specified tableSELECT_MASKEDALL KEYSPACESSELECTrestricting masked columns on any tableSELECT_MASKEDKEYSPACESELECTrestricting masked columns on any table in specified keyspaceSELECT_MASKEDTABLESELECTrestricting masked columns on the specified tableGRANT PERMISSIONSyntax:bc(syntax)..::= GRANT ( ALL ( PERMISSIONS )? | ( PERMISSION )? ) ON TO::= CREATE | ALTER | DROP | SELECT | MODIFY | AUTHORIZE | DESCRIBE | UNMASK | SELECT_MASKED
+EXECUTE::= ALL KEYSPACES| KEYSPACE| ( TABLE )?| ALL ROLES| ROLE| ALL FUNCTIONS ( IN KEYSPACE )?| FUNCTION| ALL MBEANS| ( MBEAN | MBEANS )p.Sample:bc(sample).GRANT SELECT ON ALL KEYSPACES TO data_reader;This gives any user with the roledata_readerpermission to executeSELECTstatements on any table across all keyspacesbc(sample).GRANT MODIFY ON KEYSPACE keyspace1 TO data_writer;This give any user with the roledata_writerpermission to performUPDATE,INSERT,UPDATE,DELETEandTRUNCATEqueries on all
+tables in thekeyspace1keyspacebc(sample).GRANT DROP ON keyspace1.table1 TO schema_owner;This gives any user with theschema_ownerrole permissions toDROPkeyspace1.table1.bc(sample).GRANT EXECUTE ON FUNCTION keyspace1.user_function( int ) TO
+report_writer;This grants any user with thereport_writerrole permission to executeSELECT,INSERTandUPDATEqueries which use the functionkeyspace1.user_function( int )bc(sample).GRANT DESCRIBE ON ALL ROLES TO role_admin;This grants any user with therole_adminrole permission to view any
+and all roles in the system with aLIST ROLESstatementGRANT ALLWhen theGRANT ALLform is used, the appropriate set of permissions is
+determined automatically based on the target resource.Automatic GrantingWhen a resource is created, via aCREATE KEYSPACE,CREATE TABLE,CREATE FUNCTION,CREATE AGGREGATEorCREATE ROLEstatement, the
+creator (the role the database user who issues the statement is
+identified as), is automatically granted all applicable permissions on
+the new resource.REVOKE PERMISSIONSyntax:bc(syntax)..::= REVOKE ( ALL ( PERMISSIONS )? | ( PERMISSION )? ) ON FROM::= CREATE | ALTER | DROP | SELECT | MODIFY | AUTHORIZE | DESCRIBE | UNMASK | SELECT_MASKED
+EXECUTE::= ALL KEYSPACES| KEYSPACE| ( TABLE )?| ALL ROLES| ROLE| ALL FUNCTIONS ( IN KEYSPACE )?| FUNCTION| ALL MBEANS| ( MBEAN | MBEANS )p.Sample:bc(sample)..REVOKE SELECT ON ALL KEYSPACES FROM data_reader;REVOKE MODIFY ON KEYSPACE keyspace1 FROM data_writer;REVOKE DROP ON keyspace1.table1 FROM schema_owner;REVOKE EXECUTE ON FUNCTION keyspace1.user_function( int ) FROM
+report_writer;REVOKE DESCRIBE ON ALL ROLES FROM role_admin;p.LIST PERMISSIONSSyntax:bc(syntax)..::= LIST ( ALL ( PERMISSIONS )? | )( ON )?( OF ( NORECURSIVE )? )?::= ALL KEYSPACES| KEYSPACE| ( TABLE )?| ALL ROLES| ROLE| ALL FUNCTIONS ( IN KEYSPACE )?| FUNCTION| ALL MBEANS| ( MBEAN | MBEANS )p.Sample:bc(sample).LIST ALL PERMISSIONS OF alice;Show all permissions granted toalice, including those acquired
+transitively from any other roles.bc(sample).LIST ALL PERMISSIONS ON keyspace1.table1 OF bob;Show all permissions onkeyspace1.table1granted tobob, including
+those acquired transitively from any other roles. This also includes any
+permissions higher up the resource hierarchy which can be applied tokeyspace1.table1. For example, shouldbobhaveALTERpermission onkeyspace1, that would be included in the results of this query. Adding
+theNORECURSIVEswitch restricts the results to only those permissions
+which were directly granted tobobor one ofbobâs roles.bc(sample).LIST SELECT PERMISSIONS OF carlos;Show any permissions granted tocarlosor any ofcarlosâs roles,
+limited toSELECTpermissions on any resource.Data TypesCQL supports a rich set of data types for columns defined in a table,
+including collection types. On top of those nativeand collection types, users can also provide custom types (through a
+JAVA class extendingAbstractTypeloadable byCassandra). The syntax of types is thus:bc(syntax)..::=||| // Used for custom types. The fully-qualified name of a JAVA class::= ascii| bigint| blob| boolean| counter| date| decimal| double| float| inet| int| smallint| text| time| timestamp| timeuuid| tinyint| uuid| varchar| varint::= list<' `>'| set `<' `>'| map `<' `,' `>'::= tuple `<' (,' )* `>'p. Note that the native types are keywords and as such are
+case-insensitive. They are however not reserved ones.The following table gives additional informations on the native data
+types, and on which kind ofconstantseach type
+supports:typeconstants supporteddescriptionasciistringsASCII character stringbigintintegers64-bit signed longblobblobsArbitrary bytes (no validation)booleanbooleanstrue or falsecounterintegersCounter column (64-bit signed value). SeeCountersfor detailsdateintegers, stringsA date (with no corresponding time value).
+SeeWorking with datesbelow for more information.decimalintegers, floatsVariable-precision decimaldoubleintegers64-bit IEEE-754 floating pointfloatintegers, floats32-bit IEEE-754 floating pointinetstringsAn IP address. It can be either 4 bytes long (IPv4) or
+16 bytes long (IPv6). There is noinetconstant, IP address should be
+inputed as stringsintintegers32-bit signed intsmallintintegers16-bit signed inttextstringsUTF8 encoded stringtimeintegers, stringsA time with nanosecond precision. SeeWorking with timebelow for more information.timestampintegers, stringsA timestamp. Strings constant are allow
+to input timestamps as dates, seeWorking with
+timestampsbelow for more information.timeuuiduuidsType 1 UUID. This is generally used as a
+``conflict-free'' timestamp. Also see thefunctions on
+Timeuuidtinyintintegers8-bit signed intuuiduuidsType 1 or type 4 UUIDvarcharstringsUTF8 encoded stringvarintintegersArbitrary-precision integerFor more information on how to use the collection types, see theWorking with collectionssection below.Working with timestampsValues of thetimestamptype are encoded as 64-bit signed integers
+representing a number of milliseconds since the standard base time known
+as ``the epoch'': January 1 1970 at 00:00:00 GMT.Timestamp can be input in CQL as simple long integers, giving the number
+of milliseconds since the epoch, as defined above.They can also be input as string literals in any of the following ISO
+8601 formats, each representing the time and date Mar 2, 2011, at
+04:05:00 AM, GMT.:2011-02-03 04:05+00002011-02-03 04:05:00+00002011-02-03 04:05:00.000+00002011-02-03T04:05+00002011-02-03T04:05:00+00002011-02-03T04:05:00.000+0000The+0000above is an RFC 822 4-digit time zone specification;+0000refers to GMT. US Pacific Standard Time is-0800. The time zone may be
+omitted if desiredâ the date will be interpreted as being in the time
+zone under which the coordinating Cassandra node is configured.2011-02-03 04:052011-02-03 04:05:002011-02-03 04:05:00.0002011-02-03T04:052011-02-03T04:05:002011-02-03T04:05:00.000There are clear difficulties inherent in relying on the time zone
+configuration being as expected, though, so it is recommended that the
+time zone always be specified for timestamps when feasible.The time of day may also be omitted, if the date is the only piece that
+matters:2011-02-032011-02-03+0000In that case, the time of day will default to 00:00:00, in the specified
+or default time zone.Working with datesValues of thedatetype are encoded as 32-bit unsigned integers
+representing a number of days with ``the epoch'' at the center of the
+range (2^31). Epoch is January 1st, 1970A date can be input in CQL as an unsigned integer as defined above.They can also be input as string literals in the following format:2014-01-01Working with timeValues of thetimetype are encoded as 64-bit signed integers
+representing the number of nanoseconds since midnight.A time can be input in CQL as simple long integers, giving the number of
+nanoseconds since midnight.They can also be input as string literals in any of the following
+formats:08:12:5408:12:54.12308:12:54.12345608:12:54.123456789CountersThecountertype is used to definecounter columns. A counter column
+is a column whose value is a 64-bit signed integer and on which 2
+operations are supported: incrementation and decrementation (seeUPDATEfor syntax). Note the value of a counter
+cannot be set. A counter doesnât exist until first
+incremented/decremented, and the first incrementation/decrementation is
+made as if the previous value was 0. Deletion of counter columns is
+supported but have some limitations (see theCassandra Wikifor more
+information).The use of the counter type is limited in the following way:It cannot be used for column that is part of thePRIMARY KEYof a
+table.A table that contains a counter can only contain counters. In other
+words, either all the columns of a table outside thePRIMARY KEYhave
+the counter type, or none of them have it.Working with collectionsNoteworthy characteristicsCollections are meant for storing/denormalizing relatively small amount
+of data. They work well for things likethe phone numbers of a given
+user'',labels applied to an email'', etc. But when items are expected
+to grow unbounded (all the messages sent by a given user'',events
+registered by a sensor'', â¦), then collections are not appropriate
+anymore and a specific table (with clustering columns) should be used.
+Concretely, collections have the following limitations:Collections are always read in their entirety (and reading one is not
+paged internally).Collections cannot have more than 65535 elements. More precisely,
+while it may be possible to insert more than 65535 elements, it is not
+possible to read more than the 65535 first elements (seeCASSANDRA-5428for
+details).While insertion operations on sets and maps never incur a
+read-before-write internally, some operations on lists do (see the
+section on lists below for details). It is thus advised to prefer sets
+over lists when possible.Please note that while some of those limitations may or may not be
+loosen in the future, the general rule that collections are for
+denormalizing small amount of data is meant to stay.MapsAmapis atypedset of key-value pairs, where keys are
+unique. Furthermore, note that the map are internally sorted by their
+keys and will thus always be returned in that order. To create a column
+of typemap, use themapkeyword suffixed with comma-separated key
+and value types, enclosed in angle brackets. For example:bc(sample).CREATE TABLE users (id text PRIMARY KEY,given text,surname text,favs map<text, text> // A map of text keys, and text values)Writingmapdata is accomplished with a JSON-inspired syntax. To write
+a record usingINSERT, specify the entire map as a JSON-style
+associative array.Note: This form will always replace the entire map.bc(sample).INSERT INTO users (id, given, surname, favs)VALUES (`jsmith', `John', `Smith', \{ `fruit' : `apple', `band' :
+`Beatles' })Adding or updating key-values of a (potentially) existing map can be
+accomplished either by subscripting the map column in anUPDATEstatement or by adding a new map literal:bc(sample).UPDATE users SET favs[`author'] = `Ed Poe' WHERE id = `jsmith'UPDATE users SET favs = favs + \{ `movie' : `Cassablanca' } WHERE id =
+`jsmith'Note that TTLs are allowed for bothINSERTandUPDATE, but in both
+case the TTL set only apply to the newly inserted/updatedvalues. In
+other words,bc(sample).UPDATE users USING TTL 10 SET favs[`color'] = `green' WHERE id =
+`jsmith'will only apply the TTL to the{ 'color' : 'green' }record, the rest
+of the map remaining unaffected.Deleting a map record is done with:bc(sample).DELETE favs[`author'] FROM users WHERE id = `jsmith'SetsAsetis atypedcollection of unique values. Sets are
+ordered by their values. To create a column of typeset, use thesetkeyword suffixed with the value type enclosed in angle brackets. For
+example:bc(sample).CREATE TABLE images (name text PRIMARY KEY,owner text,date timestamp,tags set);Writing asetis accomplished by comma separating the set values, and
+enclosing them in curly braces.Note: AnINSERTwill always replace
+the entire set.bc(sample).INSERT INTO images (name, owner, date, tags)VALUES (`cat.jpg', `jsmith', `now', \{ `kitten', `cat', `pet' });Adding and removing values of a set can be accomplished with anUPDATEby adding/removing new set values to an existingsetcolumn.bc(sample).UPDATE images SET tags = tags + \{ `cute', `cuddly' } WHERE name =
+`cat.jpg';UPDATE images SET tags = tags - \{ `lame' } WHERE name = `cat.jpg';As withmaps, TTLs if used only apply to the newly
+inserted/updatedvalues.ListsAlistis atypedcollection of non-unique values where
+elements are ordered by there position in the list. To create a column
+of typelist, use thelistkeyword suffixed with the value type
+enclosed in angle brackets. For example:bc(sample).CREATE TABLE plays (id text PRIMARY KEY,game text,players int,scores list)Do note that as explained below, lists have some limitations and
+performance considerations to take into account, and it is advised to
+prefersetsover lists when this is possible.Writinglistdata is accomplished with a JSON-style syntax. To write a
+record usingINSERT, specify the entire list as a JSON array.Note:
+AnINSERTwill always replace the entire list.bc(sample).INSERT INTO plays (id, game, players, scores)VALUES (`123-afde', `quake', 3, [17, 4, 2]);Adding (appending or prepending) values to a list can be accomplished by
+adding a new JSON-style array to an existinglistcolumn.bc(sample).UPDATE plays SET players = 5, scores = scores + [ 14, 21 ] WHERE id =
+`123-afde';UPDATE plays SET players = 5, scores = [ 12 ] + scores WHERE id =
+`123-afde';It should be noted that append and prepend are not idempotent
+operations. This means that if during an append or a prepend the
+operation timeout, it is not always safe to retry the operation (as this
+could result in the record appended or prepended twice).Lists also provides the following operation: setting an element by its
+position in the list, removing an element by its position in the list
+and remove all the occurrence of a given value in the list.However,
+and contrarily to all the other collection operations, these three
+operations induce an internal read before the update, and will thus
+typically have slower performance characteristics. Those operations
+have the following syntax:bc(sample).UPDATE plays SET scores[1] = 7 WHERE id = `123-afde'; // sets the 2nd
+element of scores to 7 (raises an error is scores has less than 2
+elements)DELETE scores[1] FROM plays WHERE id = `123-afde'; // deletes the 2nd
+element of scores (raises an error is scores has less than 2 elements)UPDATE plays SET scores = scores - [ 12, 21 ] WHERE id = `123-afde'; //
+removes all occurrences of 12 and 21 from scoresAs withmaps, TTLs if used only apply to the newly
+inserted/updatedvalues.Working with vectorsVectors are fixed-size sequences of non-null values of a certain data type. They use the same literals as lists.You can define, insert and update a vector with:CREATE TABLE plays (
+    id text PRIMARY KEY,
+    game text,
+    players int,
+    scores vector<int, 3> // A vector of 3 integers
+)
+
+INSERT INTO plays (id, game, players, scores)
+           VALUES ('123-afde', 'quake', 3, [17, 4, 2]);
+
+// Replace the existing vector entirely
+UPDATE plays SET scores = [ 3, 9, 4] WHERE id = '123-afde';Note that it isn’t possible to change the individual values of a vector, and it isn’t possible to select individual
+elements of a vector.FunctionsCQL3 distinguishes between built-in functions (so called `native
+functions') anduser-defined functions. CQL3 includes
+several native functions, described below:CastThecastfunction can be used to converts one native datatype to
+another.The following table describes the conversions supported by thecastfunction. Cassandra will silently ignore any cast converting a datatype
+into its own datatype.fromtoasciitext,varcharbiginttinyint,smallint,int,float,double,decimal,varint,text,varcharbooleantext,varcharcountertinyint,smallint,int,bigint,float,double,decimal,varint,text,varchardatetimestampdecimaltinyint,smallint,int,bigint,float,double,varint,text,varchardoubletinyint,smallint,int,bigint,float,decimal,varint,text,varcharfloattinyint,smallint,int,bigint,double,decimal,varint,text,varcharinettext,varcharinttinyint,smallint,bigint,float,double,decimal,varint,text,varcharsmallinttinyint,int,bigint,float,double,decimal,varint,text,varchartimetext,varchartimestampdate,text,varchartimeuuidtimestamp,date,text,varchartinyinttinyint,smallint,int,bigint,float,double,decimal,varint,text,varcharuuidtext,varcharvarinttinyint,smallint,int,bigint,float,double,decimal,text,varcharThe conversions rely strictly on Javaâs semantics. For example, the
+double value 1 will be converted to the text value `1.0'.bc(sample).SELECT avg(cast(count as double)) FROM myTableTokenThetokenfunction allows to compute the token for a given partition
+key. The exact signature of the token function depends on the table
+concerned and of the partitioner used by the cluster.The type of the arguments of thetokendepend on the type of the
+partition key columns. The return type depend on the partitioner in use:For Murmur3Partitioner, the return type isbigint.For RandomPartitioner, the return type isvarint.For ByteOrderedPartitioner, the return type isblob.For instance, in a cluster using the default Murmur3Partitioner, if a
+table is defined bybc(sample).CREATE TABLE users (userid text PRIMARY KEY,username text,â¦)then thetokenfunction will take a single argument of typetext(in
+that case, the partition key isuserid(there is no clustering columns
+so the partition key is the same than the primary key)), and the return
+type will bebigint.UuidTheuuidfunction takes no parameters and generates a random type 4
+uuid suitable for use in INSERT or SET statements.Timeuuid functionsnowThenowfunction takes no arguments and generates, on the coordinator
+node, a new unique timeuuid (at the time where the statement using it is
+executed). Note that this method is useful for insertion but is largely
+non-sensical inWHEREclauses. For instance, a query of the formbc(sample).SELECT * FROM myTable WHERE t = now()will never return any result by design, since the value returned bynow()is guaranteed to be unique.min_timeuuidandmax_timeuuidThemin_timeuuid(resp.max_timeuuid) function takes atimestampvaluet(which can beeither a timestamp or a
+date string) and return afaketimeuuidcorresponding to thesmallest(resp.biggest) possibletimeuuidhaving for timestampt. So for instance:bc(sample).SELECT * FROM myTable WHERE t > max_timeuuid(`2013-01-01 00:05+0000') AND
+t < min_timeuuid(`2013-02-02 10:00+0000')will select all rows where thetimeuuidcolumntis strictly older
+than2013-01-01 00:05+0000' but strictly younger than `2013-02-02
+10:00+0000'. Please note that
+`t >= max_timeuuid('2013-01-01 00:05+0000')would stillnotselect atimeuuidgenerated exactly at2013-01-01 00:05+0000' and is
+essentially equivalent to `t > max_timeuuid('2013-01-01 00:05+0000').Warning: We called the values generated bymin_timeuuidandmax_timeuuidfakeUUID because they do no respect the Time-Based UUID
+generation process specified by theRFC 4122. In particular, the value
+returned by these 2 methods will not be unique. This means you should
+only use those methods for querying (as in the example above). Inserting
+the result of those methods is almost certainlya bad idea.Time conversion functionsA number of functions are provided to`convert'' a `timeuuid, atimestampor adateinto anothernativetype.function nameinput typedescriptionto_datetimeuuidConverts thetimeuuidargument into adatetypeto_datetimestampConverts thetimestampargument into adatetypeto_timestamptimeuuidConverts thetimeuuidargument into atimestamptypeto_timestampdateConverts thedateargument into atimestamptypeto_unix_timestamptimeuuidConverts thetimeuuidargument into abigIntraw valueto_unix_timestamptimestampConverts thetimestampargument into
+abigIntraw valueto_unix_timestampdateConverts thedateargument into abigIntraw valueBlob conversion functionsA number of functions are provided to`convert'' the native types into
+binary data (`blob). For every<native-type>typesupported by CQL3
+(a notable exceptions isblob, for obvious reasons), the functiontype_as_blobtakes a argument of typetypeand return it as ablob.
+Conversely, the functionblob_as_typetakes a 64-bitblobargument and
+convert it to abigintvalue. And so for instance,bigint_as_blob(3)is0x0000000000000003andblob_as_bigint(0x0000000000000003)is3.AggregatesAggregate functions work on a set of rows. They receive values for each
+row and returns one value for the whole set.Ifnormalcolumns,scalar functions,UDTfields,writetime,maxwritetimeorttlare selected together with aggregate functions, the values
+returned for them will be the ones of the first row matching the query.CQL3 distinguishes between built-in aggregates (so called `native
+aggregates') anduser-defined aggregates. CQL3 includes
+several native aggregates, described below:CountThecountfunction can be used to count the rows returned by a query.
+Example:bc(sample).SELECT COUNT (*) FROM plays;SELECT COUNT (1) FROM plays;It also can be used to count the non null value of a given column.
+Example:bc(sample).SELECT COUNT (scores) FROM plays;Max and MinThemaxandminfunctions can be used to compute the maximum and the
+minimum value returned by a query for a given column.bc(sample).SELECT MIN (players), MAX (players) FROM plays WHERE game = `quake';SumThesumfunction can be used to sum up all the values returned by a
+query for a given column.bc(sample).SELECT SUM (players) FROM plays;AvgTheavgfunction can be used to compute the average of all the values
+returned by a query for a given column.bc(sample).SELECT AVG (players) FROM plays;User-Defined FunctionsUser-defined functions allow execution of user-provided code in
+Cassandra. By default, Cassandra supports defining functions inJavaandJavaScript. Support for other JSR 223 compliant scripting
+languages (such as Python, Ruby, and Scala) has been removed in 3.0.11.UDFs are part of the Cassandra schema. As such, they are automatically
+propagated to all nodes in the cluster.UDFs can beoverloaded- i.e. multiple UDFs with different argument
+types but the same function name. Example:bc(sample).CREATE FUNCTION sample ( arg int ) â¦;CREATE FUNCTION sample ( arg text ) â¦;User-defined functions are susceptible to all of the normal problems
+with the chosen programming language. Accordingly, implementations
+should be safe against null pointer exceptions, illegal arguments, or
+any other potential source of exceptions. An exception during function
+execution will result in the entire statement failing.It is valid to usecomplextypes like collections, tuple types and
+user-defined types as argument and return types. Tuple types and
+user-defined types are handled by the conversion functions of the
+DataStax Java Driver. Please see the documentation of the Java Driver
+for details on handling tuple types and user-defined types.Arguments for functions can be literals or terms. Prepared statement
+placeholders can be used, too.Note that you can use the double-quoted string syntax to enclose the UDF
+source code. For example:bc(sample)..CREATE FUNCTION some_function ( arg int )RETURNS NULL ON NULL INPUTRETURNS intLANGUAGE javaAS  return arg; ;SELECT some_function(column) FROM atable â¦;UPDATE atable SET col = some_function(?) â¦;p.bc(sample).CREATE TYPE custom_type (txt text, i int);CREATE FUNCTION fct_using_udt ( udtarg frozen )RETURNS NULL ON NULL INPUTRETURNS textLANGUAGE javaAS  return udtarg.getString(``txt''); ;User-defined functions can be used inSELECT,INSERTandUPDATEstatements.The implicitly availableudfContextfield (or binding for script UDFs)
+provides the neccessary functionality to create new UDT and tuple
+values.bc(sample).CREATE TYPE custom_type (txt text, i int);CREATE FUNCTION fct_using_udt ( somearg int )RETURNS NULL ON NULL INPUTRETURNS custom_typeLANGUAGE javaAS  +
+UDTValue udt = udfContext.newReturnUDTValue(); +
+udt.setString(``txt'', ``some string''); +
+udt.setInt(``i'', 42); +
+return udt; +
+;The definition of theUDFContextinterface can be found in the Apache
+Cassandra source code fororg.apache.cassandra.cql3.functions.UDFContext.bc(sample).public interface UDFContext\{UDTValue newArgUDTValue(String argName);UDTValue newArgUDTValue(int argNum);UDTValue newReturnUDTValue();UDTValue newUDTValue(String udtName);TupleValue newArgTupleValue(String argName);TupleValue newArgTupleValue(int argNum);TupleValue newReturnTupleValue();TupleValue newTupleValue(String cqlDefinition);}Java UDFs already have some imports for common interfaces and classes
+defined. These imports are:Please note, that these convenience imports are not available for script
+UDFs.bc(sample).import java.nio.ByteBuffer;import java.util.List;import java.util.Map;import java.util.Set;import org.apache.cassandra.cql3.functions.UDFContext;import com.datastax.driver.core.TypeCodec;import com.datastax.driver.core.TupleValue;import com.datastax.driver.core.UDTValue;SeeCREATE FUNCTIONandDROP FUNCTION.User-Defined AggregatesUser-defined aggregates allow creation of custom aggregate functions
+usingUDFs. Common examples of aggregate functions arecount,min, andmax.Each aggregate requires aninitial state(INITCOND, which defaults
+tonull) of typeSTYPE. The first argument of the state function
+must have typeSTYPE. The remaining arguments of the state function
+must match the types of the user-defined aggregate arguments. The state
+function is called once for each row, and the value returned by the
+state function becomes the new state. After all rows are processed, the
+optionalFINALFUNCis executed with last state value as its argument.STYPEis mandatory in order to be able to distinguish possibly
+overloaded versions of the state and/or final function (since the
+overload can appear after creation of the aggregate).User-defined aggregates can be used inSELECTstatement.A complete working example for user-defined aggregates (assuming that a
+keyspace has been selected using theUSEstatement):bc(sample)..CREATE OR REPLACE FUNCTION averageState ( state tuple<int,bigint>, val
+int )CALLED ON NULL INPUTRETURNS tuple<int,bigint>LANGUAGE javaAS âif (val != null) \{state.setInt(0, state.getInt(0)+1);state.setLong(1, state.getLong(1)+val.intValue());}return state;â;CREATE OR REPLACE FUNCTION averageFinal ( state tuple<int,bigint> )CALLED ON NULL INPUTRETURNS doubleLANGUAGE javaAS âdouble r = 0;if (state.getInt(0) == 0) return null;r = state.getLong(1);r /= state.getInt(0);return Double.valueOfÂ®;â;CREATE OR REPLACE AGGREGATE average ( int )SFUNC averageStateSTYPE tuple<int,bigint>FINALFUNC averageFinalINITCOND (0, 0);CREATE TABLE atable (pk int PRIMARY KEY,val int);INSERT INTO atable (pk, val) VALUES (1,1);INSERT INTO atable (pk, val) VALUES (2,2);INSERT INTO atable (pk, val) VALUES (3,3);INSERT INTO atable (pk, val) VALUES (4,4);SELECT average(val) FROM atable;p.SeeCREATE AGGREGATEandDROP AGGREGATE.JSON SupportCassandra 2.2 introduces JSON support toSELECTandINSERTstatements. This support does not
+fundamentally alter the CQL API (for example, the schema is still
+enforced), it simply provides a convenient way to work with JSON
+documents.SELECT JSONWithSELECTstatements, the newJSONkeyword can be used to return
+each row as a singleJSONencoded map. The remainder of theSELECTstatment behavior is the same.The result map keys are the same as the column names in a normal result
+set. For example, a statement likeSELECT JSON a, ttl(b) FROM …​’'
+would result in a map with keys `"a"and"ttl(b)". However, this is
+one notable exception: for symmetry withINSERT JSONbehavior,
+case-sensitive column names with upper-case letters will be surrounded
+with double quotes. For example,SELECT JSON myColumn FROM …​’'
+would result in a map key `"\"myColumn\""(note the escaped quotes).The map values willJSON-encoded representations (as described below)
+of the result set values.INSERT JSONWithINSERTstatements, the newJSONkeyword can be used to enable
+inserting aJSONencoded map as a single row. The format of theJSONmap should generally match that returned by aSELECT JSONstatement on
+the same table. In particular, case-sensitive column names should be
+surrounded with double quotes. For example, to insert into a table with
+two columns namedmyKey'' andvalue'', you would do the following:bc(sample).INSERT INTO mytable JSON `\{\''myKey\'': 0, ``value'': 0}'Any columns which are ommitted from theJSONmap will be defaulted to
+aNULLvalue (which will result in a tombstone being created).JSON Encoding of Cassandra Data TypesWhere possible, Cassandra will represent and accept data types in their
+nativeJSONrepresentation. Cassandra will also accept string
+representations matching the CQL literal format for all single-field
+types. For example, floats, ints, UUIDs, and dates can be represented by
+CQL literal strings. However, compound types, such as collections,
+tuples, and user-defined types must be represented by nativeJSONcollections (maps and lists) or a JSON-encoded string representation of
+the collection.The following table describes the encodings that Cassandra will accept
+inINSERT JSONvalues (andfrom_json()arguments) as well as the
+format Cassandra will use when returning data forSELECT JSONstatements (andfrom_json()):typeformats acceptedreturn formatnotesasciistringstringUses JSONâs\ucharacter escapebigintinteger, stringintegerString must be valid 64 bit integerblobstringstringString should be 0x followed by an even number
+of hex digitsbooleanboolean, stringbooleanString must betrue'' orfalse''datestringstringDate in formatYYYY-MM-DD, timezone UTCdecimalinteger, float, stringfloatMay exceed 32 or 64-bit
+IEEE-754 floating point precision in client-side decoderdoubleinteger, float, stringfloatString must be valid integer
+or floatfloatinteger, float, stringfloatString must be valid integer or
+floatinetstringstringIPv4 or IPv6 addressintinteger, stringintegerString must be valid 32 bit integerlistlist, stringlistUses JSONâs native list representationmapmap, stringmapUses JSONâs native map representationsmallintinteger, stringintegerString must be valid 16 bit
+integersetlist, stringlistUses JSONâs native list representationtextstringstringUses JSONâs\ucharacter escapetimestringstringTime of day in formatHH-MM-SS[.fffffffff]timestampinteger, stringstringA timestamp. Strings constant are
+allow to input timestamps as dates, seeWorking with
+datesbelow for more information. Datestamps with formatYYYY-MM-DD HH:MM:SS.SSSare returned.timeuuidstringstringType 1 UUID. SeeConstantsfor the UUID formattinyintinteger, stringintegerString must be valid 8 bit integertuplelist, stringlistUses JSONâs native list representationUDTmap, stringmapUses JSONâs native map representation with
+field names as keysuuidstringstringSeeConstantsfor the UUID
+formatvarcharstringstringUses JSONâs\ucharacter escapevarintinteger, stringintegerVariable length; may overflow 32 or
+64 bit integers in client-side decoderThe from_json() FunctionThefrom_json()function may be used similarly toINSERT JSON, but
+for a single column value. It may only be used in theVALUESclause of
+anINSERTstatement or as one of the column values in anUPDATE,DELETE, orSELECTstatement. For example, it cannot be used in the
+selection clause of aSELECTstatement.The to_json() FunctionTheto_json()function may be used similarly toSELECT JSON, but for
+a single column value. It may only be used in the selection clause of aSELECTstatement.Appendix A: CQL KeywordsCQL distinguishes betweenreservedandnon-reservedkeywords.
+Reserved keywords cannot be used as identifier, they are truly reserved
+for the language (but one can enclose a reserved keyword by
+double-quotes to use it as an identifier). Non-reserved keywords however
+only have a specific meaning in certain context but can used as
+identifer otherwise. The onlyraison dâÃªtreof these non-reserved
+keywords is convenience: some keyword are non-reserved when it was
+always easy for the parser to decide whether they were used as keywords
+or not.KeywordReserved?ADDyesAGGREGATEnoALLnoALLOWyesALTERyesANDyesAPPLYyesASnoASCyesASCIInoAUTHORIZEyesBATCHyesBEGINyesBIGINTnoBLOBnoBOOLEANnoBYyesCALLEDnoCASTnoCLUSTERINGnoCOLUMNFAMILYyesCOMPACTnoCONTAINSnoCOUNTnoCOUNTERnoCREATEyesCUSTOMnoDATEnoDECIMALnoDEFAULTyesDELETEyesDESCyesDESCRIBEyesDISTINCTnoDOUBLEnoDROPyesDURATIONnoENTRIESyesEXECUTEyesEXISTSnoFILTERINGnoFINALFUNCnoFLOATnoFROMyesFROZENnoFULLyesFUNCTIONnoFUNCTIONSnoGRANTyesGROUPnoIFyesINyesINDEXyesINETnoINFINITYyesINITCONDnoINPUTnoINSERTyesINTnoINTOyesISyesJSONnoKEYnoKEYSnoKEYSPACEyesKEYSPACESnoLANGUAGEnoLIKEnoLIMITyesLISTnoLOGINnoMAPnoMASKEDnoMATERIALIZEDyesMBEANyesMBEANSyesMODIFYyesNANyesNOLOGINnoNORECURSIVEyesNOSUPERUSERnoNOTyesNULLyesOFyesONyesOPTIONSnoORyesORDERyesPARTITIONnoPASSWORDnoPERnoPERMISSIONnoPERMISSIONSnoPRIMARYyesRENAMEyesREPLACEyesRETURNSnoREVOKEyesROLEnoROLESnoSCHEMAyesSELECTyesSELECT_MASKEDnoSETyesSFUNCnoSMALLINTnoSTATICnoSTORAGEnoSTYPEnoSUPERUSERnoTABLEyesTEXTnoTIMEnoTIMESTAMPnoTIMEUUIDnoTINYINTnoTOyesTOKENyesTRIGGERnoTRUNCATEyesTTLnoTUPLEnoTYPEnoUNLOGGEDyesUNMASKnoUNSETyesUPDATEyesUSEyesUSERnoUSERSnoUSINGyesUUIDnoVALUESnoVARCHARnoVARINTnoVIEWyesWHEREyesWITHyesWRITETIMEnoAppendix B: CQL Reserved TypesThe following type names are not currently used by CQL, but are reserved
+for potential future use. User-defined types may not use reserved type
+names as their name.typebitstringbytecomplexdateenumintervalmacaddrChangesThe following describes the changes in each version of CQL.3.4.3Support forGROUP BY. See<group-by>(seeCASSANDRA-10707.3.4.2Support for selecting elements and slices of a collection
+(CASSANDRA-7396.3.4.2INSERT/UPDATE optionsfor tables having a
+default_time_to_live specifying a TTL of 0 will remove the TTL from the
+inserted or updated valuesALTER TABLEADDandDROPnow allow mutiple
+columns to be added/removedNewPER PARTITION LIMIToption (seeCASSANDRA-7017.User-defined functionscan now instantiateUDTValueandTupleValueinstances via the newUDFContextinterface (seeCASSANDRA-10818.`User-defined types''#createTypeStmt may now be stored in a
+non-frozen form, allowing individual fields to be updated and deleted in`UPDATEstatementsandDELETEstatements, respectively.
+(CASSANDRA-74233.4.1AddsCASTfunctions. SeeCast.3.4.0Support formaterialized viewsDELETEsupport for inequality expressions andINrestrictions on any primary key columnsUPDATEsupport forINrestrictions on any
+primary key columns3.3.1The syntaxTRUNCATE TABLE Xis now accepted as an alias forTRUNCATE X3.3.0Adds newaggregatesUser-defined functions are now supported throughCREATE FUNCTIONandDROP FUNCTION.User-defined aggregates are now supported throughCREATE AGGREGATEandDROP AGGREGATE.Allows double-dollar enclosed strings literals as an alternative to
+single-quote enclosed strings.Introduces Roles to supercede user based authentication and access
+controlDateandTimedata types have
+been addedJSONsupport has been addedTinyintandSmallintdata types have been addedAdds new time conversion functions and deprecatedateOfandunixTimestampOf. SeeTime conversion functions3.2.0User-defined types are now supported throughCREATE TYPE,ALTER TYPE,
+andDROP TYPECREATE INDEXnow supports indexing collection
+columns, including indexing the keys of map collections through thekeys()functionIndexes on collections may be queried using the newCONTAINSandCONTAINS KEYoperatorsTuple types were added to hold fixed-length sets of typed positional
+fields (see the section ontypes)DROP INDEXnow supports optionally specifying a
+keyspace3.1.7SELECTstatements now support selecting multiple rows in a single
+partition using anINclause on combinations of clustering columns.
+SeeSELECT WHEREclauses.IF NOT EXISTSandIF EXISTSsyntax is now supported byCREATE USERandDROP USERstatmenets, respectively.3.1.6A newuuidmethodhas been added.Support forDELETE …​ IF EXISTSsyntax.3.1.5It is now possible to group clustering columns in a relatiion, seeSELECT WHEREclauses.Added support forSTATICcolumns, seestatic
+in CREATE TABLE.3.1.4CREATE INDEXnow allows specifying options when creating CUSTOM
+indexes (seeCREATE INDEX reference).3.1.3Millisecond precision formats have been added to the timestamp parser
+(seeworking with dates).3.1.2NaNandInfinityhas been added as valid float contants. They are
+now reserved keywords. In the unlikely case you we using them as a
+column identifier (or keyspace/table one), you will noew need to double
+quote them (seequote identifiers).3.1.1SELECTstatement now allows listing the partition keys (using theDISTINCTmodifier). SeeCASSANDRA-4536.The syntaxc IN ?is now supported inWHEREclauses. In that case,
+the value expected for the bind variable will be a list of whatever typecis.It is now possible to use named bind variables (using:nameinstead
+of?).3.1.0ALTER TABLEDROPoption has been reenabled for
+CQL3 tables and has new semantics now: the space formerly used by
+dropped columns will now be eventually reclaimed (post-compaction). You
+should not readd previously dropped columns unless you use timestamps
+with microsecond precision (seeCASSANDRA-3919for
+more details).SELECTstatement now supports aliases in select clause. Aliases in
+WHERE and ORDER BY clauses are not supported. See thesection on selectfor details.CREATEstatements forKEYSPACE,TABLEandINDEXnow supports
+anIF NOT EXISTScondition. Similarly,DROPstatements support aIF EXISTScondition.INSERTstatements optionally supports aIF NOT EXISTScondition
+andUPDATEsupportsIFconditions.3.0.5SELECT,UPDATE, andDELETEstatements now allow emptyINrelations (seeCASSANDRA-5626.3.0.4Updated the syntax for customsecondary
+indexes.Non-equal condition on the partition key are now never supported, even
+for ordering partitioner as this was not correct (the order wasnotthe one of the type of the partition key). Instead, thetokenmethod
+should always be used for range queries on the partition key (seeWHERE clauses).3.0.3Support for customsecondary indexeshas been
+added.3.0.2Type validation for theconstantshas been fixed. For
+instance, the implementation used to allow'2'as a valid value for anintcolumn (interpreting it has the equivalent of2), or42as a
+validblobvalue (in which case42was interpreted as an hexadecimal
+representation of the blob). This is no longer the case, type validation
+of constants is now more strict. See thedata typessection
+for details on which constant is allowed for which type.The type validation fixed of the previous point has lead to the
+introduction ofblobs constantsto allow inputing
+blobs. Do note that while inputing blobs as strings constant is still
+supported by this version (to allow smoother transition to blob
+constant), it is now deprecated (in particular thedata
+typessection does not list strings constants as valid blobs) and will
+be removed by a future version. If you were using strings as blobs, you
+should thus update your client code ASAP to switch blob constants.A number of functions to convert native types to blobs have also been
+introduced. Furthermore the token function is now also allowed in select
+clauses. See thesection on functionsfor details.3.0.1Date strings(and timestamps) are no longer
+accepted as validtimeuuidvalues. Doing so was a bug in the sense
+that date string are not validtimeuuid, and it was thus resulting inconfusing
+behaviors. However, the following new methods have been added to help
+working withtimeuuid:now,minTimeuuid,maxTimeuuid,dateOfandunixTimestampOf. See thesection dedicated to
+these methodsfor more detail.`Float constants''#constants now support the exponent notation. In
+other words, `4.2E10is now a valid floating point value.VersioningVersioning of the CQL language adheres to theSemantic
+Versioningguidelines. Versions take the form X.Y.Z where X, Y, and Z
+are integer values representing major, minor, and patch level
+respectively. There is no correlation between Cassandra release versions
+and the CQL language version.versiondescriptionMajorThe major versionmustbe bumped when backward incompatible
+changes are introduced. This should rarely occur.MinorMinor version increments occur when new, but backward
+compatible, functionality is introduced.PatchThe patch version is incremented when bugs are fixed.Get started with Cassandra, fast.Quickstart GuideApache Cassandrapowers mission-critical deployments with improved performance and unparalleled levels of scale in the cloud.HomeCassandra BasicsQuickstartEcosystemDocumentationCommunityCase StudiesResourcesBlogFoundationEventsLicenseThanksSecurityPrivacySponsorshipÂ© 2009-The Apache Software Foundationunder the terms of the Apache License 2.0.  Apache, the Apache feather logo, Apache Cassandra, Cassandra, and the Cassandra logo, are either registered trademarks or trademarks of The Apache Software Foundation.

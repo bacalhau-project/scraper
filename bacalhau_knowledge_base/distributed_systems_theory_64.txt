@@ -1,0 +1,4 @@
+URL: https://www.the-paper-trail.org/%20/tags/google
+
+Paper TrailBloggoogle20092009-08-12GFS Retrospective in ACM Queue20082008-10-29BigTable: Google's Distributed Data Store2008-10-01The Google File System©  - 2023 ·Paper Trail·
+  ThemeSimplenessPowered byHugo·

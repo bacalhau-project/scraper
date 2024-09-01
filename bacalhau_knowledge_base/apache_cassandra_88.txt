@@ -1,0 +1,302 @@
+URL: https://cassandra.apache.org/doc/latest/cassandra/developing/cql/indexing/sai/sai-working-with.html
+
+Get StartedCassandra BasicsQuickstartEcosystemDocumentationCommunityWelcomeDiscussionsGovernanceContributeMeet the CommunityCatalyst ProgramEventsLearnCassandra 5.0Case StudiesResourcesBlogDownload NowCassandra DocumentationVersion:5.0mastertrunk5.04.14.03.11MainGlossaryHow to report bugsContact usDevelopmentGetting startedBuilding and IDE integrationTestingContributing code changesCode styleReview checklistHow to commitWorking on documentationJenkins CI environmentDependency managementRelease processCassandraFAQGetting StartedCassandra QuickstartSAI QuickstartVector Search QuickstartInstalling CassandraConfiguring CassandraInserting and queryingClient driversProduction recommendationsWhat’s newSupport for JavaArchitectureOverviewDynamoStorage EngineGuaranteesImproved Internode MessagingImproved StreamingData ModelingIntroductionConceptual data modelingRDBMS designDefining application queriesLogical data modelingPhysical data modelingEvaluating and refining data modelsDefining database schemaCassandra data modeling toolsCassandra Query Language (CQL)DefinitionsData typesData definition (DDL)Data manipulation (DML)Dynamic Data Masking (DDM)OperatorsIndexing conceptsSAI OverviewConceptsSAI QuickstartSAI FAQWorking with SAISAI operationsSecondary indexes (2i) overviewConceptsWorking with 2iRebuild 2iMaterialized viewsFunctionsJSONSecurityTriggersAppendicesChangesSASISingle file of CQL informationVector Search overviewConceptsData ModelingVector Search QuickstartWorking with Vector SearchManagingConfiguringcassandra.yamlcassandra-rackdc.propertiescassandra-env.shcassandra-topologies.propertiescommitlog-archiving.propertieslogback.xmljvm-* filesLiberating cassandra.yaml Parameters' Names from Their UnitsOperatingBackupsBloom filtersBulk loadingChange Data Capture (CDC)CompactionCompressionHardwareHintsLoggingAudit loggingAudit logging 2Full query loggingMonitoring metricsRepairRead repairSecuritySnitchesTopology changesTransient replicationVirtual tablesToolscqlsh: the CQL shellnodetoolSSTable toolscassandra-stressTroubleshootingFinding misbehaving nodesReading Cassandra logsUsing nodetoolUsing external tools to deep-diveReferenceALTER TABLECREATE INDEXCREATE CUSTOM INDEXCREATE TABLEDROP INDEXDROP TABLEPlug-insYou are viewing the documentation for a prerelease version.CassandraCassandra Query Language (CQL)Indexing conceptsSAI OverviewWorking with SAIEditWorking with Storage-attached indexing (SAI)PrerequisitesKeyspace createdTable createdCreate SAI indexTo create an SAI index, you must define the index name, table name, and column name for the column to be indexed.To create a simple SAI index:CREATE INDEX lastname_sai_idx ON cycling.cyclist_semi_pro (lastname)
+USING 'sai'
+WITH OPTIONS = {'case_sensitive': 'false', 'normalize': 'true', 'ascii': 'true'};
+
+CREATE INDEX age_sai_idx ON cycling.cyclist_semi_pro (age)
+USING 'sai';
+
+CREATE INDEX country_sai_idx ON cycling.cyclist_semi_pro (country)
+USING 'sai'
+WITH OPTIONS = {'case_sensitive': 'false', 'normalize': 'true', 'ascii': 'true'};
+
+CREATE INDEX registration_sai_idx ON cycling.cyclist_semi_pro (registration)
+USING 'sai';For most SAI indexes, the column name is defined in theCREATE INDEXstatement that also usesUSING 'sai'.
+The SAI index options are defined in theWITH OPTIONSclause.
+Thecase_sensitiveoption is set tofalseto allow case-insensitive searches.
+Thenormalizeoption is set totrueto allow searches to be normalized for Unicode characters.
+Theascii_onlyoption is set totrueto allow searches to be limited to ASCII characters.Themapcollection data type is the one exception, as shown in theexample below.Partition key SAI errorSAI indexes cannot be created on the partition key, as a primary index already exists and is used for queries.
+If you attempt to create an SAI on the partition key column, an error will be returned:CQLResultCREATE INDEX ON demo2.person_id_name_primarykey (id)
+  USING 'sai';InvalidRequest: Error from server: code=2200 [Invalid query] message="Cannot create secondary index on the only partition key column id"mapcollection in SAI indexMap collections do have a different format than other SAI indexes:// Create an index on a map key to find all cyclist/team combos for a year
+// tag::keysidx[]
+CREATE INDEX IF NOT EXISTS team_year_keys_idx
+ON cycling.cyclist_teams ( KEYS (teams) );
+// end::keysidx[]
+
+// Create an index on a map key to find all cyclist/team combos for a year
+// tag::valuesidx[]
+CREATE INDEX IF NOT EXISTS team_year_values_idx
+ON cycling.cyclist_teams ( VALUES (teams) );
+// end::valuesidx[]
+
+// Create an index on a map key to find all cyclist/team combos for a year
+// tag::entriesidx[]
+CREATE INDEX IF NOT EXISTS team_year_entries_idx
+ON cycling.cyclist_teams ( ENTRIES (teams) );
+// end::entriesidx[]similarity-function for vector searchThis example uses the following table:CREATE TABLE IF NOT EXISTS cycling.comments_vs (
+  record_id timeuuid,
+  id uuid,
+  commenter text,
+  comment text,
+  comment_vector VECTOR <FLOAT, 5>,
+  created_at timestamp,
+  PRIMARY KEY (id, created_at)
+)
+WITH CLUSTERING ORDER BY (created_at DESC);To check ifcomment_vectorhas a particular similarity function set, use thesimilarity-functionoption set to one of the supported similarity functions: DOT_PRODUCT, COSINE, or EUCLIDEAN. The default similarity function is COSINE.This index creates an index on thecomment_vectorcolumn with the similarity function set to DOT_PRODUCT:CREATE INDEX sim_comments_idx
+    ON cycling.comments_vs (comment_vector)
+    USING 'sai'
+    WITH OPTIONS = { 'similarity_function': 'DOT_PRODUCT'};Other resourcesSeeCREATE CUSTOM INDEXfor more information about creating SAI indexes.Alter SAI indexSAI indexes cannot be altered.
+If you need to modify an SAI index, you will need to drop the current index, create a new index, and rebuild the cycling.Drop indexDROP INDEX IF EXISTS cycling.lastname_sai_idx;Create new indexCREATE INDEX lastname_sai_idx ON cycling.cyclist_semi_pro (lastname)
+USING 'sai'
+WITH OPTIONS = {'case_sensitive': 'false', 'normalize': 'true', 'ascii': 'true'};
+
+CREATE INDEX age_sai_idx ON cycling.cyclist_semi_pro (age)
+USING 'sai';
+
+CREATE INDEX country_sai_idx ON cycling.cyclist_semi_pro (country)
+USING 'sai'
+WITH OPTIONS = {'case_sensitive': 'false', 'normalize': 'true', 'ascii': 'true'};
+
+CREATE INDEX registration_sai_idx ON cycling.cyclist_semi_pro (registration)
+USING 'sai';Drop SAI indexSAI indexes can be dropped (deleted).To drop an SAI index:DROP INDEX IF EXISTS cycling.lastname_sai_idx;This command does not return a result.Querying with SAITheSAI quickstartfocuses only on defining multiple indexes based on non-primary key columns (a very useful feature).
+Let’s explore other options using some examples of how you can run queries on tables that have differently defined SAI indexes.SAI only supportsSELECTqueries, but notUPDATEorDELETEqueries.Vector searchThis example uses the following table and index:CREATE TABLE IF NOT EXISTS cycling.comments_vs (
+  record_id timeuuid,
+  id uuid,
+  commenter text,
+  comment text,
+  comment_vector VECTOR <FLOAT, 5>,
+  created_at timestamp,
+  PRIMARY KEY (id, created_at)
+)
+WITH CLUSTERING ORDER BY (created_at DESC);
+CREATE INDEX IF NOT EXISTS ann_index
+  ON cycling.comments_vs(comment_vector) USING 'sai';Query vector data with CQLTo query data using Vector Search, use aSELECTquery:CQLResultSELECT * FROM cycling.comments_vs
+    ORDER BY comment_vector ANN OF [0.15, 0.1, 0.1, 0.35, 0.55]
+    LIMIT 3;id                                   | created_at                      | comment                                | comment_vector               | commenter | record_id
+--------------------------------------+---------------------------------+----------------------------------------+------------------------------+-----------+--------------------------------------
+ e7ae5cf3-d358-4d99-b900-85902fda9bb0 | 2017-04-01 14:33:02.160000+0000 | LATE RIDERS SHOULD NOT DELAY THE START | [0.9, 0.54, 0.12, 0.1, 0.95] |      Alex | 616e77e0-22a2-11ee-b99d-1f350647414a
+ c7fceba0-c141-4207-9494-a29f9809de6f | 2017-02-17 08:43:20.234000+0000 |      Glad you ran the race in the rain | [0.3, 0.34, 0.2, 0.78, 0.25] |       Amy | 6170c1d0-22a2-11ee-b99d-1f350647414a
+ c7fceba0-c141-4207-9494-a29f9809de6f | 2017-04-01 13:43:08.030000+0000 |                Last climb was a killer |   [0.3, 0.75, 0.2, 0.2, 0.5] |       Amy | 62105d30-22a2-11ee-b99d-1f350647414aThe limit has to be 1,000 or fewer.Scrolling to the right on the results shows the comments from the table that most closely matched the embeddings used for the query.Single index match on a columnThis example uses the following table and indexes:CREATE TABLE IF NOT EXISTS cycling.comments_vs (
+  record_id timeuuid,
+  id uuid,
+  commenter text,
+  comment text,
+  comment_vector VECTOR <FLOAT, 5>,
+  created_at timestamp,
+  PRIMARY KEY (id, created_at)
+)
+WITH CLUSTERING ORDER BY (created_at DESC);
+CREATE INDEX commenter_idx
+    ON cycling.comments_vs (commenter)
+    USING 'sai';
+CREATE INDEX created_at_idx
+    ON cycling.comments_vs (created_at)
+    USING 'sai';
+CREATE INDEX ann_index
+    ON cycling.comments_vs (comment_vector)
+    USING 'sai';The columncommenteris not the partition key in this table, so an index is required to query on it.Query for a match on that column:QueryResultSELECT * FROM cycling.comments_vs
+        WHERE commenter = 'Alex';id                                   | created_at                      | comment                                | comment_vector               | commenter | record_id
+--------------------------------------+---------------------------------+----------------------------------------+------------------------------+-----------+--------------------------------------
+ e7ae5cf3-d358-4d99-b900-85902fda9bb0 | 2017-04-01 14:33:02.160000+0000 | LATE RIDERS SHOULD NOT DELAY THE START | [0.9, 0.54, 0.12, 0.1, 0.95] |      Alex | 6d0cdaa0-272b-11ee-859f-b9098002fcac
+ e7ae5cf3-d358-4d99-b900-85902fda9bb0 | 2017-03-21 21:11:09.999000+0000 |      Second rest stop was out of water | [0.99, 0.5, 0.99, 0.1, 0.34] |      Alex | 6d0b7b10-272b-11ee-859f-b9098002fcacFailure with indexNote that a failure will occur if you try this query before creating the index:QueryResultSELECT * FROM cycling.comments_vs
+        WHERE commenter = 'Alex';InvalidRequest: Error from server: code=2200
+[Invalid query] message="Cannot execute this query as it might involve data filtering and thus may have unpredictable performance.
+If you want to execute this query despite the performance unpredictability, use ALLOW FILTERING"Single index match on a column with optionsThis example uses the following table and indexes:CREATE TABLE IF NOT EXISTS cycling.comments_vs (
+  record_id timeuuid,
+  id uuid,
+  commenter text,
+  comment text,
+  comment_vector VECTOR <FLOAT, 5>,
+  created_at timestamp,
+  PRIMARY KEY (id, created_at)
+)
+WITH CLUSTERING ORDER BY (created_at DESC);
+CREATE INDEX commenter_cs_idx ON cycling.comments_vs (commenter)
+USING 'sai'
+WITH OPTIONS = {'case_sensitive': 'true', 'normalize': 'true', 'ascii': 'true'};Case-sensitivtyThe columncommenteris not the partition key in this table, so an index is required to query on it.
+If we want to checkcommenteras a case-sensitive value, we can use thecase_sensitiveoption set totrue.Note that no results are returned if you use an inappropriately case-sensitive value in the query:QueryResultSELECT * FROM comments_vs WHERE commenter ='alex';id | created_at | comment | comment_vector | commenter | record_id
+----+------------+---------+----------------+-----------+-----------
+
+(0 rows)When we switch the case of the cyclist’s name to match the case in the index, the query succeeds:QueryResultSELECT comment,commenter FROM comments_vs WHERE commenter ='Alex';comment                                | commenter
+----------------------------------------+-----------
+ LATE RIDERS SHOULD NOT DELAY THE START |      Alex
+      Second rest stop was out of water |      Alex
+(2 rows)Index match on a composite partition key columnThis example uses the following table and indexes:CREATE TABLE IF NOT EXISTS cycling.rank_by_year_and_name (
+  race_year int,
+  race_name text,
+  cyclist_name text,
+  rank int,
+  PRIMARY KEY ((race_year, race_name), rank)
+);
+CREATE INDEX race_name_idx
+    ON cycling.rank_by_year_and_name (race_name)
+    USING 'sai';
+CREATE INDEX race_year_idx
+    ON cycling.rank_by_year_and_name (race_year)
+    USING 'sai';Composite partition keys have a partition defined by multiple columns in a table.
+Normally, you would need to specify all the columns in the partition key to query the table with aWHEREclause.
+However, an SAI index makes it possible to define an index using a single column in the table’s composite partition key.
+You can create an SAI index on each column in the composite partition key, if you need to query based on just one column.SAI indexes also allow you to query tables without using the inefficientALLOW FILTERINGdirective.
+TheALLOW FILTERINGdirective requires scanning all the partitions in a table, leading to poor performance.Therace_yearandrace_namecolumns comprise the composite partition key for thecycling.rank_by_year_and_nametable.Query for a match on the columnrace_name:QueryResultSELECT * FROM cycling.rank_by_year_and_name
+        WHERE race_name = 'Tour of Japan - Stage 4 - Minami > Shinshu';race_year | race_name                                  | rank | cyclist_name
+-----------+--------------------------------------------+------+----------------------
+      2014 | Tour of Japan - Stage 4 - Minami > Shinshu |    1 |        Daniel MARTIN
+      2014 | Tour of Japan - Stage 4 - Minami > Shinshu |    2 | Johan Esteban CHAVES
+      2014 | Tour of Japan - Stage 4 - Minami > Shinshu |    3 |      Benjamin PRADES
+      2015 | Tour of Japan - Stage 4 - Minami > Shinshu |    1 |      Benjamin PRADES
+      2015 | Tour of Japan - Stage 4 - Minami > Shinshu |    2 |          Adam PHELAN
+      2015 | Tour of Japan - Stage 4 - Minami > Shinshu |    3 |         Thomas LEBASQuery for a match on the columnrace_year:QueryResultSELECT * FROM cycling.rank_by_year_and_name
+        WHERE race_year = 2014;race_year | race_name                                  | rank | cyclist_name
+-----------+--------------------------------------------+------+----------------------
+      2014 |                        4th Tour of Beijing |    1 |    Phillippe GILBERT
+      2014 |                        4th Tour of Beijing |    2 |        Daniel MARTIN
+      2014 |                        4th Tour of Beijing |    3 | Johan Esteban CHAVES
+      2014 | Tour of Japan - Stage 4 - Minami > Shinshu |    1 |        Daniel MARTIN
+      2014 | Tour of Japan - Stage 4 - Minami > Shinshu |    2 | Johan Esteban CHAVES
+      2014 | Tour of Japan - Stage 4 - Minami > Shinshu |    3 |      Benjamin PRADESMultiple indexes matched with ANDThis example uses the following table and indexes:CREATE TABLE IF NOT EXISTS cycling.comments_vs (
+  record_id timeuuid,
+  id uuid,
+  commenter text,
+  comment text,
+  comment_vector VECTOR <FLOAT, 5>,
+  created_at timestamp,
+  PRIMARY KEY (id, created_at)
+)
+WITH CLUSTERING ORDER BY (created_at DESC);
+CREATE INDEX commenter_idx
+    ON cycling.comments_vs (commenter)
+    USING 'sai';
+CREATE INDEX created_at_idx
+    ON cycling.comments_vs (created_at)
+    USING 'sai';
+CREATE INDEX ann_index
+    ON cycling.comments_vs (comment_vector)
+    USING 'sai';Several indexes are created for the table to demonstrate how to query for matches on more than one column.Query for matches on more than one column, and both columns must match:QueryResultSELECT * FROM cycling.comments_vs
+    WHERE
+    created_at='2017-03-21 21:11:09.999000+0000'
+    AND commenter = 'Alex';id                                   | created_at                      | comment                           | comment_vector               | commenter | record_id
+--------------------------------------+---------------------------------+-----------------------------------+------------------------------+-----------+--------------------------------------
+ e7ae5cf3-d358-4d99-b900-85902fda9bb0 | 2017-03-21 21:11:09.999000+0000 | Second rest stop was out of water | [0.99, 0.5, 0.99, 0.1, 0.34] |      Alex | 6d0b7b10-272b-11ee-859f-b9098002fcacMultiple indexes matched with ORThis example uses the following table and indexes:CREATE TABLE IF NOT EXISTS cycling.comments_vs (
+  record_id timeuuid,
+  id uuid,
+  commenter text,
+  comment text,
+  comment_vector VECTOR <FLOAT, 5>,
+  created_at timestamp,
+  PRIMARY KEY (id, created_at)
+)
+WITH CLUSTERING ORDER BY (created_at DESC);
+CREATE INDEX commenter_idx
+    ON cycling.comments_vs (commenter)
+    USING 'sai';
+CREATE INDEX created_at_idx
+    ON cycling.comments_vs (created_at)
+    USING 'sai';
+CREATE INDEX ann_index
+    ON cycling.comments_vs (comment_vector)
+    USING 'sai';Several indexes are created for the table to demonstrate how to query for matches on more than one column.Query for a match on either one column or the other:QueryResultSELECT * FROM cycling.comments_vs
+    WHERE
+    created_at='2017-03-21 21:11:09.999000+0000'
+    OR created_at='2017-03-22 01:16:59.001000+0000';id                                   | created_at                      | comment                           | comment_vector               | commenter | record_id
+--------------------------------------+---------------------------------+-----------------------------------+------------------------------+-----------+--------------------------------------
+ e7ae5cf3-d358-4d99-b900-85902fda9bb0 | 2017-03-21 21:11:09.999000+0000 | Second rest stop was out of water | [0.99, 0.5, 0.99, 0.1, 0.34] |      Alex | 6d0b7b10-272b-11ee-859f-b9098002fcac
+ c7fceba0-c141-4207-9494-a29f9809de6f | 2017-03-22 01:16:59.001000+0000 |     Great snacks at all reststops |  [0.1, 0.4, 0.1, 0.52, 0.09] |       Amy | 6d0fc0d0-272b-11ee-859f-b9098002fcacMultiple indexes matched with INThis example uses the following table and indexes:CREATE TABLE IF NOT EXISTS cycling.comments_vs (
+  record_id timeuuid,
+  id uuid,
+  commenter text,
+  comment text,
+  comment_vector VECTOR <FLOAT, 5>,
+  created_at timestamp,
+  PRIMARY KEY (id, created_at)
+)
+WITH CLUSTERING ORDER BY (created_at DESC);
+CREATE INDEX commenter_idx
+    ON cycling.comments_vs (commenter)
+    USING 'sai';
+CREATE INDEX created_at_idx
+    ON cycling.comments_vs (created_at)
+    USING 'sai';
+CREATE INDEX ann_index
+    ON cycling.comments_vs (comment_vector)
+    USING 'sai';Several indexes are created for the table to demonstrate how to query for matches on more than one column.Query for match with column values in a list of values:QueryResultSELECT * FROM cycling.comments_vs
+    WHERE created_at IN
+    ('2017-03-21 21:11:09.999000+0000'
+    ,'2017-03-22 01:16:59.001000+0000');id                                   | created_at                      | comment                           | comment_vector               | commenter | record_id
+--------------------------------------+---------------------------------+-----------------------------------+------------------------------+-----------+--------------------------------------
+ e7ae5cf3-d358-4d99-b900-85902fda9bb0 | 2017-03-21 21:11:09.999000+0000 | Second rest stop was out of water | [0.99, 0.5, 0.99, 0.1, 0.34] |      Alex | 6d0b7b10-272b-11ee-859f-b9098002fcac
+ c7fceba0-c141-4207-9494-a29f9809de6f | 2017-03-22 01:16:59.001000+0000 |     Great snacks at all reststops |  [0.1, 0.4, 0.1, 0.52, 0.09] |       Amy | 6d0fc0d0-272b-11ee-859f-b9098002fcacUser-defined typeSAI can index either a user-defined type (UDT) or a list of UDTs.
+This example shows how to index a list of UDTs.This example uses the following user-defined type (UDT), table and index:CREATE TYPE IF NOT EXISTS cycling.race (
+  race_title text,
+  race_date timestamp,
+  race_time text
+);
+CREATE TABLE IF NOT EXISTS cycling.cyclist_races (
+  id UUID PRIMARY KEY,
+  lastname text,
+  firstname text,
+  races list<FROZEN <race>>
+);
+CREATE INDEX races_idx
+    ON cycling.cyclist_races (races)
+    USING 'sai';An index is created on the list of UDTs columnracesin thecycling.cyclist_racestable.Query withCONTAINSfrom the listracescolumn:CQLResultSELECT * FROM cycling.cyclist_races
+    WHERE races CONTAINS {
+       race_title:'Rabobank 7-Dorpenomloop Aalburg',
+       race_date:'2015-05-09',
+       race_time:'02:58:33'};id                                   | firstname | lastname | races
+--------------------------------------+-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 5b6962dd-3f90-4c93-8f61-eabfa4a803e2 |  Marianne |      VOS | [{race_title: 'Rabobank 7-Dorpenomloop Aalburg', race_date: '2015-05-09 00:00:00.000000+0000', race_time: '02:58:33'}, {race_title: 'Ronde van Gelderland', race_date: '2015-04-19 00:00:00.000000+0000', race_time: '03:22:23'}]
+
+(1 rows)SAI indexing with collectionsSAI supports collections of typemap,list, andset.
+Collections allow you to group and store data together in a column.In a relational database, a grouping such as a user’s multiple email addresses is achieved via many-to-one joined relationship between (for example) ausertable and anemailtable.
+Apache Cassandra avoids joins between two tables by storing the user’s email addresses in a collection column in theusertable.
+Each collection specifies the data type of the data held.A collection is appropriate if the data for collection storage is limited.
+If the data has unbounded growth potential, like messages sent or sensor events registered every second, do not use collections.
+Instead, use a table with a compound primary key where data is stored in the clustering columns.In CQL queries of database tables with SAI indexes, theCONTAINSclauses are supported with, and specific to:SAIcollection mapswithkeys,values, andentriesSAIcollectionswithlistandsettypesUsing the set typeThis example uses the following table and index:CREATE TABLE IF NOT EXISTS cycling.cyclist_career_teams (
+  id UUID PRIMARY KEY,
+  lastname text,
+  teams set<text>
+);
+CREATE INDEX teams_idx
+    ON cycling.cyclist_career_teams (teams)
+    USING 'sai';An index is created on the set columnteamsin thecyclist_career_teamstable.Query withCONTAINSfrom the setteamscolumn:CQLResultSELECT * FROM cycling.cyclist_career_teams
+   WHERE teams CONTAINS 'Rabobank-Liv Giant';id                                   | lastname | teams
+--------------------------------------+----------+------------------------------------------------------------------------------------------------------
+ 5b6962dd-3f90-4c93-8f61-eabfa4a803e2 |      VOS | {'Nederland bloeit', 'Rabobank Women Team', 'Rabobank-Liv Giant', 'Rabobank-Liv Woman Cycling Team'}Using the list typeThis example uses the following table and index:CREATE TABLE IF NOT EXISTS cycling.upcoming_calendar (
+  year int,
+  month int,
+  events list<text>,
+  PRIMARY KEY (year, month)
+);
+CREATE INDEX events_idx
+    ON cycling.upcoming_calendar (events)
+    USING 'sai';An index is created on the list columneventsin theupcoming_calendartable.Query withCONTAINSfrom the listeventscolumn:CQLResultSELECT * FROM cycling.upcoming_calendar
+   WHERE events CONTAINS 'Criterium du Dauphine';year | month | events
+------+-------+-----------------------------------------------
+ 2015 |     6 | ['Criterium du Dauphine', 'Tour de Sui\nsse']A slightly more complex query selects rows that either contain a particular event or have a particular month date:CQLResultSELECT * FROM cycling.upcoming_calendar
+    WHERE events CONTAINS 'Criterium du Dauphine'
+          OR month = 7;year | month | events
+------+-------+-----------------------------------------------
+ 2015 |     6 | ['Criterium du Dauphine', 'Tour de Sui\nsse']
+ 2015 |     7 |                            ['Tour de France']Using the map typeThis example uses the following table and indexes:CREATE TABLE IF NOT EXISTS cycling.cyclist_teams (
+  id uuid PRIMARY KEY,
+  firstname text,
+  lastname text,
+  teams map<int, text>
+);
+CREATE INDEX IF NOT EXISTS team_year_keys_idx
+ON cycling.cyclist_teams ( KEYS (teams) );
+CREATE INDEX IF NOT EXISTS team_year_entries_idx
+ON cycling.cyclist_teams ( ENTRIES (teams) );
+CREATE INDEX IF NOT EXISTS team_year_values_idx
+ON cycling.cyclist_teams ( VALUES (teams) );Indexes created on the map columnteamsin thecyclist_career_teamstable target the keys, values, and full entries of the column data.Query withKEYSfrom the mapteamscolumn:CQLResultSELECT * FROM cyclist_teams WHERE teams CONTAINS KEY 2014;id                                   | firstname | lastname   | teams
+--------------------------------------+-----------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ cb07baad-eac8-4f65-b28a-bddc06a0de23 | Elizabeth | ARMITSTEAD | {2011: 'Team Garmin - Cervelo', 2012: 'AA Drink - Leontien.nl', 2013: 'Boels:Dolmans Cycling Team', 2014: 'Boels:Dolmans Cycling Team', 2015: 'Boels:Dolmans Cycling Team'}
+ 5b6962dd-3f90-4c93-8f61-eabfa4a803e2 |  Marianne |        VOS |                                                                                          {2014: 'Rabobank-Liv Woman Cycling Team', 2015: 'Rabobank-Liv Woman Cycling Team'}Query a value from the mapteamscolumn, noting that only the keywordCONTAINSis included:CQLResultSELECT * FROM cyclist_teams WHERE teams CONTAINS 'Team Garmin - Cervelo';id                                   | firstname | lastname   | teams
+--------------------------------------+-----------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ cb07baad-eac8-4f65-b28a-bddc06a0de23 | Elizabeth | ARMITSTEAD | {2011: 'Team Garmin - Cervelo', 2012: 'AA Drink - Leontien.nl', 2013: 'Boels:Dolmans Cycling Team', 2014: 'Boels:Dolmans Cycling Team', 2015: 'Boels:Dolmans Cycling Team'}Query entries from the mapteamscolumn, noting the difference in theWHEREclause:CQLResultSELECT * FROM cyclist_teams
+WHERE
+    teams[2014] = 'Boels:Dolmans Cycling Team'
+    AND teams[2015] = 'Boels:Dolmans Cycling Team';id                                   | firstname | lastname   | teams
+--------------------------------------+-----------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ cb07baad-eac8-4f65-b28a-bddc06a0de23 | Elizabeth | ARMITSTEAD | {2011: 'Team Garmin - Cervelo', 2012: 'AA Drink - Leontien.nl', 2013: 'Boels:Dolmans Cycling Team', 2014: 'Boels:Dolmans Cycling Team', 2015: 'Boels:Dolmans Cycling Team'}This example looks for a row where two entries are present in the mapteamscolumn.For more information, see:CREATE CUSTOM INDEXCreating collectionsUsing set typeUsing list typeUsing map typeGet started with Cassandra, fast.Quickstart GuideApache Cassandrapowers mission-critical deployments with improved performance and unparalleled levels of scale in the cloud.HomeCassandra BasicsQuickstartEcosystemDocumentationCommunityCase StudiesResourcesBlogFoundationEventsLicenseThanksSecurityPrivacySponsorshipÂ© 2009-The Apache Software Foundationunder the terms of the Apache License 2.0.  Apache, the Apache feather logo, Apache Cassandra, Cassandra, and the Cassandra logo, are either registered trademarks or trademarks of The Apache Software Foundation.

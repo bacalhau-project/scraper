@@ -1,0 +1,114 @@
+URL: https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsProvidedStorage.html
+
+Wiki|git|Apache Hadoop| Last Published: 2024-03-04
+               | Version: 3.4.0GeneralOverviewSingle Node SetupCluster SetupCommands ReferenceFileSystem ShellCompatibility SpecificationDownstream Developer's GuideAdmin Compatibility GuideInterface ClassificationFileSystem SpecificationCommonCLI Mini ClusterFair Call QueueNative LibrariesProxy UserRack AwarenessSecure ModeService Level AuthorizationHTTP AuthenticationCredential Provider APIHadoop KMSTracingUnix Shell GuideRegistryAsync ProfilerHDFSArchitectureUser GuideCommands ReferenceNameNode HA With QJMNameNode HA With NFSObserver NameNodeFederationViewFsViewFsOverloadSchemeSnapshotsEdits ViewerImage ViewerPermissions and HDFSQuotas and HDFSlibhdfs (C API)WebHDFS (REST API)HttpFSShort Circuit Local ReadsCentralized Cache ManagementNFS GatewayRolling UpgradeExtended AttributesTransparent EncryptionMultihomingStorage PoliciesMemory Storage SupportSynthetic Load GeneratorErasure CodingDisk BalancerUpgrade DomainDataNode AdminRouter FederationProvided StorageMapReduceTutorialCommands ReferenceCompatibility with 1.xEncrypted ShufflePluggable Shuffle/SortDistributed Cache DeploySupport for YARN Shared CacheMapReduce REST APIsMR Application MasterMR History ServerYARNArchitectureCommands ReferenceCapacity SchedulerFair SchedulerResourceManager RestartResourceManager HAResource ModelNode LabelsNode AttributesWeb Application ProxyTimeline ServerTimeline Service V.2Writing YARN ApplicationsYARN Application SecurityNodeManagerRunning Applications in Docker ContainersRunning Applications in runC ContainersUsing CGroupsSecure ContainersReservation SystemGraceful DecommissionOpportunistic ContainersYARN FederationShared CacheUsing GPUUsing FPGAPlacement ConstraintsYARN UI2YARN REST APIsIntroductionResource ManagerNode ManagerTimeline ServerTimeline Service V.2YARN ServiceOverviewQuickStartConceptsYarn Service APIService DiscoverySystem ServicesHadoop Compatible File SystemsAliyun OSSAmazon S3Azure Blob StorageAzure Data Lake StorageTencent COSHuaweicloud OBSAuthOverviewExamplesConfigurationBuildingToolsHadoop StreamingHadoop ArchivesHadoop Archive LogsDistCpHDFS Federation BalanceGridMixRumenResource Estimator ServiceScheduler Load SimulatorHadoop BenchmarkingDynamometerReferenceChangelog and Release NotesJava API docsUnix Shell APIMetricsConfigurationcore-default.xmlhdfs-default.xmlhdfs-rbf-default.xmlmapred-default.xmlyarn-default.xmlkms-default.xmlhttpfs-default.xmlDeprecated PropertiesHDFS Provided StorageProvided storage allows datastored outside HDFSto be mapped to and addressed from HDFS. It builds onheterogeneous storageby introducing a new storage type,PROVIDED, to the set of media in a datanode. Clients accessing data inPROVIDEDstorages can cache replicas in local media, enforce HDFS invariants (e.g., security, quotas), and address more data than the cluster could persist in the storage attached to DataNodes. This architecture is particularly useful in scenarios where HDFS clusters are ephemeral (e.g., cloud scenarios), and/or require to read data that lives in other storage systems (e.g., blob stores).Provided storage is an experimental feature in HDFS.IntroductionCreating HDFS Clusters with PROVIDED StoragePROVIDED Configurationfs2img toolExamplesAlias Map ImplementationsInMemoryAliasMapConfigurationTextFileRegionAliasMapConfigurationIntroductionAs of this writing, support for mounting external storage asPROVIDEDblocks is limited to creating aread-only imageof a remote namespace that implements theorg.apache.hadoop.fs.FileSysteminterface, and starting a NameNode to serve the image. Specifically, reads from a snapshot of a remote namespace are supported. Adding a remote namespace to an existing/running namenode, refreshing the remote snapshot, unmounting, and writes are not available in this release. One can useViewFsandRBFto integrate namespaces withPROVIDEDstorage into an existing deployment.Creating HDFS Clusters withPROVIDEDStorageOne can create snapshots of the remote namespace using thefs2imgtool. Given a path to a remoteFileSystem, the tool creates animagemirroring the namespace and analias mapthat maps blockIDs in the generated image to aFileRegionin the remote filesystem. AFileRegioncontains sufficient information to address a fixed sequence of bytes in the remoteFileSystem(e.g., file, offset, length) and a nonce to verify that the region is unchanged since the image was generated.After the NameNode image and alias map are created, the NameNode and DataNodes must be configured to consistently reference this address space. When a DataNode registers with an attached,PROVIDEDstorage, the NameNode considers all the external blocks to be addressable through that DataNode, and may begin to direct clients to it. Symmetrically, the DataNode must be able to map every block in thePROVIDEDstorage to remote data.Deployment details vary depending on the configured alias map implementation.PROVIDEDConfigurationEach NameNode supports one alias map. WhenPROVIDEDstorage is enabled, the storage ID configured on the NameNode and DataNodes must match. All other details are internal to the alias map implementation.The configuration to enablePROVIDEDstorage is as follows. The configuration options available for the alias map implementations are available below.<configuration>
+
+  <property>
+    <name>dfs.namenode.provided.enabled</name>
+    <value>true</value>
+    <description>Enabled provided storage on the Namenode</description>
+  </property>
+
+  <property>
+     <name>dfs.datanode.data.dir</name>
+     <value>[DISK]/local/path/to/blocks/, [PROVIDED]remoteFS://remoteFS-authority/path/to/data/</value>
+  </property>
+
+  <property>
+      <name>dfs.provided.storage.id</name>
+      <value>DS-PROVIDED</value>
+      <description>The storage ID used for provided storages in the cluster.</description>
+  </property>
+
+  <property>
+    <name>dfs.provided.aliasmap.class</name>
+    <value>org.apache.hadoop.hdfs.server.common.blockaliasmap.impl.TextFileRegionAliasMap</value>
+  </property>
+
+</configuration>fs2img toolThefs2imgtool “walks” over a remote namespace by recursively enumerating children of a remote URI to produce an FSImage. Some attributes can be controlled by plugins, such as owner/group mappings from the remote filesystem to HDFS and the mapping of files to HDFS blocks.The various options available in running the tool are:OptionPropertyDefaultDescription-o,--outdirdfs.namenode.name.dirfile://${hadoop.tmp.dir}/dfs/nameOutput directory-b,--blockclassdfs.provided.aliasmap.classNullBlocksMapBlock output class-u,--ugiclasshdfs.image.writer.ugi.classSingleUGIResolverUGI resolver class-i,--blockidclasshdfs.image.writer.blockresolver.classFixedBlockResolverBlock resolver class-c,--cachedirshdfs.image.writer.cache.entries100Max active dirents-cid,--clusterIDCluster ID-bpid,--blockPoolIDBlock pool IDExamplesAssign all files to be owned by “rmarathe”, write to gzip compressed text:hadoop org.apache.hadoop.hdfs.server.namenode.FileSystemImage \
+  -Dhdfs.image.writer.ugi.single.user=rmarathe \
+  -Ddfs.provided.aliasmap.text.codec=gzip \
+  -Ddfs.provided.aliasmap.text.write.dir=file:///tmp/
+  -b org.apache.hadoop.hdfs.server.common.blockaliasmap.impl.TextFileRegionAliasMap \
+  -u org.apache.hadoop.hdfs.server.namenode.SingleUGIResolver \
+  -o file:///tmp/name \
+  hdfs://afreast/projects/ydau/onanAssign ownership based on a customUGIResolver, in LevelDB:hadoop org.apache.hadoop.hdfs.server.namenode.FileSystemImage \
+  -Ddfs.provided.aliasmap.leveldb.path=/path/to/leveldb/map/dingos.db \
+  -b org.apache.hadoop.hdfs.server.common.blockaliasmap.impl.LevelDBFileRegionAliasMap \
+  -o file:///tmp/name \
+  -u CustomResolver \
+  hdfs://enfield/projects/ywqmd/incandenzaAlias Map ImplementationsThe alias map implementation to use is configured using thedfs.provided.aliasmap.classparameter. Currently, the following two types of alias maps are supported.InMemoryAliasMapThis is a LevelDB-based alias map that runs as a separate server in Namenode. The alias map itself can be created using thefs2imgtool using the option-Ddfs.provided.aliasmap.leveldb.path=file:///path/to/leveldb/map/dingos.db -b org.apache.hadoop.hdfs.server.common.blockaliasmap.impl.LevelDBFileRegionAliasMapas in the example above.Datanodes contact this alias map using theorg.apache.hadoop.hdfs.server.aliasmap.InMemoryAliasMapProtocolprotocol.Configuration<configuration>
+  <property>
+    <name>dfs.provided.aliasmap.inmemory.batch-size</name>
+    <value>500</value>
+    <description>
+      The batch size when iterating over the database backing the aliasmap
+    </description>
+  </property>
+
+  <property>
+    <name>dfs.provided.aliasmap.inmemory.dnrpc-address</name>
+    <value>namenode:rpc-port</value>
+    <description>
+      The address where the aliasmap server will be running
+    </description>
+  </property>
+
+  <property>
+    <name>dfs.provided.aliasmap.inmemory.leveldb.dir</name>
+    <value>/path/to/leveldb/map/dingos.db</value>
+    <description>
+      The directory where the leveldb files will be kept
+    </description>
+  </property>
+
+  <property>
+    <name>dfs.provided.aliasmap.inmemory.enabled</name>
+    <value>true</value>
+    <description>Enable the inmemory alias map on the NameNode. Defaults to false.</description>
+  </property>
+
+  <property>
+    <name>dfs.provided.aliasmap.class</name>
+    <value>org.apache.hadoop.hdfs.server.common.blockaliasmap.impl.InMemoryLevelDBAliasMapClient</value>
+  </property>
+</configuration>TextFileRegionAliasMapThis alias map implementation stores the mapping fromblockIDs toFileRegions in a delimited text file. This format is useful for test environments, particularly single-node.Configuration<configuration>
+  <property>
+    <name>dfs.provided.aliasmap.text.delimiter</name>
+    <value>,</value>
+    <description>
+        The delimiter used when the alias map is specified as
+        a text file.
+    </description>
+  </property>
+
+  <property>
+    <name>dfs.provided.aliasmap.text.read.file</name>
+    <value>file:///path/to/aliasmap/blocks_blocPoolID.csv</value>
+    <description>
+        The path specifying the alias map as a text file,
+        specified as a URI.
+    </description>
+  </property>
+
+  <property>
+    <name>dfs.provided.aliasmap.text.codec</name>
+    <value></value>
+    <description>
+        The codec used to de-compress the alias map. Default value is empty.
+    </description>
+  </property>
+
+  <property>
+    <name>dfs.provided.aliasmap.text.write.dir</name>
+    <value>file:///path/to/aliasmap/</value>
+    <description>
+        The path to which the alias map should be written as a text
+        file, specified as a URI.
+    </description>
+  </property>
+</configuration>©            2008-2024
+              Apache Software Foundation
+            
+                          -Privacy Policy.
+        Apache Maven, Maven, Apache, the Apache feather logo, and the Apache Maven project logos are trademarks of The Apache Software Foundation.

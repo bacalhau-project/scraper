@@ -1,0 +1,6 @@
+URL: https://kafka.apache.org/podcasts
+
+Apache KafkaToggle navigationGet StartedIntroductionQuickstartUse CasesBooks & PapersVideosPodcastsDocsKey ConceptsAPIsConfigurationDesignImplementationOperationsSecurityClientsKafka ConnectKafka StreamsPowered ByCommunityBlogKafka SummitProject InfoTrademarkEcosystemEventsContact usApacheLicenseDonateSponsorsSecurityPrivacyApache.orgDownload KafkaPodcastsStreaming Audio Podcastby Confluent â episodes cover a variety of topics surrounding Apache Kafka,
+            real-time data streaming, and the cloud.Data Engineering Podcastby Tobias Macey â each new episode provides useful and informative insights
+            into the projects, platforms, and practices that data engineers, team leaders,
+            and data scientists need to know about to learn and grow in their careerSoftware Engineering Daily Podcastby Jeff Meyerson â while this podcast is rather broad in scope, itsdata subcategoryis useful for Kafka practitionersThe contents of this website are © 2024Apache Software Foundationunder the terms of theApache License v2.Apache Kafka, Kafka, and the Kafka logo are either registered trademarks or trademarks of The Apache Software Foundationin the United States and other countries.Security|Donate|Thanks|Events|License|Privacy

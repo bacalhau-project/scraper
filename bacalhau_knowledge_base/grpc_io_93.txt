@@ -1,0 +1,36 @@
+URL: https://grpc.io/docs/guides/interceptors/
+
+gRPCAboutMeetDocsGuidesShowcaseBlogCommunitygRPConf 2024 is happening NEXT WEEK onAug. 27th!-Register nowand get 25% off with the code GOOGLE25.DocsWhat is gRPC?IntroductionCore conceptsFAQLanguagesC# / .NETAPI (legacy)Daily builds (legacy)C++Quick startBasics tutorialAsync-API tutorialAsynchronous Callback API TutorialBest Practices for gRPC C++ API and FAQALTSAPIDartQuick startBasics tutorialAPIGoQuick startBasics tutorialALTSAPIGenerated codeJavaQuick startBasics tutorialALTSAPIGenerated codeKotlinQuick startBasics tutorialAPINodeQuick startBasics tutorialAPIObjective-CQuick startBasics tutorialOAuth2APIPHPQuick startBasics tutorialAPIDaily buildsPythonQuick startBasics tutorialALTSGenerated codeAPIDaily buildsRubyQuick startBasics tutorialAPIDaily buildsPlatformsAndroidJavaQuick startBasics tutorialAPIKotlinQuick startAPIWebQuick startBasics tutorialGuidesAuthenticationBenchmarkingCancellationCompressionCustom Backend MetricsCustom Load Balancing PoliciesCustom Name ResolutionDeadlinesDebuggingError handlingFlow ControlHealth CheckingInterceptorsKeepaliveMetadataOpenTelemetry MetricsPerformance Best PracticesReflectionRequest HedgingRetryService ConfigStatus CodesWait-for-ReadyView page sourceEdit this pageCreate child pageCreate documentation issueCreate project issueOverviewWhen to Use InterceptorsHow to Use InterceptorsInterceptor OrderLanguage SupportDocsGuidesInterceptorsInterceptorsExplains how interceptors can be used for implementing generic behavior that applies to many RPC methods.ContentsOverviewWhen to Use InterceptorsHow to Use InterceptorsInterceptor OrderLanguage SupportInterceptorsExplains how interceptors can be used for implementing generic behavior that applies to many RPC methods.OverviewThe core of making gRPC services is implementing RPC methods. But some
+functionality is independent of the method being run and should apply to all or
+most RPCs. Interceptors are well suited to this task.When to Use InterceptorsYou may already be familiar with the concept of interceptors, but may be used to
+calling them “filters” or “middleware.” Interceptors are very well suited to
+implementing logic that is not specific to a single RPC method. They are also
+easy to share across different clients or servers. Interceptors are an important
+and frequently-used way to extend gRPC. You might find some functionality you
+want is already available as an interceptor in the wider gRPC ecosystem.Some example use cases for interceptors are:MetadatahandlingLoggingFault injectionCachingMetricsPolicy enforcementServer-side AuthenticationServer-side AuthorizationNoteWhileclient-sideauthentication could be done via an interceptor, gRPC
+provides a specialized “call credentials” API that is better suited to the task.
+See theAuthentication Guidefor details about client-side
+authentication.How to Use InterceptorsInterceptors can be added when building a gRPC channel or server. The
+interceptor is then called for every RPC on that channel or server. The
+interceptor APIs are different for client-side than server-side, so an
+interceptor will either be a “client interceptor” or a “server interceptor.”Interceptors are inherently per-call; they are not useful for managing TCP
+connections, configuring the TCP port, or configuring TLS. While the proper tool
+for most customization, they can’t be used for everything.Interceptor OrderWhen using multiple interceptors, their order is significant. You’ll want to
+make sure to understand the order your gRPC implementation will execute them. It
+is useful to think about the interceptors as being in a line between the
+application and the network. Some interceptors will be “closer to the network”
+and have more control over what is sent and others will be “closer to the
+application” which have a better view into the application’s behavior.Suppose you have two client interceptors: a caching interceptor and a logging
+interceptor. What order should they be in? You might want the logging
+interceptor closer to the network to better monitor your application’s
+communication and ignore cached RPCs:flowchart LR
+APP(Application) --> INT1
+INT1(Caching\nInterceptor) -->|Cache miss| INT2
+INT2(Logging\nInterceptor) --> NET
+NET(Network)Or you might want it closer to the application to understand your app’s behavior
+and see what information it is loading:flowchart LR
+APP(Application) --> INT2
+INT1(Caching\nInterceptor) -->|Cache miss| NET
+INT2(Logging\nInterceptor) --> INT1
+NET(Network)You can choose between these options by just changing the order of the
+interceptors.Language SupportLanguageExampleC++C++ exampleGoGo exampleJavaJava examplePythonPython exampleLast modified February 29, 2024:guides: Add interceptors (#1267) (d9bbae5)View page sourceEdit this pageCreate child pageCreate documentation issueCreate project issue© 2024 gRPC AuthorsTerms|Privacy|Trademarks|License|About

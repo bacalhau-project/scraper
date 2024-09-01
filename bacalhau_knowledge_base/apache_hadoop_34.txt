@@ -1,0 +1,7 @@
+URL: https://hadoop.apache.org/release/3.2.4.html
+
+Toggle navigationApache HadoopDownloadDocumentationCurrent (trunk)LatestStable3.4.03.3.62.10.2WikiCommunityBylawsCriteria for CommittershipMailing listsPublished CVEsWho We areDevelopmentHow to ContributeIssue TrackingVersion ControlVersioningHelpBuy StuffSponsorshipThanksApache Software FoundationRelease 3.2.4 availableThis is the third stable release of Apache Hadoop 3.2 line.It contains 153 bug fixes, improvements and enhancements since 3.2.3.Users are encouraged to read theoverview of major changessince 3.2.3.
+For details of 153 bug fixes, improvements, and other enhancements since the previous 3.2.3 release,
+please checkrelease notesandchangelog.2022 Jul 22Download tar.gz(checksumsignature)Download src(checksumsignature)DocumentationApache Hadoop, Hadoop, Apache, the Apache feather logo,
+    and the Apache Hadoop project logo are either registered trademarks or trademarks of the Apache Software Foundation
+     in the United States and other countriesCopyright Â© 2006-2024 The Apache Software FoundationPrivacy policy

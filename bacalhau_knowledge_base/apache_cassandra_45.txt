@@ -1,0 +1,38 @@
+URL: https://cassandra.apache.org/_/development/ci.html
+
+Get StartedCassandra BasicsQuickstartEcosystemDocumentationCommunityWelcomeDiscussionsGovernanceContributeMeet the CommunityCatalyst ProgramEventsLearnCassandra 5.0Case StudiesResourcesBlogDownload NowCI EnvironmentsAbout CI testing and Apache CassandraCassandra can be automatically tested using various test suites, that
+are either implemented based on JUnit or thedtestscripts written in
+Python. As outlined intesting, each kind of test suite addresses a
+different way to test Cassandra. Eventually, all of the tests will be
+executed together on the CI platform atbuilds.apache.org, runningJenkins.Setting up your own Jenkins serverJenkins is an open source solution that can be installed on a large
+number of platforms. Setting up a custom Jenkins instance for Cassandra
+may be desirable for users who have hardware to spare, or organizations
+that want to run Cassandra tests for custom patches before contribution.Please refer to the Jenkins download and documentation pages for details
+on how to get Jenkins running, possibly also including slave build
+executor instances. The rest of the document will focus on how to setup
+Cassandra jobs in your Jenkins environment.Required pluginsIn addition, the following plugins need to be installed along with the standard
+plugins (git, ant, ..).You can install any missing plugins using the install manager.Go toManage Jenkins → Manage Plugins → Availableand install the
+following plugins and respective dependencies:Job DSLJavadoc Plugindescription setter pluginThrottle Concurrent Builds Plug-inTest stability historyPost Build ScriptSetup seed jobConfigNew ItemName itCassandra-Job-DSLSelectFreestyle projectUnderSource Code Managementselect Git using the repository:github.com/apache/cassandra-buildsUnderBuild, confirmAdd build step→Process Job DSLsand enter
+atLook on Filesystem:jenkins-dsl/cassandra_job_dsl_seed.groovyGenerated jobs will be created based on the Groovy script’s default
+settings. You may want to override settings by checkingThis project is parameterizedand addString Parameterfor on the
+variables that can be found in the top of the script. This will allow
+you to setup jobs for your own repository and branches (e.g. working
+branches).When done, confirm "Save".You should now find a new entry with the given name in your project
+list. However, building the project will still fail and abort with an
+error message "Processing DSL script
+cassandra_job_dsl_seed.groovy ERROR: script not yet approved for use".
+Go toManage Jenkins→In-process Script Approvalto fix this issue.
+Afterwards you should be able to run the script and have it generate
+numerous new jobs based on the found branches and configured templates.Jobs are triggered by either changes in Git or are scheduled to execute
+periodically, e.g. on daily basis.
+Jenkins will use any available executor with the label "cassandra", once the job
+is to be run.
+Please make sure to make any executors available by selectingBuild Executor Status→Configure→ Add “cassandra” as label and
+save.Executors need to have "JDK 1.8 (latest)" installed. This is done underManage Jenkins → Global Tool Configuration → JDK Installationsâ¦.
+Executors also need to have thevirtualenvpackage installed on their
+system.CircleCICassandra ships with a defaultCircleCIconfiguration to enable running tests on your branches.
+Go to the CircleCI website, click "Login" and log in with your github account.
+Then give CircleCI permission to watch your repositories.Once you have done that, you can optionally configure CircleCI to run
+tests in parallel if you wish:ClickProjectsand select your github account, and then click the settings for your project.Set the parallelism setting. If you leave the default value of 1
+for Cassandra, onlyant eclipse-warningsandant testwill be run.
+If you change the value to 4, Circle CI also runsant long-test,ant test-compressionandant stress-test.Get started with Cassandra, fast.Quickstart GuideApache Cassandrapowers mission-critical deployments with improved performance and unparalleled levels of scale in the cloud.HomeCassandra BasicsQuickstartEcosystemDocumentationCommunityCase StudiesResourcesBlogFoundationEventsLicenseThanksSecurityPrivacySponsorshipÂ© 2009-The Apache Software Foundationunder the terms of the Apache License 2.0.  Apache, the Apache feather logo, Apache Cassandra, Cassandra, and the Cassandra logo, are either registered trademarks or trademarks of The Apache Software Foundation.

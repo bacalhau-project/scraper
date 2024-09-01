@@ -1,0 +1,3 @@
+URL: https://raft.github.io/raftscope-replay/index.html
+
+××Keyboard shortcuts/.Pause/unpause?HelpCSubmit client request to leader of highest term, if anyRRestart leader of highest term, if anyTAdjust election timers to avoid a split voteAAlign election timers to encourage a split voteLSet up log replication start scenarioBResume all serversFFork playback, discarding future×

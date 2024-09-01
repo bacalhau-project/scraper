@@ -1,0 +1,42 @@
+URL: https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/Superusers.html
+
+Wiki|git|Apache Hadoop| Last Published: 2024-03-04
+               | Version: 3.4.0GeneralOverviewSingle Node SetupCluster SetupCommands ReferenceFileSystem ShellCompatibility SpecificationDownstream Developer's GuideAdmin Compatibility GuideInterface ClassificationFileSystem SpecificationCommonCLI Mini ClusterFair Call QueueNative LibrariesProxy UserRack AwarenessSecure ModeService Level AuthorizationHTTP AuthenticationCredential Provider APIHadoop KMSTracingUnix Shell GuideRegistryAsync ProfilerHDFSArchitectureUser GuideCommands ReferenceNameNode HA With QJMNameNode HA With NFSObserver NameNodeFederationViewFsViewFsOverloadSchemeSnapshotsEdits ViewerImage ViewerPermissions and HDFSQuotas and HDFSlibhdfs (C API)WebHDFS (REST API)HttpFSShort Circuit Local ReadsCentralized Cache ManagementNFS GatewayRolling UpgradeExtended AttributesTransparent EncryptionMultihomingStorage PoliciesMemory Storage SupportSynthetic Load GeneratorErasure CodingDisk BalancerUpgrade DomainDataNode AdminRouter FederationProvided StorageMapReduceTutorialCommands ReferenceCompatibility with 1.xEncrypted ShufflePluggable Shuffle/SortDistributed Cache DeploySupport for YARN Shared CacheMapReduce REST APIsMR Application MasterMR History ServerYARNArchitectureCommands ReferenceCapacity SchedulerFair SchedulerResourceManager RestartResourceManager HAResource ModelNode LabelsNode AttributesWeb Application ProxyTimeline ServerTimeline Service V.2Writing YARN ApplicationsYARN Application SecurityNodeManagerRunning Applications in Docker ContainersRunning Applications in runC ContainersUsing CGroupsSecure ContainersReservation SystemGraceful DecommissionOpportunistic ContainersYARN FederationShared CacheUsing GPUUsing FPGAPlacement ConstraintsYARN UI2YARN REST APIsIntroductionResource ManagerNode ManagerTimeline ServerTimeline Service V.2YARN ServiceOverviewQuickStartConceptsYarn Service APIService DiscoverySystem ServicesHadoop Compatible File SystemsAliyun OSSAmazon S3Azure Blob StorageAzure Data Lake StorageTencent COSHuaweicloud OBSAuthOverviewExamplesConfigurationBuildingToolsHadoop StreamingHadoop ArchivesHadoop Archive LogsDistCpHDFS Federation BalanceGridMixRumenResource Estimator ServiceScheduler Load SimulatorHadoop BenchmarkingDynamometerReferenceChangelog and Release NotesJava API docsUnix Shell APIMetricsConfigurationcore-default.xmlhdfs-default.xmlhdfs-rbf-default.xmlmapred-default.xmlyarn-default.xmlkms-default.xmlhttpfs-default.xmlDeprecated PropertiesProxy user - Superusers Acting On Behalf Of Other UsersIntroductionUse CaseCode exampleConfigurationsCaveatsIntroductionThis document describes how a superuser can submit jobs or access hdfs on behalf of another user.Use CaseThe code example described in the next section is applicable for the following use case.A superuser with username ‘super’ wants to submit job and access hdfs on behalf of a user joe. The superuser has kerberos credentials but user joe doesn’t have any. The tasks are required to run as user joe and any file accesses on namenode are required to be done as user joe. It is required that user joe can connect to the namenode or job tracker on a connection authenticated with super’s kerberos credentials. In other words super is impersonating the user joe.Some products such as Apache Oozie need this.Code exampleIn this example super’s credentials are used for login and a proxy user ugi object is created for joe. The operations are performed within the doAs method of this proxy user ugi object....
+    //Create ugi for joe. The login user is 'super'.
+    UserGroupInformation ugi =
+            UserGroupInformation.createProxyUser("joe", UserGroupInformation.getLoginUser());
+    ugi.doAs(new PrivilegedExceptionAction<Void>() {
+      public Void run() throws Exception {
+        //Submit a job
+        JobClient jc = new JobClient(conf);
+        jc.submitJob(conf);
+        //OR access hdfs
+        FileSystem fs = FileSystem.get(conf);
+        fs.mkdir(someFilePath);
+      }
+    }ConfigurationsYou can configure proxy user using propertieshadoop.proxyuser.$superuser.hostsalong with either or both ofhadoop.proxyuser.$superuser.groupsandhadoop.proxyuser.$superuser.users.By specifying as below in core-site.xml, the superuser namedsupercan connect only fromhost1andhost2to impersonate a user belonging togroup1andgroup2.<property>
+     <name>hadoop.proxyuser.super.hosts</name>
+     <value>host1,host2</value>
+   </property>
+   <property>
+     <name>hadoop.proxyuser.super.groups</name>
+     <value>group1,group2</value>
+   </property>If these configurations are not present, impersonation will not be allowed and connection will fail.If more lax security is preferred, the wildcard value * may be used to allow impersonation from any host or of any user. For example, by specifying as below in core-site.xml, user namedoozieaccessing from any host can impersonate any user belonging to any group.<property>
+    <name>hadoop.proxyuser.oozie.hosts</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.oozie.groups</name>
+    <value>*</value>
+  </property>Thehadoop.proxyuser.$superuser.hostsaccepts list of ip addresses, ip address ranges in CIDR format and/or host names. For example, by specifying as below, user namedsuperaccessing from hosts in the range10.222.0.0-10.222.255.255and10.113.221.221can impersonateuser1anduser2.<property>
+     <name>hadoop.proxyuser.super.hosts</name>
+     <value>10.222.0.0/16,10.113.221.221</value>
+   </property>
+   <property>
+     <name>hadoop.proxyuser.super.users</name>
+     <value>user1,user2</value>
+   </property>CaveatsIf the cluster is running inSecure Mode, the superuser must have kerberos credentials to be able to impersonate another user.It cannot use delegation tokens for this feature. It would be wrong if superuser adds its own delegation token to the proxy user ugi, as it will allow the proxy user to connect to the service with the privileges of the superuser.However, if the superuser does want to give a delegation token to joe, it must first impersonate joe and get a delegation token for joe, in the same way as the code example above, and add it to the ugi of joe. In this way the delegation token will have the owner as joe.©            2008-2024
+              Apache Software Foundation
+            
+                          -Privacy Policy.
+        Apache Maven, Maven, Apache, the Apache feather logo, and the Apache Maven project logos are trademarks of The Apache Software Foundation.

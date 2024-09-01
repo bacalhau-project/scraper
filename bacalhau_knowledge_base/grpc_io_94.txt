@@ -1,0 +1,39 @@
+URL: https://grpc.io/docs/guides/cancellation/
+
+gRPCAboutMeetDocsGuidesShowcaseBlogCommunitygRPConf 2024 is happening NEXT WEEK onAug. 27th!-Register nowand get 25% off with the code GOOGLE25.DocsWhat is gRPC?IntroductionCore conceptsFAQLanguagesC# / .NETAPI (legacy)Daily builds (legacy)C++Quick startBasics tutorialAsync-API tutorialAsynchronous Callback API TutorialBest Practices for gRPC C++ API and FAQALTSAPIDartQuick startBasics tutorialAPIGoQuick startBasics tutorialALTSAPIGenerated codeJavaQuick startBasics tutorialALTSAPIGenerated codeKotlinQuick startBasics tutorialAPINodeQuick startBasics tutorialAPIObjective-CQuick startBasics tutorialOAuth2APIPHPQuick startBasics tutorialAPIDaily buildsPythonQuick startBasics tutorialALTSGenerated codeAPIDaily buildsRubyQuick startBasics tutorialAPIDaily buildsPlatformsAndroidJavaQuick startBasics tutorialAPIKotlinQuick startAPIWebQuick startBasics tutorialGuidesAuthenticationBenchmarkingCancellationCompressionCustom Backend MetricsCustom Load Balancing PoliciesCustom Name ResolutionDeadlinesDebuggingError handlingFlow ControlHealth CheckingInterceptorsKeepaliveMetadataOpenTelemetry MetricsPerformance Best PracticesReflectionRequest HedgingRetryService ConfigStatus CodesWait-for-ReadyView page sourceEdit this pageCreate child pageCreate documentation issueCreate project issueOverviewCancelling an RPC Call on the Client SideLanguage SupportDocsGuidesCancellationCancellationExplains how and when to cancel RPCs.ContentsOverviewCancelling an RPC Call on the Client SideLanguage SupportCancellationExplains how and when to cancel RPCs.OverviewWhen a gRPC client is no longer interested in the result of an RPC call, it maycancelto signal this discontinuation of interest to the server.Deadlineexpiration and I/O errors
+also trigger cancellation. When an RPC is cancelled, the server should stop
+any ongoing computation and end its side of the stream. Often, servers are also
+clients to upstream servers, so that cancellation operation should ideally
+propagate to all ongoing computation in the system that was initiated due to
+the original client RPC call.A client may cancel an RPC for several reasons. The data it requested may have
+been made irrelevant or the author of the client may want to be a good citizen
+of the server and conserve compute resources.sequenceDiagram
+  Client ->> Server 1: Cancel
+  Server 1 ->> Server 2: CancelCancelling an RPC Call on the Client SideA client cancels an RPC call by calling a method on the call object or, in some
+languages, on the accompanying context object. While gRPC clients do not
+provide additional details to the server about the reason for the cancellation,
+the cancel API call takes a string describing the reason, which will result in
+a client-side exception and/or log containing the provided reason. When a
+server is notified of the cancellation of an RPC, the application-provided
+server handler may be busy processing the request. The gRPC library in general
+does not have a mechanism to interrupt the application-provided server handler,
+so the server handler must coordinate with the gRPC library to ensure that
+local processing of the request ceases. Therefore, if an RPC is long-lived,
+its server handler must periodically check if the RPC it is servicing has been
+cancelled and if it has, cease processing. Some languages will also
+support automatic cancellation of anyoutgoing RPCs, while in others, the author
+of the server handler is responsible for this.flowchart LR
+  subgraph Client
+  end
+  subgraph Server1
+    direction TB
+    cancelled{cancelled?} -->|false| perform("perform some work")
+    perform --> cancelled
+    cancelled -->|true| cleanup("cancel upstream RPCs")
+    cleanup --> exit("exit RPC handler")
+  end
+  subgraph Server2
+  end
+
+  Client -->|CANCEL| Server1
+  Server1 -->|CANCEL| Server2Language SupportLanguageExampleNotesJavaExampleAutomatically cancels outgoing RPCsGoExampleAutomatically cancels outgoing RPCsC++ExampleAutomatically cancels outgoing RPCsPythonExampleLast modified February 29, 2024:Use absolute paths instead of absolute URLs (#1268) (4f733b4)View page sourceEdit this pageCreate child pageCreate documentation issueCreate project issue© 2024 gRPC AuthorsTerms|Privacy|Trademarks|License|About

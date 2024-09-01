@@ -1,0 +1,107 @@
+URL: https://cassandra.apache.org/doc/latest/cassandra/developing/cql/indexing/sai/sai-faq.html
+
+Get StartedCassandra BasicsQuickstartEcosystemDocumentationCommunityWelcomeDiscussionsGovernanceContributeMeet the CommunityCatalyst ProgramEventsLearnCassandra 5.0Case StudiesResourcesBlogDownload NowCassandra DocumentationVersion:5.0mastertrunk5.04.14.03.11MainGlossaryHow to report bugsContact usDevelopmentGetting startedBuilding and IDE integrationTestingContributing code changesCode styleReview checklistHow to commitWorking on documentationJenkins CI environmentDependency managementRelease processCassandraFAQGetting StartedCassandra QuickstartSAI QuickstartVector Search QuickstartInstalling CassandraConfiguring CassandraInserting and queryingClient driversProduction recommendationsWhat’s newSupport for JavaArchitectureOverviewDynamoStorage EngineGuaranteesImproved Internode MessagingImproved StreamingData ModelingIntroductionConceptual data modelingRDBMS designDefining application queriesLogical data modelingPhysical data modelingEvaluating and refining data modelsDefining database schemaCassandra data modeling toolsCassandra Query Language (CQL)DefinitionsData typesData definition (DDL)Data manipulation (DML)Dynamic Data Masking (DDM)OperatorsIndexing conceptsSAI OverviewConceptsSAI QuickstartSAI FAQWorking with SAISAI operationsSecondary indexes (2i) overviewConceptsWorking with 2iRebuild 2iMaterialized viewsFunctionsJSONSecurityTriggersAppendicesChangesSASISingle file of CQL informationVector Search overviewConceptsData ModelingVector Search QuickstartWorking with Vector SearchManagingConfiguringcassandra.yamlcassandra-rackdc.propertiescassandra-env.shcassandra-topologies.propertiescommitlog-archiving.propertieslogback.xmljvm-* filesLiberating cassandra.yaml Parameters' Names from Their UnitsOperatingBackupsBloom filtersBulk loadingChange Data Capture (CDC)CompactionCompressionHardwareHintsLoggingAudit loggingAudit logging 2Full query loggingMonitoring metricsRepairRead repairSecuritySnitchesTopology changesTransient replicationVirtual tablesToolscqlsh: the CQL shellnodetoolSSTable toolscassandra-stressTroubleshootingFinding misbehaving nodesReading Cassandra logsUsing nodetoolUsing external tools to deep-diveReferenceALTER TABLECREATE INDEXCREATE CUSTOM INDEXCREATE TABLEDROP INDEXDROP TABLEPlug-insYou are viewing the documentation for a prerelease version.CassandraCassandra Query Language (CQL)Indexing conceptsSAI OverviewSAI FAQEditSAI FAQUse this FAQ to find answers to common questions and get help with Storage-Attached Indexing (SAI).What is SAI?Storage-Attached Indexing (SAI) is a highly-scalable, globally-distributed index for the Cassandra database.
+SAI combines:the storage-attached architecture of open source SSTable Attached Secondary Indexes (SASI)a number of highly optimized on-disk index structuresWhich databases are supported?Cassandra 5.0 is the only supported database currently.After creating your database, a keyspace, and one or more tables, useCREATE INDEX ...
+USING 'sai'to define one or more SAI indexes on the table.
+For Cassandra databases, usecqlsh.
+The sameCREATE INDEX ...
+USING 'sai'command is available for both.
+SeeSAI quickstart.What configuration settings should I use with SAI?Compared with most indexing environments, SAI configuration and related settings are much simpler.
+Key points:Increase--XX:MaxDirectMemorySize, leaving approximately 15-20% of memory for the OS and other in-memory structures.In cassandra.yaml, explicitly setfile_cache_size_in_mbto 75% of that value.Heavy mixed read/write workloads may want to:Decreaserange_request_timeout_in_msIncreasewrite_request_timeout_in_msIf thememtable_flush_writersvalue is set too low, writes may stall.
+If this occurs in your environment, increasememtable_flush_writers.Aside from memory, SAI uses the same tunable parameters for Cassandra, such as compaction throughput and compaction executors.
+This matters for write performance.
+For read performance, again, maximizing use of the Chunk Cache will benefit SAI reads because all on-disk index components are accessed through this mechanism.
+Refer toConfigure SAI indexes.What computing challenges does SAI solve?Oftentimes, developers ask: "How can I query additional fields outside of the Apache Cassandra partition key?"SAI implements efficient indexes based on a table’s columns, such as parts of a composite partition key.
+Before SAI, you could index clustering keys, but you could not index parts of a composite partition.
+The development of SAI was inspired by SASI to achieve the goal of efficient and simpler filtering via the creation of secondary indexes.SAI also makes data modeling easier because you do not need to create custom tables just to cater to particular query patterns.
+You can create a table that is most natural for you, write to just that table, and query it any way you want.What are the advantages of using SAI?SAI makes it possible to define multiple indexes on the same database table.
+Each SAI index can be based on any column in the table.
+Exception: there is no need to define an SAI index based on the partition key when it’s comprised of only one column;
+in this case, SAI issues aninvalid querymessage.
+You can also define an SAI index using a single column in the table’s composite partition key.
+A composite partition key means that the partition is based on two or more columns.
+In this case with an SAI index, you would specify just one of the columns that comprises the composite partition key.For developers, SAI removes several previous pain points, including the need to duplicate denormalized data to query non-PrimaryKey columns.For operators, SAI has several advantages, including the use of significantly less disk space for indexing;
+fewer failure points;
+easier uptime due to the simplified architecture of SAI;
+and fewer copies of data to secure.Is SAI a complete search solution?SAI is not an enterprise search engine.
+While it does provide some of the same functionality, SAI is not a complete replacement for text-based search.
+At its core, SAI is a filtering engine, and simplifies data modeling and client applications that would otherwise rely heavily on maintaining multiple query-specific tables.How does schema management compare between SAI and text-based search?SAI is an index, not a search engine.
+Unlike the text-based search, SAI has no need for schema management.
+SAI configuration is simpler and is tuned with existing database parameters, such as in cassandra.yaml.
+With SAI, there is no commit log to accept writes during bootstrap;
+SAI does not need to wait for bootstrap to read the database configuration.
+With SAI, schema/indexing options reside in the index metadata, which is handled by native database schema management.How do I use SAI features?Storage-Attached Indexing has queries are entirely CQL-based.
+The features, by design, are intentionally simple and easy to use.At a high level, SAI indexes are:Created and dropped per column via CQLCREATE INDEX ...
+USING 'sai'commands andDROP INDEXcommands.
+Start inSAI quickstart.Rebuilt and backed up via nodetool.
+Seenodetool.Monitored via a combination of nodetool, CQL virtual tables, system metrics, and JMX.
+SeeMonitor SAI indexes.On which column in a database table can I base an SAI index?Define each SAI index on any table column.
+Exception: there is no need to define an SAI index based on the partition key when it’s comprised of only one column;
+in this case, SAI issues aninvalid querymessage.You can also define an SAI index using a single column in the table’s composite partition key.
+A composite partition key means that the partition is based on two or more columns.
+In this case with an SAI index, you would specify just one of the columns that comprises the composite partition key.With collection maps, you can define one or more SAI indexes on the same column, specifyingkeys,values, andentriesas map types.
+SAI also supportslistandsetcollections.In CQL queries of database tables with SAI indexes, theCONTAINSclauses
+are supported with, and specific to:SAIcollection mapswithkeys,values, andentriesSAIcollectionswithlistandsettypesWhen IDROPand recreate an SAI index on the same column, does that block any read operations? And is there a way to check the indexing status?When youDROP/ recreate an SAI index, you are not blocked from entering queries that do not use the index.
+However, you cannot use that SAI index (based on the same column) until it has finished building and is queryable.
+To determine the current state of a given index, query thesystem_views.indexesvirtual table.
+Example:SELECT is_queryable,is_building FROM system_views.indexes WHERE keyspace_name='keyspace'
+       AND table_name='table' AND index_name='index';SeeVirtual tablesandVirtual tables for SAI indexes and SSTables.What are the write and read paths used by SAI indexes?SAI indexes Memtables and SSTables as they are written, resolving the differences between those indexes at read time.
+SeeSAI write path and read path.What on-disk index formats does SAI support?SAI supports two on-disk index formats, optimized for:Equality and non-exact matching onstrings.Strings are indexed on-disk using thetriedata structure, in conjunction with postings (term/row pairs) lists.
+The trie is heap friendly, providing string prefix compression for terms, and can match any query that can be expressed as a deterministic finite automaton.
+The feature minimizes on-disk footprint and supports simple token skipping.Equality and range queries onnumeric and non-literal types.Numeric values and the other non-literal CQL types (timestamp,date,UUID) are indexed on-disk usingk-dimensional tree, a balanced structure that provides fast lookups across one or more dimensions, and compression for both values and postings.What is the disk footprint overhead for SAI indexes?SAI requires significantly lower disk usage compared to other native or bolt-on Cassandra index solutions.
+SAI produces an additional 20-35% disk usage compared withunindexeddata.
+The SAI disk usage is largely dependent on the underlying data model and the number of columns indexed.What are the supported column data types for SAI indexing?The supported types are:ASCII, BIGINT, DATE, DECIMAL, DOUBLE, FLOAT, INET, INT, SMALLINT, TEXT, TIME, TIMESTAMP, TIMEUUID, TINYINT, UUID, VARCHAR, VARINT.INETsupport for IPv4 and IPv6 was new starting with Cassandra ???.TheDECIMALandVARINTsupport was new starting with Cassandra ???.SAI also supports collections — see thenext FAQ.Does SAI support indexes on a collection column?Yes — SAI supports collections of typemap,list, andset.
+See the following topics:Using collections with SAIIn CQL queries of database tables with SAI indexes, theCONTAINSclauses
+are supported with, and specific to:SAIcollection mapswithkeys,values, andentriesSAIcollectionswithlistandsettypesWhat are the supported query operators?For queries on tables with SAI indexes:Numerics:=,<,>,⇐,>=,AND,OR,INStrings:=,CONTAINS,CONTAINS KEY,AND,OR,INThe unsupported query operators are:Strings or Numerics:LIKEExamples:SELECT * FROM cycling.cyclist_semi_pro WHERE registration > '2010-01-01' AND registration < '2015-12-31' LIMIT 10;SELECT * FROM audit WHERE text_map CONTAINS KEY 'Giovani';For query examples withCONTAINSclauses that take advantage of SAI collection maps, lists, and sets, be sure to seeSAI collection map examples with keys, values, and entries.On theCREATE INDEXcommand for SAI, what options are available?Use theWITH OPTIONSclause to indicate how SAI should handle case sensitivity and special characters in the index.
+For example, given a string columnlastname:CREATE INDEX lastname_sai_idx ON cycling.cyclist_semi_pro (lastname)
+  USING 'sai' WITH OPTIONS =
+  {'case_sensitive': 'false', 'normalize': 'true', 'ascii': 'true'};SAI has anasciioption.
+The default isfalse.
+When set totrue, SAI converts alphabetic, numeric, and symbolic characters that are not in the Basic Latin Unicode block (the first 127 ASCII characters) to the ASCII equivalent, if one exists.
+For example, this option changesÃtoa.SeeCREATE CUSTOM INDEXand examples in theSAI quickstarttopic.Does SAI support composite indexing: meaning, a single index on multiple columns?No.
+There is a 1-to-1 mapping of an SAI index to a column.
+However, you can create a separate index on each column in a given table.
+Also, SAI can use multiple defined indexes within a single read query.How can I view SAI memory usage metrics?The SAI memory footprint is divided between the JVM heap and the Chunk Cache.
+The heap stores memtable indexes, and the chunk cache stores recently accessed on-disk index components as well as other SSTable components.
+SAI provides metrics for both the heap and the chunk cache.
+For each index, SAI also provides metrics for determining the size in bytes of memory used by the on-disk data structure, as well as disk usage.
+Refer toIndex group metrics.
+SAI also provides Table state metrics that give you visibility into the disk usage, the percentage of disk usage of the base table, the index builds in progress, and related metrics.
+SeeTable state metrics.What is the performance impact of adding SAI columns to a read query? How manyANDclauses can I add?There is no limit on the number of index columns that can be used in a single query.
+Thesai_indexes_per_table_failure_thresholdsetting in cassandra.yaml controls the maximum number of SAI indexes allowed in a single table (10, by default).
+However, querying against multiple indexed columns incurs a cost that is related to the increased number of index components processed.
+When evaluating multiple indexed columns in a query, SAI performs a workflow (1: Traverse.
+2: Merged.
+3: Intersect that ultimately coalesces data from multiple memtables and SSTables.In a query, AND queries will process up to two SAI indexes;
+if more than two SAI indexes are used by the query, this circumstance will result in SAI performing post-filtering on the remaining clauses.For related information, see thematch streaming and post filteringexample.Are SAI write operations asynchronous, or does SAI wait before acknowledging the write to the user?The SAI write path is actually very simple.
+The indexes live with the data, both in memtables and SSTables.
+When a write is acknowledged to the client, the data is already indexed.
+This is asynchronousprocess.
+When the memtable is flushed, the indexes are flushed as well.
+SeeSAI write path and read path.The on-disk index components are broken down into per-SSTable index files and per-column index files.
+The column indexes do not store the primary keys or tokens;
+instead, they store compressible row IDs.
+The per-SSTable index files link the row IDs from the column-indexes to their backing SSTables.
+This SAI design allows all column indexes within a single SSTable to share per-SSTable index files, which further helps reduce the disk footprint.What are the guidelines regarding column cardinality with SAI indexes?Columncardinalitycan affect read performance when it comes to range queries among replicas.
+The number of rows matching a value of a high-cardinality column, such as credit card numbers, is more likely to be isolated on very few nodes (or even isolated to one node), while the rows matching a value on a low-cardinality column are more likely to reside on numerous nodes.
+If a query does not specify a partition key, the Cassandra coordinator scans the token ring and group token ranges by endpoints (nodes).
+The coordinator then concurrently execute read commands for all participating endpoints.
+In the worst case where the indexed column has very high cardinality, an entire cluster scan may be required before finding a match.
+With low-cardinality columns, be aware that if yourLIMITis higher than the number of values in your targeted column, Cassandra has to search all replicas again before determining that theLIMITcannot be satisfied.
+In this case, Cassandra returns only the number of matching results.What are the circumstances under which SAI applies post filtering?SAI applies post-filtering in numerous scenarios.
+For example, consider a simple table, and an SAI index on just one of the two non-PK columns:CREATE KEYSPACE test WITH REPLICATION = {'class': 'SimpleStrategy', 'replication_factor': 1};
+CREATE TABLE test.mytable (id int PRIMARY KEY,
+       col1 text,
+       col2 timestamp);
+CREATE CUSTOM INDEX mytable_col1_idx ON test.mytable (col1) USING 'StorageAttachedIndex';Given a query such as the following:SELECT * FROM test.mytable WHERE col1 = 'hello world' and col2 < toTimestamp(now()) ALLOW FILTERING;For this query, Cassandra narrows down the search by the indexed column (col1) first, then applies post-filtering oncol2.
+(Use theALLOW FILTERINGclause with caution.) In this scenario, no additional replica roundtrips are needed;
+the post filtering oncol2is carried out on the replicas themselves.Another case were post-filtering comes into play is when constructing a query that involves more than two SAI indexes.
+Refer to thisrelated FAQaboutANDqueries.Can I create an SAI index based on astatic column?Yes.
+For example, consider atransaction_by_customertable where you have a primary keycustomer_id, plus static columns to contain each customer’saddress,phone_number, anddate_of_birth.
+Given a query like:SELECT * from transaction_by_customer where customer_id = 'xyz123';If there are 100,000transaction_by_customerrows, because you defined those three static fields, this query runs against a table that uses significantly less disk space, as compared to an environment where writes had inserted the per-customer values (address,phone_number,date_of_birth) in every row.SAI delivers the option and advantage of creating indexes based on static columns, while also achieving the benefit of conserving table space.For indexed strings, how does SAI handle Unicode characters in the column data?When you create an SAI index based on a string column, set thenormalizeoption totrueif you want SAI to perform Unicode normalization on the column data.
+SAI supports Normalization Form C (NFC) Unicode.
+When set totrue, SAI normalizes the different versions of a given Unicode character to a single version, retaining all the marks and symbols in the index.
+For example, SAI would change the character Ã (U+212B) to Ã (U+00C5).
+SeeCREATE CUSTOM INDEX.Can the index’s column name have special characters?SAI validates the column name on which an index is being defined.
+SAI allows alphanumeric characters and underscores only.
+SAI returnsInvalidRequestExceptionif you try to define an index on a column name that contains other characters, and does not create the index.What partitioner does SAI support?SAI supports only theMurmur3Partitioner.Get started with Cassandra, fast.Quickstart GuideApache Cassandrapowers mission-critical deployments with improved performance and unparalleled levels of scale in the cloud.HomeCassandra BasicsQuickstartEcosystemDocumentationCommunityCase StudiesResourcesBlogFoundationEventsLicenseThanksSecurityPrivacySponsorshipÂ© 2009-The Apache Software Foundationunder the terms of the Apache License 2.0.  Apache, the Apache feather logo, Apache Cassandra, Cassandra, and the Cassandra logo, are either registered trademarks or trademarks of The Apache Software Foundation.

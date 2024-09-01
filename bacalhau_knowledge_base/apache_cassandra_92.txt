@@ -1,0 +1,104 @@
+URL: https://cassandra.apache.org/doc/latest/cassandra/developing/cql/indexing/2i/2i-working-with.html
+
+Get StartedCassandra BasicsQuickstartEcosystemDocumentationCommunityWelcomeDiscussionsGovernanceContributeMeet the CommunityCatalyst ProgramEventsLearnCassandra 5.0Case StudiesResourcesBlogDownload NowCassandra DocumentationVersion:5.0mastertrunk5.04.14.03.11MainGlossaryHow to report bugsContact usDevelopmentGetting startedBuilding and IDE integrationTestingContributing code changesCode styleReview checklistHow to commitWorking on documentationJenkins CI environmentDependency managementRelease processCassandraFAQGetting StartedCassandra QuickstartSAI QuickstartVector Search QuickstartInstalling CassandraConfiguring CassandraInserting and queryingClient driversProduction recommendationsWhat’s newSupport for JavaArchitectureOverviewDynamoStorage EngineGuaranteesImproved Internode MessagingImproved StreamingData ModelingIntroductionConceptual data modelingRDBMS designDefining application queriesLogical data modelingPhysical data modelingEvaluating and refining data modelsDefining database schemaCassandra data modeling toolsCassandra Query Language (CQL)DefinitionsData typesData definition (DDL)Data manipulation (DML)Dynamic Data Masking (DDM)OperatorsIndexing conceptsSAI OverviewConceptsSAI QuickstartSAI FAQWorking with SAISAI operationsSecondary indexes (2i) overviewConceptsWorking with 2iRebuild 2iMaterialized viewsFunctionsJSONSecurityTriggersAppendicesChangesSASISingle file of CQL informationVector Search overviewConceptsData ModelingVector Search QuickstartWorking with Vector SearchManagingConfiguringcassandra.yamlcassandra-rackdc.propertiescassandra-env.shcassandra-topologies.propertiescommitlog-archiving.propertieslogback.xmljvm-* filesLiberating cassandra.yaml Parameters' Names from Their UnitsOperatingBackupsBloom filtersBulk loadingChange Data Capture (CDC)CompactionCompressionHardwareHintsLoggingAudit loggingAudit logging 2Full query loggingMonitoring metricsRepairRead repairSecuritySnitchesTopology changesTransient replicationVirtual tablesToolscqlsh: the CQL shellnodetoolSSTable toolscassandra-stressTroubleshootingFinding misbehaving nodesReading Cassandra logsUsing nodetoolUsing external tools to deep-diveReferenceALTER TABLECREATE INDEXCREATE CUSTOM INDEXCREATE TABLEDROP INDEXDROP TABLEPlug-insYou are viewing the documentation for a prerelease version.CassandraCassandra Query Language (CQL)Indexing conceptsSecondary indexes (2i) overviewWorking with 2iEditWorking with secondary indexing (2i)PrerequisitesKeyspace createdTable createdCreate a secondary index (2i)Create indexes on one or more columns after defining a table.
+Secondary indexes created with 2i can be used to query a table using a column other than the table’s partition key.In a production environment, certain columns might not be good choices, depending on theircardinality.Do not add an storage-attached index (SAI)
+to the same table. See the difference between these index types in theoverview.Create simple 2iCreate simple 2i indexes on a table to see how indexing works.
+Start by creating a table,cycling.alt_stats, that yields statistics about cyclists:CREATE TABLE IF NOT EXISTS cycling.cyclist_alt_stats (
+  id UUID PRIMARY KEY,
+  lastname text,
+  birthday date,
+  nationality text,
+  weight float,
+  w_units text,
+  height float,
+  first_race date,
+  last_race date
+);Now create indexes on the columnsbirthdayandnationality:CREATE INDEX IF NOT EXISTS birthday_idx
+ON cycling.cyclist_alt_stats (birthday);
+CREATE INDEX IF NOT EXISTS nationality_idx
+ON cycling.cyclist_alt_stats (nationality);The following query attempts to retrieve the cyclists with a specifiedbirthdayandnationality.
+The query returns an error:CQLResultSELECT *
+FROM cycling.cyclist_alt_stats
+WHERE birthday = '1982-01-29'
+  AND nationality = 'Russia';InvalidRequest: Error from server: code=2200 [Invalid query]
+message="Cannot execute this query as it might involve data
+filtering and thus may have unpredictable performance.
+If you want to execute this query despite the performance
+unpredictability, use ALLOW FILTERING"The indexes have been created on appropriate low-cardinality columns, but the previous query still fails.
+Why?The answer lies with the partition key, which has not been defined.
+When you attempt a potentially expensive query, such as searching a range of rows, the database requires theALLOW FILTERINGdirective.
+The error is not due to multiple indexes, but the lack of a partition key definition in the query.CQLResultSELECT *
+FROM cycling.cyclist_alt_stats
+WHERE birthday = '1982-01-29'
+  AND nationality = 'Russia'
+ALLOW FILTERING;id                                   | birthday   | first_race | height | last_race  | lastname | nationality | w_units | weight
+--------------------------------------+------------+------------+--------+------------+----------+-------------+---------+--------
+ e0953617-07eb-4c82-8f91-3b2757981625 | 1982-01-29 | 1998-02-15 |   1.78 | 2017-04-16 |    BRUTT |      Russia |      kg |     68
+
+(1 rows)Thus, one of the difficulties of using 2is is illustrated.SAIis almost always a better option.Create a 2i on a collection columnCollections can be indexed and queried to find a collection containing a particular value.
+Sets and lists are indexed a bit differently from maps, given the key-value nature of maps.Sets and lists can index all values found by indexing the collection column.
+Maps can index a map key, map value, or map entry using the methods shown below.
+Multiple indexes can be created on the same map column in a table so that map keys, values, or entries can be queried.
+In addition, frozen collections can be indexed usingFULLto index the full content of a frozen collection.All thecautionsabout using secondary indexes apply to indexing collections.For set and list collections, create an index on the column name.
+Create an index on a set to find all the cyclists that have been on a particular team.CREATE INDEX IF NOT EXISTS teams_idx
+ON cycling.cyclist_career_teams (teams);SELECT *
+FROM cycling.cyclist_career_teams
+WHERE teams CONTAINS 'Rabobank-Liv Giant';id                                   | lastname | teams
+--------------------------------------+----------+-----------------------------------------------------------------------------
+-----------------------
+ 1c9ebc13-1eab-4ad5-be87-dce433216d40 |    BRAND | {'AA Drink - Leontien.nl', 'Leontien.nl', 'Rabobank-Liv Giant', 'Rabobank-Li
+v Woman Cycling Team'}
+
+(1 rows)For map collections, create an index on the map key, map value, or map entry.
+Create an index on a map key to find all cyclist/team combinations for a particular year.CREATE INDEX IF NOT EXISTS team_year_keys_idx
+ON cycling.cyclist_teams ( KEYS (teams) );SELECT *
+FROM cycling.cyclist_teams
+WHERE teams CONTAINS KEY 2015;id                                   | firstname | lastname   | teams
+--------------------------------------+-----------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ cb07baad-eac8-4f65-b28a-bddc06a0de23 | Elizabeth | ARMITSTEAD | {2011: 'Team Garmin - Cervelo', 2012: 'AA Drink - Leontien.nl', 2013: 'Boels:Dolmans Cycling Team', 2014: 'Boels:Dolmans Cycling Team', 2015: 'Boels:Dolmans Cycling Team'}
+ 5b6962dd-3f90-4c93-8f61-eabfa4a803e2 |  Marianne |        VOS |                                                                                                                                   {2015: 'Rabobank-Liv Woman Cycling Team'}
+
+(2 rows)Create an index on the map entries and find cyclists who are the same age.
+An index usingENTRIESis only valid for maps.CREATE TABLE IF NOT EXISTS cycling.birthday_list (
+  cyclist_name text PRIMARY KEY,
+  blist map<text, text>
+);CREATE INDEX IF NOT EXISTS blist_idx
+ON cycling.birthday_list ( ENTRIES(blist) );SELECT *
+FROM cycling.birthday_list
+WHERE blist[ 'age' ] = '23';cyclist_name     | blist
+------------------+----------------------------------------------------------
+   Claudio HEINEN | {'age': '23', 'bday': '27/07/1992', 'nation': 'GERMANY'}
+ Laurence BOURQUE |  {'age': '23', 'bday': '27/07/1992', 'nation': 'CANADA'}
+
+(2 rows)Using the same index, find cyclists from the same country.SELECT *
+FROM cycling.birthday_list
+WHERE blist[ 'nation' ] = 'NETHERLANDS';cyclist_name  | blist
+---------------+--------------------------------------------------------------
+ Luc HAGENAARS | {'age': '28', 'bday': '27/07/1987', 'nation': 'NETHERLANDS'}
+   Toine POELS | {'age': '52', 'bday': '27/07/1963', 'nation': 'NETHERLANDS'}
+
+(2 rows)Create an index on the map values and find cyclists who have a particular value found in the specified map.CREATE TABLE IF NOT EXISTS cycling.birthday_list (
+  cyclist_name text PRIMARY KEY,
+  blist map<text, text>
+);CREATE INDEX IF NOT EXISTS blist_values_idx
+ON cycling.birthday_list ( VALUES(blist) );SELECT *
+FROM cycling.birthday_list
+WHERE blist CONTAINS 'NETHERLANDS';+cyclist_name  | blist
+---------------+--------------------------------------------------------------
+ Luc HAGENAARS | {'age': '28', 'bday': '27/07/1987', 'nation': 'NETHERLANDS'}
+   Toine POELS | {'age': '52', 'bday': '27/07/1963', 'nation': 'NETHERLANDS'}
+
+(2 rows)Create an index on the full content of aFROZENmap.
+The table in this example stores the number of Pro wins, Grand Tour races, and Classic races that a cyclist has competed in.
+The SELECT statement finds any cyclist who has 39 Pro race wins, 7 Grand Tour starts, and 14 Classic starts.CREATE TABLE IF NOT EXISTS cycling.race_starts (
+  cyclist_name text PRIMARY KEY,
+  rnumbers FROZEN<LIST<int>>
+);CREATE INDEX IF NOT EXISTS rnumbers_idx
+ON cycling.race_starts ( FULL(rnumbers) );SELECT *
+FROM cycling.race_starts
+WHERE rnumbers = [39, 7, 14];cyclist_name   | rnumbers
+----------------+-------------
+ John DEGENKOLB | [39, 7, 14]
+
+(1 rows)Check secondary index (2i) existenceVerify that an index exists:CQLResultDESCRIBE TABLE cycling.birthday_list;TBDAlter a secondary index (2i)Secondary indexes cannot be altered.
+If you wish to change a 2i, you need todrop the indexandcreate a new one.Drop a secondary index (2i)Drop a 2i:DROP INDEX IF EXISTS cycling.teams_idx;Querying using secondary indexes (2i)Get started with Cassandra, fast.Quickstart GuideApache Cassandrapowers mission-critical deployments with improved performance and unparalleled levels of scale in the cloud.HomeCassandra BasicsQuickstartEcosystemDocumentationCommunityCase StudiesResourcesBlogFoundationEventsLicenseThanksSecurityPrivacySponsorshipÂ© 2009-The Apache Software Foundationunder the terms of the Apache License 2.0.  Apache, the Apache feather logo, Apache Cassandra, Cassandra, and the Cassandra logo, are either registered trademarks or trademarks of The Apache Software Foundation.

@@ -1,0 +1,7 @@
+URL: https://hadoop.apache.org/release/2.10.2.html
+
+Toggle navigationApache HadoopDownloadDocumentationCurrent (trunk)LatestStable3.4.03.3.62.10.2WikiCommunityBylawsCriteria for CommittershipMailing listsPublished CVEsWho We areDevelopmentHow to ContributeIssue TrackingVersion ControlVersioningHelpBuy StuffSponsorshipThanksApache Software FoundationRelease 2.10.2 availableThis is the second stable release of Apache Hadoop 2.10 line.It contains 211 bug fixes, improvements and enhancements since 2.10.1.Users are encouraged to read theoverview of major changessince 2.10.1.
+For details of 211 bug fixes, improvements, and other enhancements since the previous 2.10.1 release,
+please checkrelease notesandchangelog.2022 May 31Download tar.gz(checksumsignature)Download src(checksumsignature)DocumentationApache Hadoop, Hadoop, Apache, the Apache feather logo,
+    and the Apache Hadoop project logo are either registered trademarks or trademarks of the Apache Software Foundation
+     in the United States and other countriesCopyright Â© 2006-2024 The Apache Software FoundationPrivacy policy

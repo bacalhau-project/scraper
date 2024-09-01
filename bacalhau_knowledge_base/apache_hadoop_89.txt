@@ -1,0 +1,87 @@
+URL: https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsMultihoming.html
+
+Wiki|git|Apache Hadoop| Last Published: 2024-03-04
+               | Version: 3.4.0GeneralOverviewSingle Node SetupCluster SetupCommands ReferenceFileSystem ShellCompatibility SpecificationDownstream Developer's GuideAdmin Compatibility GuideInterface ClassificationFileSystem SpecificationCommonCLI Mini ClusterFair Call QueueNative LibrariesProxy UserRack AwarenessSecure ModeService Level AuthorizationHTTP AuthenticationCredential Provider APIHadoop KMSTracingUnix Shell GuideRegistryAsync ProfilerHDFSArchitectureUser GuideCommands ReferenceNameNode HA With QJMNameNode HA With NFSObserver NameNodeFederationViewFsViewFsOverloadSchemeSnapshotsEdits ViewerImage ViewerPermissions and HDFSQuotas and HDFSlibhdfs (C API)WebHDFS (REST API)HttpFSShort Circuit Local ReadsCentralized Cache ManagementNFS GatewayRolling UpgradeExtended AttributesTransparent EncryptionMultihomingStorage PoliciesMemory Storage SupportSynthetic Load GeneratorErasure CodingDisk BalancerUpgrade DomainDataNode AdminRouter FederationProvided StorageMapReduceTutorialCommands ReferenceCompatibility with 1.xEncrypted ShufflePluggable Shuffle/SortDistributed Cache DeploySupport for YARN Shared CacheMapReduce REST APIsMR Application MasterMR History ServerYARNArchitectureCommands ReferenceCapacity SchedulerFair SchedulerResourceManager RestartResourceManager HAResource ModelNode LabelsNode AttributesWeb Application ProxyTimeline ServerTimeline Service V.2Writing YARN ApplicationsYARN Application SecurityNodeManagerRunning Applications in Docker ContainersRunning Applications in runC ContainersUsing CGroupsSecure ContainersReservation SystemGraceful DecommissionOpportunistic ContainersYARN FederationShared CacheUsing GPUUsing FPGAPlacement ConstraintsYARN UI2YARN REST APIsIntroductionResource ManagerNode ManagerTimeline ServerTimeline Service V.2YARN ServiceOverviewQuickStartConceptsYarn Service APIService DiscoverySystem ServicesHadoop Compatible File SystemsAliyun OSSAmazon S3Azure Blob StorageAzure Data Lake StorageTencent COSHuaweicloud OBSAuthOverviewExamplesConfigurationBuildingToolsHadoop StreamingHadoop ArchivesHadoop Archive LogsDistCpHDFS Federation BalanceGridMixRumenResource Estimator ServiceScheduler Load SimulatorHadoop BenchmarkingDynamometerReferenceChangelog and Release NotesJava API docsUnix Shell APIMetricsConfigurationcore-default.xmlhdfs-default.xmlhdfs-rbf-default.xmlmapred-default.xmlyarn-default.xmlkms-default.xmlhttpfs-default.xmlDeprecated PropertiesHDFS Support for Multihomed NetworksThis document is targetted to cluster administrators deployingHDFSin multihomed networks. Similar support forYARN/MapReduceis work in progress and will be documented when available.Multihoming BackgroundFixing Hadoop Issues In Multihomed EnvironmentsEnsuring HDFS Daemons Bind All InterfacesClients use Hostnames when connecting to DataNodesDataNodes use HostNames when connecting to other DataNodesMultihoming and Hadoop SecurityHostname LookupMultihoming BackgroundIn multihomed networks the cluster nodes are connected to more than one network interface. There could be multiple reasons for doing so.Security: Security requirements may dictate that intra-cluster traffic be confined to a different network than the network used to transfer data in and out of the cluster.Performance: Intra-cluster traffic may use one or more high bandwidth interconnects like Fiber Channel, Infiniband or 10GbE.Failover/Redundancy: The nodes may have multiple network adapters connected to a single network to handle network adapter failure.Note that NIC Bonding (also known as NIC Teaming or Link Aggregation) is a related but separate topic. The following settings are usually not applicable to a NIC bonding configuration which handles multiplexing and failover transparently while presenting a single ‘logical network’ to applications.Fixing Hadoop Issues In Multihomed EnvironmentsEnsuring HDFS Daemons Bind All InterfacesBy defaultHDFSendpoints are specified as either hostnames or IP addresses. In either caseHDFSdaemons will bind to a single IP address making the daemons unreachable from other networks.The solution is to have separate setting for server endpoints to force binding the wildcard IP addressINADDR_ANYi.e.0.0.0.0. Do NOT supply a port number with any of these settings.NOTE:Prefer using hostnames over IP addresses in master/slave configuration files.<property>
+  <name>dfs.namenode.rpc-bind-host</name>
+  <value>0.0.0.0</value>
+  <description>
+    The actual address the RPC server will bind to. If this optional address is
+    set, it overrides only the hostname portion of dfs.namenode.rpc-address.
+    It can also be specified per name node or name service for HA/Federation.
+    This is useful for making the name node listen on all interfaces by
+    setting it to 0.0.0.0.
+  </description>
+</property>
+
+<property>
+  <name>dfs.namenode.servicerpc-bind-host</name>
+  <value>0.0.0.0</value>
+  <description>
+    The actual address the service RPC server will bind to. If this optional address is
+    set, it overrides only the hostname portion of dfs.namenode.servicerpc-address.
+    It can also be specified per name node or name service for HA/Federation.
+    This is useful for making the name node listen on all interfaces by
+    setting it to 0.0.0.0.
+  </description>
+</property>
+
+<property>
+  <name>dfs.namenode.http-bind-host</name>
+  <value>0.0.0.0</value>
+  <description>
+    The actual address the HTTP server will bind to. If this optional address
+    is set, it overrides only the hostname portion of dfs.namenode.http-address.
+    It can also be specified per name node or name service for HA/Federation.
+    This is useful for making the name node HTTP server listen on all
+    interfaces by setting it to 0.0.0.0.
+  </description>
+</property>
+
+<property>
+  <name>dfs.namenode.https-bind-host</name>
+  <value>0.0.0.0</value>
+  <description>
+    The actual address the HTTPS server will bind to. If this optional address
+    is set, it overrides only the hostname portion of dfs.namenode.https-address.
+    It can also be specified per name node or name service for HA/Federation.
+    This is useful for making the name node HTTPS server listen on all
+    interfaces by setting it to 0.0.0.0.
+  </description>
+</property>Clients use Hostnames when connecting to DataNodesBy defaultHDFSclients connect to DataNodes using the IP address provided by the NameNode. Depending on the network configuration this IP address may be unreachable by the clients. The fix is letting clients perform their own DNS resolution of the DataNode hostname. The following setting enables this behavior.<property>
+  <name>dfs.client.use.datanode.hostname</name>
+  <value>true</value>
+  <description>Whether clients should use datanode hostnames when
+    connecting to datanodes.
+  </description>
+</property>DataNodes use HostNames when connecting to other DataNodesRarely, the NameNode-resolved IP address for a DataNode may be unreachable from other DataNodes. The fix is to force DataNodes to perform their own DNS resolution for inter-DataNode connections. The following setting enables this behavior.<property>
+  <name>dfs.datanode.use.datanode.hostname</name>
+  <value>true</value>
+  <description>Whether datanodes should use datanode hostnames when
+    connecting to other datanodes for data transfer.
+  </description>
+</property>Multihoming and Hadoop SecurityConfiguring multihomed hosts withHadoop in Secure Modemay require additional configuration.Hostname LookupKerberos principals for Hadoop Services are specified using the patternServiceName/_HOST@REALM.TLDe.g.nn/_HOST@REALM.TLD. This allows the same configuration file to be used on all hosts. Services will substitute_HOSTin the principal with their own hostname looked up at runtime.When nodes are configured to have multiple hostnames in DNS or in/etc/hostsfiles, a service may lookup a different hostname than what is expected by the server. e.g. intra-cluster traffic between two services may be routed over a private interface but the client service looked up its public hostname. Kerberos authentication will fail since the hostname in the principal does not match the IP address over which the traffic arrived.The following setting (available starting Apache Hadoop 2.8.0) can be used to control the hostname looked up the service.<property>
+  <name>hadoop.security.dns.interface</name>
+  <description>
+    The name of the Network Interface from which the service should determine
+    its host name for Kerberos login. e.g. eth2. In a multi-homed environment,
+    the setting can be used to affect the _HOST subsitution in the service
+    Kerberos principal. If this configuration value is not set, the service
+    will use its default hostname as returned by
+    InetAddress.getLocalHost().getCanonicalHostName().
+
+    Most clusters will not require this setting.
+  </description>
+</property>Services can also be configured to use a specific DNS server for hostname lookups (rarely required).<property>
+  <name>hadoop.security.dns.nameserver</name>
+  <description>
+    The host name or IP address of the name server (DNS) which a service Node
+    should use to determine its own host name for Kerberos Login. Requires
+    hadoop.security.dns.interface.
+
+    Most clusters will not require this setting.
+  </description>
+</property>©            2008-2024
+              Apache Software Foundation
+            
+                          -Privacy Policy.
+        Apache Maven, Maven, Apache, the Apache feather logo, and the Apache Maven project logos are trademarks of The Apache Software Foundation.

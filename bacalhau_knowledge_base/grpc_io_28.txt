@@ -1,0 +1,56 @@
+URL: https://grpc.io/docs/languages/csharp/api/
+
+Toggle navigationShow / Hide Table of ContentsNamespace Grpc.CoreClassesAsyncClientStreamingCall<TRequest, TResponse>Return type for client streaming calls.AsyncDuplexStreamingCall<TRequest, TResponse>Return type for bidirectional streaming calls.AsyncServerStreamingCall<TResponse>Return type for server streaming calls.AsyncStreamReaderExtensionsExtension methods forIAsyncStreamReader<T>.AsyncUnaryCall<TResponse>Return type for single request - single response call.AuthContextAuthentication context for a call.
+AuthContext is the only reliable source of truth when it comes to authenticating calls.
+Using any other call/context properties for authentication purposes is wrong and inherently unsafe.
+Note: experimental API that can change or be removed without any prior notice.AuthInterceptorContextContext for an RPC being intercepted byAsyncAuthInterceptor.AuthPropertyA property of anAuthContext.
+Note: experimental API that can change or be removed without any prior notice.BindServiceMethodAttributeSpecifies the location of the service bind method for a gRPC service.
+The bind method is typically generated code and is used to register a service's
+methods with the server on startup.The bind method signature takes aServiceBinderBaseand an optional
+instance of the service base class, e.g.static void BindService(ServiceBinderBase, GreeterService).CallCredentialsClient-side call credentials. Provide authorization with per-call granularity.CallCredentialsConfiguratorBaseBase class for objects that can consume configuration fromCallCredentialsobjects.
+Note: experimental API that can change or be removed without any prior notice.CallInvokerAbstraction of client-side RPC invocation.CallsHelper methods for generated clients to make RPC calls.
+Most users will use this class only indirectly and will be 
+making calls using client object generated from protocol
+buffer definition files.ChannelRepresents a gRPC channel. Channels are an abstraction of long-lived connections to remote servers.
+More client objects can reuse the same channel. Creating a channel is an expensive operation compared to invoking
+a remote call so in general you should reuse a single channel for as many calls as possible.ChannelBaseBase class for gRPC channel. Channels are an abstraction of long-lived connections to remote servers.ChannelCredentialsClient-side channel credentials. Used for creation of a secure channel.ChannelCredentialsConfiguratorBaseBase class for objects that can consume configuration fromCallCredentialsobjects.
+Note: experimental API that can change or be removed without any prior notice.ChannelOptionChannel option specified when creating a channel.
+Corresponds to grpc_channel_args from grpc/grpc.h.
+Commonly used channel option names are defined inChannelOptions,
+but any of the GRPC_ARG_* channel options names defined in grpc_types.h can be used.ChannelOptionsDefines names of most commonly used channel options.
+Other supported options names can be found in grpc_types.h (GRPC_ARG_* definitions)ClientBaseBase class for client-side stubs.ClientBase.ClientBaseConfigurationRepresents configuration of ClientBase. The class itself is visible to
+subclasses, but contents are marked as internal to make the instances opaque.
+The verbose name of this class was chosen to make name clash in generated code 
+less likely.ClientBase<T>Generic base class for client-side stubs.ContextPropagationOptionsOptions forContextPropagationToken.ContextPropagationTokenToken for propagating context of server side handlers to child calls.
+In situations when a backend is making calls to another backend,
+it makes sense to propagate properties like deadline and cancellation 
+token of the server call to the child call.
+Underlying gRPC implementation may provide other "opaque" contexts (like tracing context) that
+are not explicitly accesible via the public C# API, but this token still allows propagating them.DefaultCallInvokerInvokes client RPCs usingCalls.DeserializationContextProvides access to the payload being deserialized when deserializing messages.GrpcEnvironmentEncapsulates initialization and shutdown of gRPC library.KeyCertificatePairKey certificate pair (in PEM encoding).Marshaller<T>Encapsulates the logic for serializing and deserializing messages.MarshallersUtilities for creating marshallers.MetadataA collection of metadata entries that can be exchanged during a call.
+gRPC supports these types of metadata:Request headersare sent by the client at the beginning of a remote call before any request messages are sent.Response headersare sent by the server at the beginning of a remote call handler before any response messages are sent.Response trailersare sent by the server at the end of a remote call along with resulting call status.Metadata.EntryMetadata entryMethod<TRequest, TResponse>A description of a remote method.RpcExceptionThrown when remote procedure call fails. EveryRpcExceptionis associated with a resultingStatusof the call.SerializationContextProvides storage for payload when serializing a message.ServergRPC server. A single server can serve an arbitrary number of services and can listen on more than one port.Server.ServerPortCollectionCollection of server ports.Server.ServiceDefinitionCollectionCollection of service definitions.ServerCallContextContext for a server-side call.ServerCredentialsServer side credentials.ServerPortA port exposed by a server.ServerServiceDefinitionStores mapping of methods to server call handlers.
+Normally, theServerServiceDefinitionobjects will be created by theBindServicefactory method 
+that is part of the autogenerated code for a protocol buffers service definition.ServerServiceDefinition.BuilderBuilder class forServerServiceDefinition.ServiceBinderBaseAllows binding server-side method implementations in alternative serving stacks.
+Instances of this class are usually populated by theBindServicemethod
+that is part of the autogenerated code for a protocol buffers service definition.SslCredentialsClient-side SSL credentials.SslServerCredentialsServer-side SSL credentials.VerifyPeerContextVerification context for VerifyPeerCallback.
+Note: experimental API that can change or be removed without any prior notice.VersionInfoProvides info about current version of gRPC.
+Seehttps://codingforsmarties.wordpress.com/2016/01/21/how-to-version-assemblies-destined-for-nuget/for rationale about assembly versioning.WriteOptionsOptions for write operations.StructsCallInvocationDetails<TRequest, TResponse>Details about a client-side call to be invoked.CallOptionsOptions for calls made by client.StatusRepresents RPC result, which consists ofStatusCodeand an optional detail string.InterfacesIAsyncStreamReader<T>A stream of messages to be read.
+Messages can be awaitedawait reader.MoveNext(), that returnstrueif there is a message available andfalseif there are no more messages
+(i.e. the stream has been closed).On the client side, the last invocation ofMoveNext()either returnsfalseif the call has finished successfully or throwsRpcExceptionif call finished
+with an error. Once the call finishes, subsequent invocations ofMoveNext()will
+continue yielding the same result (returningfalseor throwing an exception).On the server side,MoveNext()does not throw exceptions.
+In case of a failure, the request stream will appear to be finished
+(MoveNextwill returnfalse) and theCancellationTokenassociated with the call will be cancelled to signal the failure.MoveNext()operations can be cancelled via a cancellation token. Cancelling
+an individual read operation has the same effect as cancelling the entire call
+(which will also result in the read operation returning prematurely), but the per-read cancellation
+tokens passed to MoveNext() only result in cancelling the call if the read operation haven't finished
+yet.IAsyncStreamWriter<T>A writable stream of messages.IClientStreamWriter<T>Client-side writable stream of messages with Close capability.IMethodA non-generic representation of a remote method.IServerStreamWriter<T>A writable stream of messages that is used in server-side handlers.EnumsChannelOption.OptionTypeType ofChannelOption.ChannelStateConnectivity state of a channel.
+Based on grpc_connectivity_state from grpc/grpc.hCompressionLevelCompression level based on grpc_compression_level from grpc/compression.hMethodTypeMethod types supported by gRPC.SslClientCertificateRequestTypeModes of requesting client's SSL certificate by the server.
+Corresponds togrpc_ssl_client_certificate_request_type.StatusCodeResult of a remote procedure call.
+Based on grpc_status_code from grpc/status.hWriteFlagsFlags for write operations.DelegatesAsyncAuthInterceptorAsynchronous authentication interceptor forCallCredentials.ClientStreamingServerMethod<TRequest, TResponse>Server-side handler for client streaming call.DuplexStreamingServerMethod<TRequest, TResponse>Server-side handler for bidi streaming call.ServerStreamingServerMethod<TRequest, TResponse>Server-side handler for server streaming call.UnaryServerMethod<TRequest, TResponse>Server-side handler for unary call.VerifyPeerCallbackCallback invoked with the expected targetHost and the peer's certificate.
+If false is returned by this callback then it is treated as a
+verification failure and the attempted connection will fail.
+Invocation of the callback is blocking, so any
+implementation should be light-weight.
+Note that the callback can potentially be invoked multiple times,
+concurrently from different threads (e.g. when multiple connections
+are being created for the same credentials).Back to topGenerated byDocFX

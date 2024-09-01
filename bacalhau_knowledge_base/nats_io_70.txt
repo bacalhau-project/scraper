@@ -1,0 +1,9 @@
+URL: https://nats.io/blog/kv-cli/
+
+AboutDownloadDocumentationBlogCommunitySupportPrivacyJetStream for Key-Value Store Tech PreviewR.I. Pienaar— July 15, 2021Back to BlogKey-Value stores are specialised NoSQL databases that store values in a data
+bucket under a specific key.Key-Value stores are used extensively in modern cloud-native infrastructure,
+indeed etcd is the main storage engine of Kubernetes.In recent releases we have made several enhancements to JetStream with regard to wildcard
+subject support. In NATS Server 2.3.2 we have all of the features needed for NATS
+JetStream to be a powerful Key-Value store.Today we’ll show an experimental feature added to thenatsCLI with full client
+APIs to follow for our major supported languages.Some features we will support:Multiple named Buckets, each with replication, historical values and cluster affinityBasic key-value operations of Get, Put and WatchPer key TTLs for auto expiring of keysEncoders and Decoders allowing zero trust data storageIn-memory read cachesGlobal replication for read-replicas stored near your clientsRead-After-Write safetyPlease enjoy the accompanying video to see this experimental feature in action and get
+some background thoughts.About the AuthorR.I. Pienaar is a long-time NATS Maintainer and a senior member of the engineering team atSynadia Communications.Questions? Join ourSlack channelor emailinfo@nats.io.Back to BlogCopyright © NATS Authors 2024NATS is aCloud Native Computing Foundationincubating projectThe Linux Foundation has registered trademarks and uses trademarks.For a list of trademarks of The Linux Foundation, please seeTrademark Usage page.

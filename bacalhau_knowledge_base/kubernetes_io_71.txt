@@ -1,0 +1,7 @@
+URL: https://kubernetes.io/fr/case-studies/
+
+DocumentationBlog de KubernetesPartenairesCommunautéÉtudes de casVersionsRelease Informationv1.31v1.30v1.29v1.28v1.27Français (French)Englishবাংলা (Bengali)中文 (Chinese)Deutsch (German)हिन्दी (Hindi)Bahasa Indonesia (Indonesian)Italiano (Italian)日本語 (Japanese)한국어 (Korean)Português (Portuguese)Русский (Russian)Español (Spanish)Українська (Ukrainian)Tiếng Việt (Vietnamese)Études de cas d'utilisation de Kubernetes"Kubernetes is a great platform for machine learning because it comes with all the scheduling and scalability that you need.
+"A propos Babylon"Kubernetes is a great solution for us. It allows us to rapidly iterate on our clients' demands.
+"A propos Booz Allen Hamilton"We realized that we needed to learn Kubernetes better in order to fully use the potential of it. At that point, we made the shift to build our own Kubernetes platform.
+"A propos Booking.com"We made the right decisions at the right time. Kubernetes and the cloud native technologies are now seen as the de facto ecosystem.
+"A propos AppDirectÉtudes de casDocumentationBlogPartenairesCommunautéÉtudes de cas© 2024 The Kubernetes Authors | Documentation Distributed underCC BY 4.0Copyright © 2024 The Linux Foundation ®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see ourTrademark Usage pageICP license: 京ICP备17074266号-3

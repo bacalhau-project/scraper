@@ -1,0 +1,12 @@
+URL: https://hadoop.apache.org/release/3.3.6.html
+
+Toggle navigationApache HadoopDownloadDocumentationCurrent (trunk)LatestStable3.4.03.3.62.10.2WikiCommunityBylawsCriteria for CommittershipMailing listsPublished CVEsWho We areDevelopmentHow to ContributeIssue TrackingVersion ControlVersioningHelpBuy StuffSponsorshipThanksApache Software FoundationRelease 3.3.6 availableThis is a release of Apache Hadoop 3.3 line.It contains 117 bug fixes, improvements and enhancements since 3.3.5.
+Users of Apache Hadoop 3.3.5 and earlier should upgrade to this release.Feature highlights:SBOM artifactsStarting from this release, Hadoop publishes Software Bill of Materials (SBOM) using
+CycloneDX Maven plugin. For more information on SBOM, please go toSBOM.HDFS RBF: RDBMS based token storage supportHDFS Router-Router Based Federation now supports storing delegation tokens on MySQL,HADOOP-18535which improves token operation through over the original Zookeeper-based implementation.New File System APIsHADOOP-18671moved a number of
+HDFS-specific APIs to Hadoop Common to make it possible for certain applications that
+depend on HDFS semantics to run on other Hadoop compatible file systems.In particular, recoverLease() and isFileClosed() are exposed through LeaseRecoverable
+interface, while setSafeMode() is exposed through SafeMode interface.Users are encouraged to read theoverview of major changessince release 3.3.5.
+For details of 117 bug fixes, improvements, and other enhancements since the previous 3.3.5 release,
+please checkrelease notesandchangelog.2023 Jun 23Download tar.gz(checksumsignature)Download aarch64 tar.gz(checksumsignature)Download src(checksumsignature)DocumentationApache Hadoop, Hadoop, Apache, the Apache feather logo,
+    and the Apache Hadoop project logo are either registered trademarks or trademarks of the Apache Software Foundation
+     in the United States and other countriesCopyright Â© 2006-2024 The Apache Software FoundationPrivacy policy

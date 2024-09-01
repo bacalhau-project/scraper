@@ -1,0 +1,120 @@
+URL: https://cassandra.apache.org/doc/latest/cassandra/developing/cql/dynamic-data-masking.html
+
+Get StartedCassandra BasicsQuickstartEcosystemDocumentationCommunityWelcomeDiscussionsGovernanceContributeMeet the CommunityCatalyst ProgramEventsLearnCassandra 5.0Case StudiesResourcesBlogDownload NowCassandra DocumentationVersion:5.0mastertrunk5.04.14.03.11MainGlossaryHow to report bugsContact usDevelopmentGetting startedBuilding and IDE integrationTestingContributing code changesCode styleReview checklistHow to commitWorking on documentationJenkins CI environmentDependency managementRelease processCassandraFAQGetting StartedCassandra QuickstartSAI QuickstartVector Search QuickstartInstalling CassandraConfiguring CassandraInserting and queryingClient driversProduction recommendationsWhat’s newSupport for JavaArchitectureOverviewDynamoStorage EngineGuaranteesImproved Internode MessagingImproved StreamingData ModelingIntroductionConceptual data modelingRDBMS designDefining application queriesLogical data modelingPhysical data modelingEvaluating and refining data modelsDefining database schemaCassandra data modeling toolsCassandra Query Language (CQL)DefinitionsData typesData definition (DDL)Data manipulation (DML)Dynamic Data Masking (DDM)OperatorsIndexing conceptsSAI OverviewConceptsSAI QuickstartSAI FAQWorking with SAISAI operationsSecondary indexes (2i) overviewConceptsWorking with 2iRebuild 2iMaterialized viewsFunctionsJSONSecurityTriggersAppendicesChangesSASISingle file of CQL informationVector Search overviewConceptsData ModelingVector Search QuickstartWorking with Vector SearchManagingConfiguringcassandra.yamlcassandra-rackdc.propertiescassandra-env.shcassandra-topologies.propertiescommitlog-archiving.propertieslogback.xmljvm-* filesLiberating cassandra.yaml Parameters' Names from Their UnitsOperatingBackupsBloom filtersBulk loadingChange Data Capture (CDC)CompactionCompressionHardwareHintsLoggingAudit loggingAudit logging 2Full query loggingMonitoring metricsRepairRead repairSecuritySnitchesTopology changesTransient replicationVirtual tablesToolscqlsh: the CQL shellnodetoolSSTable toolscassandra-stressTroubleshootingFinding misbehaving nodesReading Cassandra logsUsing nodetoolUsing external tools to deep-diveReferenceALTER TABLECREATE INDEXCREATE CUSTOM INDEXCREATE TABLEDROP INDEXDROP TABLEPlug-insYou are viewing the documentation for a prerelease version.CassandraCassandra Query Language (CQL)Dynamic Data Masking (DDM)EditDynamic Data Masking (DDM)Dynamic data masking (DDM) obscures sensitive information while still allowing access to the masked columns.
+DDM doesn’t alter the stored data.
+Instead, it just presents the data in its obscured form duringSELECTqueries.
+This aims to provide some degree of protection against accidental data exposure. However, anyone with direct access to the SSTable files will be able to read the clear data.Masking functionsDDM is based on a set of CQL native functions that obscure sensitive information.
+The available functions are:FunctionDescriptionmask_null(value)Replaces the first argument with anullcolumn.
+The returned value is always a non-existent column, and not a not-null column representing anullvalue.Examples:mask_null('Alice')→nullmask_null(123)→nullmask_default(value)Replaces its argument by an arbitrary, fixed default value of the same type.
+This will be****for text values, zero for numeric values,falsefor booleans, etc.Variable-length multi-valued types such as lists, sets and maps are masked as empty collections.Fixed-length multi-valued types such as tuples, user-defined types (UDTs) and vectors are masked by replacing each of their values by the default masking value of the value type.Examples:mask_default('Alice')→'****'mask_default(123)→0mask_default((list<int>) [1, 2, 3])→[]mask_default((vector<int, 3>) [1, 2, 3])→[0, 0, 0]mask_replace(value, replacement])Replaces the first argument by the replacement value on the second argument.
+The replacement value needs to have the same type as the replaced value.Examples:mask_replace('Alice', 'REDACTED')→'REDACTED'mask_replace(123, -1)→-1mask_inner(value, begin, end, [padding])Returns a copy of the firsttext,varcharorasciiargument, replacing each character except the first and last ones by a padding character.
+The second and third arguments are the size of the exposed prefix and suffix.
+The optional fourth argument is the padding character,\*by default.Examples:mask_inner('Alice', 1, 2)→'Ace'mask_inner('Alice', 1, null)→'A'mask_inner('Alice', null, 2)→'*ce'mask_inner('Alice', 2, 1, '#')→'Al##e'mask_outer(value, begin, end, [padding])Returns a copy of the firsttext,varcharorasciiargument, replacing the first and last character by a padding character.
+The second and third arguments are the size of the exposed prefix and suffix.
+The optional fourth argument is the padding character,\*by default.Examples:mask_outer('Alice', 1, 2)→'*li'mask_outer('Alice', 1, null)→'*lice'mask_outer('Alice', null, 2)→'Ali'mask_outer('Alice', 2, 1, '#')→'##ic#'mask_hash(value, [algorithm])Returns ablobcontaining the hash of the first argument.
+The optional second argument is the hashing algorithm to be used, according the available Java security provider.
+The default hashing algorithm isSHA-256.Examples:mask_hash('Alice')mask_hash('Alice', 'SHA-512')Those functions can be used onSELECTqueries to get an obscured view of the data.
+For example:CREATE TABLE patients (
+   id timeuuid PRIMARY KEY,
+   name text,
+   birth date
+);
+
+INSERT INTO patients(id, name, birth) VALUES (now(), 'alice', '1982-01-02');
+INSERT INTO patients(id, name, birth) VALUES (now(), 'bob', '1982-01-02');
+
+SELECT mask_inner(name, 1, null), mask_default(birth) FROM patients;
+
+//   system.mask_inner(name, 1, NULL) | system.mask_default(birth)
+// -----------------------------------+----------------------------
+//                                b** |                 1970-01-01
+//                              a**** |                 1970-01-01Attaching masking functions to table columnsA masking function can be permanently attached to any column of a table.
+If a masking column is defined,SELECTqueries will always return the column values in their masked form.
+The masking will be transparent to the users runningSELECTqueries.
+The only way to know that a column is masked is to consult the table definition.This is an optional feature that is disabled by default.
+To use the feature, enable thedynamic_data_masking_enabledproperty incassandra.yaml.The masks of the columns of a table can be defined in theCREATE TABLEto create the table schema. This example uses themask_innerfunction with two arguments:CREATE TABLE patients (
+    id timeuuid PRIMARY KEY,
+    name text MASKED WITH mask_inner(1, null),
+    birth date MASKED WITH mask_default()
+ );When using aSELECTquery on this data, three arguments are required for themask_innerfunction, but the first argument is always omitted when attaching the function to the table schema.
+The value of that first argument is always interpreted as the value of the masked column, in this case atextcolumn.For the same reason, using the masking functionmask_defaultdoesn’t have any argument when creating the table schema, but it requires one argument when used onSELECTqueries.Data can be normally inserted into the masked table without alteration.
+For example:INSERT INTO patients(id, name, birth) VALUES (now(), 'alice', '1984-01-02');
+INSERT INTO patients(id, name, birth) VALUES (now(), 'bob', '1982-02-03');TheSELECTquery will return the masked data.
+The masking function will be automatically applied to the column values.SELECT name, birth FROM patients;
+
+//  name  | birth
+// -------+------------
+//  a**** | 1970-01-01
+//    b** | 1970-01-01AnALTER TABLEquery can be used to make changes to a masking function on a table column.ALTER TABLE patients ALTER name
+  MASKED WITH mask_default();In a similar way, a masking function can be detached from a column with anALTER TABLEquery:ALTER TABLE patients ALTER name
+  DROP MASKED;PermissionsOrdinary users are created without theUNMASKpermission and will see masked values.
+Giving a user theUNMASKpermission allows them to retrieve the unmasked values of masked columns.
+Superusers are automatically created with theUNMASKpermission,
+and will see the unmasked values in aSELECTquery results.For example, suppose that we have a table with masked columns:CREATE TABLE patients (
+    id timeuuid PRIMARY KEY,
+    name text MASKED WITH mask_inner(1, null),
+    birth date MASKED WITH mask_default()
+ );And we insert some data into the table:INSERT INTO patients(id, name, birth) VALUES (now(), 'alice', '1984-01-02');
+INSERT INTO patients(id, name, birth) VALUES (now(), 'bob', '1982-02-03');LOGIN unprivileged
+SELECT name, birth FROM patients;
+
+//  name  | birth
+// -------+------------
+//  a**** | 1970-01-01
+//    b** | 1970-01-01Then we create two users withSELECTpermission for the table, but we only grant theUNMASKpermission to one of the users:CREATE USER privileged WITH PASSWORD 'xyz';
+GRANT SELECT ON TABLE patients TO privileged;
+GRANT UNMASK ON TABLE patients TO privileged;
+
+CREATE USER unprivileged WITH PASSWORD 'xyz';
+GRANT SELECT ON TABLE patients TO unprivileged;The user with theUNMASKpermission can see the clear, unmasked data:LOGIN privileged
+SELECT name, birth FROM patients;
+
+//  name  | birth
+// -------+------------
+//  alice | 1984-01-02
+//    bob | 1982-02-03The user without theUNMASKpermission can only see the masked data:LOGIN unprivileged
+SELECT name, birth FROM patients;
+
+//  name  | birth
+// -------+------------
+//  a**** | 1970-01-01
+//    b** | 1970-01-01TheUNMASKpermission works like any other permission, and can be revoked at will:REVOKE UNMASK ON TABLE patients
+  FROM privileged;Please note that, when authentication is disabled, the anonymous default user has all the permissions, including theUNMASKpermission, and can see the unmasked data.
+In other words, attaching data masking functions to columns only makes sense if authentication is enabled.Only users with theUNMASKpermission are allowed to use masked columns in theWHEREclause of aSELECTquery.
+Users without theUNMASKpermission cannot use this feature.
+This feature prevents malicious users seeing clear data by running exhaustive, brute force queries.
+The user without theUNMASKpermission will see the following:CREATE USER untrusted_user WITH PASSWORD 'xyz';
+GRANT SELECT ON TABLE patients TO untrusted_user;
+LOGIN untrusted_user
+SELECT name, birth FROM patients WHERE name = 'Alice' ALLOW FILTERING;
+
+// Unauthorized: Error from server: code=2100 [Unauthorized] message="User untrusted_user has no UNMASK nor SELECT_UNMASK permission on table k.patients"There are some use cases where a trusted database user needs to produce masked data that untrusted external users will query.
+For instance, a trusted app can connect to the database and with a query extract masked data that will be displayed to its end users.
+In that case, the trusted user (the app) can be given theSELECT_MASKEDpermission.
+This permission lets the user query masked columns in theWHEREclause of aSELECTquery,
+while still only seeing the masked data in the query results:CREATE USER trusted_user WITH PASSWORD 'xyz';
+GRANT SELECT, SELECT_MASKED ON TABLE patients TO trusted_user;
+LOGIN trusted_user
+SELECT name, birth FROM patients WHERE name = 'Alice' ALLOW FILTERING;
+
+//  name  | birth
+// -------+------------
+//  a**** | 1970-01-01Custom functionsUser-defined functions (UDFs)can be attached to a table column.
+The UDFs used for masking should belong to the same keyspace as the masked table.
+The column value to mask will be passed as the first argument of the attached UDF.
+Thus, the UDFs attached to a column should have at least one argument,
+and that argument should have the same type as the masked column.
+Also, the attached UDF should return values of the same type as the masked column:CREATE FUNCTION redact(input text)
+   CALLED ON NULL INPUT
+   RETURNS text
+   LANGUAGE java
+   AS 'return "redacted";';
+
+CREATE TABLE patients (
+   id timeuuid PRIMARY KEY,
+   name text MASKED WITH redact(),
+   birth date
+);This creates a dependency between the table schema and the functions.
+Any attempt to drop the function will be rejected while this dependency exists.
+Consequently, you must drop the mask column in the table before dropping the function:ALTER TABLE patients ALTER name
+  DROP MASKED;Dropping the column, or its containing table, or its containing keyspace will also remove the dependency.Aggregate functionscannot be used as masking functions.Get started with Cassandra, fast.Quickstart GuideApache Cassandrapowers mission-critical deployments with improved performance and unparalleled levels of scale in the cloud.HomeCassandra BasicsQuickstartEcosystemDocumentationCommunityCase StudiesResourcesBlogFoundationEventsLicenseThanksSecurityPrivacySponsorshipÂ© 2009-The Apache Software Foundationunder the terms of the Apache License 2.0.  Apache, the Apache feather logo, Apache Cassandra, Cassandra, and the Cassandra logo, are either registered trademarks or trademarks of The Apache Software Foundation.

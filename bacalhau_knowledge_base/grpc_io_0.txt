@@ -1,0 +1,8 @@
+URL: https://grpc.io/
+
+gRPCAboutMeetDocsGuidesShowcaseBlogCommunitygRPConf 2024 is happening NEXT WEEK onAug. 27th!-Register nowand get 25% off with the code GOOGLE25.A high performance, open source universal RPC frameworkLearn moreGet started!GoC++JavaPythonWhy gRPC?gRPC is a modern open source high performance Remote Procedure Call (RPC)
+framework that can run in any environment. It can efficiently connect services
+in and across data centers with pluggable support for load balancing, tracing,
+health checking and authentication. It is also applicable in last mile of
+distributed computing to connect devices, mobile applications and browsers to
+backend services.Simple service definitionDefine your service using Protocol Buffers, a powerful binary serialization toolset and languageStart quickly and scaleInstall runtime and dev environments with a single line and also scale to millions of RPCs per second with the frameworkWorks across languages and platformsAutomatically generate idiomatic client and server stubs for your service in a variety of languages and platformsBi-directional streaming and integrated authBi-directional streaming and fully integrated pluggable authentication with HTTP/2-based transportUsed bygRPC is aCNCFincubation project© 2024 gRPC AuthorsTerms|Privacy|Trademarks|License|About

@@ -1,0 +1,14 @@
+URL: https://hadoop.apache.org/release/3.3.5.html
+
+Toggle navigationApache HadoopDownloadDocumentationCurrent (trunk)LatestStable3.4.03.3.62.10.2WikiCommunityBylawsCriteria for CommittershipMailing listsPublished CVEsWho We areDevelopmentHow to ContributeIssue TrackingVersion ControlVersioningHelpBuy StuffSponsorshipThanksApache Software FoundationRelease 3.3.5 availableThis is a release of Apache Hadoop 3.3 line.Key changes includeA big update of dependencies to try and keep those reports of
+transitive CVEs under control -both genuine and false positives.Critical fix to ABFS input stream prefetching for correct reading.Vectored IO API for all FSDataInputStream implementations, with
+high-performance versions for file:// and s3a:// filesystems.
+file:// through java native IO
+s3a:// parallel GET requests.Arm64 binaries. Note, because the arm64 release was on a different
+platform, the jar files may not match those of the x86
+release -and therefore the maven artifacts.Security fixes in Hadoop’s own code.Users of Apache Hadoop 3.3.4 and earlier should upgrade to
+this release.All users are encouraged to read theoverview of major changessince release 3.3.4.For details of bug fixes, improvements, and other enhancements since
+the previous 3.3.4 release, please checkrelease notesandchangelog.Azure ABFS: Critical Stream Prefetch FixThe ABFS connector has a critical bug fixhttps://issues.apache.org/jira/browse/HADOOP-18546:ABFS. Disable purging list of in-progress reads in abfs stream close().All users of the abfs connector in hadoop releases 3.3.2+ MUST either upgrade
+to this release or disable prefetching by settingfs.azure.readaheadqueue.depthto0.2023 Mar 22Download tar.gz(checksumsignature)Download aarch64 tar.gz(checksumsignature)Download src(checksumsignature)DocumentationApache Hadoop, Hadoop, Apache, the Apache feather logo,
+    and the Apache Hadoop project logo are either registered trademarks or trademarks of the Apache Software Foundation
+     in the United States and other countriesCopyright Â© 2006-2024 The Apache Software FoundationPrivacy policy

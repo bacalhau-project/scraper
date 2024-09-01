@@ -1,0 +1,67 @@
+URL: https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/RackAwareness.html
+
+Wiki|git|Apache Hadoop| Last Published: 2024-03-04
+               | Version: 3.4.0GeneralOverviewSingle Node SetupCluster SetupCommands ReferenceFileSystem ShellCompatibility SpecificationDownstream Developer's GuideAdmin Compatibility GuideInterface ClassificationFileSystem SpecificationCommonCLI Mini ClusterFair Call QueueNative LibrariesProxy UserRack AwarenessSecure ModeService Level AuthorizationHTTP AuthenticationCredential Provider APIHadoop KMSTracingUnix Shell GuideRegistryAsync ProfilerHDFSArchitectureUser GuideCommands ReferenceNameNode HA With QJMNameNode HA With NFSObserver NameNodeFederationViewFsViewFsOverloadSchemeSnapshotsEdits ViewerImage ViewerPermissions and HDFSQuotas and HDFSlibhdfs (C API)WebHDFS (REST API)HttpFSShort Circuit Local ReadsCentralized Cache ManagementNFS GatewayRolling UpgradeExtended AttributesTransparent EncryptionMultihomingStorage PoliciesMemory Storage SupportSynthetic Load GeneratorErasure CodingDisk BalancerUpgrade DomainDataNode AdminRouter FederationProvided StorageMapReduceTutorialCommands ReferenceCompatibility with 1.xEncrypted ShufflePluggable Shuffle/SortDistributed Cache DeploySupport for YARN Shared CacheMapReduce REST APIsMR Application MasterMR History ServerYARNArchitectureCommands ReferenceCapacity SchedulerFair SchedulerResourceManager RestartResourceManager HAResource ModelNode LabelsNode AttributesWeb Application ProxyTimeline ServerTimeline Service V.2Writing YARN ApplicationsYARN Application SecurityNodeManagerRunning Applications in Docker ContainersRunning Applications in runC ContainersUsing CGroupsSecure ContainersReservation SystemGraceful DecommissionOpportunistic ContainersYARN FederationShared CacheUsing GPUUsing FPGAPlacement ConstraintsYARN UI2YARN REST APIsIntroductionResource ManagerNode ManagerTimeline ServerTimeline Service V.2YARN ServiceOverviewQuickStartConceptsYarn Service APIService DiscoverySystem ServicesHadoop Compatible File SystemsAliyun OSSAmazon S3Azure Blob StorageAzure Data Lake StorageTencent COSHuaweicloud OBSAuthOverviewExamplesConfigurationBuildingToolsHadoop StreamingHadoop ArchivesHadoop Archive LogsDistCpHDFS Federation BalanceGridMixRumenResource Estimator ServiceScheduler Load SimulatorHadoop BenchmarkingDynamometerReferenceChangelog and Release NotesJava API docsUnix Shell APIMetricsConfigurationcore-default.xmlhdfs-default.xmlhdfs-rbf-default.xmlmapred-default.xmlyarn-default.xmlkms-default.xmlhttpfs-default.xmlDeprecated Propertiespython Examplebash ExampleRack AwarenessHadoop components are rack-aware. For example, HDFS block placement will use rack awareness for fault tolerance by placing one block replica on a different rack. This provides data availability in the event of a network switch failure or partition within the cluster.Hadoop master daemons obtain the rack id of the cluster workers by invoking either an external script or java class as specified by configuration files. Using either the java class or external script for topology, output must adhere to the javaorg.apache.hadoop.net.DNSToSwitchMappinginterface. The interface expects a one-to-one correspondence to be maintained and the topology information in the format of ‘/myrack/myhost’, where ‘/’ is the topology delimiter, ‘myrack’ is the rack identifier, and ‘myhost’ is the individual host. Assuming a single /24 subnet per rack, one could use the format of ‘/192.168.100.0/192.168.100.5’ as a unique rack-host topology mapping.To use the java class for topology mapping, the class name is specified by thenet.topology.node.switch.mapping.implparameter in the configuration file. An example, NetworkTopology.java, is included with the hadoop distribution and can be customized by the Hadoop administrator. Using a Java class instead of an external script has a performance benefit in that Hadoop doesn’t need to fork an external process when a new worker node registers itself.If implementing an external script, it will be specified with thenet.topology.script.file.nameparameter in the configuration files. Unlike the java class, the external topology script is not included with the Hadoop distribution and is provided by the administrator. Hadoop will send multiple IP addresses to ARGV when forking the topology script. The number of IP addresses sent to the topology script is controlled withnet.topology.script.number.argsand defaults to 100. Ifnet.topology.script.number.argswas changed to 1, a topology script would get forked for each IP submitted by DataNodes and/or NodeManagers.Ifnet.topology.script.file.nameornet.topology.node.switch.mapping.implis not set, the rack id ‘/default-rack’ is returned for any passed IP address. While this behavior appears desirable, it can cause issues with HDFS block replication as default behavior is to write one replicated block off rack and is unable to do so as there is only a single rack named ‘/default-rack’.python Example#!/usr/bin/python3
+# this script makes assumptions about the physical environment.
+#  1) each rack is its own layer 3 network with a /24 subnet, which
+# could be typical where each rack has its own
+#     switch with uplinks to a central core router.
+#
+#             +-----------+
+#             |core router|
+#             +-----------+
+#            /             \
+#   +-----------+        +-----------+
+#   |rack switch|        |rack switch|
+#   +-----------+        +-----------+
+#   | data node |        | data node |
+#   +-----------+        +-----------+
+#   | data node |        | data node |
+#   +-----------+        +-----------+
+#
+# 2) topology script gets list of IP's as input, calculates network address, and prints '/network_address/ip'.
+
+import netaddr
+import sys
+sys.argv.pop(0)                                                  # discard name of topology script from argv list as we just want IP addresses
+
+netmask = '255.255.255.0'                                        # set netmask to what's being used in your environment.  The example uses a /24
+
+for ip in sys.argv:                                              # loop over list of datanode IP's
+    address = '{0}/{1}'.format(ip, netmask)                      # format address string so it looks like 'ip/netmask' to make netaddr work
+    try:
+        network_address = netaddr.IPNetwork(address).network     # calculate and print network address
+        print("/{0}".format(network_address))
+    except:
+        print("/rack-unknown")                                   # print catch-all value if unable to calculate network addressbash Example#!/usr/bin/env bash
+# Here's a bash example to show just how simple these scripts can be
+# Assuming we have flat network with everything on a single switch, we can fake a rack topology.
+# This could occur in a lab environment where we have limited nodes,like 2-8 physical machines on a unmanaged switch.
+# This may also apply to multiple virtual machines running on the same physical hardware.
+# The number of machines isn't important, but that we are trying to fake a network topology when there isn't one.
+#
+#       +----------+    +--------+
+#       |jobtracker|    |datanode|
+#       +----------+    +--------+
+#              \        /
+#  +--------+  +--------+  +--------+
+#  |datanode|--| switch |--|datanode|
+#  +--------+  +--------+  +--------+
+#              /        \
+#       +--------+    +--------+
+#       |datanode|    |namenode|
+#       +--------+    +--------+
+#
+# With this network topology, we are treating each host as a rack.  This is being done by taking the last octet
+# in the datanode's IP and prepending it with the word '/rack-'.  The advantage for doing this is so HDFS
+# can create its 'off-rack' block copy.
+# 1) 'echo $@' will echo all ARGV values to xargs.
+# 2) 'xargs' will enforce that we print a single argv value per line
+# 3) 'awk' will split fields on dots and append the last field to the string '/rack-'. If awk
+#    fails to split on four dots, it will still print '/rack-' last field value
+
+echo $@ | xargs -n 1 | awk -F '.' '{print "/rack-"$NF}'©            2008-2024
+              Apache Software Foundation
+            
+                          -Privacy Policy.
+        Apache Maven, Maven, Apache, the Apache feather logo, and the Apache Maven project logos are trademarks of The Apache Software Foundation.

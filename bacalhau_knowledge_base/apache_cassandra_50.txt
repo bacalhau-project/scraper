@@ -1,0 +1,34 @@
+URL: https://cassandra.apache.org/doc/latest/cassandra/getting-started/cassandra-quickstart.html
+
+Get StartedCassandra BasicsQuickstartEcosystemDocumentationCommunityWelcomeDiscussionsGovernanceContributeMeet the CommunityCatalyst ProgramEventsLearnCassandra 5.0Case StudiesResourcesBlogDownload NowCassandra DocumentationVersion:5.0mastertrunk5.04.14.03.11MainGlossaryHow to report bugsContact usDevelopmentGetting startedBuilding and IDE integrationTestingContributing code changesCode styleReview checklistHow to commitWorking on documentationJenkins CI environmentDependency managementRelease processCassandraFAQGetting StartedCassandra QuickstartSAI QuickstartVector Search QuickstartInstalling CassandraConfiguring CassandraInserting and queryingClient driversProduction recommendationsWhat’s newSupport for JavaArchitectureOverviewDynamoStorage EngineGuaranteesImproved Internode MessagingImproved StreamingData ModelingIntroductionConceptual data modelingRDBMS designDefining application queriesLogical data modelingPhysical data modelingEvaluating and refining data modelsDefining database schemaCassandra data modeling toolsCassandra Query Language (CQL)DefinitionsData typesData definition (DDL)Data manipulation (DML)Dynamic Data Masking (DDM)OperatorsIndexing conceptsSAI OverviewConceptsSAI QuickstartSAI FAQWorking with SAISAI operationsSecondary indexes (2i) overviewConceptsWorking with 2iRebuild 2iMaterialized viewsFunctionsJSONSecurityTriggersAppendicesChangesSASISingle file of CQL informationVector Search overviewConceptsData ModelingVector Search QuickstartWorking with Vector SearchManagingConfiguringcassandra.yamlcassandra-rackdc.propertiescassandra-env.shcassandra-topologies.propertiescommitlog-archiving.propertieslogback.xmljvm-* filesLiberating cassandra.yaml Parameters' Names from Their UnitsOperatingBackupsBloom filtersBulk loadingChange Data Capture (CDC)CompactionCompressionHardwareHintsLoggingAudit loggingAudit logging 2Full query loggingMonitoring metricsRepairRead repairSecuritySnitchesTopology changesTransient replicationVirtual tablesToolscqlsh: the CQL shellnodetoolSSTable toolscassandra-stressTroubleshootingFinding misbehaving nodesReading Cassandra logsUsing nodetoolUsing external tools to deep-diveReferenceALTER TABLECREATE INDEXCREATE CUSTOM INDEXCREATE TABLEDROP INDEXDROP TABLEPlug-insYou are viewing the documentation for a prerelease version.CassandraGetting StartedCassandra QuickstartEditCassandra QuickstartSTEP 1: GET CASSANDRA USING DOCKERYou’ll need to have Docker Desktop for Mac, Docker Desktop for Windows, or similar software installed on your computer.Apache Cassandra is also available as a tarball or packagedownload.docker pull cassandra:latestSTEP 2: START CASSANDRAA Docker network allows us to access the container’s ports without exposing them on the host.docker network create cassandra
+
+docker run --rm -d --name cassandra --hostname cassandra --network cassandra cassandraSTEP 3: CREATE FILESThe Cassandra Query Language (CQL) is very similar to SQL but suited for the JOINless structure of Cassandra.Create a file named data.cql and paste the following CQL script in it. This script will create a keyspace, the layer at which Cassandra replicates its data, a table to hold the data, and insert some data into that table:CREATE KEYSPACE IF NOT EXISTS store WITH REPLICATION =
+{ 'class' : 'SimpleStrategy',
+'replication_factor' : '1'
+};
+
+CREATE TABLE IF NOT EXISTS store.shopping_cart (
+    userid text PRIMARY KEY,
+    item_count int,
+    last_update_timestamp timestamp
+);
+
+INSERT INTO store.shopping_cart
+    (userid, item_count, last_update_timestamp)
+    VALUES ('9876', 2, toTimeStamp(now()));
+INSERT INTO store.shopping_cart
+    (userid, item_count, last_update_timestamp)
+    VALUES ('1234', 5, toTimeStamp(now()));STEP 4: LOAD DATA WITH CQLSHThe CQL shell, orcqlsh, is one tool to use in interacting with the database.
+We’ll use it to load some data into the database using the script you just saved.docker run --rm --network cassandra \
+-v "$(pwd)/data.cql:/scripts/data.cql" \
+-e CQLSH_HOST=cassandra -e CQLSH_PORT=9042 \
+-e CQLVERSION=3.4.6 nuvo/docker-cqlshThe cassandra server itself (the first docker run command you ran) takes a few seconds to start up.
+The above command will throw an error if the server hasn’t finished its init sequence yet, so give it a few seconds to spin up.STEP 5: INTERACTIVE CQLSHMuch like an SQL shell, you can also of course usecqlshto run CQL commands interactively.docker run --rm -it --network \
+cassandra nuvo/docker-cqlsh cqlsh cassandra \
+9042 --cqlversion='3.4.5'This should get you a prompt like so:Connected to Test Cluster at cassandra:9042.
+[cqlsh 5.0.1 | Cassandra 4.0.4 | CQL spec 3.4.5 | Native protocol v5]
+Use HELP for help.
+cqlsh>STEP 6: READ SOME DATASELECT * FROM store.shopping_cart;STEP 7: WRITE SOME MORE DATAINSERT INTO store.shopping_cart
+    (userid, item_count)
+    VALUES ('4567', 20);STEP 8: CLEAN UPdocker kill cassandra
+docker network rm cassandraCONGRATULATIONS!Hey, that wasn’t so hard, was it?To learn more, we suggest the following next steps:Read through theCassandra Basicsto learn main concepts and how Cassandra works at a high level.Browse through theCase Studiesto learn how other users in our worldwide community are getting value out of Cassandra.Get started with Cassandra, fast.Quickstart GuideApache Cassandrapowers mission-critical deployments with improved performance and unparalleled levels of scale in the cloud.HomeCassandra BasicsQuickstartEcosystemDocumentationCommunityCase StudiesResourcesBlogFoundationEventsLicenseThanksSecurityPrivacySponsorshipÂ© 2009-The Apache Software Foundationunder the terms of the Apache License 2.0.  Apache, the Apache feather logo, Apache Cassandra, Cassandra, and the Cassandra logo, are either registered trademarks or trademarks of The Apache Software Foundation.
