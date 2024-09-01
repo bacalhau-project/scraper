@@ -1,6 +1,203 @@
-URL: https://cassandra.apache.org/doc/latest/cassandra/developing/cql/indexing/2i/2i-concepts.html
+Source: apache_cassandra
+URL: https://cassandra.apache.org/doc/latest/cassandra/developing/cql/functions.html
 
-Get StartedCassandra BasicsQuickstartEcosystemDocumentationCommunityWelcomeDiscussionsGovernanceContributeMeet the CommunityCatalyst ProgramEventsLearnCassandra 5.0Case StudiesResourcesBlogDownload NowCassandra DocumentationVersion:5.0mastertrunk5.04.14.03.11MainGlossaryHow to report bugsContact usDevelopmentGetting startedBuilding and IDE integrationTestingContributing code changesCode styleReview checklistHow to commitWorking on documentationJenkins CI environmentDependency managementRelease processCassandraFAQGetting StartedCassandra QuickstartSAI QuickstartVector Search QuickstartInstalling CassandraConfiguring CassandraInserting and queryingClient driversProduction recommendationsWhat’s newSupport for JavaArchitectureOverviewDynamoStorage EngineGuaranteesImproved Internode MessagingImproved StreamingData ModelingIntroductionConceptual data modelingRDBMS designDefining application queriesLogical data modelingPhysical data modelingEvaluating and refining data modelsDefining database schemaCassandra data modeling toolsCassandra Query Language (CQL)DefinitionsData typesData definition (DDL)Data manipulation (DML)Dynamic Data Masking (DDM)OperatorsIndexing conceptsSAI OverviewConceptsSAI QuickstartSAI FAQWorking with SAISAI operationsSecondary indexes (2i) overviewConceptsWorking with 2iRebuild 2iMaterialized viewsFunctionsJSONSecurityTriggersAppendicesChangesSASISingle file of CQL informationVector Search overviewConceptsData ModelingVector Search QuickstartWorking with Vector SearchManagingConfiguringcassandra.yamlcassandra-rackdc.propertiescassandra-env.shcassandra-topologies.propertiescommitlog-archiving.propertieslogback.xmljvm-* filesLiberating cassandra.yaml Parameters' Names from Their UnitsOperatingBackupsBloom filtersBulk loadingChange Data Capture (CDC)CompactionCompressionHardwareHintsLoggingAudit loggingAudit logging 2Full query loggingMonitoring metricsRepairRead repairSecuritySnitchesTopology changesTransient replicationVirtual tablesToolscqlsh: the CQL shellnodetoolSSTable toolscassandra-stressTroubleshootingFinding misbehaving nodesReading Cassandra logsUsing nodetoolUsing external tools to deep-diveReferenceALTER TABLECREATE INDEXCREATE CUSTOM INDEXCREATE TABLEDROP INDEXDROP TABLEPlug-insYou are viewing the documentation for a prerelease version.CassandraCassandra Query Language (CQL)Indexing conceptsSecondary indexes (2i) overviewConceptsEditSecondary index (2i) conceptsSecondary indexing (2i) is a globally-distributed index for Cassandra databases.2i is the original secondary indexing of Apache Cassandra, but today, it suffers from poor performance and latency.
-If you are building new indexing, useSAI indexinginstead.2i adds column-level indexes to any CQL table column of any CQL data type, except for a counter column.
-However, the indexes are locally built on each Apache Cassandra node in a cluster, so using 2i for queries results in poor performance.
-A number oftechniquesexist for guarding against the undesirable scenario where data might be incorrectly retrieved during a query based on stale values in an index.There are distinct conditions aboutwhen and when not to use a 2i index.Get started with Cassandra, fast.Quickstart GuideApache Cassandrapowers mission-critical deployments with improved performance and unparalleled levels of scale in the cloud.HomeCassandra BasicsQuickstartEcosystemDocumentationCommunityCase StudiesResourcesBlogFoundationEventsLicenseThanksSecurityPrivacySponsorshipÂ© 2009-The Apache Software Foundationunder the terms of the Apache License 2.0.  Apache, the Apache feather logo, Apache Cassandra, Cassandra, and the Cassandra logo, are either registered trademarks or trademarks of The Apache Software Foundation.
+Get StartedCassandra BasicsQuickstartEcosystemDocumentationCommunityWelcomeDiscussionsGovernanceContributeMeet the CommunityCatalyst ProgramEventsLearnCassandra 5.0Case StudiesResourcesBlogDownload NowCassandra DocumentationVersion:5.0mastertrunk5.04.14.03.11MainGlossaryHow to report bugsContact usDevelopmentGetting startedBuilding and IDE integrationTestingContributing code changesCode styleReview checklistHow to commitWorking on documentationJenkins CI environmentDependency managementRelease processCassandraFAQGetting StartedCassandra QuickstartSAI QuickstartVector Search QuickstartInstalling CassandraConfiguring CassandraInserting and queryingClient driversProduction recommendationsWhat’s newSupport for JavaArchitectureOverviewDynamoStorage EngineGuaranteesImproved Internode MessagingImproved StreamingData ModelingIntroductionConceptual data modelingRDBMS designDefining application queriesLogical data modelingPhysical data modelingEvaluating and refining data modelsDefining database schemaCassandra data modeling toolsCassandra Query Language (CQL)DefinitionsData typesData definition (DDL)Data manipulation (DML)Dynamic Data Masking (DDM)OperatorsIndexing conceptsSAI OverviewConceptsSAI QuickstartSAI FAQWorking with SAISAI operationsSecondary indexes (2i) overviewConceptsWorking with 2iRebuild 2iMaterialized viewsFunctionsJSONSecurityTriggersAppendicesChangesSASISingle file of CQL informationVector Search overviewConceptsData ModelingVector Search QuickstartWorking with Vector SearchManagingConfiguringcassandra.yamlcassandra-rackdc.propertiescassandra-env.shcassandra-topologies.propertiescommitlog-archiving.propertieslogback.xmljvm-* filesLiberating cassandra.yaml Parameters' Names from Their UnitsOperatingBackupsBloom filtersBulk loadingChange Data Capture (CDC)CompactionCompressionHardwareHintsLoggingAudit loggingAudit logging 2Full query loggingMonitoring metricsRepairRead repairSecuritySnitchesTopology changesTransient replicationVirtual tablesToolscqlsh: the CQL shellnodetoolSSTable toolscassandra-stressTroubleshootingFinding misbehaving nodesReading Cassandra logsUsing nodetoolUsing external tools to deep-diveReferenceALTER TABLECREATE INDEXCREATE CUSTOM INDEXCREATE TABLEDROP INDEXDROP TABLEPlug-insYou are viewing the documentation for a prerelease version.CassandraCassandra Query Language (CQL)FunctionsEditFunctionsCQL supports 2 main categories of functions:scalar functionsthat take a number of values and produce an outputaggregate functionsthat aggregate multiple rows resulting from aSELECTstatementIn both cases, CQL provides a number of native "hard-coded" functions as
+well as the ability to create new user-defined functions.By default, the use of user-defined functions is disabled by default for
+security concerns (even when enabled, the execution of user-defined
+functions is sandboxed and a "rogue" function should not be allowed to
+do evil, but no sandbox is perfect so using user-defined functions is
+opt-in). See theuser_defined_functions_enabledincassandra.yamlto
+enable them.A function is identifier by its name:function_name ::= [ keyspace_name'.' ] nameScalar functionsNative functionsCastThecastfunction can be used to converts one native datatype to
+another.The following table describes the conversions supported by thecastfunction. Cassandra will silently ignore any cast converting a datatype
+into its own datatype.FromToasciitext,varcharbiginttinyint,smallint,int,float,double,decimal,varint,text,varcharbooleantext,varcharcountertinyint,smallint,int,bigint,float,double,decimal,varint,text,varchardatetimestampdecimaltinyint,smallint,int,bigint,float,double,varint,text,varchardoubletinyint,smallint,int,bigint,float,decimal,varint,text,varcharfloattinyint,smallint,int,bigint,double,decimal,varint,text,varcharinettext,varcharinttinyint,smallint,bigint,float,double,decimal,varint,text,varcharsmallinttinyint,int,bigint,float,double,decimal,varint,text,varchartimetext,varchartimestampdate,text,varchartimeuuidtimestamp,date,text,varchartinyinttinyint,smallint,int,bigint,float,double,decimal,varint,text,varcharuuidtext,varcharvarinttinyint,smallint,int,bigint,float,double,decimal,text,varcharThe conversions rely strictly on Java’s semantics. For example, the
+double value 1 will be converted to the text value '1.0'. For instance:SELECT avg(cast(count as double)) FROM myTableTokenThetokenfunction computes the token for a given partition key.
+The exact signature of the token function depends on the table concerned and the partitioner used by the cluster.The type of the arguments of thetokendepend on the partition key column type. The returned type depends on the defined partitioner:PartitionerReturned typeMurmur3PartitionerbigintRandomPartitionervarintByteOrderedPartitionerblobFor example, consider the following table:CREATE TABLE users (
+    userid text PRIMARY KEY,
+    username text,
+);The table uses the default Murmur3Partitioner.
+Thetokenfunction uses the single argumenttext, because the partition key isuseridof text type.
+The returned type will bebigint.UuidTheuuidfunction takes no parameters and generates a random type 4
+uuid suitable for use inINSERTorUPDATEstatements.Timeuuid functionsnowThenowfunction takes no arguments and generates, on the coordinator
+node, a new unique timeuuid at the time the function is invoked. Note
+that this method is useful for insertion but is largely non-sensical inWHEREclauses.For example, a query of the form:SELECT * FROM myTable WHERE t = now();will not return a result, by design, since the value returned bynow()is guaranteed to be unique.current_timeuuidis an alias ofnow.min_timeuuidandmax_timeuuidThemin_timeuuidfunction takes atimestampvaluet, either a timestamp or a date string.
+It returns afaketimeuuidcorresponding to thesmallestpossibletimeuuidfor timestampt.
+Themax_timeuuidworks similarly, but returns thelargestpossibletimeuuid.For example:SELECT * FROM myTable
+ WHERE t > max_timeuuid('2013-01-01 00:05+0000')
+   AND t < min_timeuuid('2013-02-02 10:00+0000');will select all rows where thetimeuuidcolumntis later than'2013-01-01 00:05+0000'and earlier than'2013-02-02 10:00+0000'.
+The clauset >= maxTimeuuid('2013-01-01 00:05+0000')would stillnotselect atimeuuidgenerated exactly at '2013-01-01 00:05+0000', and is essentially equivalent tot > maxTimeuuid('2013-01-01 00:05+0000').The values generated bymin_timeuuidandmax_timeuuidare calledfakeUUID because they do no respect the time-based UUID generation process
+specified by theIETF RFC 4122.
+In particular, the value returned by these two methods will not be unique.
+Thus, only use these methods forquerying, not forinsertion, to prevent possible data overwriting.Datetime functionsRetrieving the current date/timeThe following functions can be used to retrieve the date/time at the
+time where the function is invoked:Function nameOutput typecurrent_timestamptimestampcurrent_datedatecurrent_timetimecurrent_timeuuidtimeUUIDFor example the last two days of data can be retrieved using:SELECT * FROM myTable WHERE date >= current_date() - 2d;Time conversion functionsA number of functions are provided to convert atimeuuid, atimestampor adateinto anothernativetype.Function nameInput typeDescriptionto_datetimeuuidConverts thetimeuuidargument into adatetypeto_datetimestampConverts thetimestampargument into adatetypeto_timestamptimeuuidConverts thetimeuuidargument into atimestamptypeto_timestampdateConverts thedateargument into atimestamptypeto_unix_timestamptimeuuidConverts thetimeuuidargument into abigIntraw valueto_unix_timestamptimestampConverts thetimestampargument into abigIntraw valueto_unix_timestampdateConverts thedateargument into abigIntraw valueBlob conversion functionsA number of functions are provided to convert the native types into
+binary data, or ablob.
+For everytypesupported by CQL, the functiontype_as_blobtakes a argument of typetypeand returns it as ablob.
+Conversely, the functionblob_as_typetakes a 64-bitblobargument and converts it to abigintvalue.
+For example,bigint_as_blob(3)returns0x0000000000000003andblob_as_bigint(0x0000000000000003)returns3.Math FunctionsCql provides the following math functions:abs,exp,log,log10, andround.
+The return type for these functions is always the same as the input type.Function nameDescriptionabsReturns the absolute value of the input.expReturns the number e to the power of the input.logReturns the natural log of the input.log10Returns the log base 10 of the input.roundRounds the input to the nearest whole number using rounding modeHALF_UP.Collection functionsA number of functions are provided to operate on collection columns.Function nameInput typeDescriptionmap_keysmapGets the keys of themapargument, returned as aset.map_valuesmapGets the values of themapargument, returned as alist.collection_countmap,setorlistGets the number of elements in the collection argument.collection_minsetorlistGets the minimum element in the collection argument.collection_maxsetorlistGets the maximum element in the collection argument.collection_sumnumericsetorlistComputes the sum of the elements in the collection argument. The returned value is of the same type as the input collection elements, so there is a risk of overflowing the data type if the sum of the values exceeds the maximum value that the type can represent.collection_avgnumericsetorlistComputes the average of the elements in the collection argument. The average of an empty collection returns zero. The returned value is of the same type as the input collection elements, which might include rounding and truncations. For examplecollection_avg([1, 2])returns1instead of1.5.Data masking functionsA number of functions allow to obscure the real contents of a column containing sensitive data.FunctionDescriptionmask_null(value)Replaces the first argument with anullcolumn.
+The returned value is always a non-existent column, and not a not-null column representing anullvalue.Examples:mask_null('Alice')→nullmask_null(123)→nullmask_default(value)Replaces its argument by an arbitrary, fixed default value of the same type.
+This will be****for text values, zero for numeric values,falsefor booleans, etc.Variable-length multi-valued types such as lists, sets and maps are masked as empty collections.Fixed-length multi-valued types such as tuples, user-defined types (UDTs) and vectors are masked by replacing each of their values by the default masking value of the value type.Examples:mask_default('Alice')→'****'mask_default(123)→0mask_default((list<int>) [1, 2, 3])→[]mask_default((vector<int, 3>) [1, 2, 3])→[0, 0, 0]mask_replace(value, replacement])Replaces the first argument by the replacement value on the second argument.
+The replacement value needs to have the same type as the replaced value.Examples:mask_replace('Alice', 'REDACTED')→'REDACTED'mask_replace(123, -1)→-1mask_inner(value, begin, end, [padding])Returns a copy of the firsttext,varcharorasciiargument, replacing each character except the first and last ones by a padding character.
+The second and third arguments are the size of the exposed prefix and suffix.
+The optional fourth argument is the padding character,\*by default.Examples:mask_inner('Alice', 1, 2)→'Ace'mask_inner('Alice', 1, null)→'A'mask_inner('Alice', null, 2)→'*ce'mask_inner('Alice', 2, 1, '#')→'Al##e'mask_outer(value, begin, end, [padding])Returns a copy of the firsttext,varcharorasciiargument, replacing the first and last character by a padding character.
+The second and third arguments are the size of the exposed prefix and suffix.
+The optional fourth argument is the padding character,\*by default.Examples:mask_outer('Alice', 1, 2)→'*li'mask_outer('Alice', 1, null)→'*lice'mask_outer('Alice', null, 2)→'Ali'mask_outer('Alice', 2, 1, '#')→'##ic#'mask_hash(value, [algorithm])Returns ablobcontaining the hash of the first argument.
+The optional second argument is the hashing algorithm to be used, according the available Java security provider.
+The default hashing algorithm isSHA-256.Examples:mask_hash('Alice')mask_hash('Alice', 'SHA-512')Vector similarity functionsA number of functions allow to obtain the similarity score between vectors of floats.FunctionDescriptionsimilarity_cosine(vector, vector)Calculates the cosine similarity score between two float vectors of the same dimension.Examples:similarity_cosine([0.1, 0.2], null)→nullsimilarity_cosine([0.1, 0.2], [0.1, 0.2])→1similarity_cosine([0.1, 0.2], [-0.1, -0.2])→0similarity_cosine([0.1, 0.2], [0.9, 0.8])→0.964238similarity_euclidean(vector, vector)Calculates the euclidian distance between two float vectors of the same dimension.Examples:similarity_euclidean([0.1, 0.2], null)→nullsimilarity_euclidean([0.1, 0.2], [0.1, 0.2])→1similarity_euclidean([0.1, 0.2], [-0.1, -0.2])→0.833333similarity_euclidean([0.1, 0.2], [0.9, 0.8])→0.5similarity_dot_product(vector, vector)Calculates the dot product between two float vectors of the same dimension.Examples:similarity_dot_product([0.1, 0.2], null)→nullsimilarity_dot_product([0.1, 0.2], [0.1, 0.2])→0.525similarity_dot_product([0.1, 0.2], [-0.1, -0.2])→0.475similarity_dot_product([0.1, 0.2], [0.9, 0.8])→0.625User-defined functionsUser-defined functions (UDFs) execute user-provided code in Cassandra.
+By default, Cassandra supports defining functions inJava.UDFs are part of the Cassandra schema, and are automatically propagated to all nodes in the cluster.
+UDFs can beoverloaded, so that multiple UDFs with different argument types can have the same function name.JavaScriptuser-defined functions have been deprecated in Cassandra 4.1. In preparation for Cassandra 5.0, their removal is
+already in progress. For more information - CASSANDRA-17281, CASSANDRA-18252.For example:CREATE FUNCTION sample ( arg int ) ...;
+CREATE FUNCTION sample ( arg text ) ...;UDFs are susceptible to all of the normal problems with the chosen programming language.
+Accordingly, implementations should be safe against null pointer exceptions, illegal arguments, or any other potential source of exceptions.
+An exception during function execution will result in the entire statement failing.
+Valid queries for UDF use areSELECT,INSERTandUPDATEstatements.Complextypes like collections, tuple types and user-defined types are valid argument and return types in UDFs.
+Tuple types and user-defined types use the DataStax Java Driver conversion functions.
+Please see the Java Driver documentation for details on handling tuple types and user-defined types.Arguments for functions can be literals or terms.
+Prepared statement placeholders can be used, too.Note the use the double dollar-sign syntax to enclose the UDF source code.For example:CREATE FUNCTION some_function ( arg int )
+    RETURNS NULL ON NULL INPUT
+    RETURNS int
+    LANGUAGE java
+    AS $$ return arg; $$;
+
+SELECT some_function(column) FROM atable ...;
+UPDATE atable SET col = some_function(?) ...;
+
+CREATE TYPE custom_type (txt text, i int);
+CREATE FUNCTION fct_using_udt ( udtarg frozen )
+    RETURNS NULL ON NULL INPUT
+    RETURNS text
+    LANGUAGE java
+    AS $$ return udtarg.getString("txt"); $$;The implicitly availableudfContextfield (or binding for script UDFs) provides the necessary functionality to create new UDT and tuple values:CREATE TYPE custom_type (txt text, i int);
+CREATE FUNCTION fct\_using\_udt ( somearg int )
+    RETURNS NULL ON NULL INPUT
+    RETURNS custom_type
+    LANGUAGE java
+    AS $$
+        UDTValue udt = udfContext.newReturnUDTValue();
+        udt.setString("txt", "some string");
+        udt.setInt("i", 42);
+        return udt;
+    $$;The definition of theUDFContextinterface can be found in the Apache Cassandra source code fororg.apache.cassandra.cql3.functions.UDFContext.public interface UDFContext
+{
+    UDTValue newArgUDTValue(String argName);
+    UDTValue newArgUDTValue(int argNum);
+    UDTValue newReturnUDTValue();
+    UDTValue newUDTValue(String udtName);
+    TupleValue newArgTupleValue(String argName);
+    TupleValue newArgTupleValue(int argNum);
+    TupleValue newReturnTupleValue();
+    TupleValue newTupleValue(String cqlDefinition);
+}Java UDFs already have some imports for common interfaces and classes defined. These imports are:import java.nio.ByteBuffer;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import org.apache.cassandra.cql3.functions.UDFContext;
+import com.datastax.driver.core.TypeCodec;
+import com.datastax.driver.core.TupleValue;
+import com.datastax.driver.core.UDTValue;Please note, that these convenience imports are not available for script UDFs.CREATE FUNCTION statementCreating a new user-defined function uses theCREATE FUNCTIONstatement:create_function_statement::= CREATE [ OR REPLACE ] FUNCTION [ IF NOT EXISTS]
+	function_name '(' arguments_declaration ')'
+	[ CALLED | RETURNS NULL ] ON NULL INPUT
+	RETURNS cql_type
+	LANGUAGE identifier
+	AS string arguments_declaration: identifier cql_type ( ',' identifier cql_type )*For example:CREATE OR REPLACE FUNCTION somefunction(somearg int, anotherarg text, complexarg frozen<someUDT>, listarg list)
+    RETURNS NULL ON NULL INPUT
+    RETURNS text
+    LANGUAGE java
+    AS $$
+        // some Java code
+    $$;
+
+CREATE FUNCTION IF NOT EXISTS akeyspace.fname(someArg int)
+    CALLED ON NULL INPUT
+    RETURNS text
+    LANGUAGE java
+    AS $$
+        // some Java code
+    $$;CREATE FUNCTIONwith the optionalOR REPLACEkeywords creates either a function or replaces an existing one with the same signature.
+ACREATE FUNCTIONwithoutOR REPLACEfails if a function with the same signature already exists.
+If the optionalIF NOT EXISTSkeywords are used, the function will only be created only if another function with the same signature does not
+exist.OR REPLACEandIF NOT EXISTScannot be used together.Behavior fornullinput values must be defined for each function:RETURNS NULL ON NULL INPUTdeclares that the function will always returnnullif any of the input arguments isnull.CALLED ON NULL INPUTdeclares that the function will always be executed.Function SignatureSignatures are used to distinguish individual functions. The signature consists of a fully-qualified function name of the <keyspace>.<function_name> and a concatenated list of all the argument types.Note that keyspace names, function names and argument types are subject to the default naming conventions and case-sensitivity rules.Functions belong to a keyspace; if no keyspace is specified, the current keyspace is used.
+User-defined functions are not allowed in the system keyspaces.DROP FUNCTION statementDropping a function uses theDROP FUNCTIONstatement:drop_function_statement::= DROP FUNCTION [ IF EXISTS ] function_name [ '(' arguments_signature ')' ]
+arguments_signature::= cql_type ( ',' cql_type )*For example:DROP FUNCTION myfunction;
+DROP FUNCTION mykeyspace.afunction;
+DROP FUNCTION afunction ( int );
+DROP FUNCTION afunction ( text );You must specify the argument types of the function, the arguments_signature, in the drop command if there are multiple overloaded functions with the same name but different signatures.DROP FUNCTIONwith the optionalIF EXISTSkeywords drops a function if it exists, but does not throw an error if it doesn’t.Aggregate functionsAggregate functions work on a set of rows.
+Values for each row are input, to return a single value for the set of rows aggregated.Ifnormalcolumns,scalar functions,UDTfields,writetime, orttlare selected together with aggregate functions, the values
+returned for them will be the ones of the first row matching the query.Native aggregatesCountThecountfunction can be used to count the rows returned by a query.For example:SELECT COUNT (*) FROM plays;
+SELECT COUNT (1) FROM plays;It also can count the non-null values of a given column:SELECT COUNT (scores) FROM plays;Max and MinThemaxandminfunctions compute the maximum and the minimum value returned by a query for a given column.For example:SELECT MIN (players), MAX (players) FROM plays WHERE game = 'quake';SumThesumfunction sums up all the values returned by a query for a given column.The returned value is of the same type as the input collection elements, so there is a risk of overflowing if the sum of the values exceeds the maximum value that the type can represent.For example:SELECT SUM (players) FROM plays;The returned value is of the same type as the input values, so there is a risk of overflowing the type if the sum of the
+values exceeds the maximum value that the type can represent. You can use type casting to cast the input values as a
+type large enough to contain the type. For example:SELECT SUM (CAST (players AS VARINT)) FROM plays;AvgTheavgfunction computes the average of all the values returned by a query for a given column.For example:SELECT AVG (players) FROM plays;The average of an empty collection returns zero.The returned value is of the same type as the input values, which might include rounding and truncations.
+For examplecollection_avg([1, 2])returns1instead of1.5.
+You can use type casting to cast to a type with the desired decimal precision. For example:SELECT AVG (CAST (players AS FLOAT)) FROM plays;User-Defined Aggregates (UDAs)User-defined aggregates allow the creation of custom aggregate functions.
+User-defined aggregates can be used inSELECTstatement.Each aggregate requires aninitial stateof typeSTYPEdefined with theINITCOND`value (default value: `null).
+The first argument of the state function must have typeSTYPE.
+The remaining arguments of the state function must match the types of the user-defined aggregate arguments.
+The state function is called once for each row, and the value returned by the state function becomes the new state.
+After all rows are processed, the optionalFINALFUNCis executed with last state value as its argument.TheSTYPEvalue is mandatory in order to distinguish possibly overloaded versions of the state and/or final function, since the
+overload can appear after creation of the aggregate.A complete working example for user-defined aggregates (assuming that a
+keyspace has been selected using theUSEstatement):CREATE OR REPLACE FUNCTION test.averageState(state tuple<int,bigint>, val int)
+    CALLED ON NULL INPUT
+    RETURNS tuple
+    LANGUAGE java
+    AS $$
+        if (val != null) {
+            state.setInt(0, state.getInt(0)+1);
+            state.setLong(1, state.getLong(1)+val.intValue());
+        }
+        return state;
+    $$;
+
+CREATE OR REPLACE FUNCTION test.averageFinal (state tuple<int,bigint>)
+    CALLED ON NULL INPUT
+    RETURNS double
+    LANGUAGE java
+    AS $$
+        double r = 0;
+        if (state.getInt(0) == 0) return null;
+        r = state.getLong(1);
+        r /= state.getInt(0);
+        return Double.valueOf(r);
+    $$;
+
+CREATE OR REPLACE AGGREGATE test.average(int)
+    SFUNC averageState
+    STYPE tuple
+    FINALFUNC averageFinal
+    INITCOND (0, 0);
+
+CREATE TABLE test.atable (
+    pk int PRIMARY KEY,
+    val int
+);
+
+INSERT INTO test.atable (pk, val) VALUES (1,1);
+INSERT INTO test.atable (pk, val) VALUES (2,2);
+INSERT INTO test.atable (pk, val) VALUES (3,3);
+INSERT INTO test.atable (pk, val) VALUES (4,4);
+
+SELECT test.average(val) FROM atable;CREATE AGGREGATE statementCreating (or replacing) a user-defined aggregate function uses theCREATE AGGREGATEstatement:create_aggregate_statement ::= CREATE [ OR REPLACE ] AGGREGATE [ IF NOT EXISTS ]
+                                function_name '(' arguments_signature')'
+                                SFUNC function_name
+                                STYPE cql_type:
+                                [ FINALFUNC function_name]
+                                [ INITCOND term ]See above for a complete example.TheCREATE AGGREGATEcommand with the optionalOR REPLACEkeywords creates either an aggregate or replaces an existing one with the same
+signature.
+ACREATE AGGREGATEwithoutOR REPLACEfails if an aggregate with the same signature already exists.
+TheCREATE AGGREGATEcommand with the optionalIF NOT EXISTSkeywords creates an aggregate if it does not already exist.
+TheOR REPLACEandIF NOT EXISTSphrases cannot be used together.TheSTYPEvalue defines the type of the state value and must be specified.
+The optionalINITCONDdefines the initial state value for the aggregate; the default value isnull.
+A non-nullINITCONDmust be specified for state functions that are declared withRETURNS NULL ON NULL INPUT.TheSFUNCvalue references an existing function to use as the state-modifying function.
+The first argument of the state function must have typeSTYPE.
+The remaining arguments of the state function must match the types of the user-defined aggregate arguments.
+The state function is called once for each row, and the value returned by the state function becomes the new state.
+State is not updated for state functions declared withRETURNS NULL ON NULL INPUTand called withnull.
+After all rows are processed, the optionalFINALFUNCis executed with last state value as its argument.
+It must take only one argument with typeSTYPE, but the return type of theFINALFUNCmay be a different type.
+A final function declared withRETURNS NULL ON NULL INPUTmeans that the aggregate’s return value will benull, if the last state isnull.If noFINALFUNCis defined, the overall return type of the aggregate function isSTYPE.
+If aFINALFUNCis defined, it is the return type of that function.DROP AGGREGATE statementDropping an user-defined aggregate function uses theDROP AGGREGATEstatement:drop_aggregate_statement::= DROP AGGREGATE [ IF EXISTS ] function_name[ '(' arguments_signature ')'
+]For instance:DROP AGGREGATE myAggregate;
+DROP AGGREGATE myKeyspace.anAggregate;
+DROP AGGREGATE someAggregate ( int );
+DROP AGGREGATE someAggregate ( text );TheDROP AGGREGATEstatement removes an aggregate created usingCREATE AGGREGATE.
+You must specify the argument types of the aggregate to drop if there are multiple overloaded aggregates with the same name but a
+different signature.TheDROP AGGREGATEcommand with the optionalIF EXISTSkeywords drops an aggregate if it exists, and does nothing if a function with the
+signature does not exist.Get started with Cassandra, fast.Quickstart GuideApache Cassandrapowers mission-critical deployments with improved performance and unparalleled levels of scale in the cloud.HomeCassandra BasicsQuickstartEcosystemDocumentationCommunityCase StudiesResourcesBlogFoundationEventsLicenseThanksSecurityPrivacySponsorshipÂ© 2009-The Apache Software Foundationunder the terms of the Apache License 2.0.  Apache, the Apache feather logo, Apache Cassandra, Cassandra, and the Cassandra logo, are either registered trademarks or trademarks of The Apache Software Foundation.

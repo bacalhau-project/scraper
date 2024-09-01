@@ -1,3 +1,4 @@
+Source: nats_io
 URL: https://nats.io
 
 AboutDownloadDocumentationBlogCommunitySupportPrivacyConnective Technology for Adaptive Edge &  Distributed SystemsLearn MoreQuick StartSingle PlatformStreaming, Key-Value, Object store, PubSubMicroservicesServices can live anywhere and are easily discoverable - decentralized, zerotrust securityMulti-cloud to EdgeConnect all your applications and data - in the cloud, on premise, and at the edgeTalk with an ExpertWho uses NATSAdd your logoAn Introduction to NATSThe first screencast in a weekly series all about NATS.ioRethink ConnectivityCopyright © NATS Authors 2024NATS is aCloud Native Computing Foundationincubating projectThe Linux Foundation has registered trademarks and uses trademarks.For a list of trademarks of The Linux Foundation, please seeTrademark Usage page.

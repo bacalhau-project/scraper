@@ -1,3 +1,4 @@
+Source: apache_kafka
 URL: https://kafka.apache.org/downloads
 
 Apache KafkaToggle navigationGet StartedIntroductionQuickstartUse CasesBooks & PapersVideosPodcastsDocsKey ConceptsAPIsConfigurationDesignImplementationOperationsSecurityClientsKafka ConnectKafka StreamsPowered ByCommunityBlogKafka SummitProject InfoTrademarkEcosystemEventsContact usApacheLicenseDonateSponsorsSecurityPrivacyApache.orgDownload KafkaDownloadThe project goal is to have 3 releases a year, which means a release every 4 months. Bugfix releases are made as needed for supported releases only.

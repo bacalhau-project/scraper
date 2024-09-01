@@ -1,3 +1,4 @@
+Source: raft_consensus
 URL: https://raft.github.io/
 
 The Raft Consensus AlgorithmQuick LinksRaft paperraft-dev mailing listRaft implementationsWhat is Raft?Raft is a consensus algorithm that is designed to be easy to understand. It's

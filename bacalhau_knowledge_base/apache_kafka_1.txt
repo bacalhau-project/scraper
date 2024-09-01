@@ -1,3 +1,4 @@
+Source: apache_kafka
 URL: https://kafka.apache.org/videos
 
 Apache KafkaToggle navigationGet StartedIntroductionQuickstartUse CasesBooks & PapersVideosPodcastsDocsKey ConceptsAPIsConfigurationDesignImplementationOperationsSecurityClientsKafka ConnectKafka StreamsPowered ByCommunityBlogKafka SummitProject InfoTrademarkEcosystemEventsContact usApacheLicenseDonateSponsorsSecurityPrivacyApache.orgDownload KafkaBest Kafka Summit VideosThe following talks, with video recordings and slides available, achieved the best ratings by the community at

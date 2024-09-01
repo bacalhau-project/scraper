@@ -1,3 +1,4 @@
+Source: kubernetes_io
 URL: https://kubernetes.io/releases
 
 DocumentationKubernetes BlogTrainingPartnersCommunityCase StudiesVersionsRelease Informationv1.31v1.30v1.29v1.28v1.27Englishবাংলা (Bengali)中文 (Chinese)Français (French)हिन्दी (Hindi)日本語 (Japanese)한국어 (Korean)Polski (Polish)Português (Portuguese)Русский (Russian)Download KubernetesKubernetes Release CyclePatch ReleasesRelease ManagersRelease NotesVersion Skew PolicyRelease HistoryThe Kubernetes project maintains release branches for the most recent three minor releases

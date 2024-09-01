@@ -1,4 +1,5 @@
-URL: https://www.the-paper-trail.org/%20/tags/multicore
+Source: distributed_systems_theory
+URL: https://www.the-paper-trail.org/%20/tags/problem
 
-Paper TrailBlogmulticore20092009-01-14OSDI '08: Corey, an operating system for many cores©  - 2023 ·Paper Trail·
+Paper TrailBlogproblem20082008-09-19Pain and suffering and ffmpeg©  - 2023 ·Paper Trail·
   ThemeSimplenessPowered byHugo·

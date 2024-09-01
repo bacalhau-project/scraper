@@ -1,4 +1,5 @@
-URL: https://www.the-paper-trail.org/%20/tags/3pc
+Source: distributed_systems_theory
+URL: https://www.the-paper-trail.org/%20/tags/bigtable
 
-Paper TrailBlog3PC20082008-11-29Consensus Protocols: Three-phase Commit©  - 2023 ·Paper Trail·
+Paper TrailBlogbigtable20082008-10-29BigTable: Google's Distributed Data Store©  - 2023 ·Paper Trail·
   ThemeSimplenessPowered byHugo·

@@ -1,3 +1,4 @@
+Source: apache_kafka
 URL: https://kafka.apache.org/
 
 Apache KafkaToggle navigationGet StartedIntroductionQuickstartUse CasesBooks & PapersVideosPodcastsDocsKey ConceptsAPIsConfigurationDesignImplementationOperationsSecurityClientsKafka ConnectKafka StreamsPowered ByCommunityBlogKafka SummitProject InfoTrademarkEcosystemEventsContact usApacheLicenseDonateSponsorsSecurityPrivacyApache.orgDownload KafkaApache KafkaMore than80% of all Fortune 100 companiestrust, and use Kafka.Apache Kafka is an open-source distributed event streaming platform used by

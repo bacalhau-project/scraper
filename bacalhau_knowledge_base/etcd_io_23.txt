@@ -1,4 +1,5 @@
-URL: https://etcd.io/community/#community-meetings--issue-triage
+Source: etcd_io
+URL: https://etcd.io/community/#contributing
 
 etcdDocsBlogCommunityInstallPlayVersionsv3.6v3.5v3.4v3.3v3.2v3.1v2.3CommunityWelcome to the etcd user and developer community pageContentsJoin the conversationMeeting scheduleCommunity meetings & Issue triageRobustness testsContributingOur community values respect and
 inclusiveness. We enforce ourCode of Conductin all interactions.Join the conversationFollow these active channels for timely announcements, and sign up to ask

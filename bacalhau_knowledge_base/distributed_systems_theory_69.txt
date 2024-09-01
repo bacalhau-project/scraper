@@ -1,4 +1,5 @@
-URL: https://www.the-paper-trail.org/%20/tags/hadoop
+Source: distributed_systems_theory
+URL: https://www.the-paper-trail.org/%20/tags/operating-systems
 
-Paper TrailBloghadoop20092009-04-09In Which I Prove Employable©  - 2023 ·Paper Trail·
+Paper TrailBlogOperating systems20092009-01-19OSDI '08 - CuriOS: Improving Reliability Through Operating System Structure2009-01-14OSDI '08: Corey, an operating system for many cores©  - 2023 ·Paper Trail·
   ThemeSimplenessPowered byHugo·

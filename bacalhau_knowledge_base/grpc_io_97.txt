@@ -1,38 +1,61 @@
-URL: https://grpc.io/docs/guides/custom-load-balancing/
+Source: grpc_io
+URL: https://grpc.io/docs/guides/request-hedging/
 
-gRPCAboutMeetDocsGuidesShowcaseBlogCommunitygRPConf 2024 is happening NEXT WEEK onAug. 27th!-Register nowand get 25% off with the code GOOGLE25.DocsWhat is gRPC?IntroductionCore conceptsFAQLanguagesC# / .NETAPI (legacy)Daily builds (legacy)C++Quick startBasics tutorialAsync-API tutorialAsynchronous Callback API TutorialBest Practices for gRPC C++ API and FAQALTSAPIDartQuick startBasics tutorialAPIGoQuick startBasics tutorialALTSAPIGenerated codeJavaQuick startBasics tutorialALTSAPIGenerated codeKotlinQuick startBasics tutorialAPINodeQuick startBasics tutorialAPIObjective-CQuick startBasics tutorialOAuth2APIPHPQuick startBasics tutorialAPIDaily buildsPythonQuick startBasics tutorialALTSGenerated codeAPIDaily buildsRubyQuick startBasics tutorialAPIDaily buildsPlatformsAndroidJavaQuick startBasics tutorialAPIKotlinQuick startAPIWebQuick startBasics tutorialGuidesAuthenticationBenchmarkingCancellationCompressionCustom Backend MetricsCustom Load Balancing PoliciesCustom Name ResolutionDeadlinesDebuggingError handlingFlow ControlHealth CheckingInterceptorsKeepaliveMetadataOpenTelemetry MetricsPerformance Best PracticesReflectionRequest HedgingRetryService ConfigStatus CodesWait-for-ReadyView page sourceEdit this pageCreate child pageCreate documentation issueCreate project issueOverviewImplementing Your Own PolicyBackend MetricsService MeshLanguage SupportDocsGuidesCustom Load Balancing PoliciesCustom Load Balancing PoliciesExplains how custom load balancing policies can help optimize load balancing under unique circumstances.ContentsOverviewImplementing Your Own PolicyBackend MetricsService MeshLanguage SupportCustom Load Balancing PoliciesExplains how custom load balancing policies can help optimize load balancing under unique circumstances.OverviewOne of the key features of gRPC is load balancing, which allows requests from
-clients to be distributed across multiple servers. This helps prevent any
-one server from becoming overloaded and allows the system to scale up by adding
-more servers.A gRPC load balancing policy is given a list of server IP addresses by the name
-resolver. The policy is responsible for maintaining connections (subchannels)
-to the servers and picking a connection to use when an RPC is sent.Implementing Your Own PolicyBy default thepick_firstpolicy will be used. This policy actually does no
-load balancing but just tries each address it gets from the name resolver and
-uses the first one it can connect to. By updating the gRPC service config you
-can also switch to usinground_robinthat connects to every address it gets
-and rotates through the connected backends for each RPC. There are also some
-other load balancing policies available, but the exact set varies by language.
-If the built-in policies do not meet your needs you can also implement your own
-custom policy.This involves implementing a load balancer interface in the language you are
-using. At a high level, you will have to:Register your implementation in the load balancer registry so that it can
-be referred to from the service configParse the JSON configuration object of your implementation. This allows your
-load balancer to be configured in the service config with any arbitrary JSON
-you choose to supportManage what backends to maintain a connection withImplement apickerthat will choose which backend to connect to when an
-RPC is made. Note that this needs to be a fast operation as it is on the RPC
-call pathTo enable your load balancer, configure it in your service configThe exact steps vary by language, see the language support section for some
-concrete examples in your language.flowchart TD
-NR(Name Resolver) -->|Provides addresses &\nLB config| LB(Load Balancer)
-LB --> |Provides a picker| C(Channel)
-C -->|Requests\na subchannel| P(Picker)
-LB --> |Manages subchannels\nto backends| SC(Subchannel 1..n)
-LB -. Creates .-> P
-P --> |Picks one| SCBackend MetricsWhat if your load balancing policy needs real-time information about the
-backend servers? For this you can rely on backend metrics. You can
-have metrics provided to you either in-band, in the backend RPC responses, or
-out-of-band as separate RPCs from the backends. Standard metrics like
-CPU and memory utilization are provided, but you can also implement
-your own custom metrics.For more information on this, please see the custom backend metricsguideService MeshIf you have a service mesh setup where a central control plane is coordinating
-the configuration of your microservices, you cannot configure your custom load
-balancer directly via the service config. But support is provided to do this
-with the xDS protocol that your control plane uses to communicate with your
-gRPC clients. Please refer to your control plane documentation to determine how
-custom load balancing configuration is supported.For more details, please see gRPCproposal A52.Language SupportLanguageExampleNotesJavaJava exampleGoGo exampleC++Not yet supportedLast modified July 25, 2024:Embed relevent YT videos to docs (#1325) (a732b16)View page sourceEdit this pageCreate child pageCreate documentation issueCreate project issue© 2024 gRPC AuthorsTerms|Privacy|Trademarks|License|About
+gRPCAboutMeetDocsGuidesShowcaseBlogCommunitygRPConf 2024 is happening NEXT WEEK onAug. 27th!-Register nowand get 25% off with the code GOOGLE25.DocsWhat is gRPC?IntroductionCore conceptsFAQLanguagesC# / .NETAPI (legacy)Daily builds (legacy)C++Quick startBasics tutorialAsync-API tutorialAsynchronous Callback API TutorialBest Practices for gRPC C++ API and FAQALTSAPIDartQuick startBasics tutorialAPIGoQuick startBasics tutorialALTSAPIGenerated codeJavaQuick startBasics tutorialALTSAPIGenerated codeKotlinQuick startBasics tutorialAPINodeQuick startBasics tutorialAPIObjective-CQuick startBasics tutorialOAuth2APIPHPQuick startBasics tutorialAPIDaily buildsPythonQuick startBasics tutorialALTSGenerated codeAPIDaily buildsRubyQuick startBasics tutorialAPIDaily buildsPlatformsAndroidJavaQuick startBasics tutorialAPIKotlinQuick startAPIWebQuick startBasics tutorialGuidesAuthenticationBenchmarkingCancellationCompressionCustom Backend MetricsCustom Load Balancing PoliciesCustom Name ResolutionDeadlinesDebuggingError handlingFlow ControlHealth CheckingInterceptorsKeepaliveMetadataOpenTelemetry MetricsPerformance Best PracticesReflectionRequest HedgingRetryService ConfigStatus CodesWait-for-ReadyView page sourceEdit this pageCreate child pageCreate documentation issueCreate project issueOverviewUse casesConfiguring hedging in gRPCHedging policyThrottling Hedged RPCsServer PushbackResourcesLanguage SupportDocsGuidesRequest HedgingRequest HedgingExplains what request hedging is and how you can configure it.ContentsOverviewUse casesConfiguring hedging in gRPCHedging policyThrottling Hedged RPCsServer PushbackResourcesLanguage SupportRequest HedgingExplains what request hedging is and how you can configure it.OverviewHedging is one of two configurable retry policies supported by gRPC. With
+hedging, a gRPC client sends multiple copies of the same request to different
+backends and uses the first response it receives. Subsequently, the client
+cancels any outstanding requests and forwards the response to the application.Use casesHedging is a technique to reduce tail latency in large scale distributed
+systems. While naive implementations could add significant load to the backend
+servers, it is possible to get most of the latency reduction effects while
+increasing load only modestly.For an in-depth discussion on tail latencies, see the seminal article,The Tail
+At Scale, by Jeff Dean and Luiz André
+Barroso.Configuring hedging in gRPCHedging is configurable viagRPC Service Config, at a per-method granularity.
+The configuration contains the following knobs:"hedgingPolicy": {
+  "maxAttempts": INTEGER,
+  "hedgingDelay": JSON proto3 Duration type,
+  "nonFatalStatusCodes": JSON array of grpc status codes (int or string)
+}maxAttempts: maximum number of in-flight requests while waiting for a
+successful response. This is a mandatory field, and must be specified. If the
+specified value is greater than5, gRPC uses a value of5.hedgingDelay: amount of time that needs to elapse before the client sends out
+the next request while waiting for a successful response. This field is
+optional, and if left unspecified, results inmaxAttemptsnumber of requests
+all sent out at the same time.nonFatalStatusCodes: an optional list of grpc status codes. If any of hedged
+requests fails with a status code that is not present in this list, all
+outstanding requests are canceled and the response is returned to the
+application.Hedging policyWhen the application makes an RPC call that contains ahedgingPolicyconfiguration in the Service Config, the original RPC is sent immediately, as
+with a standard non-hedged call. AfterhedgingDelayhas elapsed without a
+successful response, the second RPC will be issued. If neither RPC has received
+a response afterhedgingDelayhas elapsed again, a third RPC is sent, and so
+on, up tomaxAttempts. gRPC call deadlines apply to the entire chain of hedged
+requests. Once the deadline has passed, the operation fails regardless of
+in-flight RPCS, and regardless of the hedging configuration.When a successful response is received (in response to any of the hedged
+requests), all outstanding hedged requests are canceled and the response is
+returned to the client application layer.If an error response with a non-fatal status code (controlled by thenonFatalStatusCodesfield) is received from a hedged request, then the next
+hedged request in line is sent immediately, shortcutting its hedging delay. If
+any other status code is received, all outstanding RPCs are canceled and the
+error is returned to the client application layer.If all instances of a hedged RPC fail, there are no additional retry attempts.
+Essentially, hedging can be seen as retrying the original RPC before a failure
+is even received.If server pushback that specifies not to retry is received in response to a
+hedged request, no further hedged requests should be issued for the call.Throttling Hedged RPCsgRPC provides a way to throttle hedged RPCs to prevent server overload.
+Throttling can be configured via the Service Config as well using theRetryThrottlingPolicymessage. The throttling configuration contains the
+following:"retryThrottling": {
+  "maxTokens": 10,
+  "tokenRatio": 0.1
+}For each server name, the gRPC client maintains atoken_countwhich is
+initially set tomax_tokens. Every outgoing RPC (regardless of service or
+method invoked) changestoken_countas follows:Every failed RPC will decrement thetoken_countby1.Every successful RPC will increment thetoken_countbytoken_ratio.With hedging, the first request is always sent out, but subsequent hedged
+requests are sent only iftoken_countis greater than the threshold (defined
+asmax_tokens / 2). Iftoken_countis less than or equal to the threshold,
+hedged requests do not block. Instead they are canceled, and if there are no
+other already-sent hedged RPCs the failure is returned to the client
+application.The only requests that are counted as failures for the throttling policy are the
+ones that fail with a status code that qualifies as a non-fatal status code, or
+that receive a pushback response indicating not to retry. This avoids conflating
+server failure with responses to malformed requests (such as theINVALID_ARGUMENTstatus code).Server PushbackServers may explicitly pushback by setting metadata in their response to the
+client. If the pushback says not to retry, no further hedged requests will be
+sent. If the pushback says to retry after a given delay, the next hedged request
+(if any) will be issued after the given delay has elapsed.Server pushback is specified using the metadata key,grpc-retry-pushback-ms.
+The value is an ASCII encoded signed 32-bit integer with no unnecessary leading
+zeros that represents how many milliseconds to wait before sending the next
+hedged request. If the value for pushback is negative or unparseble, then it
+will be seen as the server asking the client not to retry at all.ResourcesThe Tail At ScalegRPC Service ConfiggRPC Retry DesignLanguage SupportLanguageExampleJavaJava exampleC++Not yet availableGoNot yet supportedLast modified October 3, 2023:Add a guide for request hedging (#1199) (d357308)View page sourceEdit this pageCreate child pageCreate documentation issueCreate project issue© 2024 gRPC AuthorsTerms|Privacy|Trademarks|License|About
