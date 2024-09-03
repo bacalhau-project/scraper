@@ -1,0 +1,42 @@
+Source: apache_kafka
+URL: https://kafka.apache.org/documentation/streams
+
+Apache Kafka
+Toggle navigation
+Get Started
+Introduction
+Quickstart
+Use Cases
+Books & Papers
+Videos
+Podcasts
+Docs
+Key Concepts
+APIs
+Configuration
+Design
+Implementation
+Operations
+Security
+Clients
+Kafka Connect
+Kafka Streams
+Powered By
+Community
+Blog
+Kafka Summit
+Project Info
+Trademark
+Ecosystem
+Events
+Contact us
+Apache
+License
+Donate
+Sponsors
+Security
+Privacy
+Apache.org
+Download Kafka
+Documentation
+Kafka Streams

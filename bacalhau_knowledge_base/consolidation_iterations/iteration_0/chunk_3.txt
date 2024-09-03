@@ -1,0 +1,22 @@
+Task: Compress the following text to approximately 100 tokens for use as an AI system prompt.
+Rules:
+1. Prioritize key information, concepts, and technical details.
+2. Remove redundancies and verbose explanations.
+3. Use concise language and technical terminology.
+4. Maintain factual accuracy and important specifics.
+5. Aim for 100 tokens, but do not go below this target.
+
+Text to compress:
+Source: zookeeper_apache
+URL: https://zookeeper.apache.org/doc/r3.9.1/releasenotes.html
+
+Release Notes - ZooKeeper - Version 3.9.1
+Improvement
+[ZOOKEEPER-4732](https://issues.apache.org/jira/browse/ZOOKEEPER-4732)- improve Reproducible Builds[ZOOKEEPER-4753](https://issues.apache.org/jira/browse/ZOOKEEPER-4753)- Explicit handling of DIGEST-MD5 vs GSSAPI in quorum auth
+Task
+[ZOOKEEPER-4751](https://issues.apache.org/jira/browse/ZOOKEEPER-4751)- Update snappy-java to 1.1.10.5 to address CVE-2023-43642[ZOOKEEPER-4754](https://issues.apache.org/jira/browse/ZOOKEEPER-4754)- Update Jetty to avoid CVE-2023-36479, CVE-2023-40167, and CVE-2023-41900[ZOOKEEPER-4755](https://issues.apache.org/jira/browse/ZOOKEEPER-4755)- Handle Netty CVE-2023-4586
+Release Notes - ZooKeeper - Version 3.9.0
+Sub-task
+[ZOOKEEPER-4327](https://issues.apache.org/jira/browse/ZOOKEEPER-4327)- Flaky test: RequestThrottlerTest
+Bug
+[ZOOKEEPER-2108](https://issues.apache.org/jira/browse/ZOOKEEPER-2108)- Compilation error in ZkAdaptor.cc with GCC 4.7 or later[ZOOKEEPER-3652](https://issues.apache.org/jira/browse/ZOOKEEPER-3652)- Improper synchronization in ClientCnxn[ZOOKEEPER-3908](https://issues.apache.org/jira/browse/ZOOKEEPER-3908)- zktreeutil multiple issues[ZOOKEEPER-3996](https://issues.apache.org/jira/browse/ZOOKEEPER-3996)- Flaky test: ReadOnlyModeTest.testConnectionEvents[ZOOKEEPER-4026](https://issues.apache.org/jira/browse/ZOOKEEPER-4026)- CREATE2 requests embeded in a MULTI request only get a regular CREATE response[ZOOKEEPER-4296](https://issues.apache.org/jira/browse/ZOOKEEPER-4296)- NullPointerException when ClientCnxnSocketNetty is closed without being opened[ZOOKEEPER-4308](https://issues.apache.org/jira/browse/ZOOKEEPER-4308)- Flaky test: EagerACLFilterTest.testSetDataFail[ZOOKEEPER-4393](https://issues.apache.org/jira/browse/ZOOKEEPER-4393)- Problem to connect to zookeeper in FIPS mode[ZOOKEEPER-4466](https://issues.apache.org/jira/browse/ZOOKEEPER-4466)- Support different watch modes on same path[ZOOKEEPER-4471](https://issues.apache.org/jira/browse/ZOOKEEPER-4471)- Remove WatcherType.Children break persistent watcher's child events[ZOOKEEPER-4473](https://issues.apache.org/jira/browse/ZOOKEEPER-4473)- zooInspector create root node fail with path validate[ZOOKEEPER-4475](https://issues.apache.org/jira/browse/ZOOKEEPER-4475)- Persistent recursive watcher got NodeChildrenChanged event[ZOOKEEPER-4477](https://issues.apache.org/jira/browse/ZOOKEEPER-4477)- Single Kerberos ticket renewal failure can prevent all future renewals since Java 9[ZOOKEEPER-

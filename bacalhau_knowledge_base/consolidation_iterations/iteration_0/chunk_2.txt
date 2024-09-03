@@ -1,0 +1,33 @@
+Task: Compress the following text to approximately 100 tokens for use as an AI system prompt.
+Rules:
+1. Prioritize key information, concepts, and technical details.
+2. Remove redundancies and verbose explanations.
+3. Use concise language and technical terminology.
+4. Maintain factual accuracy and important specifics.
+5. Aim for 100 tokens, but do not go below this target.
+
+Text to compress:
+Source: zookeeper_apache
+URL: https://zookeeper.apache.org/doc/r3.7.1/releasenotes.html
+
+Release Notes - ZooKeeper - Version 3.7.1
+Improvement
+Bug
+[ZOOKEEPER-1875](https://issues.apache.org/jira/browse/ZOOKEEPER-1875) - NullPointerException in ClientCnxn$EventThread.processEvent
+[ZOOKEEPER-3128](https://issues.apache.org/jira/browse/ZOOKEEPER-3128) - Get CLI Command displays Authentication error for Authorization error
+[ZOOKEEPER-3652](https://issues.apache.org/jira/browse/ZOOKEEPER-3652) - Improper synchronization in ClientCnxn
+[ZOOKEEPER-3887](https://issues.apache.org/jira/browse/ZOOKEEPER-3887) - In SSL-only server zkServer.sh status command should use secureClientPortAddress instead of clientPortAddress
+[ZOOKEEPER-3988](https://issues.apache.org/jira/browse/ZOOKEEPER-3988) - org.apache.zookeeper.server.NettyServerCnxn.receiveMessage throws NullPointerException
+[ZOOKEEPER-4194](https://issues.apache.org/jira/browse/ZOOKEEPER-4194) - ZooInspector throws NullPointerExceptions to console when node data is null
+[ZOOKEEPER-4204](https://issues.apache.org/jira/browse/ZOOKEEPER-4204) - Flaky test - RequestPathMetricsCollectorTest.testMultiThreadPerf
+[ZOOKEEPER-4247](https://issues.apache.org/jira/browse/ZOOKEEPER-4247) - NPE while processing message from restarted quorum member
+[ZOOKEEPER-4265](https://issues.apache.org/jira/browse/ZOOKEEPER-4265) - Download page broken links
+[ZOOKEEPER-4266](https://issues.apache.org/jira/browse/ZOOKEEPER-4266) - Correct ZooKeeper version in documentation header
+[ZOOKEEPER-4269](https://issues.apache.org/jira/browse/ZOOKEEPER-4269) - acceptedEpoch.tmp rename failure will cause server startup error
+[ZOOKEEPER-4272](https://issues.apache.org/jira/browse/ZOOKEEPER-4272) - Upgrade Netty library to > 4.1.60 due to security vulnerability CVE-2021-21295
+[ZOOKEEPER-4275](https://issues.apache.org/jira/browse/ZOOKEEPER-4275) - Slowness in sasl login or subject.doAs() causes zk client to falsely assume that the server did not respond, closes connection and goes to unnecessary retries
+[ZOOKEEPER-4277](https://issues.apache.org/jira/browse/ZOOKEEPER-4277) - dependency-check:check failing - jetty-server-9.4.38 CVE-2021-28165
+[ZOOKEEPER-4278](https://issues.apache.org/jira/browse/ZOOKEEPER-4278) - dependency-check:check failing - netty-transport-4.1.60.Final CVE-2021-21409
+[ZOOKEEPER-4309](https://issues.apache.org/jira/browse/ZOOKEEPER-4309) - QuorumCnxManager's ListenerHandler thread leak
+[ZOOKEEPER-4331](https://issues.apache.org/jira/browse/ZOOKEEPER-4331) - zookeeper artifact is not compatible with OSGi runtime
+[ZOOKEEPER-4337](https://issues.apache.org/jira/browse/ZOOKEEPER-4337

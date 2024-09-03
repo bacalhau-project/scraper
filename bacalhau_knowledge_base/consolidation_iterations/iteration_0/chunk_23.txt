@@ -1,0 +1,6 @@
+GOOGLE25
+Source: grpc_io
+URL: https://grpc.io/docs/languages/node/
+gRPConf 2025 is happening next week!
+This will be the first time we will have a language-specific page on the GOOGLE25.
+Please note: if you're already familiar with the GOOGLE25, you'll need to download the GOOGLE25 version of the software before you can get the

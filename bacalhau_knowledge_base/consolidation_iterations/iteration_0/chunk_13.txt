@@ -1,0 +1,5 @@
+Hadoop version 2.2.2.0.0
+Source: apache_hadoop
+URL: https://hadoop.apache.org/docs/r3.2.4/index.html
+Apache Hadoop 3.2.4 is a point release in the 3.2.x release line, building upon the previous stable release 3.2.3.
+Users are encouraged to read [release notes](./hadoop-

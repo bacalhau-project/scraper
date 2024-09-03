@@ -1,0 +1,4 @@
+https://github.com/etcd-io/website/issues/new).
+The code is in the file /etc/common/contrib/
+If you want to see the current output, please [send it to us](https://github.com/etcd-io/website/issues/new).
+If you want to see the current output, please [send it to us](https://github.com/etcd-io/website/

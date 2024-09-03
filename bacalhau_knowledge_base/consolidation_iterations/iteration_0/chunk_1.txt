@@ -1,0 +1,45 @@
+Task: Compress the following text to approximately 100 tokens for use as an AI system prompt.
+Rules:
+1. Prioritize key information, concepts, and technical details.
+2. Remove redundancies and verbose explanations.
+3. Use concise language and technical terminology.
+4. Maintain factual accuracy and important specifics.
+5. Aim for 100 tokens, but do not go below this target.
+
+Text to compress:
+Source: expanso_io
+URL: https://expanso.io/newsroom/
+
+Highlighted
+![VentureBeat Logo](https://expanso.io/wp-content/uploads/2023/12/Newsroom-Preview-Pic-Website-2.avif)
+[
+VentureBeat: The end of centralized data? Samsung teams with Expanso on distributed processing ](https://expanso.io/newsroom/venturebeat-samsung-next-teams-with-expanso/)
+Read the Article on VentureBeat
+[Read More](https://expanso.io/newsroom/venturebeat-samsung-next-teams-with-expanso/)
+![](https://expanso.io/wp-content/uploads/2024/05/no-background-newsroom-samsung.avif)
+[
+Why we invested in Expanso, a distributed compute platform that reduces latency and enhances data governance capabilities ](https://expanso.io/newsroom/why-samsung-next-invested-in-expanso-a-distributed-compute-platform/)
+Read the article on the Samsung Next blog.
+[Read More](https://expanso.io/newsroom/why-samsung-next-invested-in-expanso-a-distributed-compute-platform/)
+![bacalhau v1.2](https://expanso.io/wp-content/uploads/2023/12/Newsroom-Preview-Pic-Website-3.avif)
+[
+Announcing Bacalhau 1.2 ](https://expanso.io/newsroom/bacalhau1-2/)
+We are thrilled to announce the release of Bacalhau 1.2! Following the Bacalhau 1.1 release in September 2023, we’ve explored a variety of innovative and groundbreaking use
+[Read More](https://expanso.io/newsroom/bacalhau1-2/)
+Press releases.
+[
+Expanso Secures Strategic Investment from Samsung Next to Transform Distributed Computing ](https://expanso.io/newsroom/expanso-secures-strategic-investment-by-samsung-next/)
+SEATTLE–(BUSINESS WIRE)- Expanso, the distributed compute company based in Seattle, Washington has secured a strategic investment from Samsung Next that signals big ambitions to transform how data is being managed and processed worldwide. Expanso, founded in early 2023 by tech
+[Read More](https://expanso.io/newsroom/expanso-secures-strategic-investment-by-samsung-next/)
+[
+Announcing Bacalhau 1.2 ](https://expanso.io/newsroom/bacalhau1-2/)
+We are thrilled to announce the release of Bacalhau 1.2! Following the Bacalhau 1.1 release in September 2023, we’ve explored a variety of innovative and groundbreaking use cases, such as: We are also proud to announce that the U.S. Navy chose Bacalhau to manage predictive
+[Read More](https://expanso.io/newsroom/bacalhau1-2/)
+[
+Expanso Lands $7.5M Seed Investment Led by General Catalyst and Hetz Ventures to Revolutionize Distributed Data Processing ](https://expanso.io/newsroom/seed-funding-announcement/)
+Expanso secures $7.5M for it’s open-source software Bacalhau, advancing edge data processing for enterprises, backed by General Catalyst & Hetz Ventures.
+[Read More](https://expanso.io/newsroom/seed-funding-announcement/)
+Headlines and features.
+![VentureBeat Logo](https://expanso.io/wp-content/uploads/2023/12/Newsroom-Preview-Pic-Website-2.avif)
+[
+VentureBeat: The end of centralized data? Samsung teams with Expanso on distributed processing ](https://expanso.io/newsroom/venture

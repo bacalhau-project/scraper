@@ -1,0 +1,24 @@
+Task: Compress the following text to approximately 100 tokens for use as an AI system prompt.
+Rules:
+1. Prioritize key information, concepts, and technical details.
+2. Remove redundancies and verbose explanations.
+3. Use concise language and technical terminology.
+4. Maintain factual accuracy and important specifics.
+5. Aim for 100 tokens, but do not go below this target.
+
+Text to compress:
+Source: cap_theorem
+URL: https://en.wikipedia.org/wiki/Doi_(identifier)
+
+Digital object identifier
+[Doi (identifier)](/w/index.php?title=Doi_(identifier)&redirect=no))
+![]() |
+[International DOI Foundation](#IDF_organizational_structure)[10.1000/182](https://doi.org/10.1000/182)[www](https://www.doi.org/the-identifier/what-is-a-doi/).doi.org /the-identifier /what-is-a-doi /A digital object identifier (DOI) is a [persistent identifier](/wiki/Persistent_identifier) or [handle](/wiki/Handle_(computing)) used to uniquely identify various objects, standardized by the [International Organization for Standardization](/wiki/International_Organization_for_Standardization) (ISO).[[1]](#cite_note-iso-1) DOIs are an implementation of the [Handle System](/wiki/Handle_System);[[2]](#cite_note-2)[[3]](#cite_note-3) they also fit within the URI system ([Uniform Resource Identifier](/wiki/Uniform_Resource_Identifier)). They are widely used to identify academic, professional, and government information, such as [journal](/wiki/Academic_journal) articles, research reports, data sets, and official [publications](/wiki/Publication).
+A DOI aims to resolve to its target, the information object to which the DOI refers. This is achieved by binding the DOI to [metadata](/wiki/Metadata) about the object, such as a [URL](/wiki/URL) where the object is located. Thus, by being actionable and [interoperable](/wiki/Interoperability), a DOI differs from [ISBNs](/wiki/ISBN) or [ISRCs](/wiki/International_Standard_Recording_Code) which are identifiers only. The DOI system uses the [indecs Content Model](/wiki/Indecs_Content_Model) for representing [metadata](/wiki/Metadata).
+The DOI for a document remains fixed over the lifetime of the document, whereas its location and other metadata may change. Referring to an online document by its DOI should provide a more stable link than directly using its URL. But if its URL changes, the publisher must update the metadata for the DOI to maintain the link to the URL.[[4]](#cite_note-4)[[5]](#cite_note-5)[[6]](#cite_note-6) It is the publisher's responsibility to update the DOI database. If they fail to do so, the DOI resolves to a [dead link](/wiki/Link_rot), leaving the DOI useless.[[7]](#cite_note-7)
+The developer and administrator of the DOI system is the International DOI Foundation (IDF), which introduced it in 2000.[[8]](#cite_note-8) Organizations that meet the contractual obligations of the DOI system and are willing to pay to become a member of the system can assign DOIs.[[9]](#cite_note-dd-9) The DOI system is implemented through a federation of registration agencies coordinated by the IDF.[[10]](#cite_note-10) By late April 2011 more than 50 million DOI names had been assigned by some 4,000 organizations,[[11]](#cite_note-11) and by April 2013 this number had grown to 85 million DOI names assigned through 9,500 organizations[[citation needed](/wiki/Wikipedia:Citation_needed)].
+Nomenclature and syntax
+[[edit](/w/index.php?title=Digital_object_identifier&action=edit§ion=1)]
+A DOI is a type of Handle System handle, which takes the form of a [character string](/wiki/String_(computer_science)) divided into two parts, a prefix and a suffix, separated by a slash.
+prefix/suffix
+The prefix identifies the registrant of the identifier and the suffix is chosen by the registrant and identifies the specific object associated with that DOI. Most legal [Unic

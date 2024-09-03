@@ -1,0 +1,91 @@
+Task: Compress the following text to approximately 100 tokens for use as an AI system prompt.
+Rules:
+1. Prioritize key information, concepts, and technical details.
+2. Remove redundancies and verbose explanations.
+3. Use concise language and technical terminology.
+4. Maintain factual accuracy and important specifics.
+5. Aim for 100 tokens, but do not go below this target.
+
+Text to compress:
+sues.apache.org/jira/browse/HDFS-16350) |
+Datanode start time should be set after RPC server starts successfully |
+Minor |
+datanode |
+Viraj Jasani |
+Viraj Jasani |
+[YARN-11007](https://issues.apache.org/jira/browse/YARN-11007) |
+Correct words in YARN documents |
+Minor |
+documentation |
+guophilipse |
+guophilipse |
+[YARN-10975](https://issues.apache.org/jira/browse/YARN-10975) |
+EntityGroupFSTimelineStore#ActiveLogParser parses already processed files |
+Major |
+timelineserver |
+Prabhu Joseph |
+Ravuri Sushma sree |
+[HDFS-16361](https://issues.apache.org/jira/browse/HDFS-16361) |
+Fix log format for QueryCommand |
+Minor |
+command, diskbalancer |
+Tao Li |
+Tao Li |
+[HADOOP-18027](https://issues.apache.org/jira/browse/HADOOP-18027) |
+Include static imports in the maven plugin rules |
+Major |
+build |
+Viraj Jasani |
+Viraj Jasani |
+[HDFS-16359](https://issues.apache.org/jira/browse/HDFS-16359) |
+RBF: RouterRpcServer#invokeAtAvailableNs does not take effect when retrying |
+Major |
+rbf |
+Tao Li |
+Tao Li |
+[HDFS-16332](https://issues.apache.org/jira/browse/HDFS-16332) |
+Expired block token causes slow read due to missing handling in sasl handshake |
+Major |
+datanode, dfs, dfsclient |
+Shinya Yoshida |
+Shinya Yoshida |
+[HADOOP-18021](https://issues.apache.org/jira/browse/HADOOP-18021) |
+Provide a public wrapper of Configuration#substituteVars |
+Major |
+conf |
+Andras Gyori |
+Andras Gyori |
+[HDFS-16369](https://issues.apache.org/jira/browse/HDFS-16369) |
+RBF: Fix the retry logic of RouterRpcServer#invokeAtAvailableNs |
+Major |
+rbf |
+Ayush Saxena |
+Ayush Saxena |
+[HDFS-16370](https://issues.apache.org/jira/browse/HDFS-16370) |
+Fix assert message for BlockInfo |
+Minor |
+block placement |
+Tao Li |
+Tao Li |
+[HDFS-16293](https://issues.apache.org/jira/browse/HDFS-16293) |
+Client sleeps and holds ‘dataQueue’ when DataNodes are congested |
+Major |
+hdfs-client |
+Yuanxin Zhu |
+Yuanxin Zhu |
+[YARN-9063](https://issues.apache.org/jira/browse/YARN-9063) |
+ATS 1.5 fails to start if RollingLevelDb files are corrupt or missing |
+Major |
+timelineserver, timelineservice |
+Tarun Parimi |
+Ashutosh Gupta |
+[YARN-10757](https://issues.apache.org/jira/browse/YARN-10757) |
+jsonschema2pojo-maven-plugin version is not defined |
+Major |
+build |
+Akira Ajisaka |
+Tamas Domok |
+[YARN-11023](https://issues.apache.org/jira/browse/YARN-11023) |
+Extend the root QueueInfo with max-parallel-apps in CapacityScheduler |
+Major |
+capacity scheduler |

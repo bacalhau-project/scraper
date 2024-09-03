@@ -1,0 +1,58 @@
+Task: Compress the following text to approximately 100 tokens for use as an AI system prompt.
+Rules:
+1. Prioritize key information, concepts, and technical details.
+2. Remove redundancies and verbose explanations.
+3. Use concise language and technical terminology.
+4. Maintain factual accuracy and important specifics.
+5. Aim for 100 tokens, but do not go below this target.
+
+Text to compress:
+Source: apache_kafka
+URL: https://kafka.apache.org/20/documentation.html
+
+[You're viewing documentation for an older version of Kafka - check out our current documentation here.](/documentation)
+Documentation
+Kafka 2.0 Documentation
+Prior releases:[0.7.x](/07/documentation.html),
+[0.8.0](/08/documentation.html),
+[0.8.1.X](/081/documentation.html),
+[0.8.2.X](/082/documentation.html),
+[0.9.0.X](/090/documentation.html),
+[0.10.0.X](/0100/documentation.html),
+[0.10.1.X](/0101/documentation.html),
+[0.10.2.X](/0102/documentation.html),
+[0.11.0.X](/0110/documentation.html),
+[1.0.X](/10/documentation.html),
+[1.1.X](/11/documentation.html).
+[1. Getting Started](#gettingStarted)
+[1.1 Introduction](#introduction)
+[1.2 Use Cases](#uses)
+Here is a description of a few of the popular use cases for Apache Kafka®.
+For an overview of a number of these areas in action, see [this blog post](https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying/).
+[Messaging](#uses_messaging)
+Kafka works well as a replacement for a more traditional message broker.
+Message brokers are used for a variety of reasons (to decouple processing from data producers, to buffer unprocessed messages, etc).
+In comparison to most messaging systems Kafka has better throughput, built-in partitioning, replication, and fault-tolerance which makes it a good
+solution for large scale message processing applications.
+In our experience messaging uses are often comparatively low-throughput, but may require low end-to-end latency and often depend on the strong durability guarantees Kafka provides.
+In this domain Kafka is comparable to traditional messaging systems such as [ActiveMQ](http://activemq.apache.org) or
+[RabbitMQ](https://www.rabbitmq.com).
+[Website Activity Tracking](#uses_website)
+The original use case for Kafka was to be able to rebuild a user activity tracking pipeline as a set of real-time publish-subscribe feeds.
+This means site activity (page views, searches, or other actions users may take) is published to central topics with one topic per activity type.
+These feeds are available for subscription for a range of use cases including real-time processing, real-time monitoring, and loading into Hadoop or
+offline data warehousing systems for offline processing and reporting.
+Activity tracking is often very high volume as many activity messages are generated for each user page view.
+[Metrics](#uses_metrics)
+Kafka is often used for operational monitoring data.
+This involves aggregating statistics from distributed applications to produce centralized feeds of operational data.
+[Log Aggregation](#uses_logs)
+Many people use Kafka as a replacement for a log aggregation solution.
+Log aggregation typically collects physical log files off servers and puts them in a central place (a file server or HDFS perhaps) for processing.
+Kafka abstracts away the details of files and gives a cleaner abstraction of log or event data as a stream of messages.
+This allows for lower-latency processing and easier support for multiple data sources and distributed data consumption.
+In comparison to log-centric systems like Scribe or Flume, Kafka offers equally good performance, stronger durability guarantees due to replication,
+and much lower end-to-end latency.
+[Stream Processing](#uses_streamprocessing)
+Many users of Kafka process data in processing pipelines consisting of multiple stages, where raw input data is consumed from Kafka topics and then
+aggregated, enriched, or otherwise transformed into new topics for further consumption or follow-up processing.

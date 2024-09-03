@@ -1,0 +1,91 @@
+Task: Compress the following text to approximately 100 tokens for use as an AI system prompt.
+Rules:
+1. Prioritize key information, concepts, and technical details.
+2. Remove redundancies and verbose explanations.
+3. Use concise language and technical terminology.
+4. Maintain factual accuracy and important specifics.
+5. Aim for 100 tokens, but do not go below this target.
+
+Text to compress:
+Source: kubernetes_io
+URL: https://kubernetes.io/docs/tasks/job/parallel-processing-expansion/
+
+Parallel Processing using Expansions
+This task demonstrates running multiple [Jobs](/docs/concepts/workloads/controllers/job/)
+based on a common template. You can use this approach to process batches of work in
+parallel.
+For this example there are only three items: apple, banana, and cherry. The sample Jobs process each item by printing a string then pausing.
+See [using Jobs in real workloads](#using-jobs-in-real-workloads) to learn about how
+this pattern fits more realistic use cases.
+Before you begin
+You should be familiar with the basic,
+non-parallel, use of [Job](/docs/concepts/workloads/controllers/job/).
+You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. It is recommended to run this tutorial on a cluster with at least two nodes that are not acting as control plane hosts. If you do not already have a
+cluster, you can create one by using
+[minikube](https://minikube.sigs.k8s.io/docs/tutorials/multi_node/)
+or you can use one of these Kubernetes playgrounds:
+For basic templating you need the command-line utility sed
+.
+To follow the advanced templating example, you need a working installation of
+[Python](https://www.python.org/), and the Jinja2 template
+library for Python.
+Once you have Python set up, you can install Jinja2 by running:
+pip install --user jinja2
+Create Jobs based on a template
+First, download the following template of a Job to a file called job-tmpl.yaml
+.
+Here's what you'll download:
+apiVersion: batch/v1
+kind: Job
+metadata:
+name: process-item-$ITEM
+labels:
+jobgroup: jobexample
+spec:
+template:
+metadata:
+name: jobexample
+labels:
+jobgroup: jobexample
+spec:
+containers:
+- name: c
+image: busybox:1.28
+command: ["sh", "-c", "echo Processing item $ITEM && sleep 5"]
+restartPolicy: Never
+# Use curl to download job-tmpl.yaml
+curl -L -s -O https://k8s.io/examples/application/job/job-tmpl.yaml
+The file you downloaded is not yet a valid Kubernetes
+[manifest](/docs/reference/glossary/?all=true#term-manifest).
+Instead that template is a YAML representation of a Job object with some placeholders
+that need to be filled in before it can be used. The $ITEM
+syntax is not meaningful to Kubernetes.
+Create manifests from the template
+The following shell snippet uses sed
+to replace the string $ITEM
+with the loop
+variable, writing into a temporary directory named jobs
+. Run this now:
+# Expand the template into multiple files, one for each item to be processed.
+mkdir./jobs
+for i in apple banana cherry
+do
+cat job-tmpl.yaml | sed "s/\$ITEM/$i/" >./jobs/job-$i.yaml
+done
+Check if it worked:
+ls jobs/
+The output is similar to this:
+job-apple.yaml
+job-banana.yaml
+job-cherry.yaml
+You could use any type of template language (for example: Jinja2; ERB), or write a program to generate the Job manifests.
+Create Jobs from the manifests
+Next, create all the Jobs with one kubectl command:
+kubectl create -f./jobs
+The output is similar to this:
+job.batch/process-item-apple created
+job.batch/process-item-banana created
+job.batch/process-item-cherry created
+Now, check on the jobs:
+kubectl get

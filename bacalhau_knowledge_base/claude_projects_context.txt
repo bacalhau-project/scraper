@@ -1,0 +1,239 @@
+Task: Compress the following text to approximately 100 tokens for use as an AI system prompt.
+Rules:
+1. Prioritize key information, concepts, and technical details.
+2. Remove redundancies and verbose explanations.
+3. Use concise language and technical terminology.
+4. Maintain factual accuracy and important specifics.
+5. Aim for 100 tokens, but do not go below this target.
+
+Text to compress:
+Source: expanso_io
+URL: https://expanso.io/newsroom/
+
+Highlighted
+![VentureBeat Logo](https://expanso.io/wp-content/uploads/2023/12/Newsroom-Preview-Pic-Website-2.avif)
+[
+VentureBeat: The end of centralized data? Samsung teams with Expanso on distributed processing ](https://expanso.io/newsroom/venturebeat-samsung-next-teams-with-expanso/)
+Read the Article on VentureBeat
+[Read More](https://expanso.io/newsroom/venturebeat-samsung-next-teams-with-expanso/)
+![](https://expanso.io/wp-content/uploads/2024/05/no-background-newsroom-samsung.avif)
+[
+Why we invested in Expanso, a distributed compute platform that reduces latency and enhances data governance capabilities ](https://expanso.io/newsroom/why-samsung-next-invested-in-expanso-a-distributed-compute-platform/)
+Read the article on the Samsung Next blog.
+[Read More](https://expanso.io/newsroom/why-samsung-next-invested-in-expanso-a-distributed-compute-platform/)
+![bacalhau v1.2](https://expanso.io/wp-content/uploads/2023/12/Newsroom-Preview-Pic-Website-3.avif)
+[
+Announcing Bacalhau 1.2 ](https://expanso.io/newsroom/bacalhau1-2/)
+We are thrilled to announce the release of Bacalhau 1.2! Following the Bacalhau 1.1 release in September 2023, we’ve explored a variety of innovative and groundbreaking use
+[Read More](https://expanso.io/newsroom/bacalhau1-2/)
+Press releases.
+[
+Expanso Secures Strategic Investment from Samsung Next to Transform Distributed Computing ](https://expanso.io/newsroom/expanso-secures-strategic-investment-by-samsung-next/)
+SEATTLE–(BUSINESS WIRE)- Expanso, the distributed compute company based in Seattle, Washington has secured a strategic investment from Samsung Next that signals big ambitions to transform how data is being managed and processed worldwide. Expanso, founded in early 2023 by tech
+[Read More](https://expanso.io/newsroom/expanso-secures-strategic-investment-by-samsung-next/)
+[
+Announcing Bacalhau 1.2 ](https://expanso.io/newsroom/bacalhau1-2/)
+We are thrilled to announce the release of Bacalhau 1.2! Following the Bacalhau 1.1 release in September 2023, we’ve explored a variety of innovative and groundbreaking use cases, such as: We are also proud to announce that the U.S. Navy chose Bacalhau to manage predictive
+[Read More](https://expanso.io/newsroom/bacalhau1-2/)
+[
+Expanso Lands $7.5M Seed Investment Led by General Catalyst and Hetz Ventures to Revolutionize Distributed Data Processing ](https://expanso.io/newsroom/seed-funding-announcement/)
+Expanso secures $7.5M for it’s open-source software Bacalhau, advancing edge data processing for enterprises, backed by General Catalyst & Hetz Ventures.
+[Read More](https://expanso.io/newsroom/seed-funding-announcement/)
+Headlines and features.
+![VentureBeat Logo](https://expanso.io/wp-content/uploads/2023/12/Newsroom-Preview-Pic-Website-2.avif)
+[
+VentureBeat: The end of centralized data? Samsung teams with Expanso on distributed processing ](https://expanso.io/newsroom/venture
+
+---
+
+Task: Compress the following text to approximately 100 tokens for use as an AI system prompt.
+Rules:
+1. Prioritize key information, concepts, and technical details.
+2. Remove redundancies and verbose explanations.
+3. Use concise language and technical terminology.
+4. Maintain factual accuracy and important specifics.
+5. Aim for 100 tokens, but do not go below this target.
+
+Text to compress:
+Source: zookeeper_apache
+URL: https://zookeeper.apache.org/doc/r3.7.1/releasenotes.html
+
+Release Notes - ZooKeeper - Version 3.7.1
+Improvement
+Bug
+[ZOOKEEPER-1875](https://issues.apache.org/jira/browse/ZOOKEEPER-1875) - NullPointerException in ClientCnxn$EventThread.processEvent
+[ZOOKEEPER-3128](https://issues.apache.org/jira/browse/ZOOKEEPER-3128) - Get CLI Command displays Authentication error for Authorization error
+[ZOOKEEPER-3652](https://issues.apache.org/jira/browse/ZOOKEEPER-3652) - Improper synchronization in ClientCnxn
+[ZOOKEEPER-3887](https://issues.apache.org/jira/browse/ZOOKEEPER-3887) - In SSL-only server zkServer.sh status command should use secureClientPortAddress instead of clientPortAddress
+[ZOOKEEPER-3988](https://issues.apache.org/jira/browse/ZOOKEEPER-3988) - org.apache.zookeeper.server.NettyServerCnxn.receiveMessage throws NullPointerException
+[ZOOKEEPER-4194](https://issues.apache.org/jira/browse/ZOOKEEPER-4194) - ZooInspector throws NullPointerExceptions to console when node data is null
+[ZOOKEEPER-4204](https://issues.apache.org/jira/browse/ZOOKEEPER-4204) - Flaky test - RequestPathMetricsCollectorTest.testMultiThreadPerf
+[ZOOKEEPER-4247](https://issues.apache.org/jira/browse/ZOOKEEPER-4247) - NPE while processing message from restarted quorum member
+[ZOOKEEPER-4265](https://issues.apache.org/jira/browse/ZOOKEEPER-4265) - Download page broken links
+[ZOOKEEPER-4266](https://issues.apache.org/jira/browse/ZOOKEEPER-4266) - Correct ZooKeeper version in documentation header
+[ZOOKEEPER-4269](https://issues.apache.org/jira/browse/ZOOKEEPER-4269) - acceptedEpoch.tmp rename failure will cause server startup error
+[ZOOKEEPER-4272](https://issues.apache.org/jira/browse/ZOOKEEPER-4272) - Upgrade Netty library to > 4.1.60 due to security vulnerability CVE-2021-21295
+[ZOOKEEPER-4275](https://issues.apache.org/jira/browse/ZOOKEEPER-4275) - Slowness in sasl login or subject.doAs() causes zk client to falsely assume that the server did not respond, closes connection and goes to unnecessary retries
+[ZOOKEEPER-4277](https://issues.apache.org/jira/browse/ZOOKEEPER-4277) - dependency-check:check failing - jetty-server-9.4.38 CVE-2021-28165
+[ZOOKEEPER-4278](https://issues.apache.org/jira/browse/ZOOKEEPER-4278) - dependency-check:check failing - netty-transport-4.1.60.Final CVE-2021-21409
+[ZOOKEEPER-4309](https://issues.apache.org/jira/browse/ZOOKEEPER-4309) - QuorumCnxManager's ListenerHandler thread leak
+[ZOOKEEPER-4331](https://issues.apache.org/jira/browse/ZOOKEEPER-4331) - zookeeper artifact is not compatible with OSGi runtime
+[ZOOKEEPER-4337](https://issues.apache.org/jira/browse/ZOOKEEPER-4337
+
+---
+
+Task: Compress the following text to approximately 100 tokens for use as an AI system prompt.
+Rules:
+1. Prioritize key information, concepts, and technical details.
+2. Remove redundancies and verbose explanations.
+3. Use concise language and technical terminology.
+4. Maintain factual accuracy and important specifics.
+5. Aim for 100 tokens, but do not go below this target.
+
+Text to compress:
+Source: zookeeper_apache
+URL: https://zookeeper.apache.org/doc/r3.9.1/releasenotes.html
+
+Release Notes - ZooKeeper - Version 3.9.1
+Improvement
+[ZOOKEEPER-4732](https://issues.apache.org/jira/browse/ZOOKEEPER-4732)- improve Reproducible Builds[ZOOKEEPER-4753](https://issues.apache.org/jira/browse/ZOOKEEPER-4753)- Explicit handling of DIGEST-MD5 vs GSSAPI in quorum auth
+Task
+[ZOOKEEPER-4751](https://issues.apache.org/jira/browse/ZOOKEEPER-4751)- Update snappy-java to 1.1.10.5 to address CVE-2023-43642[ZOOKEEPER-4754](https://issues.apache.org/jira/browse/ZOOKEEPER-4754)- Update Jetty to avoid CVE-2023-36479, CVE-2023-40167, and CVE-2023-41900[ZOOKEEPER-4755](https://issues.apache.org/jira/browse/ZOOKEEPER-4755)- Handle Netty CVE-2023-4586
+Release Notes - ZooKeeper - Version 3.9.0
+Sub-task
+[ZOOKEEPER-4327](https://issues.apache.org/jira/browse/ZOOKEEPER-4327)- Flaky test: RequestThrottlerTest
+Bug
+[ZOOKEEPER-2108](https://issues.apache.org/jira/browse/ZOOKEEPER-2108)- Compilation error in ZkAdaptor.cc with GCC 4.7 or later[ZOOKEEPER-3652](https://issues.apache.org/jira/browse/ZOOKEEPER-3652)- Improper synchronization in ClientCnxn[ZOOKEEPER-3908](https://issues.apache.org/jira/browse/ZOOKEEPER-3908)- zktreeutil multiple issues[ZOOKEEPER-3996](https://issues.apache.org/jira/browse/ZOOKEEPER-3996)- Flaky test: ReadOnlyModeTest.testConnectionEvents[ZOOKEEPER-4026](https://issues.apache.org/jira/browse/ZOOKEEPER-4026)- CREATE2 requests embeded in a MULTI request only get a regular CREATE response[ZOOKEEPER-4296](https://issues.apache.org/jira/browse/ZOOKEEPER-4296)- NullPointerException when ClientCnxnSocketNetty is closed without being opened[ZOOKEEPER-4308](https://issues.apache.org/jira/browse/ZOOKEEPER-4308)- Flaky test: EagerACLFilterTest.testSetDataFail[ZOOKEEPER-4393](https://issues.apache.org/jira/browse/ZOOKEEPER-4393)- Problem to connect to zookeeper in FIPS mode[ZOOKEEPER-4466](https://issues.apache.org/jira/browse/ZOOKEEPER-4466)- Support different watch modes on same path[ZOOKEEPER-4471](https://issues.apache.org/jira/browse/ZOOKEEPER-4471)- Remove WatcherType.Children break persistent watcher's child events[ZOOKEEPER-4473](https://issues.apache.org/jira/browse/ZOOKEEPER-4473)- zooInspector create root node fail with path validate[ZOOKEEPER-4475](https://issues.apache.org/jira/browse/ZOOKEEPER-4475)- Persistent recursive watcher got NodeChildrenChanged event[ZOOKEEPER-4477](https://issues.apache.org/jira/browse/ZOOKEEPER-4477)- Single Kerberos ticket renewal failure can prevent all future renewals since Java 9[ZOOKEEPER-
+
+---
+
+[](https://expanso.io/newsroom/why-samsung-next-invested-in-expanso-a-distributed-compute-platform/)
+[](https://expanso.io/newsroom/why-samsung-next-invested-in-expanso-a-distributed-compute-platform/)
+[](https://expanso.io/newsroom/why-samsung-next
+
+---
+
+Source: nats_io
+URL: https://nats.io
+URL: https://nats.io
+URL: https://nats.io
+URL: https://nats.io
+URL: https://nats.io
+URL: https://nats.io
+URL: https://nats.io
+URL: https://nats.io
+URL: https://nats.io
+URL: https://nats.io
+URL:
+
+---
+
+Task: Compress the following text to approximately 100 tokens for use as an AI system prompt.
+Rules:
+1. Prioritize key information, concepts, and technical details.
+2. Remove redundancies and verbose explanations.
+3. Use concise language and technical terminology.
+4. Maintain factual accuracy and important specifics.
+5. Aim for 100 tokens, but do not go below this target.
+
+Text to compress:
+Source: apache_kafka
+URL: https://kafka.apache.org/20/documentation.html
+
+[You're viewing documentation for an older version of Kafka - check out our current documentation here.](/documentation)
+Documentation
+Kafka 2.0 Documentation
+Prior releases:[0.7.x](/07/documentation.html),
+[0.8.0](/08/documentation.html),
+[0.8.1.X](/081/documentation.html),
+[0.8.2.X](/082/documentation.html),
+[0.9.0.X](/090/documentation.html),
+[0.10.0.X](/0100/documentation.html),
+[0.10.1.X](/0101/documentation.html),
+[0.10.2.X](/0102/documentation.html),
+[0.11.0.X](/0110/documentation.html),
+[1.0.X](/10/documentation.html),
+[1.1.X](/11/documentation.html).
+[1. Getting Started](#gettingStarted)
+[1.1 Introduction](#introduction)
+[1.2 Use Cases](#uses)
+Here is a description of a few of the popular use cases for Apache Kafka®.
+For an overview of a number of these areas in action, see [this blog post](https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying/).
+[Messaging](#uses_messaging)
+Kafka works well as a replacement for a more traditional message broker.
+Message brokers are used for a variety of reasons (to decouple processing from data producers, to buffer unprocessed messages, etc).
+In comparison to most messaging systems Kafka has better throughput, built-in partitioning, replication, and fault-tolerance which makes it a good
+solution for large scale message processing applications.
+In our experience messaging uses are often comparatively low-throughput, but may require low end-to-end latency and often depend on the strong durability guarantees Kafka provides.
+In this domain Kafka is comparable to traditional messaging systems such as [ActiveMQ](http://activemq.apache.org) or
+[RabbitMQ](https://www.rabbitmq.com).
+[Website Activity Tracking](#uses_website)
+The original use case for Kafka was to be able to rebuild a user activity tracking pipeline as a set of real-time publish-subscribe feeds.
+This means site activity (page views, searches, or other actions users may take) is published to central topics with one topic per activity type.
+These feeds are available for subscription for a range of use cases including real-time processing, real-time monitoring, and loading into Hadoop or
+offline data warehousing systems for offline processing and reporting.
+Activity tracking is often very high volume as many activity messages are generated for each user page view.
+[Metrics](#uses_metrics)
+Kafka is often used for operational monitoring data.
+This involves aggregating statistics from distributed applications to produce centralized feeds of operational data.
+[Log Aggregation](#uses_logs)
+Many people use Kafka as a replacement for a log aggregation solution.
+Log aggregation typically collects physical log files off servers and puts them in a central place (a file server or HDFS perhaps) for processing.
+Kafka abstracts away the details of files and gives a cleaner abstraction of log or event data as a stream of messages.
+This allows for lower-latency processing and easier support for multiple data sources and distributed data consumption.
+In comparison to log-centric systems like Scribe or Flume, Kafka offers equally good performance, stronger durability guarantees due to replication,
+and much lower end-to-end latency.
+[Stream Processing](#uses_streamprocessing)
+Many users of Kafka process data in processing pipelines consisting of multiple stages, where raw input data is consumed from Kafka topics and then
+aggregated, enriched, or otherwise transformed into new topics for further consumption or follow-up processing.
+
+---
+
+-a:
+-a:
+-b:
+-c:
+-d:
+-e:
+-f:
+-g:
+-h:
+-j:
+-k:
+-l:
+-m:
+-o:
+-o:
+-p:
+-q:
+-r:
+-s:
+-s:
+-s:
+-s:
+-s:
+-s:
+-s:
+
+---
+
+Source: Consul-Terraform-Sync
+Source: Consul-Terraform-Sync
+Source: Consul-Terraform-Sync
+Source: Consul-Terraform-Sync
+Source: Consul-Terraform-Sync
+Source: Consul-Terraform-Sync
+Source: Consul-Terraform-Sync
+Source: Consul-Terraform-Sync
+Source: Consul-Terraform-Sync
+
+---
+
+Source:
+http://etcd-io/website/issues/new).
+Note that the following doc versions are available:
+https://github.com/etcd-io/website/issues/new).
+This doc version is available:
+http://etcd-io/website/issues/new).
+Please [tell us how we can improve](https://github.com/etcd-io/website/issues/new).
+Please [

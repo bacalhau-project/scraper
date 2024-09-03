@@ -1,0 +1,6 @@
+Source: required)
+: Specifies the S3 bucket that contains the start function or the main execution code of the task. The output should point to the location of the WASM binary.Entrypoint
+(string: <optional>)
+: An array of strings containing arguments that will be supplied to the program as ARGV. This allows parameterized execution of the WASM task.EnvironmentVariables
+(map[string]string: <optional>)
+: An array of strings containing

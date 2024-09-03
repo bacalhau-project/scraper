@@ -1,0 +1,89 @@
+Task: Compress the following text to approximately 100 tokens for use as an AI system prompt.
+Rules:
+1. Prioritize key information, concepts, and technical details.
+2. Remove redundancies and verbose explanations.
+3. Use concise language and technical terminology.
+4. Maintain factual accuracy and important specifics.
+5. Aim for 100 tokens, but do not go below this target.
+
+Text to compress:
+Source: apache_hadoop
+URL: http://hadoop.apache.org/docs/r3.4.0/hadoop-project-dist/hadoop-common/release/3.4.0/CHANGELOG.3.4.0.html
+
+[HDFS-15196](https://issues.apache.org/jira/browse/HDFS-15196) |
+RBF: RouterRpcServer getListing cannot list large dirs correctly |
+Critical |
+rbf |
+Fengnan Li |
+Fengnan Li |
+[HDFS-15252](https://issues.apache.org/jira/browse/HDFS-15252) |
+HttpFS: setWorkingDirectory should not accept invalid paths |
+Major |
+httpfs |
+Hemanth Boyina |
+Hemanth Boyina |
+[HDFS-15256](https://issues.apache.org/jira/browse/HDFS-15256) |
+Fix typo in DataXceiverServer#run() |
+Trivial |
+datanode |
+Lisheng Sun |
+Lisheng Sun |
+[HDFS-15249](https://issues.apache.org/jira/browse/HDFS-15249) |
+ThrottledAsyncChecker is not thread-safe. |
+Major |
+federation |
+Toshihiro Suzuki |
+Toshihiro Suzuki |
+[HDFS-15263](https://issues.apache.org/jira/browse/HDFS-15263) |
+Fix the logic of scope and excluded scope in Network Topology |
+Major |
+net |
+Ayush Saxena |
+Ayush Saxena |
+[YARN-10207](https://issues.apache.org/jira/browse/YARN-10207) |
+CLOSE_WAIT socket connection leaks during rendering of (corrupted) aggregated logs on the JobHistoryServer Web UI |
+Major |
+yarn |
+Siddharth Ahuja |
+Siddharth Ahuja |
+[YARN-10226](https://issues.apache.org/jira/browse/YARN-10226) |
+NPE in Capacity Scheduler while using %primary_group queue mapping |
+Critical |
+capacity scheduler |
+Peter Bacsko |
+Peter Bacsko |
+[HDFS-15269](https://issues.apache.org/jira/browse/HDFS-15269) |
+NameNode should check the authorization API version only once during initialization |
+Blocker |
+namenode |
+Wei-Chiu Chuang |
+Wei-Chiu Chuang |
+[HADOOP-16962](https://issues.apache.org/jira/browse/HADOOP-16962) |
+Making `getBoolean` log warning message for unrecognized value |
+Major |
+conf |
+Ctest |
+Ctest |
+[HADOOP-16967](https://issues.apache.org/jira/browse/HADOOP-16967) |
+TestSequenceFile#testRecursiveSeqFileCreate fails in subsequent run |
+Minor |
+common, test |
+Ctest |
+Ctest |
+[MAPREDUCE-7272](https://issues.apache.org/jira/browse/MAPREDUCE-7272) |
+TaskAttemptListenerImpl excessive log messages |
+Major |
+test |
+Ahmed Hussein |
+Ahmed Hussein |
+[HADOOP-16958](https://issues.apache.org/jira/browse/HADOOP-16958) |
+NPE when hadoop.security.authorization is enabled but the input PolicyProvider for ZKFCRpcServer is NULL |
+Critical |
+common, ha |
+Ctest |
+Ctest |
+[YARN-10219](https://issues.apache.org/jira/browse/YARN-10219) |
+YARN service placement constraints is broken |
+Blocker |
+yarn |
+Eric Yang
