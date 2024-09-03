@@ -1,3 +1,15 @@
-URL: https://zookeeper.apache.org/doc/r3.3.0/releasenotes.html
+Source: zookeeper_apache
+URL: https://zookeeper.apache.org/doc/r3.1.2/releasenotes.html
 
-Not FoundThe requested URL was not found on this server.
+ZooKeeper 3.1.2 Release Notes
+These release notes include new developer and user facing incompatibilities, features, and major improvements.
+See [3.0
+release notes and migration instructions](http://hadoop.apache.org/zookeeper/docs/r3.0.1/releasenotes.html#migration) if you are upgrading
+from version 2 of ZooKeeper (SourceForge) to version 3 or
+later.
+Changes Since ZooKeeper 3.1.1
+Issue | Notes |
+---|---|
+Bug | |
+|
+[ZOOKEEPER-562](https://issues.apache.org/jira/browse/ZOOKEEPER-562)[ZOOKEEPER-597](https://issues.apache.org/jira/browse/ZOOKEEPER-597)[ZOOKEEPER-611](https://issues.apache.org/jira/browse/ZOOKEEPER-611)

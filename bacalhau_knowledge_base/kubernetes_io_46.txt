@@ -1,3 +1,427 @@
-URL: https://kubernetes.io/de/docs/home/
+Source: kubernetes_io
+URL: https://kubernetes.io/docs/concepts/storage/storage-classes/
 
-DokumentationKubernetes BlogSchulungenPartnerCommunityFallstudienVersionsRelease Informationv1.31v1.30v1.29v1.28v1.27Deutsch (German)Englishবাংলা (Bengali)中文 (Chinese)Français (French)हिन्दी (Hindi)Bahasa Indonesia (Indonesian)Italiano (Italian)日本語 (Japanese)한국어 (Korean)Polski (Polish)Português (Portuguese)Русский (Russian)Español (Spanish)Українська (Ukrainian)Tiếng Việt (Vietnamese)Kubernetes DokumentationDokumentationUnterstützte Versionen der Kubernetes-DokumentationSetupKubernetes herunterladenRelease erstellenLearning environmentProduction environmentContainer RuntimesInstalling Kubernetes with deployment toolsBootstrapping clusters with kubeadmInstalling kubeadmTroubleshooting kubeadmCreating a cluster with kubeadmCustomizing components with the kubeadm APIOptions for Highly Available TopologyCreating Highly Available Clusters with kubeadmSet up a High Availability etcd Cluster with kubeadmConfiguring each kubelet in your cluster using kubeadmDual-stack support with kubeadmTurnkey Cloud SolutionsBest practicesConsiderations for large clustersRunning in multiple zonesValidate node setupEnforcing Pod Security StandardsPKI certificates and requirementsKubernetes lokal über Minikube betreibenKonzepteÜberblickWas ist Kubernetes?Kubernetes KomponentenObjects In KubernetesKubernetes Object ManagementObject Names and IDsLabels and SelectorsNamespacesAnnotationsField SelectorsFinalizersOwners and DependentsRecommended LabelsThe Kubernetes APIKubernetes ArchitekturNodesControl-Plane-Node KommunikationControllerLeasesZugrunde liegende Konzepte des Cloud Controller ManagerÜber cgroup v2Container Runtime Interface (CRI)Garbage CollectionMixed Version ProxyContainerImagesContainer EnvironmentRuntime ClassContainer Lifecycle HooksWorkloadsDeploymentsPodsPod LifecycleInit ContainersSidecar ContainersEphemeral ContainersDisruptionsPod Quality of Service ClassesUser NamespacesDownward APIReplicaSetWorkload ManagementDeploymentsReplicaSetStatefulSetsDaemonSetJobsAutomatic Cleanup for Finished JobsCronJobReplicationControllerAutoscaling WorkloadsManaging WorkloadsJobsDienste, Lastverteilung und NetzwerkfunktionenServicesIngressIngress ControllersGateway APIEndpointSlicesNetwork PoliciesDNS for Services and PodsIPv4/IPv6 dual-stackTopology Aware RoutingNetworking on WindowsService ClusterIP allocationService Internal Traffic PolicySpeicherPersistente VolumesVolumesPersistent VolumesProjected VolumesEphemeral VolumesStorage ClassesVolume Attributes ClassesDynamic Volume ProvisioningVolume SnapshotsVolume Snapshot ClassesCSI Volume CloningStorage CapacityNode-specific Volume LimitsVolume Health MonitoringWindows StorageKonfigurationConfiguration Best PracticesConfigMapsSecretsLiveness, Readiness, and Startup ProbesResource Management for Pods and ContainersResourcen-Verwaltung für Pods und ContainerOrganizing Cluster Access Using kubeconfig FilesResource Management for Windows nodesSecurity(EN)RichtlinienLimit RangesResource QuotasProcess ID Limits And ReservationsNode Resource ManagersScheduling, Preemption and Eviction(EN)Cluster AdministrationNode ShutdownsCertificatesCluster NetworkingLogging ArchitectureMetrics For Kubernetes System ComponentsMetrics for Kubernetes Object StatesSystem LogsProxies in KubernetesTraces For Kubernetes System ComponentsController Manager MetrikenAPI Priority and FairnessCluster AutoscalingCoordinated Leader ElectionAddons InstallierenKubernetes erweiternCompute, Storage, and Networking ExtensionsNetwork PluginsDevice PluginsExtending the Kubernetes APICustom ResourcesKubernetes API Aggregation LayerOperator patternWindows in Kubernetes(EN)AufgabenWerkzeuge installierenInstall and Set Up kubectl on WindowsInstallieren und konfigurieren von kubectlKubectl installieren und konfigurieren auf LinuxKubectl installieren und konfigurieren auf macOSInstallation von MinikubeEinen Cluster verwaltenVerwaltung mit kubeadmCertificate Management with kubeadmConfiguring a cgroup driverReconfiguring a kubeadm clusterUpgrading kubeadm clustersUpgrading Linux nodesUpgrading Windows nodesChanging The Kubernetes Package RepositoryMigrating from dockershimChanging the Container Runtime on a Node from Docker Engine to containerdMigrate Docker Engine nodes from dockershim to cri-dockerdFind Out What Container Runtime is Used on a NodeTroubleshooting CNI plugin-related errorsCheck whether dockershim removal affects youMigrating telemetry and security agents from dockershimGenerate Certificates ManuallyManage Memory, CPU, and API ResourcesConfigure Default Memory Requests and Limits for a NamespaceConfigure Default CPU Requests and Limits for a NamespaceConfigure Minimum and Maximum Memory Constraints for a NamespaceConfigure Minimum and Maximum CPU Constraints for a NamespaceConfigure Memory and CPU Quotas for a NamespaceConfigure a Pod Quota for a NamespaceInstall a Network Policy ProviderUse Antrea for NetworkPolicyUse Calico for NetworkPolicyUse Cilium for NetworkPolicyUse Kube-router for NetworkPolicyRomana for NetworkPolicyWeave Net for NetworkPolicyAccess Clusters Using the Kubernetes APIAdvertise Extended Resources for a NodeAutoscale the DNS Service in a ClusterChange the Access Mode of a PersistentVolume to ReadWriteOncePodChange the default StorageClassSwitching from Polling to CRI Event-based Updates to Container StatusChange the Reclaim Policy of a PersistentVolumeCloud Controller Manager AdministrationConfigure a kubelet image credential providerConfigure Quotas for API ObjectsControl CPU Management Policies on the NodeControl Topology Management Policies on a nodeCustomizing DNS ServiceDebugging DNS ResolutionDeclare Network PolicyDeveloping Cloud Controller ManagerEnable Or Disable A Kubernetes APIEncrypting Confidential Data at RestDecrypt Confidential Data that is Already Encrypted at RestGuaranteed Scheduling For Critical Add-On PodsIP Masquerade Agent User GuideLimit Storage ConsumptionMigrate Replicated Control Plane To Use Cloud Controller ManagerNamespaces WalkthroughOperating etcd clusters for KubernetesReserve Compute Resources for System DaemonsRunning Kubernetes Node Components as a Non-root UserSafely Drain a NodeSecuring a ClusterSet Kubelet Parameters Via A Configuration FileShare a Cluster with NamespacesUpgrade A ClusterUse Cascading Deletion in a ClusterUsing a KMS provider for data encryptionUsing CoreDNS for Service DiscoveryUsing NodeLocal DNSCache in Kubernetes ClustersUsing sysctls in a Kubernetes ClusterUtilizing the NUMA-aware Memory ManagerVerify Signed Kubernetes ArtifactsPods und Container konfigurierenAssign Memory Resources to Containers and PodsAssign CPU Resources to Containers and PodsConfigure GMSA for Windows Pods and containersResize CPU and Memory Resources assigned to ContainersConfigure RunAsUserName for Windows pods and containersCreate a Windows HostProcess PodConfigure Quality of Service for PodsAssign Extended Resources to a ContainerConfigure a Pod to Use a Volume for StorageConfigure a Pod to Use a PersistentVolume for StorageConfigure a Pod to Use a Projected Volume for StorageConfigure a Security Context for a Pod or ContainerConfigure Service Accounts for PodsPull an Image from a Private RegistryConfigure Liveness, Readiness and Startup ProbesAssign Pods to NodesAssign Pods to Nodes using Node AffinityConfigure Pod InitializationAttach Handlers to Container Lifecycle EventsConfigure a Pod to Use a ConfigMapShare Process Namespace between Containers in a PodUse a User Namespace With a PodUse an Image Volume With a PodCreate static PodsTranslate a Docker Compose File to Kubernetes ResourcesEnforce Pod Security Standards by Configuring the Built-in Admission ControllerEnforce Pod Security Standards with Namespace LabelsMigrate from PodSecurityPolicy to the Built-In PodSecurity Admission ControllerDaten in Anwendungen injizierenDefine a Command and Arguments for a ContainerDefine Dependent Environment VariablesDefine Environment Variables for a ContainerExpose Pod Information to Containers Through Environment VariablesExpose Pod Information to Containers Through FilesDistribute Credentials Securely Using SecretsAnwendungen ausführenRun a Stateless Application Using a DeploymentRun a Single-Instance Stateful ApplicationRun a Replicated Stateful ApplicationScale a StatefulSetDelete a StatefulSetForce Delete StatefulSet PodsHorizontal Pod AutoscalerHorizontalPodAutoscaler WalkthroughSpecifying a Disruption Budget for your ApplicationAccessing the Kubernetes API from a PodMonitoring, Logging, and DebuggingTroubleshooting ApplicationsDebug PodsDebug ServicesDebug a StatefulSetDetermine the Reason for Pod FailureDebug Init ContainersDebug Running PodsGet a Shell to a Running ContainerTroubleshooting ClustersTroubleshooting kubectlResource metrics pipelineTools for Monitoring ResourcesMonitor Node HealthDebugging Kubernetes nodes with crictlAuditingDebugging Kubernetes Nodes With KubectlDeveloping and debugging services locally using telepresenceWindows debugging tipsJobs ausführenRunning Automated Tasks with a CronJobCoarse Parallel Processing Using a Work QueueFine Parallel Processing Using a Work QueueIndexed Job for Parallel Processing with Static Work AssignmentJob with Pod-to-Pod CommunicationParallel Processing using ExpansionsHandling retriable and non-retriable pod failures with Pod failure policyManage Kubernetes ObjectsDeclarative Management of Kubernetes Objects Using Configuration FilesDeclarative Management of Kubernetes Objects Using KustomizeManaging Kubernetes Objects Using Imperative CommandsImperative Management of Kubernetes Objects Using Configuration FilesUpdate API Objects in Place Using kubectl patchMigrate Kubernetes Objects Using Storage Version MigrationAuf Anwendungen in einem Cluster zugreifenDeploy and Access the Kubernetes DashboardAccessing ClustersConfigure Access to Multiple ClustersUse Port Forwarding to Access Applications in a ClusterUse a Service to Access an Application in a ClusterConnect a Frontend to a Backend Using ServicesCreate an External Load BalancerList All Container Images Running in a ClusterSet up Ingress on Minikube with the NGINX Ingress ControllerCommunicate Between Containers in the Same Pod Using a Shared VolumeConfigure DNS for a ClusterAccess Services Running on ClustersManaging SecretsManaging Secrets using kubectlManaging Secrets using Configuration FileManaging Secrets using KustomizeÜberwachung, Protokollierung und FehlerbehebungKubernetes erweiternTLSConfigure Certificate Rotation for the KubeletManage TLS Certificates in a ClusterManual Rotation of CA CertificatesExtend KubernetesConfigure the Aggregation LayerUse Custom ResourcesExtend the Kubernetes API with CustomResourceDefinitionsVersions in CustomResourceDefinitionsSet up an Extension API ServerConfigure Multiple SchedulersUse an HTTP Proxy to Access the Kubernetes APIUse a SOCKS5 Proxy to Access the Kubernetes APISet up Konnectivity serviceFöderationCluster-Daemons verwaltenPerform a Rolling Update on a DaemonSetPerform a Rollback on a DaemonSetRunning Pods on Only Some NodesNetworkingAdding entries to Pod /etc/hosts with HostAliasesExtend Service IP RangesValidate IPv4/IPv6 dual-stackExtend kubectl with pluginsManage HugePagesSchedule GPUsTutorialsHallo MinikubeKubernetes Grundlagen lernenEinen Cluster erstellenMinikube zum Erstellen eines Clusters verwendenInteraktives Lernprogramm - Erstellen eines ClustersEine App bereitstellenVerwenden von kubectl zum Erstellen eines DeploymentsInteraktives Lernprogramm - Bereitstellen einer AppEntdecken Sie Ihre AppAnzeigen von Pods und NodesInteraktives Lernprogramm - Entdecken Sie Ihre AppMachen Sie Ihre App öffentlich zugänglichVerwendung eines Services zum Veröffentlichen Ihrer AppInteraktives Lernprogramm - Ihre App öffentlich zugänglich machenSkalieren Sie Ihre AppMehrere Instanzen Ihrer App ausführenInteraktives Lernprogramm - Skalieren Ihrer AppAktualisieren Sie Ihre AppDurchführen eines Rolling-UpdatesInteraktives Lernprogramm - Aktualisieren Ihrer AppConfigurationExample: Configuring a Java MicroserviceExternalizing config using MicroProfile, ConfigMaps and SecretsUpdating Configuration via a ConfigMapConfiguring Redis using a ConfigMapAdopting Sidecar ContainersSecurityApply Pod Security Standards at the Cluster LevelApply Pod Security Standards at the Namespace LevelRestrict a Container's Access to Resources with AppArmorRestrict a Container's Syscalls with seccompStateless ApplicationsExposing an External IP Address to Access an Application in a ClusterExample: Deploying PHP Guestbook application with RedisStateful ApplicationsStatefulSet BasicsExample: Deploying WordPress and MySQL with Persistent VolumesExample: Deploying Cassandra with a StatefulSetRunning ZooKeeper, A Distributed System CoordinatorServicesConnecting Applications with ServicesUsing Source IPExplore Termination Behavior for Pods And Their EndpointsReferenzenStandardisiertes GlossarKubernetes Probleme und SicherheitKubernetes Issue TrackerKubernetes Security and Disclosure InformationCVE feedVerwendung der Kubernetes-APIKubernetes API ConceptsServer-Side ApplyClient LibrariesCommon Expression Language in KubernetesKubernetes Deprecation PolicyDeprecated API Migration GuideKubernetes API health endpointsAPI ZugriffAuthenticatingAuthenticating with Bootstrap TokensAuthorizationUsing RBAC AuthorizationUsing Node AuthorizationWebhook ModeUsing ABAC AuthorizationAdmission ControllersDynamic Admission ControlManaging Service AccountsCertificates and Certificate Signing RequestsMapping PodSecurityPolicies to Pod Security StandardsKubelet authentication/authorizationTLS bootstrappingValidating Admission PolicyAPI ReferenzinformationenWorkload ResourcesPodBindingPodTemplateReplicationControllerReplicaSetDeploymentStatefulSetControllerRevisionDaemonSetJobCronJobHorizontalPodAutoscalerHorizontalPodAutoscalerPriorityClassPodSchedulingContext v1alpha3ResourceClaim v1alpha3ResourceClaimTemplate v1alpha3ResourceSlice v1alpha3Service ResourcesServiceEndpointsEndpointSliceIngressIngressClassConfig and Storage ResourcesConfigMapSecretCSIDriverCSINodeCSIStorageCapacityPersistentVolumeClaimPersistentVolumeStorageClassStorageVersionMigration v1alpha1VolumeVolumeAttachmentVolumeAttributesClass v1beta1Authentication ResourcesServiceAccountTokenRequestTokenReviewCertificateSigningRequestClusterTrustBundle v1alpha1SelfSubjectReviewAuthorization ResourcesLocalSubjectAccessReviewSelfSubjectAccessReviewSelfSubjectRulesReviewSubjectAccessReviewClusterRoleClusterRoleBindingRoleRoleBindingPolicy ResourcesFlowSchemaLimitRangeResourceQuotaNetworkPolicyPodDisruptionBudgetPriorityLevelConfigurationValidatingAdmissionPolicyValidatingAdmissionPolicyBindingExtend ResourcesCustomResourceDefinitionDeviceClass v1alpha3MutatingWebhookConfigurationValidatingWebhookConfigurationCluster ResourcesAPIServiceComponentStatusEventIPAddress v1beta1LeaseLeaseCandidate v1alpha1NamespaceNodeRuntimeClassServiceCIDR v1beta1Common DefinitionsDeleteOptionsLabelSelectorListMetaLocalObjectReferenceNodeSelectorRequirementObjectFieldSelectorObjectMetaObjectReferencePatchQuantityResourceFieldSelectorStatusTypedLocalObjectReferenceCommon ParametersFöderation APIWell-Known Labels, Annotations and TaintsAudit AnnotationsSetup-Tools ReferenzinformationenKubeadmkubeadm initkubeadm joinkubeadm upgradekubeadm configkubeadm resetkubeadm tokenkubeadm versionkubeadm alphakubeadm certskubeadm init phasekubeadm join phasekubeadm kubeconfigkubeadm reset phasekubeadm upgrade phaseImplementation detailsBefehlszeilen-Werkzeug ReferenzinformationenFeature GatesFeature Gates (removed)kubeletkube-apiserverkube-controller-managerkube-proxykube-schedulerInstrumentationService Level Indicator MetricsCRI Pod & Container MetricsNode metrics dataKubernetes Metrics Referencekubectl CLIIntroduction to kubectlkubectl Quick Referencekubectl referencekubectlkubectl annotatekubectl api-resourceskubectl api-versionskubectl applykubectl apply edit-last-appliedkubectl apply set-last-appliedkubectl apply view-last-appliedkubectl attachkubectl authkubectl auth can-ikubectl auth reconcilekubectl auth whoamikubectl autoscalekubectl certificatekubectl certificate approvekubectl certificate denykubectl cluster-infokubectl cluster-info dumpkubectl completionkubectl configkubectl config current-contextkubectl config delete-clusterkubectl config delete-contextkubectl config delete-userkubectl config get-clusterskubectl config get-contextskubectl config get-userskubectl config rename-contextkubectl config setkubectl config set-clusterkubectl config set-contextkubectl config set-credentialskubectl config unsetkubectl config use-contextkubectl config viewkubectl cordonkubectl cpkubectl createkubectl create clusterrolekubectl create clusterrolebindingkubectl create configmapkubectl create cronjobkubectl create deploymentkubectl create ingresskubectl create jobkubectl create namespacekubectl create poddisruptionbudgetkubectl create priorityclasskubectl create quotakubectl create rolekubectl create rolebindingkubectl create secretkubectl create secret docker-registrykubectl create secret generickubectl create secret tlskubectl create servicekubectl create service clusteripkubectl create service externalnamekubectl create service loadbalancerkubectl create service nodeportkubectl create serviceaccountkubectl create tokenkubectl debugkubectl deletekubectl describekubectl diffkubectl drainkubectl editkubectl eventskubectl execkubectl explainkubectl exposekubectl getkubectl kustomizekubectl labelkubectl logskubectl optionskubectl patchkubectl pluginkubectl plugin listkubectl port-forwardkubectl proxykubectl replacekubectl rolloutkubectl rollout historykubectl rollout pausekubectl rollout restartkubectl rollout resumekubectl rollout statuskubectl rollout undokubectl runkubectl scalekubectl setkubectl set envkubectl set imagekubectl set resourceskubectl set selectorkubectl set serviceaccountkubectl set subjectkubectl taintkubectl topkubectl top nodekubectl top podkubectl uncordonkubectl versionkubectl waitkubectl CommandskubectlJSONPath Supportkubectl for Docker Userskubectl Usage Conventionskubectl SpickzettelNode Reference InformationKubelet Checkpoint APILinux Kernel Version RequirementsArticles on dockershim Removal and on Using CRI-compatible RuntimesNode Labels Populated By The KubeletKubelet Configuration Directory MergingKubelet Device Manager API VersionsNode StatusNetworking ReferenceProtocols for ServicesPorts and ProtocolsVirtual IPs and Service ProxiesDebug clusterFlow controlConfiguration APIsClient Authentication (v1)Client Authentication (v1beta1)Event Rate Limit Configuration (v1alpha1)Image Policy API (v1alpha1)kube-apiserver Admission (v1)kube-apiserver Audit Configuration (v1)kube-apiserver Configuration (v1)kube-apiserver Configuration (v1alpha1)kube-apiserver Configuration (v1beta1)kube-controller-manager Configuration (v1alpha1)kube-proxy Configuration (v1alpha1)kube-scheduler Configuration (v1)kubeadm Configuration (v1beta3)kubeadm Configuration (v1beta4)kubeconfig (v1)Kubelet Configuration (v1)Kubelet Configuration (v1alpha1)Kubelet Configuration (v1beta1)Kubelet CredentialProvider (v1)WebhookAdmission Configuration (v1)External APIsKubernetes Custom Metrics (v1beta2)Kubernetes External Metrics (v1beta1)Kubernetes Metrics (v1beta1)SchedulingScheduler ConfigurationScheduling PoliciesToolsMapping from dockercli to crictlMitmachenContribute to Kubernetes DocumentationSuggesting content improvementsContributing new contentOpening a pull requestDocumenting for a releaseBlogs and case studiesReviewing changesReviewing pull requestsFor approvers and reviewersLokalisierung der Kubernetes DokumentationBei SIG Docs mitmachenRollen und VerantwortlichkeitenIssue WranglersPR WranglersDocumentation style overviewContent guideStyle guideDiagram guideWriting a new topicPage content typesContent organizationCustom Hugo ShortcodesUpdating Reference DocumentationQuickstartContributing to the Upstream Kubernetes CodeGenerating Reference Documentation for the Kubernetes APIGenerating Reference Documentation for kubectl CommandsGenerating Reference Documentation for MetricsGenerating Reference Pages for Kubernetes Components and ToolsAdvanced contributingViewing Site AnalyticsDocs smoke test page(EN)SuchergebnisseDokumentationDokumentationInformation in this document may be out of dateThis document has an older update date than the original, so the information it contains may be out of date. If you're able to read English, see the English version for the most up-to-date information:Kubernetes DocumentationKubernetes ist ein Open-Source-System zur Automatisierung der Bereitstellung, Skalierung und Verwaltung von containerisierten Anwendungen. Das Open-Source Project wird von der Cloud Native Computing Foundation (CNCF) gehosted.Verstehen Sie die GrundlagenLernen Sie Kubernetes und seine grundlegenden Konzepte kennen.Was ist Kubernetes?Kubernetes KomponentenPodsKonzepte lernenKubernetes ausprobierenFolgen Sie den Tutorials, um zu erfahren, wie Sie Anwendungen in Kubernetes bereitstellen.Hallo MinikubeSchritt-für-Schritt GrundlagenTutorials entdeckenRichten Sie einen Cluster einHolen Sie sich Kubernetes basierend auf Ihren Ressourcen und Bedürfnissen.Kubernetes EinrichtenErfahren Sie, wie Sie Kubernetes verwendenInformieren Sie sich über häufig verwendete Aufgaben und deren Durchführung anhand einer kurzen Abfolge von Schritten.Installation von MinikubeKubectl installierenKubectl auf Linux installierenKubectl auf macOS installierenTasks anzeigenReferenzinformationen nachschlagenDurchsuchen Sie Terminologie, Befehlszeilensyntax, API-Ressourcentypen und Dokumentation zum Setup-Tool.Glossarykubectl SpickzettelReferenz anzeigenTragen Sie zur Dokumentation beiJeder kann einen Beitrag leisten, unabhängig davon, ob Sie neu in dem Projekt oder schon lange dabei sind.Bei SIG Docs mitmachenZur Dokumentation beitragenKubernetes HerunterladenWenn Sie Kubernetes installieren oder auf die neueste Version aktualisieren, lesen Sie die aktuellen Versionshinweise.Release erstellenÜber die DokumentationDiese Website enthält Dokumentation zu den aktuellen und vorherigen 4 Versionen von Kubernetes.Zuletzt geändert November 11, 2023 at 6:31 PM PST:[de] Change footer l10n from Home to Documentation (592ac94714)Diese Seite bearbeitenUnterseite anlegenProblem zu dieser Seite meldenKapitel inkl. Unterseiten druckenDokumentationBlogSchulungenPartnerCommunityFallstudien© 2024 The Kubernetes Authors | Documentation Distributed underCC BY 4.0Copyright © 2024 The Linux Foundation ®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see ourTrademark Usage pageICP license: 京ICP备17074266号-3
+Storage Classes
+This document describes the concept of a StorageClass in Kubernetes. Familiarity
+with [volumes](/docs/concepts/storage/volumes/) and
+[persistent volumes](/docs/concepts/storage/persistent-volumes/) is suggested.
+A StorageClass provides a way for administrators to describe the classes of storage they offer. Different classes might map to quality-of-service levels, or to backup policies, or to arbitrary policies determined by the cluster administrators. Kubernetes itself is unopinionated about what classes represent.
+The Kubernetes concept of a storage class is similar to “profiles” in some other storage system designs.
+StorageClass objects
+Each StorageClass contains the fields provisioner
+, parameters
+, and
+reclaimPolicy
+, which are used when a PersistentVolume belonging to the
+class needs to be dynamically provisioned to satisfy a PersistentVolumeClaim (PVC).
+The name of a StorageClass object is significant, and is how users can request a particular class. Administrators set the name and other parameters of a class when first creating StorageClass objects.
+As an administrator, you can specify a default StorageClass that applies to any PVCs that
+don't request a specific class. For more details, see the
+[PersistentVolumeClaim concept](/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims).
+Here's an example of a StorageClass:
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+name: low-latency
+annotations:
+storageclass.kubernetes.io/is-default-class: "false"
+provisioner: csi-driver.example-vendor.example
+reclaimPolicy: Retain # default value is Delete
+allowVolumeExpansion: true
+mountOptions:
+- discard # this might enable UNMAP / TRIM at the block storage layer
+volumeBindingMode: WaitForFirstConsumer
+parameters:
+guaranteedReadWriteLatency: "true" # provider-specific
+Default StorageClass
+You can mark a StorageClass as the default for your cluster.
+For instructions on setting the default StorageClass, see
+[Change the default StorageClass](/docs/tasks/administer-cluster/change-default-storage-class/).
+When a PVC does not specify a storageClassName
+, the default StorageClass is
+used.
+If you set the
+[ storageclass.kubernetes.io/is-default-class](/docs/reference/labels-annotations-taints/#storageclass-kubernetes-io-is-default-class)
+annotation to true on more than one StorageClass in your cluster, and you then
+create a PersistentVolumeClaim with no
+storageClassName
+set, Kubernetes
+uses the most recently created default StorageClass.Note:
+You should try to only have one StorageClass in your cluster that is marked as the default. The reason that Kubernetes allows you to have multiple default StorageClasses is to allow for seamless migration.You can create a PersistentVolumeClaim without specifying a storageClassName
+for the new PVC, and you can do so even when no default StorageClass exists
+in your cluster. In this case, the new PVC creates as you defined it, and the
+storageClassName
+of that PVC remains unset until a default becomes available.
+You can have a cluster without any default StorageClass. If you don't mark any StorageClass as default (and one hasn't been set for you by, for example, a cloud provider), then Kubernetes cannot apply that defaulting for PersistentVolumeClaims that need it.
+If or when a default StorageClass becomes available, the control plane identifies any
+existing PVCs without storageClassName
+. For the PVCs that either have an empty
+value for storageClassName
+or do not have this key, the control plane then
+updates those PVCs to set storageClassName
+to match the new default StorageClass.
+If you have an existing PVC where the storageClassName
+is ""
+, and you configure
+a default StorageClass, then this PVC will not get updated.
+In order to keep binding to PVs with storageClassName
+set to ""
+(while a default StorageClass is present), you need to set the storageClassName
+of the associated PVC to ""
+.
+Provisioner
+Each StorageClass has a provisioner that determines what volume plugin is used for provisioning PVs. This field must be specified.
+Volume Plugin | Internal Provisioner | Config Example |
+---|---|---|
+AzureFile | ✓ |
+|
+[Local](#local)[NFS](#nfs)[Portworx Volume](#portworx-volume)[Ceph RBD](#ceph-rbd)[vSphere](#vsphere)You are not restricted to specifying the "internal" provisioners
+listed here (whose names are prefixed with "kubernetes.io" and shipped
+alongside Kubernetes). You can also run and specify external provisioners,
+which are independent programs that follow a [specification](https://git.k8s.io/design-proposals-archive/storage/volume-provisioning.md)
+defined by Kubernetes. Authors of external provisioners have full discretion
+over where their code lives, how the provisioner is shipped, how it needs to be
+run, what volume plugin it uses (including Flex), etc. The repository
+[kubernetes-sigs/sig-storage-lib-external-provisioner](https://github.com/kubernetes-sigs/sig-storage-lib-external-provisioner)
+houses a library for writing external provisioners that implements the bulk of
+the specification. Some external provisioners are listed under the repository
+[kubernetes-sigs/sig-storage-lib-external-provisioner](https://github.com/kubernetes-sigs/sig-storage-lib-external-provisioner).
+For example, NFS doesn't provide an internal provisioner, but an external provisioner can be used. There are also cases when 3rd party storage vendors provide their own external provisioner.
+Reclaim policy
+PersistentVolumes that are dynamically created by a StorageClass will have the
+[reclaim policy](/docs/concepts/storage/persistent-volumes/#reclaiming)
+specified in the reclaimPolicy
+field of the class, which can be
+either Delete
+or Retain
+. If no reclaimPolicy
+is specified when a
+StorageClass object is created, it will default to Delete
+.
+PersistentVolumes that are created manually and managed via a StorageClass will have whatever reclaim policy they were assigned at creation.
+Volume expansion
+PersistentVolumes can be configured to be expandable. This allows you to resize the volume by editing the corresponding PVC object, requesting a new larger amount of storage.
+The following types of volumes support volume expansion, when the underlying
+StorageClass has the field allowVolumeExpansion
+set to true.
+Volume type | Required Kubernetes version for volume expansion |
+---|---|
+Azure File | 1.11 |
+CSI | 1.24 |
+FlexVolume | 1.13 |
+Portworx | 1.11 |
+rbd | 1.11 |
+Note:
+You can only use the volume expansion feature to grow a Volume, not to shrink it.Mount options
+PersistentVolumes that are dynamically created by a StorageClass will have the
+mount options specified in the mountOptions
+field of the class.
+If the volume plugin does not support mount options but mount options are specified, provisioning will fail. Mount options are not validated on either the class or PV. If a mount option is invalid, the PV mount fails.
+Volume binding mode
+The volumeBindingMode
+field controls when
+[volume binding and dynamic provisioning](/docs/concepts/storage/persistent-volumes/#provisioning)
+should occur. When unset, Immediate
+mode is used by default.
+The Immediate
+mode indicates that volume binding and dynamic
+provisioning occurs once the PersistentVolumeClaim is created. For storage
+backends that are topology-constrained and not globally accessible from all Nodes
+in the cluster, PersistentVolumes will be bound or provisioned without knowledge of the Pod's scheduling
+requirements. This may result in unschedulable Pods.
+A cluster administrator can address this issue by specifying the WaitForFirstConsumer
+mode which
+will delay the binding and provisioning of a PersistentVolume until a Pod using the PersistentVolumeClaim is created.
+PersistentVolumes will be selected or provisioned conforming to the topology that is
+specified by the Pod's scheduling constraints. These include, but are not limited to, [resource
+requirements](/docs/concepts/configuration/manage-resources-containers/),
+[node selectors](/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector),
+[pod affinity and
+anti-affinity](/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity),
+and [taints and tolerations](/docs/concepts/scheduling-eviction/taint-and-toleration/).
+The following plugins support WaitForFirstConsumer
+with dynamic provisioning:
+- CSI volumes, provided that the specific CSI driver supports this
+The following plugins support WaitForFirstConsumer
+with pre-created PersistentVolume binding:
+- CSI volumes, provided that the specific CSI driver supports this
+local
+Note:
+If you choose to use WaitForFirstConsumer
+, do not use nodeName
+in the Pod spec
+to specify node affinity.
+If nodeName
+is used in this case, the scheduler will be bypassed and PVC will remain in pending
+state.
+Instead, you can use node selector for kubernetes.io/hostname
+:
+apiVersion: v1
+kind: Pod
+metadata:
+name: task-pv-pod
+spec:
+nodeSelector:
+kubernetes.io/hostname: kube-01
+volumes:
+- name: task-pv-storage
+persistentVolumeClaim:
+claimName: task-pv-claim
+containers:
+- name: task-pv-container
+image: nginx
+ports:
+- containerPort: 80
+name: "http-server"
+volumeMounts:
+- mountPath: "/usr/share/nginx/html"
+name: task-pv-storage
+Allowed topologies
+When a cluster operator specifies the WaitForFirstConsumer
+volume binding mode, it is no longer necessary
+to restrict provisioning to specific topologies in most situations. However,
+if still required, allowedTopologies
+can be specified.
+This example demonstrates how to restrict the topology of provisioned volumes to specific
+zones and should be used as a replacement for the zone
+and zones
+parameters for the
+supported plugins.
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+name: standard
+provisioner: kubernetes.io/example
+parameters:
+type: pd-standard
+volumeBindingMode: WaitForFirstConsumer
+allowedTopologies:
+- matchLabelExpressions:
+- key: topology.kubernetes.io/zone
+values:
+- us-central-1a
+- us-central-1b
+Parameters
+StorageClasses have parameters that describe volumes belonging to the storage
+class. Different parameters may be accepted depending on the provisioner
+.
+When a parameter is omitted, some default is used.
+There can be at most 512 parameters defined for a StorageClass. The total length of the parameters object including its keys and values cannot exceed 256 KiB.
+AWS EBS
+Kubernetes 1.31 does not include a awsElasticBlockStore
+volume type.
+The AWSElasticBlockStore in-tree storage driver was deprecated in the Kubernetes v1.19 release and then removed entirely in the v1.27 release.
+The Kubernetes project suggests that you use the [AWS EBS](https://github.com/kubernetes-sigs/aws-ebs-csi-driver)
+out-of-tree storage driver instead.
+Here is an example StorageClass for the AWS EBS CSI driver:
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+name: ebs-sc
+provisioner: ebs.csi.aws.com
+volumeBindingMode: WaitForFirstConsumer
+parameters:
+csi.storage.k8s.io/fstype: xfs
+type: io1
+iopsPerGB: "50"
+encrypted: "true"
+allowedTopologies:
+- matchLabelExpressions:
+- key: topology.ebs.csi.aws.com/zone
+values:
+- us-east-2c
+NFS
+To configure NFS storage, you can use the in-tree driver or the
+[NFS CSI driver for Kubernetes](https://github.com/kubernetes-csi/csi-driver-nfs#readme)
+(recommended).
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+name: example-nfs
+provisioner: example.com/external-nfs
+parameters:
+server: nfs-server.example.com
+path: /share
+readOnly: "false"
+server
+: Server is the hostname or IP address of the NFS server.path
+: Path that is exported by the NFS server.readOnly
+: A flag indicating whether the storage will be mounted as read only (default false).
+Kubernetes doesn't include an internal NFS provisioner. You need to use an external provisioner to create a StorageClass for NFS. Here are some examples:
+vSphere
+There are two types of provisioners for vSphere storage classes:
+[CSI provisioner](#vsphere-provisioner-csi):csi.vsphere.vmware.com
+[vCP provisioner](#vcp-provisioner):kubernetes.io/vsphere-volume
+In-tree provisioners are [deprecated](/blog/2019/12/09/kubernetes-1-17-feature-csi-migration-beta/#why-are-we-migrating-in-tree-plugins-to-csi).
+For more information on the CSI provisioner, see
+[Kubernetes vSphere CSI Driver](https://vsphere-csi-driver.sigs.k8s.io/) and
+[vSphereVolume CSI migration](/docs/concepts/storage/volumes/#vsphere-csi-migration).
+CSI Provisioner
+The vSphere CSI StorageClass provisioner works with Tanzu Kubernetes clusters.
+For an example, refer to the [vSphere CSI repository](https://github.com/kubernetes-sigs/vsphere-csi-driver/blob/master/example/vanilla-k8s-RWM-filesystem-volumes/example-sc.yaml).
+vCP Provisioner
+The following examples use the VMware Cloud Provider (vCP) StorageClass provisioner.
+Create a StorageClass with a user specified disk format.
+apiVersion: storage.k8s.io/v1 kind: StorageClass metadata: name: fast provisioner: kubernetes.io/vsphere-volume parameters: diskformat: zeroedthick
+diskformat
+:thin
+,zeroedthick
+andeagerzeroedthick
+. Default:"thin"
+.Create a StorageClass with a disk format on a user specified datastore.
+apiVersion: storage.k8s.io/v1 kind: StorageClass metadata: name: fast provisioner: kubernetes.io/vsphere-volume parameters: diskformat: zeroedthick datastore: VSANDatastore
+datastore
+: The user can also specify the datastore in the StorageClass. The volume will be created on the datastore specified in the StorageClass, which in this case isVSANDatastore
+. This field is optional. If the datastore is not specified, then the volume will be created on the datastore specified in the vSphere config file used to initialize the vSphere Cloud Provider.Storage Policy Management inside kubernetes
+Using existing vCenter SPBM policy
+One of the most important features of vSphere for Storage Management is policy based Management. Storage Policy Based Management (SPBM) is a storage policy framework that provides a single unified control plane across a broad range of data services and storage solutions. SPBM enables vSphere administrators to overcome upfront storage provisioning challenges, such as capacity planning, differentiated service levels and managing capacity headroom.
+The SPBM policies can be specified in the StorageClass using the
+storagePolicyName
+parameter.Virtual SAN policy support inside Kubernetes
+Vsphere Infrastructure (VI) Admins will have the ability to specify custom Virtual SAN Storage Capabilities during dynamic volume provisioning. You can now define storage requirements, such as performance and availability, in the form of storage capabilities during dynamic volume provisioning. The storage capability requirements are converted into a Virtual SAN policy which are then pushed down to the Virtual SAN layer when a persistent volume (virtual disk) is being created. The virtual disk is distributed across the Virtual SAN datastore to meet the requirements.
+You can see
+[Storage Policy Based Management for dynamic provisioning of volumes](https://github.com/vmware-archive/vsphere-storage-for-kubernetes/blob/fa4c8b8ad46a85b6555d715dd9d27ff69839df53/documentation/policy-based-mgmt.md)for more details on how to use storage policies for persistent volumes management.
+There are few
+[vSphere examples](https://github.com/kubernetes/examples/tree/master/staging/volumes/vsphere)
+which you try out for persistent volume management inside Kubernetes for vSphere.
+Ceph RBD (deprecated)
+Note:
+Kubernetes v1.28 [deprecated]
+This internal provisioner of Ceph RBD is deprecated. Please use
+[CephFS RBD CSI driver](https://github.com/ceph/ceph-csi).
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+name: fast
+provisioner: kubernetes.io/rbd
+parameters:
+monitors: 10.16.153.105:6789
+adminId: kube
+adminSecretName: ceph-secret
+adminSecretNamespace: kube-system
+pool: kube
+userId: kube
+userSecretName: ceph-secret-user
+userSecretNamespace: default
+fsType: ext4
+imageFormat: "2"
+imageFeatures: "layering"
+monitors
+: Ceph monitors, comma delimited. This parameter is required.adminId
+: Ceph client ID that is capable of creating images in the pool. Default is "admin".adminSecretName
+: Secret Name foradminId
+. This parameter is required. The provided secret must have type "kubernetes.io/rbd".adminSecretNamespace
+: The namespace foradminSecretName
+. Default is "default".pool
+: Ceph RBD pool. Default is "rbd".userId
+: Ceph client ID that is used to map the RBD image. Default is the same asadminId
+.userSecretName
+: The name of Ceph Secret foruserId
+to map RBD image. It must exist in the same namespace as PVCs. This parameter is required. The provided secret must have type "kubernetes.io/rbd", for example created in this way:kubectl create secret generic ceph-secret --type="kubernetes.io/rbd" \ --from-literal=key='QVFEQ1pMdFhPUnQrSmhBQUFYaERWNHJsZ3BsMmNjcDR6RFZST0E9PQ==' \ --namespace=kube-system
+userSecretNamespace
+: The namespace foruserSecretName
+.fsType
+: fsType that is supported by kubernetes. Default:"ext4"
+.imageFormat
+: Ceph RBD image format, "1" or "2". Default is "2".imageFeatures
+: This parameter is optional and should only be used if you setimageFormat
+to "2". Currently supported features arelayering
+only. Default is "", and no features are turned on.
+Azure Disk
+Kubernetes 1.31 does not include a azureDisk
+volume type.
+The azureDisk
+in-tree storage driver was deprecated in the Kubernetes v1.19 release
+and then removed entirely in the v1.27 release.
+The Kubernetes project suggests that you use the [Azure Disk](https://github.com/kubernetes-sigs/azuredisk-csi-driver) third party
+storage driver instead.
+Azure File (deprecated)
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+name: azurefile
+provisioner: kubernetes.io/azure-file
+parameters:
+skuName: Standard_LRS
+location: eastus
+storageAccount: azure_storage_account_name
+skuName
+: Azure storage account SKU tier. Default is empty.location
+: Azure storage account location. Default is empty.storageAccount
+: Azure storage account name. Default is empty. If a storage account is not provided, all storage accounts associated with the resource group are searched to find one that matchesskuName
+andlocation
+. If a storage account is provided, it must reside in the same resource group as the cluster, andskuName
+andlocation
+are ignored.secretNamespace
+: the namespace of the secret that contains the Azure Storage Account Name and Key. Default is the same as the Pod.secretName
+: the name of the secret that contains the Azure Storage Account Name and Key. Default isazure-storage-account-<accountName>-secret
+readOnly
+: a flag indicating whether the storage will be mounted as read only. Defaults to false which means a read/write mount. This setting will impact theReadOnly
+setting in VolumeMounts as well.
+During storage provisioning, a secret named by secretName
+is created for the
+mounting credentials. If the cluster has enabled both
+[RBAC](/docs/reference/access-authn-authz/rbac/) and
+[Controller Roles](/docs/reference/access-authn-authz/rbac/#controller-roles),
+add the create
+permission of resource secret
+for clusterrole
+system:controller:persistent-volume-binder
+.
+In a multi-tenancy context, it is strongly recommended to set the value for
+secretNamespace
+explicitly, otherwise the storage account credentials may
+be read by other users.
+Portworx volume (deprecated)
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+name: portworx-io-priority-high
+provisioner: kubernetes.io/portworx-volume
+parameters:
+repl: "1"
+snap_interval: "70"
+priority_io: "high"
+fs
+: filesystem to be laid out:none/xfs/ext4
+(default:ext4
+).block_size
+: block size in Kbytes (default:32
+).repl
+: number of synchronous replicas to be provided in the form of replication factor1..3
+(default:1
+) A string is expected here i.e."1"
+and not1
+.priority_io
+: determines whether the volume will be created from higher performance or a lower priority storagehigh/medium/low
+(default:low
+).snap_interval
+: clock/time interval in minutes for when to trigger snapshots. Snapshots are incremental based on difference with the prior snapshot, 0 disables snaps (default:0
+). A string is expected here i.e."70"
+and not70
+.aggregation_level
+: specifies the number of chunks the volume would be distributed into, 0 indicates a non-aggregated volume (default:0
+). A string is expected here i.e."0"
+and not0
+ephemeral
+: specifies whether the volume should be cleaned-up after unmount or should be persistent.emptyDir
+use case can set this value to true andpersistent volumes
+use case such as for databases like Cassandra should set to false,true/false
+(defaultfalse
+). A string is expected here i.e."true"
+and nottrue
+.
+Local
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+name: local-storage
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+Local volumes do not support dynamic provisioning in Kubernetes 1.31;
+however a StorageClass should still be created to delay volume binding until a Pod is actually
+scheduled to the appropriate node. This is specified by the WaitForFirstConsumer
+volume
+binding mode.
+Delaying volume binding allows the scheduler to consider all of a Pod's scheduling constraints when choosing an appropriate PersistentVolume for a PersistentVolumeClaim.
+[updated the wrong link in default storage classes (0f25d68a3f)](https://github.com/kubernetes/website/commit/0f25d68a3f8f1e5e2325aa8a0aec9802e14e6785)

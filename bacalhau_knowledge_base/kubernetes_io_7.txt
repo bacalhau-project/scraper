@@ -1,12 +1,29 @@
-URL: https://kubernetes.io/community/
+Source: kubernetes_io
+URL: https://kubernetes.io/docs/
 
-DocumentationKubernetes BlogTrainingPartnersCommunityCase StudiesVersionsRelease Informationv1.31v1.30v1.29v1.28v1.27Englishবাংলা (Bengali)中文 (Chinese)Français (French)Deutsch (German)Bahasa Indonesia (Indonesian)Italiano (Italian)日本語 (Japanese)한국어 (Korean)Português (Portuguese)Русский (Russian)Español (Spanish)Tiếng Việt (Vietnamese)CommunityThe Kubernetes community — users, contributors, and the culture we've
-built together — is one of the biggest reasons for the meteoric rise of
-this open source project. Our culture and values continue to grow and change
-as the project itself grows and changes. We all work together toward constant
-improvement of the project and the ways we work on it.We are the people who file issues and pull requests, attend SIG meetings,
-Kubernetes meetups, and KubeCon, advocate for its adoption and innovation,
-runkubectl get pods, and contribute in a thousand other vital
-ways. Read on to learn how you can get involved and become part of this amazing
-community.Contributor communityCommunity valuesCode of conductVideosDiscussionsMeetupsNewsReleasesCommunity ValuesThe Kubernetes Community values are the keystone to the ongoing success of the project.These principles guide every aspect of the Kubernetes project.Read moreCode of ConductThe Kubernetes community values respect and inclusiveness, and enforces a Code of Conduct in all interactions.If you notice a violation of the Code of Conduct at an event or meeting, inSlack, or in another communication mechanism, reach out to the Kubernetes Code of Conduct Committee atconduct@kubernetes.io. All reports are kept confidential. You can readabout the committeein the Kubernetes community repository on GitHub.Read moreVideosKubernetes is on YouTube, a lot. Subscribe for a wide range of topics.Watch monthly office hours ▶Watch weekly community meetings ▶Watch a talk from a community member ▶DiscussionsWe talk a lot. Find us and join the conversation on any of these platforms.Community forums ▶Topic-based technical discussions that bridge docs,
-troubleshooting, and so much more.𝕏 ▶#kubernetesioReal-time announcements of blog posts, events, news, ideas.GitHub ▶All the project and issue tracking, plus of course code.Server Fault ▶Kubernetes-related discussion on Server Fault. Ask a question, or answer one.Slack ▶With 170+ channels, you'll find one that fits your needs.Need an invitation?Visithttps://slack.k8s.io/for an invitation.Upcoming EventsGlobal communityWith over 150 meetups in the world and growing, go find your local kube people. If one isn't near, take charge and create your own.Find a meetupRecent NewsTweets by kubernetesioDocumentationBlogTrainingPartnersCommunityCase Studies© 2024 The Kubernetes Authors | Documentation Distributed underCC BY 4.0Copyright © 2024 The Linux Foundation ®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see ourTrademark Usage pageICP license: 京ICP备17074266号-3
+Kubernetes is an open source container orchestration engine for automating deployment, scaling, and management of containerized applications. The open source project is hosted by the Cloud Native Computing Foundation ([CNCF](https://www.cncf.io/about)).
+Understand Kubernetes
+Learn about Kubernetes and its fundamental concepts.
+[Why Kubernetes?](https://kubernetes.io/docs/concepts/overview/#why-you-need-kubernetes-and-what-can-it-do)[Components of a cluster](https://kubernetes.io/docs/concepts/overview/components/)[The Kubernetes API](https://kubernetes.io/docs/concepts/overview/kubernetes-api/)[Objects In Kubernetes](https://kubernetes.io/docs/concepts/overview/working-with-objects/)[Containers](https://kubernetes.io/docs/concepts/containers/)[Workloads and Pods](https://kubernetes.io/docs/concepts/workloads/)
+Try Kubernetes
+Follow tutorials to learn how to deploy applications in Kubernetes.
+[Hello Minikube](https://kubernetes.io/docs/tutorials/hello-minikube/)[Walkthrough the basics](https://kubernetes.io/docs/tutorials/kubernetes-basics/)[Stateless Example: PHP Guestbook with Redis](https://kubernetes.io/docs/tutorials/stateless-application/guestbook/)[Stateful Example: Wordpress with Persistent Volumes](https://kubernetes.io/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/)
+Set up a K8s cluster
+Get Kubernetes running based on your resources and needs.
+[Learning environment](https://kubernetes.io/docs/setup/#learning-environment)[Production environment](https://kubernetes.io/docs/setup/#production-environment)[Install the kubeadm setup tool](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)[Securing a cluster](https://kubernetes.io/docs/concepts/cluster-administration/#securing-a-cluster)[kubeadm command reference](https://kubernetes.io/docs/reference/setup-tools/kubeadm/)
+Learn how to use Kubernetes
+Look up common tasks and how to perform them using a short sequence of steps.
+[kubectl Quick Reference](https://kubernetes.io/docs/reference/kubectl/quick-reference/)[Install kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)[Configure access to clusters](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/)[Use the Web UI Dashboard](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)[Configure a Pod to Use a ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/)[Getting help](https://kubernetes.io/docs/tasks/debug/)
+Look up reference information
+Browse terminology, command line syntax, API resource types, and setup tool documentation.
+[Glossary](https://kubernetes.io/docs/reference/glossary/)[kubectl command line tool](https://kubernetes.io/docs/reference/kubectl/)[Labels, annotations and taints](https://kubernetes.io/docs/reference/labels-annotations-taints/#labels-annotations-and-taints-used-on-api-objects)[Kubernetes API reference](https://kubernetes.io/docs/reference/kubernetes-api/)[Overview of API](https://kubernetes.io/docs/reference/using-api/)[Feature Gates](https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/)
+Contribute to Kubernetes
+Find out how you can help make Kubernetes better.
+[Contribute to Kubernetes](https://kubernetes.io/docs/contribute/)[Contribute to documentation](https://kubernetes.io/docs/contribute/docs/)[Suggest content improvements](https://kubernetes.io/docs/contribute/suggesting-improvements/#opening-an-issue)[Opening a pull request](https://kubernetes.io/docs/contribute/new-content/open-a-pr/)[Documenting a feature for a release](https://kubernetes.io/docs/contribute/new-content/new-features/)[Localizing the docs](https://kubernetes.io/docs/contribute/localization/)[Participating in SIG Docs](https://kubernetes.io/docs/contribute/participate/)[Viewing Site Analytics](https://kubernetes.io/docs/contribute/analytics/)
+Training
+Get certified in Kubernetes and make your cloud native projects successful!
+Download Kubernetes
+Install Kubernetes or upgrade to the newest version.
+About the documentation
+This website contains documentation for the current and previous 4 versions of Kubernetes.
+[Ready docs landing page for vanilla Docsy (4da04a797b)](https://github.com/kubernetes/website/commit/4da04a797bc1653c0d8dc4150eb734a12a40ccc0)

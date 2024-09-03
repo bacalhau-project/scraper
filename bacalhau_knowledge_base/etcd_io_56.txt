@@ -1,11 +1,309 @@
-URL: https://etcd.io/docs/v3.6/dev-guide/grpc_naming/
+Source: etcd_io
+URL: https://etcd.io/docs/v3.4/demo/
 
-etcdDocsBlogCommunityInstallPlayVersionsv3.6v3.5v3.4v3.3v3.2v3.1v2.3Versionsv3.6-DRAFTQuickstartDemoTutorialsHow to Set Up a Demo etcd ClusterReading from etcdWriting to etcdHow to get keys by prefixHow to delete keysHow to make multiple writes in a transactionHow to watch keysHow to create leaseHow to create locksHow to conduct leader election in etcd clusterHow to check Cluster statusHow to save the databaseHow to migrate etcd from v2 to v3How to Add and Remove MembersInstallFAQLibraries and toolsMetricsReporting bugsTuningDiscovery service protocolLogging conventionsGolang modulesLearningData modeletcd client designetcd learner designetcd v3 authentication designetcd APIetcd persistent storage filesetcd API guaranteesetcd versus other key-value storesGlossaryDeveloper guideDiscovery service protocolSet up a local clusterInteracting with etcdWhy gRPC gatewaygRPC naming and discoverySystem limitsetcd featuresAPI referenceAPI reference: concurrencyOperations guideAuthentication GuidesRole-based access controlAuthenticationConfiguration optionsTransport security modelClustering GuideRun etcd clusters as a Kubernetes StatefulSetRun etcd clusters inside containersFailure modesDisaster recoveryetcd gatewaygRPC proxyHardware recommendationsMaintenanceMonitoring etcdPerformanceDesign of runtime reconfigurationRuntime reconfigurationSupported platformsVersioningData CorruptionBenchmarksStorage Memory Usage BenchmarkWatch Memory Usage BenchmarkBenchmarking etcd v3Benchmarking etcd v2.2.0-rc-memoryBenchmarking etcd v2.2.0-rcBenchmarking etcd v2.2.0Benchmarking etcd v2.1.0UpgradingUpgrading etcd clusters and applicationsUpgrade etcd from 3.4 to 3.5Upgrade etcd from 3.3 to 3.4Upgrade etcd from 3.2 to 3.3Upgrade etcd from 3.1 to 3.2Upgrade etcd from 3.0 to 3.1Upgrade etcd from 2.3 to 3.0TriageIssue triage guidelinesPR managementv3.5QuickstartDemoTutorialsHow to Set Up a Demo etcd ClusterReading from etcdWriting to etcdHow to get keys by prefixHow to delete keysHow to make multiple writes in a transactionHow to watch keysHow to create leaseHow to create locksHow to conduct leader election in etcd clusterHow to check Cluster statusHow to save the databaseHow to migrate etcd from v2 to v3How to Add and Remove MembersInstallFAQLibraries and toolsMetricsReporting bugsTuningDiscovery service protocolLogging conventionsGolang modulesLearningData modeletcd client designetcd learner designetcd v3 authentication designetcd APIetcd persistent storage filesetcd API guaranteesetcd versus other key-value storesGlossaryDeveloper guideDiscovery service protocolSet up a local clusterInteracting with etcdWhy gRPC gatewaygRPC naming and discoverySystem limitsetcd featuresAPI referenceAPI reference: concurrencyOperations guideAuthentication GuidesRole-based access controlAuthenticationConfiguration optionsTransport security modelClustering GuideRun etcd clusters as a Kubernetes StatefulSetRun etcd clusters inside containersFailure modesDisaster recoveryetcd gatewaygRPC proxyHardware recommendationsMaintenanceMonitoring etcdPerformanceDesign of runtime reconfigurationRuntime reconfigurationSupported platformsVersioningData CorruptionBenchmarksStorage Memory Usage BenchmarkWatch Memory Usage BenchmarkBenchmarking etcd v3Benchmarking etcd v2.2.0-rc-memoryBenchmarking etcd v2.2.0-rcBenchmarking etcd v2.2.0Benchmarking etcd v2.1.0DowngradingDowngrading etcd clusters and applicationsDowngrade etcd from 3.5 to 3.4UpgradingUpgrading etcd clusters and applicationsUpgrade etcd from 3.4 to 3.5Upgrade etcd from 3.3 to 3.4Upgrade etcd from 3.2 to 3.3Upgrade etcd from 3.1 to 3.2Upgrade etcd from 3.0 to 3.1Upgrade etcd from 2.3 to 3.0TriageIssue triage guidelinesPR managementv3.4QuickstartOverviewDemoInstallFAQLibraries and toolsMetricsReporting bugsTuningDiscovery service protocolLogging conventionsLearningData modeletcd client designetcd learner designetcd v3 authentication designetcd3 APIetcd API guaranteesetcd versus other key-value storesGlossaryDeveloper guideDiscovery service protocolSet up a local clusterInteracting with etcdWhy gRPC gatewaygRPC naming and discoverySystem limitsetcd featuresAPI referenceAPI reference: concurrencyOperations guideConfiguration optionsRole-based access controlTransport security modelClustering GuideRun etcd clusters inside containersFailure modesDisaster recoveryetcd gatewaygRPC proxyHardware recommendationsMaintenancePerformanceDesign of runtime reconfigurationRuntime reconfigurationSupported platformsMigrate applications from using API v2 to API v3VersioningData CorruptionMonitoring etcdBenchmarksStorage Memory Usage BenchmarkWatch Memory Usage BenchmarkBenchmarking etcd v3Benchmarking etcd v2.2.0-rc-memoryBenchmarking etcd v2.2.0-rcBenchmarking etcd v2.2.0Benchmarking etcd v2.1.0UpgradingUpgrading etcd clusters and applicationsUpgrade etcd from 3.4 to 3.5Upgrade etcd from 3.3 to 3.4Upgrade etcd from 3.2 to 3.3Upgrade etcd from 3.1 to 3.2Upgrade etcd from 3.0 to 3.1Upgrade etcd from 2.3 to 3.0PlatformsAmazon Web ServicesContainer Linux with systemdFreeBSDTriageIssue Triage Guidelinesv3.3InstallLibraries and toolsMetricsBenchmarksBenchmarking etcd v2.1.0Benchmarking etcd v2.2.0Benchmarking etcd v2.2.0-rcBenchmarking etcd v2.2.0-rc-memoryBenchmarking etcd v3Storage Memory Usage BenchmarkWatch Memory Usage BenchmarkDemoDeveloper guideDiscovery service protocoletcd API Referenceetcd concurrency API ReferenceExperimental APIs and featuresgRPC naming and discoveryInteracting with etcdSet up a local clusterSystem limitsWhy gRPC gatewayDiscovery service protocoletcd v3 APIFrequently Asked Questions (FAQ)Learningetcd client architectureClient feature matrixData modeletcd v3 authentication designetcd versus other key-value storesetcd3 APIGlossaryKV API guaranteesLearnerLogging conventionsOperations guideMonitoring etcdVersioningClustering GuideConfiguration flagsDesign of runtime reconfigurationDisaster recoveryetcd gatewayFailure modesgRPC proxyHardware recommendationsMaintenanceMigrate applications from using API v2 to API v3PerformanceRole-based access controlRun etcd clusters inside containersRuntime reconfigurationSupported systemsTransport security modelPlatformsAmazon Web ServicesContainer Linux with systemdFreeBSDProduction usersReporting bugsTuningUpgradingUpgrade etcd from 2.3 to 3.0Upgrade etcd from 3.0 to 3.1Upgrade etcd from 3.1 to 3.2Upgrade etcd from 3.2 to 3.3Upgrade etcd from 3.3 to 3.4Upgrade etcd from 3.4 to 3.5Upgrading etcd clusters and applicationsv3.2BenchmarksBenchmarking etcd v2.1.0Benchmarking etcd v2.2.0Benchmarking etcd v2.2.0-rcBenchmarking etcd v2.2.0-rc-memoryBenchmarking etcd v3-demoStorage Memory Usage BenchmarkWatch Memory Usage BenchmarkData modelDemoDeveloper guideDiscovery service protocoletcd API referenceetcd concurrency API ReferenceExperimental APIs and featuresgRPC gatewaygRPC naming and discoveryInteracting with etcdSet up a local clusterSystem limitsetcd dev internalDiscovery service protocolLogging conventionsetcd operations guideAuthentication GuideClustering GuideConfiguration flagsDesign of runtime reconfigurationDisaster recoveryetcd gatewaygRPC proxyHardware recommendationsMaintenanceMigrate applications from using API v2 to API v3Monitoring etcdPerformanceRun etcd clusters inside containersRuntime reconfigurationSecurity modelSupported platformsUnderstand failuresVersioningetcd upgradesUpgrade etcd from 2.3 to 3.0Upgrade etcd from 3.0 to 3.1Upgrade etcd from 3.1 to 3.2Upgrade etcd from 3.2 to 3.3Upgrade etcd from 3.3 to 3.4Upgrading etcd clusters and applicationsetcd v3 authentication designetcd versus other key-value storesetcd3 APIFrequently Asked Questions (FAQ)GlossaryInstallKV API guaranteesLibraries and toolsMetricsPlatformsAmazon Web ServicesFreeBSDRun etcd on Container Linux with systemdProduction usersReporting bugsRFCetcd v3 APITuningv3.1Data modelDemoetcd benchmarksetcd v2.1.0-alpha benchmarksetcd v2.2.0 benchmarksetcd v2.2.0-rc benchmarksetcd v2.2.0-rc-memory benchmarksetcd v3-demo benchmarksStorage Memory Usage BenchmarkWatch Memory Usage Benchmarketcd developer guideDiscovery service protocoletcd API ReferenceExperimental APIs and featuresgRPC GatewaygRPC naming and discoveryInteracting with etcdSetup a local clusterSystem limitsetcd internal devDiscovery service protocolLogging conventionsetcd operations guideClustering GuideConfiguration flagsDesign of runtime reconfigurationDisaster recoveryetcd gatewaygRPC proxyHardware recommendationsMaintenanceMigrate applications from using API v2 to API v3Monitoring etcdPerformanceRun etcd clusters inside containersRuntime reconfigurationSecurity modelSupported platformsUnderstand failuresVersioningetcd3 APIFrequently Asked Questions (FAQ)GlossaryInstallKV API guaranteesLibraries and toolsMetricsPlatformsFreeBSDProduction usersReporting bugsRFCetcd v3 APITuningUpgrading etcd clusters and applicationsUpgrade etcd from 2.3 to 3.0Upgrade etcd from 3.0 to 3.1Upgrade etcd from 3.1 to 3.2Upgrade etcd from 3.2 to 3.3Upgrade etcd from 3.3 to 3.4Why etcdv2.3AdministrationAuthentication GuideBackward CompatibilityBenchmarksBenchmarking etcd v2.2.0etcd 2.1.0-alpha benchmarksetcd 2.2.0-rc benchmarksetcd 2.2.0-rc memory benchmarksetcd 3 demo benchmarksStorage Memory Usage BenchmarkWatch Memory Usage BenchmarkClustering GuideConfiguration FlagsDesign of Runtime ReconfigurationDevelopmentDiscovery Service ProtocolError Codeetcd APIetcd v3 APIFAQGlossaryLibraries and ToolsMembers APIMetricsMiscellaneous APIsPlatformsFreeBSProduction UsersProxyReporting BugsRunning etcd under DockerRuntime ReconfigurationSecurity ModelSnapshot MigrationTuningUpgrade etcd from 2.1 to 2.2Upgrade etcd from 2.1 to 2.2Upgrade etcd from 2.2 to 2.3v2 Auth and SecurityVersioningView page sourceEdit this pageCreate child pageCreate documentation issueCreate project issueUsing etcd discovery with go-grpcManaging service endpointsAdding an endpointDeleting an endpointRegistering an endpoint with a leaseAtomically updating endpointsVersionsv3.6-DRAFTDeveloper guidegRPC naming and discoverygRPC naming and discoverygo-grpc: for resolving gRPC endpoints with an etcd backendetcd provides a gRPC resolver to support an alternative name system that fetches endpoints from etcd for discovering gRPC services. The underlying mechanism is based on watching updates to keys prefixed with the service name.Using etcd discovery with go-grpcThe etcd client provides a gRPC resolver for resolving gRPC endpoints with an etcd backend. The resolver is initialized with an etcd client:import(clientv3"go.etcd.io/etcd/client/v3"etcdnaming"go.etcd.io/etcd/client/v3/naming/resolver""google.golang.org/grpc")...cli,err:=clientv3.NewFromURL("http://localhost:2379")iferr!=nil{// ...}r,err:=etcdnaming.NewBuilder(cli)iferr!=nil{// ...}conn,gerr:=grpc.Dial("my-service",grpc.WithResolvers(r),grpc.WithBlock(),...)Managing service endpointsThe etcd resolver treats all keys under the prefix of the resolution target following a “/” (e.g., “foo/bar/my-service/”)
-with JSON-encoded (historically go-grpcnaming.Update) values as potential service endpoints.
-Endpoints are added to the service by creating new keys and removed from the service by deleting keys.Adding an endpointNew endpoints can be added to the service throughetcdctl:ETCDCTL_API=3etcdctl put foo/bar/my-service/1.2.3.4'{"Addr":"1.2.3.4","Metadata":"..."}'The etcd client’sendpoints.Managermethod can also register new endpoints with a key matching theAddr:em:=endpoints.NewManager(client,"foo/bar/my-service")err:=em.AddEndpoint(context.TODO(),"foo/bar/my-service/e1",endpoints.Endpoint{Addr:"1.2.3.4"})To enable round-robin load balancing when dialing service with multiple endpoints, you can set up you connection with grpc
-internal round-robin load balancer:conn,gerr:=grpc.Dial("etcd:///foo",grpc.WithResolvers(etcdResolver),grpc.WithDefaultServiceConfig(`{"loadBalancingPolicy":"round_robin"}`))Deleting an endpointHosts can be deleted from the service throughetcdctl:ETCDCTL_API=3etcdctl del foo/bar/my-service/1.2.3.4The etcd client’sendpoints.Managermethod also supports deleting endpoints:em:=endpoints.NewManager(client,"foo/bar/my-service")err:=em.DeleteEndpoint(context.TODO(),"foo/bar/my-service/e1")Registering an endpoint with a leaseRegistering an endpoint with a lease ensures that if the host can’t maintain a keepalive heartbeat (e.g., its machine fails), it will be removed from the service:lease=`ETCDCTL_API=3etcdctl lease grant5|cut -f2 -d' '`ETCDCTL_API=3etcdctl put --lease=$leasemy-service/1.2.3.4'{"Addr":"1.2.3.4","Metadata":"..."}'ETCDCTL_API=3etcdctl lease keep-alive$leaseIn the golang:em:=endpoints.NewManager(client,"foo/bar/my-service")err:=em.AddEndpoint(context.TODO(),"foo/bar/my-service/e1",endpoints.Endpoint{Addr:"1.2.3.4"})Atomically updating endpointsIf it’s desired to modify multiple endpoints in a single transaction,endpoints.Managercan be used directly:em := endpoints.NewManager(c, "foo")
-
-err := em.Update(context.TODO(), []*endpoints.UpdateWithOpts{
-    endpoints.NewDeleteUpdateOpts("foo/bar/my-service/e1", endpoints.Endpoint{Addr: "1.2.3.4"}),
-	endpoints.NewAddUpdateOpts("foo/bar/my-service/e1", endpoints.Endpoint{Addr: "1.2.3.14"})})FeedbackWas this page helpful?YesNoGlad to hear it! Pleasetell us how we can improve.Sorry to hear that. Pleasetell us how we can improve.Last modified July 30, 2024:fix: update grpc_naming.md for using etcd discovery with go-grpc code example (468f4a1)©
-2013–2024etcd AuthorsTerms|Privacy|Trademarks|LicenseAll Rights Reserved
+Demo
+This series of examples shows the basic procedures for working with an etcd cluster.
+Set up a cluster
+On each etcd node, specify the cluster members:
+TOKEN=token-01
+CLUSTER_STATE=new
+NAME_1=machine-1
+NAME_2=machine-2
+NAME_3=machine-3
+HOST_1=10.240.0.17
+HOST_2=10.240.0.18
+HOST_3=10.240.0.19
+CLUSTER=${NAME_1}=http://${HOST_1}:2380,${NAME_2}=http://${HOST_2}:2380,${NAME_3}=http://${HOST_3}:2380
+Run this on each machine:
+# For machine 1
+THIS_NAME=${NAME_1}
+THIS_IP=${HOST_1}
+etcd --data-dir=data.etcd --name ${THIS_NAME} \
+--initial-advertise-peer-urls http://${THIS_IP}:2380 --listen-peer-urls http://${THIS_IP}:2380 \
+--advertise-client-urls http://${THIS_IP}:2379 --listen-client-urls http://${THIS_IP}:2379 \
+--initial-cluster ${CLUSTER} \
+--initial-cluster-state ${CLUSTER_STATE} --initial-cluster-token ${TOKEN}
+# For machine 2
+THIS_NAME=${NAME_2}
+THIS_IP=${HOST_2}
+etcd --data-dir=data.etcd --name ${THIS_NAME} \
+--initial-advertise-peer-urls http://${THIS_IP}:2380 --listen-peer-urls http://${THIS_IP}:2380 \
+--advertise-client-urls http://${THIS_IP}:2379 --listen-client-urls http://${THIS_IP}:2379 \
+--initial-cluster ${CLUSTER} \
+--initial-cluster-state ${CLUSTER_STATE} --initial-cluster-token ${TOKEN}
+# For machine 3
+THIS_NAME=${NAME_3}
+THIS_IP=${HOST_3}
+etcd --data-dir=data.etcd --name ${THIS_NAME} \
+--initial-advertise-peer-urls http://${THIS_IP}:2380 --listen-peer-urls http://${THIS_IP}:2380 \
+--advertise-client-urls http://${THIS_IP}:2379 --listen-client-urls http://${THIS_IP}:2379 \
+--initial-cluster ${CLUSTER} \
+--initial-cluster-state ${CLUSTER_STATE} --initial-cluster-token ${TOKEN}
+Or use our public discovery service:
+curl 'https://discovery.etcd.io/new?size=3'
+https://discovery.etcd.io/a81b5818e67a6ea83e9d4daea5ecbc92
+# grab this token
+TOKEN=token-01
+CLUSTER_STATE=new
+NAME_1=machine-1
+NAME_2=machine-2
+NAME_3=machine-3
+HOST_1=10.240.0.17
+HOST_2=10.240.0.18
+HOST_3=10.240.0.19
+DISCOVERY=https://discovery.etcd.io/a81b5818e67a6ea83e9d4daea5ecbc92
+THIS_NAME=${NAME_1}
+THIS_IP=${HOST_1}
+etcd --data-dir=data.etcd --name ${THIS_NAME} \
+--initial-advertise-peer-urls http://${THIS_IP}:2380 --listen-peer-urls http://${THIS_IP}:2380 \
+--advertise-client-urls http://${THIS_IP}:2379 --listen-client-urls http://${THIS_IP}:2379 \
+--discovery ${DISCOVERY} \
+--initial-cluster-state ${CLUSTER_STATE} --initial-cluster-token ${TOKEN}
+THIS_NAME=${NAME_2}
+THIS_IP=${HOST_2}
+etcd --data-dir=data.etcd --name ${THIS_NAME} \
+--initial-advertise-peer-urls http://${THIS_IP}:2380 --listen-peer-urls http://${THIS_IP}:2380 \
+--advertise-client-urls http://${THIS_IP}:2379 --listen-client-urls http://${THIS_IP}:2379 \
+--discovery ${DISCOVERY} \
+--initial-cluster-state ${CLUSTER_STATE} --initial-cluster-token ${TOKEN}
+THIS_NAME=${NAME_3}
+THIS_IP=${HOST_3}
+etcd --data-dir=data.etcd --name ${THIS_NAME} \
+--initial-advertise-peer-urls http://${THIS_IP}:2380 --listen-peer-urls http://${THIS_IP}:2380 \
+--advertise-client-urls http://${THIS_IP}:2379 --listen-client-urls http://${THIS_IP}:2379 \
+--discovery ${DISCOVERY} \
+--initial-cluster-state ${CLUSTER_STATE} --initial-cluster-token ${TOKEN}
+Now etcd is ready! To connect to etcd with etcdctl:
+export ETCDCTL_API=3
+HOST_1=10.240.0.17
+HOST_2=10.240.0.18
+HOST_3=10.240.0.19
+ENDPOINTS=$HOST_1:2379,$HOST_2:2379,$HOST_3:2379
+etcdctl --endpoints=$ENDPOINTS member list
+Access etcd
+put
+command to write:
+etcdctl --endpoints=$ENDPOINTS put foo "Hello World!"
+get
+to read from etcd:
+etcdctl --endpoints=$ENDPOINTS get foo
+etcdctl --endpoints=$ENDPOINTS --write-out="json" get foo
+Get by prefix
+etcdctl --endpoints=$ENDPOINTS put web1 value1
+etcdctl --endpoints=$ENDPOINTS put web2 value2
+etcdctl --endpoints=$ENDPOINTS put web3 value3
+etcdctl --endpoints=$ENDPOINTS get web --prefix
+Delete
+etcdctl --endpoints=$ENDPOINTS put key myvalue
+etcdctl --endpoints=$ENDPOINTS del key
+etcdctl --endpoints=$ENDPOINTS put k1 value1
+etcdctl --endpoints=$ENDPOINTS put k2 value2
+etcdctl --endpoints=$ENDPOINTS del k --prefix
+Transactional write
+txn
+to wrap multiple requests into one transaction:
+etcdctl --endpoints=$ENDPOINTS put user1 bad
+etcdctl --endpoints=$ENDPOINTS txn --interactive
+compares:
+value("user1") = "bad"
+success requests (get, put, delete):
+del user1
+failure requests (get, put, delete):
+put user1 good
+Watch
+watch
+to get notified of future changes:
+etcdctl --endpoints=$ENDPOINTS watch stock1
+etcdctl --endpoints=$ENDPOINTS put stock1 1000
+etcdctl --endpoints=$ENDPOINTS watch stock --prefix
+etcdctl --endpoints=$ENDPOINTS put stock1 10
+etcdctl --endpoints=$ENDPOINTS put stock2 20
+Lease
+lease
+to write with TTL:
+etcdctl --endpoints=$ENDPOINTS lease grant 300
+# lease 2be7547fbc6a5afa granted with TTL(300s)
+etcdctl --endpoints=$ENDPOINTS put sample value --lease=2be7547fbc6a5afa
+etcdctl --endpoints=$ENDPOINTS get sample
+etcdctl --endpoints=$ENDPOINTS lease keep-alive 2be7547fbc6a5afa
+etcdctl --endpoints=$ENDPOINTS lease revoke 2be7547fbc6a5afa
+# or after 300 seconds
+etcdctl --endpoints=$ENDPOINTS get sample
+Distributed locks
+lock
+for distributed lock:
+etcdctl --endpoints=$ENDPOINTS lock mutex1
+# another client with the same name blocks
+etcdctl --endpoints=$ENDPOINTS lock mutex1
+Elections
+elect
+for leader election:
+etcdctl --endpoints=$ENDPOINTS elect one p1
+# another client with the same name blocks
+etcdctl --endpoints=$ENDPOINTS elect one p2
+Cluster status
+Specify the initial cluster configuration for each machine:
+etcdctl --write-out=table --endpoints=$ENDPOINTS endpoint status
++------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+
+| ENDPOINT | ID | VERSION | DB SIZE | IS LEADER | IS LEARNER | RAFT TERM | RAFT INDEX | RAFT APPLIED INDEX | ERRORS |
++------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+
+| 10.240.0.17:2379 | 4917a7ab173fabe7 | 3.4.15 | 45 kB | true | false | 4 | 16726 | 16726 | |
+| 10.240.0.18:2379 | 59796ba9cd1bcd72 | 3.4.15 | 45 kB | false | false | 4 | 16726 | 16726 | |
+| 10.240.0.19:2379 | 94df724b66343e6c | 3.4.15 | 45 kB | false | false | 4 | 16726 | 16726 | |
++------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------|
+etcdctl --endpoints=$ENDPOINTS endpoint health
+10.240.0.17:2379 is healthy: successfully committed proposal: took = 3.345431ms
+10.240.0.19:2379 is healthy: successfully committed proposal: took = 3.767967ms
+10.240.0.18:2379 is healthy: successfully committed proposal: took = 4.025451ms
+Snapshot
+snapshot
+to save point-in-time snapshot of etcd database:
+Snapshot can only be requested from one etcd node, so --endpoints
+flag should contain only one endpoint.
+ENDPOINTS=$HOST_1:2379
+etcdctl --endpoints=$ENDPOINTS snapshot save my.db
+Snapshot saved at my.db
+etcdctl --write-out=table --endpoints=$ENDPOINTS snapshot status my.db
++---------+----------+------------+------------+
+| HASH | REVISION | TOTAL KEYS | TOTAL SIZE |
++---------+----------+------------+------------+
+| c55e8b8 | 9 | 13 | 25 kB |
++---------+----------+------------+------------+
+Migrate
+migrate
+to transform etcd v2 to v3 data:
+# write key in etcd version 2 store
+export ETCDCTL_API=2
+etcdctl --endpoints=http://$ENDPOINT set foo bar
+# read key in etcd v2
+etcdctl --endpoints=$ENDPOINTS --output="json" get foo
+# stop etcd node to migrate, one by one
+# migrate v2 data
+export ETCDCTL_API=3
+etcdctl --endpoints=$ENDPOINT migrate --data-dir="default.etcd" --wal-dir="default.etcd/member/wal"
+# restart etcd node after migrate, one by one
+# confirm that the key got migrated
+etcdctl --endpoints=$ENDPOINTS get /foo
+Member
+member
+to add,remove,update membership:
+# For each machine
+TOKEN=my-etcd-token-1
+CLUSTER_STATE=new
+NAME_1=etcd-node-1
+NAME_2=etcd-node-2
+NAME_3=etcd-node-3
+HOST_1=10.240.0.13
+HOST_2=10.240.0.14
+HOST_3=10.240.0.15
+CLUSTER=${NAME_1}=http://${HOST_1}:2380,${NAME_2}=http://${HOST_2}:2380,${NAME_3}=http://${HOST_3}:2380
+# For node 1
+THIS_NAME=${NAME_1}
+THIS_IP=${HOST_1}
+etcd --data-dir=data.etcd --name ${THIS_NAME} \
+--initial-advertise-peer-urls http://${THIS_IP}:2380 \
+--listen-peer-urls http://${THIS_IP}:2380 \
+--advertise-client-urls http://${THIS_IP}:2379 \
+--listen-client-urls http://${THIS_IP}:2379 \
+--initial-cluster ${CLUSTER} \
+--initial-cluster-state ${CLUSTER_STATE} \
+--initial-cluster-token ${TOKEN}
+# For node 2
+THIS_NAME=${NAME_2}
+THIS_IP=${HOST_2}
+etcd --data-dir=data.etcd --name ${THIS_NAME} \
+--initial-advertise-peer-urls http://${THIS_IP}:2380 \
+--listen-peer-urls http://${THIS_IP}:2380 \
+--advertise-client-urls http://${THIS_IP}:2379 \
+--listen-client-urls http://${THIS_IP}:2379 \
+--initial-cluster ${CLUSTER} \
+--initial-cluster-state ${CLUSTER_STATE} \
+--initial-cluster-token ${TOKEN}
+# For node 3
+THIS_NAME=${NAME_3}
+THIS_IP=${HOST_3}
+etcd --data-dir=data.etcd --name ${THIS_NAME} \
+--initial-advertise-peer-urls http://${THIS_IP}:2380 \
+--listen-peer-urls http://${THIS_IP}:2380 \
+--advertise-client-urls http://${THIS_IP}:2379 \
+--listen-client-urls http://${THIS_IP}:2379 \
+--initial-cluster ${CLUSTER} \
+--initial-cluster-state ${CLUSTER_STATE} \
+--initial-cluster-token ${TOKEN}
+Then replace a member with member remove
+and member add
+commands:
+# get member ID
+export ETCDCTL_API=3
+HOST_1=10.240.0.13
+HOST_2=10.240.0.14
+HOST_3=10.240.0.15
+etcdctl --endpoints=${HOST_1}:2379,${HOST_2}:2379,${HOST_3}:2379 member list
+# remove the member
+MEMBER_ID=278c654c9a6dfd3b
+etcdctl --endpoints=${HOST_1}:2379,${HOST_2}:2379,${HOST_3}:2379 \
+member remove ${MEMBER_ID}
+# add a new member (node 4)
+export ETCDCTL_API=3
+NAME_1=etcd-node-1
+NAME_2=etcd-node-2
+NAME_4=etcd-node-4
+HOST_1=10.240.0.13
+HOST_2=10.240.0.14
+HOST_4=10.240.0.16 # new member
+etcdctl --endpoints=${HOST_1}:2379,${HOST_2}:2379 \
+member add ${NAME_4} \
+--peer-urls=http://${HOST_4}:2380
+Next, start the new member with --initial-cluster-state existing
+flag:
+# [WARNING] If the new member starts from the same disk space,
+# make sure to remove the data directory of the old member
+#
+# restart with 'existing' flag
+TOKEN=my-etcd-token-1
+CLUSTER_STATE=existing
+NAME_1=etcd-node-1
+NAME_2=etcd-node-2
+NAME_4=etcd-node-4
+HOST_1=10.240.0.13
+HOST_2=10.240.0.14
+HOST_4=10.240.0.16 # new member
+CLUSTER=${NAME_1}=http://${HOST_1}:2380,${NAME_2}=http://${HOST_2}:2380,${NAME_4}=http://${HOST_4}:2380
+THIS_NAME=${NAME_4}
+THIS_IP=${HOST_4}
+etcd --data-dir=data.etcd --name ${THIS_NAME} \
+--initial-advertise-peer-urls http://${THIS_IP}:2380 \
+--listen-peer-urls http://${THIS_IP}:2380 \
+--advertise-client-urls http://${THIS_IP}:2379 \
+--listen-client-urls http://${THIS_IP}:2379 \
+--initial-cluster ${CLUSTER} \
+--initial-cluster-state ${CLUSTER_STATE} \
+--initial-cluster-token ${TOKEN}
+Auth
+auth
+,user
+,role
+for authentication:
+export ETCDCTL_API=3
+ENDPOINTS=localhost:2379
+etcdctl --endpoints=${ENDPOINTS} role add root
+etcdctl --endpoints=${ENDPOINTS} role get root
+etcdctl --endpoints=${ENDPOINTS} user add root
+etcdctl --endpoints=${ENDPOINTS} user grant-role root root
+etcdctl --endpoints=${ENDPOINTS} user get root
+etcdctl --endpoints=${ENDPOINTS} role add role0
+etcdctl --endpoints=${ENDPOINTS} role grant-permission role0 readwrite foo
+etcdctl --endpoints=${ENDPOINTS} user add user0
+etcdctl --endpoints=${ENDPOINTS} user grant-role user0 role0
+etcdctl --endpoints=${ENDPOINTS} auth enable
+# now all client requests go through auth
+etcdctl --endpoints=${ENDPOINTS} --user=user0:123 put foo bar
+etcdctl --endpoints=${ENDPOINTS} get foo
+# permission denied, user name is empty because the request does not issue an authentication request
+etcdctl --endpoints=${ENDPOINTS} --user=user0:123 get foo
+# user0 can read the key foo
+etcdctl --endpoints=${ENDPOINTS} --user=user0:123 get foo1
+Feedback
+Was this page helpful?
+Glad to hear it! Please [tell us how we can improve](https://github.com/etcd-io/website/issues/new).
+Sorry to hear that. Please [tell us how we can improve](https://github.com/etcd-io/website/issues/new).

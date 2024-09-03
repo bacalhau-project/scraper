@@ -1,36 +1,1958 @@
-URL: https://grpc.io/docs/guides/interceptors/
+Source: grpc_io
+URL: https://grpc.io/docs/languages/go/api/#hdr-Experimental
 
-gRPCAboutMeetDocsGuidesShowcaseBlogCommunitygRPConf 2024 is happening NEXT WEEK onAug. 27th!-Register nowand get 25% off with the code GOOGLE25.DocsWhat is gRPC?IntroductionCore conceptsFAQLanguagesC# / .NETAPI (legacy)Daily builds (legacy)C++Quick startBasics tutorialAsync-API tutorialAsynchronous Callback API TutorialBest Practices for gRPC C++ API and FAQALTSAPIDartQuick startBasics tutorialAPIGoQuick startBasics tutorialALTSAPIGenerated codeJavaQuick startBasics tutorialALTSAPIGenerated codeKotlinQuick startBasics tutorialAPINodeQuick startBasics tutorialAPIObjective-CQuick startBasics tutorialOAuth2APIPHPQuick startBasics tutorialAPIDaily buildsPythonQuick startBasics tutorialALTSGenerated codeAPIDaily buildsRubyQuick startBasics tutorialAPIDaily buildsPlatformsAndroidJavaQuick startBasics tutorialAPIKotlinQuick startAPIWebQuick startBasics tutorialGuidesAuthenticationBenchmarkingCancellationCompressionCustom Backend MetricsCustom Load Balancing PoliciesCustom Name ResolutionDeadlinesDebuggingError handlingFlow ControlHealth CheckingInterceptorsKeepaliveMetadataOpenTelemetry MetricsPerformance Best PracticesReflectionRequest HedgingRetryService ConfigStatus CodesWait-for-ReadyView page sourceEdit this pageCreate child pageCreate documentation issueCreate project issueOverviewWhen to Use InterceptorsHow to Use InterceptorsInterceptor OrderLanguage SupportDocsGuidesInterceptorsInterceptorsExplains how interceptors can be used for implementing generic behavior that applies to many RPC methods.ContentsOverviewWhen to Use InterceptorsHow to Use InterceptorsInterceptor OrderLanguage SupportInterceptorsExplains how interceptors can be used for implementing generic behavior that applies to many RPC methods.OverviewThe core of making gRPC services is implementing RPC methods. But some
-functionality is independent of the method being run and should apply to all or
-most RPCs. Interceptors are well suited to this task.When to Use InterceptorsYou may already be familiar with the concept of interceptors, but may be used to
-calling them “filters” or “middleware.” Interceptors are very well suited to
-implementing logic that is not specific to a single RPC method. They are also
-easy to share across different clients or servers. Interceptors are an important
-and frequently-used way to extend gRPC. You might find some functionality you
-want is already available as an interceptor in the wider gRPC ecosystem.Some example use cases for interceptors are:MetadatahandlingLoggingFault injectionCachingMetricsPolicy enforcementServer-side AuthenticationServer-side AuthorizationNoteWhileclient-sideauthentication could be done via an interceptor, gRPC
-provides a specialized “call credentials” API that is better suited to the task.
-See theAuthentication Guidefor details about client-side
-authentication.How to Use InterceptorsInterceptors can be added when building a gRPC channel or server. The
-interceptor is then called for every RPC on that channel or server. The
-interceptor APIs are different for client-side than server-side, so an
-interceptor will either be a “client interceptor” or a “server interceptor.”Interceptors are inherently per-call; they are not useful for managing TCP
-connections, configuring the TCP port, or configuring TLS. While the proper tool
-for most customization, they can’t be used for everything.Interceptor OrderWhen using multiple interceptors, their order is significant. You’ll want to
-make sure to understand the order your gRPC implementation will execute them. It
-is useful to think about the interceptors as being in a line between the
-application and the network. Some interceptors will be “closer to the network”
-and have more control over what is sent and others will be “closer to the
-application” which have a better view into the application’s behavior.Suppose you have two client interceptors: a caching interceptor and a logging
-interceptor. What order should they be in? You might want the logging
-interceptor closer to the network to better monitor your application’s
-communication and ignore cached RPCs:flowchart LR
-APP(Application) --> INT1
-INT1(Caching\nInterceptor) -->|Cache miss| INT2
-INT2(Logging\nInterceptor) --> NET
-NET(Network)Or you might want it closer to the application to understand your app’s behavior
-and see what information it is loading:flowchart LR
-APP(Application) --> INT2
-INT1(Caching\nInterceptor) -->|Cache miss| NET
-INT2(Logging\nInterceptor) --> INT1
-NET(Network)You can choose between these options by just changing the order of the
-interceptors.Language SupportLanguageExampleC++C++ exampleGoGo exampleJavaJava examplePythonPython exampleLast modified February 29, 2024:guides: Add interceptors (#1267) (d9bbae5)View page sourceEdit this pageCreate child pageCreate documentation issueCreate project issue© 2024 gRPC AuthorsTerms|Privacy|Trademarks|License|About
+Documentation
+[¶](#section-documentation)
+Overview [¶](#pkg-overview)
+Package grpc implements an RPC system called gRPC.
+See grpc.io for more information about gRPC.
+Index [¶](#pkg-index)
+[Constants](#pkg-constants)[Variables](#pkg-variables)-
+[func ClientSupportedCompressors(ctx context.Context) ([]string, error)](#ClientSupportedCompressors) -
+[func Code(err error) codes.Code](#Code)deprecated -
+[func ErrorDesc(err error) string](#ErrorDesc)deprecated -
+[func Errorf(c codes.Code, format string, a ...any) error](#Errorf)deprecated -
+[func Invoke(ctx context.Context, method string, args, reply any, cc *ClientConn, ...) error](#Invoke) -
+[func Method(ctx context.Context) (string, bool)](#Method) -
+[func MethodFromServerStream(stream ServerStream) (string, bool)](#MethodFromServerStream) -
+[func NewContextWithServerTransportStream(ctx context.Context, stream ServerTransportStream) context.Context](#NewContextWithServerTransportStream) -
+[func SendHeader(ctx context.Context, md metadata.MD) error](#SendHeader) -
+[func SetHeader(ctx context.Context, md metadata.MD) error](#SetHeader) -
+[func SetSendCompressor(ctx context.Context, name string) error](#SetSendCompressor) -
+[func SetTrailer(ctx context.Context, md metadata.MD) error](#SetTrailer) -
+[type BackoffConfig](#BackoffConfig)deprecated -
+[type BidiStreamingClient](#BidiStreamingClient) -
+[type BidiStreamingServer](#BidiStreamingServer) -
+[type CallOption](#CallOption) -
+[func CallContentSubtype(contentSubtype string) CallOption](#CallContentSubtype) -
+[func CallCustomCodec(codec Codec) CallOption](#CallCustomCodec)deprecated -
+[func FailFast(failFast bool) CallOption](#FailFast)deprecated -
+[func ForceCodec(codec encoding.Codec) CallOption](#ForceCodec) -
+[func ForceCodecV2(codec encoding.CodecV2) CallOption](#ForceCodecV2) -
+[func Header(md *metadata.MD) CallOption](#Header) -
+[func MaxCallRecvMsgSize(bytes int) CallOption](#MaxCallRecvMsgSize) -
+[func MaxCallSendMsgSize(bytes int) CallOption](#MaxCallSendMsgSize) -
+[func MaxRetryRPCBufferSize(bytes int) CallOption](#MaxRetryRPCBufferSize) -
+[func OnFinish(onFinish func(err error)) CallOption](#OnFinish) -
+[func Peer(p *peer.Peer) CallOption](#Peer) -
+[func PerRPCCredentials(creds credentials.PerRPCCredentials) CallOption](#PerRPCCredentials) -
+[func StaticMethod() CallOption](#StaticMethod) -
+[func Trailer(md *metadata.MD) CallOption](#Trailer) -
+[func UseCompressor(name string) CallOption](#UseCompressor) -
+[func WaitForReady(waitForReady bool) CallOption](#WaitForReady)
+-
+-
+[type ClientConn](#ClientConn) -
+[func (cc *ClientConn) CanonicalTarget() string](#ClientConn.CanonicalTarget) -
+[func (cc *ClientConn) Close() error](#ClientConn.Close) -
+[func (cc *ClientConn) Connect()](#ClientConn.Connect) -
+[func (cc *ClientConn) GetMethodConfig(method string) MethodConfig](#ClientConn.GetMethodConfig) -
+[func (cc *ClientConn) GetState() connectivity.State](#ClientConn.GetState) -
+[func (cc *ClientConn) Invoke(ctx context.Context, method string, args, reply any, opts ...CallOption) error](#ClientConn.Invoke) -
+[func (cc *ClientConn) NewStream(ctx context.Context, desc *StreamDesc, method string, opts ...CallOption) (ClientStream, error)](#ClientConn.NewStream) -
+[func (cc *ClientConn) ResetConnectBackoff()](#ClientConn.ResetConnectBackoff) -
+[func (cc *ClientConn) Target() string](#ClientConn.Target) -
+[func (cc *ClientConn) WaitForStateChange(ctx context.Context, sourceState connectivity.State) bool](#ClientConn.WaitForStateChange)
+-
+-
+[type ClientConnInterface](#ClientConnInterface) -
+[type ClientStream](#ClientStream) -
+[type ClientStreamingClient](#ClientStreamingClient) -
+[type ClientStreamingServer](#ClientStreamingServer) -
+[type Codec](#Codec)deprecated -
+[type Compressor](#Compressor)deprecated -
+[type CompressorCallOption](#CompressorCallOption) -
+[type ConnectParams](#ConnectParams) -
+[type ContentSubtypeCallOption](#ContentSubtypeCallOption) -
+[type CustomCodecCallOption](#CustomCodecCallOption) -
+[type Decompressor](#Decompressor)deprecated -
+[func NewGZIPDecompressor() Decompressor](#NewGZIPDecompressor)deprecated
+-
+-
+[type DialOption](#DialOption) -
+[func FailOnNonTempDialError(f bool) DialOption](#FailOnNonTempDialError)deprecated -
+[func WithAuthority(a string) DialOption](#WithAuthority) -
+[func WithBackoffConfig(b BackoffConfig) DialOption](#WithBackoffConfig)deprecated -
+[func WithBackoffMaxDelay(md time.Duration) DialOption](#WithBackoffMaxDelay)deprecated -
+[func WithBlock() DialOption](#WithBlock)deprecated -
+[func WithChainStreamInterceptor(interceptors ...StreamClientInterceptor) DialOption](#WithChainStreamInterceptor) -
+[func WithChainUnaryInterceptor(interceptors ...UnaryClientInterceptor) DialOption](#WithChainUnaryInterceptor) -
+[func WithChannelzParentID(c channelz.Identifier) DialOption](#WithChannelzParentID) -
+[func WithCodec(c Codec) DialOption](#WithCodec)deprecated -
+[func WithCompressor(cp Compressor) DialOption](#WithCompressor)deprecated -
+[func WithConnectParams(p ConnectParams) DialOption](#WithConnectParams) -
+[func WithContextDialer(f func(context.Context, string) (net.Conn, error)) DialOption](#WithContextDialer) -
+[func WithCredentialsBundle(b credentials.Bundle) DialOption](#WithCredentialsBundle) -
+[func WithDecompressor(dc Decompressor) DialOption](#WithDecompressor)deprecated -
+[func WithDefaultCallOptions(cos ...CallOption) DialOption](#WithDefaultCallOptions) -
+[func WithDefaultServiceConfig(s string) DialOption](#WithDefaultServiceConfig) -
+[func WithDialer(f func(string, time.Duration) (net.Conn, error)) DialOption](#WithDialer)deprecated -
+[func WithDisableHealthCheck() DialOption](#WithDisableHealthCheck) -
+[func WithDisableRetry() DialOption](#WithDisableRetry) -
+[func WithDisableServiceConfig() DialOption](#WithDisableServiceConfig) -
+[func WithIdleTimeout(d time.Duration) DialOption](#WithIdleTimeout) -
+[func WithInitialConnWindowSize(s int32) DialOption](#WithInitialConnWindowSize) -
+[func WithInitialWindowSize(s int32) DialOption](#WithInitialWindowSize) -
+[func WithInsecure() DialOption](#WithInsecure)deprecated -
+[func WithKeepaliveParams(kp keepalive.ClientParameters) DialOption](#WithKeepaliveParams) -
+[func WithMaxCallAttempts(n int) DialOption](#WithMaxCallAttempts) -
+[func WithMaxHeaderListSize(s uint32) DialOption](#WithMaxHeaderListSize) -
+[func WithMaxMsgSize(s int) DialOption](#WithMaxMsgSize)deprecated -
+[func WithNoProxy() DialOption](#WithNoProxy) -
+[func WithPerRPCCredentials(creds credentials.PerRPCCredentials) DialOption](#WithPerRPCCredentials) -
+[func WithReadBufferSize(s int) DialOption](#WithReadBufferSize) -
+[func WithResolvers(rs ...resolver.Builder) DialOption](#WithResolvers) -
+[func WithReturnConnectionError() DialOption](#WithReturnConnectionError)deprecated -
+[func WithSharedWriteBuffer(val bool) DialOption](#WithSharedWriteBuffer) -
+[func WithStatsHandler(h stats.Handler) DialOption](#WithStatsHandler) -
+[func WithStreamInterceptor(f StreamClientInterceptor) DialOption](#WithStreamInterceptor) -
+[func WithTimeout(d time.Duration) DialOption](#WithTimeout)deprecated -
+[func WithTransportCredentials(creds credentials.TransportCredentials) DialOption](#WithTransportCredentials) -
+[func WithUnaryInterceptor(f UnaryClientInterceptor) DialOption](#WithUnaryInterceptor) -
+[func WithUserAgent(s string) DialOption](#WithUserAgent) -
+[func WithWriteBufferSize(s int) DialOption](#WithWriteBufferSize)
+-
+-
+[type EmptyCallOption](#EmptyCallOption) -
+[type EmptyDialOption](#EmptyDialOption) -
+[type EmptyServerOption](#EmptyServerOption) -
+[type FailFastCallOption](#FailFastCallOption) -
+[type ForceCodecCallOption](#ForceCodecCallOption) -
+[type ForceCodecV2CallOption](#ForceCodecV2CallOption) -
+[type GenericClientStream](#GenericClientStream) -
+[type GenericServerStream](#GenericServerStream) -
+[type HeaderCallOption](#HeaderCallOption) -
+[type MaxHeaderListSizeDialOption](#MaxHeaderListSizeDialOption) -
+[type MaxHeaderListSizeServerOption](#MaxHeaderListSizeServerOption) -
+[type MaxRecvMsgSizeCallOption](#MaxRecvMsgSizeCallOption) -
+[type MaxRetryRPCBufferSizeCallOption](#MaxRetryRPCBufferSizeCallOption) -
+[type MaxSendMsgSizeCallOption](#MaxSendMsgSizeCallOption) -
+[type MethodConfig](#MethodConfig)deprecated -
+[type MethodDesc](#MethodDesc) -
+[type MethodInfo](#MethodInfo) -
+[type OnFinishCallOption](#OnFinishCallOption) -
+[type PeerCallOption](#PeerCallOption) -
+[type PerRPCCredsCallOption](#PerRPCCredsCallOption) -
+[type PreparedMsg](#PreparedMsg) -
+[type Server](#Server) -
+[type ServerOption](#ServerOption) -
+[func ChainStreamInterceptor(interceptors ...StreamServerInterceptor) ServerOption](#ChainStreamInterceptor) -
+[func ChainUnaryInterceptor(interceptors ...UnaryServerInterceptor) ServerOption](#ChainUnaryInterceptor) -
+[func ConnectionTimeout(d time.Duration) ServerOption](#ConnectionTimeout) -
+[func Creds(c credentials.TransportCredentials) ServerOption](#Creds) -
+[func CustomCodec(codec Codec) ServerOption](#CustomCodec)deprecated -
+[func ForceServerCodec(codec encoding.Codec) ServerOption](#ForceServerCodec) -
+[func ForceServerCodecV2(codecV2 encoding.CodecV2) ServerOption](#ForceServerCodecV2) -
+[func HeaderTableSize(s uint32) ServerOption](#HeaderTableSize) -
+[func InTapHandle(h tap.ServerInHandle) ServerOption](#InTapHandle) -
+[func InitialConnWindowSize(s int32) ServerOption](#InitialConnWindowSize) -
+[func InitialWindowSize(s int32) ServerOption](#InitialWindowSize) -
+[func KeepaliveEnforcementPolicy(kep keepalive.EnforcementPolicy) ServerOption](#KeepaliveEnforcementPolicy) -
+[func KeepaliveParams(kp keepalive.ServerParameters) ServerOption](#KeepaliveParams) -
+[func MaxConcurrentStreams(n uint32) ServerOption](#MaxConcurrentStreams) -
+[func MaxHeaderListSize(s uint32) ServerOption](#MaxHeaderListSize) -
+[func MaxMsgSize(m int) ServerOption](#MaxMsgSize)deprecated -
+[func MaxRecvMsgSize(m int) ServerOption](#MaxRecvMsgSize) -
+[func MaxSendMsgSize(m int) ServerOption](#MaxSendMsgSize) -
+[func NumStreamWorkers(numServerWorkers uint32) ServerOption](#NumStreamWorkers) -
+[func RPCCompressor(cp Compressor) ServerOption](#RPCCompressor)deprecated -
+[func RPCDecompressor(dc Decompressor) ServerOption](#RPCDecompressor)deprecated -
+[func ReadBufferSize(s int) ServerOption](#ReadBufferSize) -
+[func SharedWriteBuffer(val bool) ServerOption](#SharedWriteBuffer) -
+[func StatsHandler(h stats.Handler) ServerOption](#StatsHandler) -
+[func StreamInterceptor(i StreamServerInterceptor) ServerOption](#StreamInterceptor) -
+[func UnaryInterceptor(i UnaryServerInterceptor) ServerOption](#UnaryInterceptor) -
+[func UnknownServiceHandler(streamHandler StreamHandler) ServerOption](#UnknownServiceHandler) -
+[func WaitForHandlers(w bool) ServerOption](#WaitForHandlers) -
+[func WriteBufferSize(s int) ServerOption](#WriteBufferSize)
+-
+-
+[type ServerStream](#ServerStream) -
+[type ServerStreamingClient](#ServerStreamingClient) -
+[type ServerStreamingServer](#ServerStreamingServer) -
+[type ServerTransportStream](#ServerTransportStream) -
+[type ServiceConfig](#ServiceConfig)deprecated -
+[type ServiceDesc](#ServiceDesc) -
+[type ServiceInfo](#ServiceInfo) -
+[type ServiceRegistrar](#ServiceRegistrar) -
+[type StaticMethodCallOption](#StaticMethodCallOption) -
+[type Stream](#Stream)deprecated -
+[type StreamClientInterceptor](#StreamClientInterceptor) -
+[type StreamDesc](#StreamDesc) -
+[type StreamHandler](#StreamHandler) -
+[type StreamServerInfo](#StreamServerInfo) -
+[type StreamServerInterceptor](#StreamServerInterceptor) -
+[type Streamer](#Streamer) -
+[type TrailerCallOption](#TrailerCallOption) -
+[type UnaryClientInterceptor](#UnaryClientInterceptor) -
+[type UnaryHandler](#UnaryHandler) -
+[type UnaryInvoker](#UnaryInvoker) -
+[type UnaryServerInfo](#UnaryServerInfo) -
+[type UnaryServerInterceptor](#UnaryServerInterceptor)
+Constants [¶](#pkg-constants)
+[View Source](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L1059)
+const ( SupportPackageIsVersion3 =[true]SupportPackageIsVersion4 =[true]SupportPackageIsVersion5 =[true]SupportPackageIsVersion6 =[true]SupportPackageIsVersion7 =[true]SupportPackageIsVersion8 =[true]SupportPackageIsVersion9 =[true])
+The SupportPackageIsVersion variables are referenced from generated protocol buffer files to ensure compatibility with the gRPC version used. The latest support package version is 9.
+Older versions are kept for compatibility.
+These constants should not be referenced from any other code.
+[View Source](https://github.com/grpc/grpc-go/blob/v1.66.0/version.go#L22)
+const Version = "1.66.0"
+Version is the current grpc version.
+Variables [¶](#pkg-variables)
+[View Source](https://github.com/grpc/grpc-go/blob/v1.66.0/clientconn.go#L61)
+var ( // ErrClientConnClosing indicates that the operation is illegal because // the ClientConn is closing. // // Deprecated: this error should not be relied upon by users; use the status // code of Canceled instead. ErrClientConnClosing =[status].[Error]([codes].[Canceled], "grpc: the client connection is closing") // PickFirstBalancerName is the name of the pick_first balancer. PickFirstBalancerName =[pickfirst].[Name])
+[View Source](https://github.com/grpc/grpc-go/blob/v1.66.0/backoff.go#L34)
+var DefaultBackoffConfig =[BackoffConfig]{ MaxDelay: 120 *[time].[Second], }
+DefaultBackoffConfig uses values specified for backoff in
+[https://github.com/grpc/grpc/blob/master/doc/connection-backoff.md](https://github.com/grpc/grpc/blob/master/doc/connection-backoff.md).
+Deprecated: use ConnectParams instead. Will be supported throughout 1.x.
+[View Source](https://github.com/grpc/grpc-go/blob/v1.66.0/trace.go#L33)
+var EnableTracing [bool](/builtin#bool)
+EnableTracing controls whether to trace RPCs using the golang.org/x/net/trace package. This should only be set before any RPCs are sent or received by this program.
+[View Source](https://github.com/grpc/grpc-go/blob/v1.66.0/clientconn.go#L1641)
+var ErrClientConnTimeout = [errors](/errors).[New](/errors#New)("grpc: timed out when dialing")
+ErrClientConnTimeout indicates that the ClientConn cannot establish the underlying connections within the specified timeout.
+Deprecated: This error is never returned by grpc and should not be referenced by users.
+[View Source](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L806)
+var ErrServerStopped = [errors](/errors).[New](/errors#New)("grpc: the server has been stopped")
+ErrServerStopped indicates that the operation is now illegal because of the server being stopped.
+Functions [¶](#pkg-functions)
+func [ClientSupportedCompressors](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L2123) [¶](#ClientSupportedCompressors)
+added in
+v1.54.0
+ClientSupportedCompressors returns compressor names advertised by the client via grpc-accept-encoding header.
+The context provided must be the context passed to the server's handler.
+Experimental [¶](#hdr-Experimental)
+Notice: This function is EXPERIMENTAL and may be changed or removed in a later release.
+func [Invoke](https://github.com/grpc/grpc-go/blob/v1.66.0/call.go#L59) [¶](#Invoke)
+func Invoke(ctx[context].[Context], method[string], args, reply[any], cc *[ClientConn], opts ...[CallOption])[error]
+Invoke sends the RPC request on the wire and returns after response is received. This is typically called by generated code.
+DEPRECATED: Use ClientConn.Invoke instead.
+func [Method](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L2151) [¶](#Method)
+added in
+v1.11.2
+Method returns the method string for the server context. The returned string is in the format of "/service/method".
+func [MethodFromServerStream](https://github.com/grpc/grpc-go/blob/v1.66.0/stream.go#L1815) [¶](#MethodFromServerStream)
+added in
+v1.8.0
+func MethodFromServerStream(stream[ServerStream]) ([string],[bool])
+MethodFromServerStream returns the method string for the input stream. The returned string is in the format of "/service/method".
+func [NewContextWithServerTransportStream](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L1849) [¶](#NewContextWithServerTransportStream)
+added in
+v1.11.0
+func NewContextWithServerTransportStream(ctx[context].[Context], stream[ServerTransportStream])[context].[Context]
+NewContextWithServerTransportStream creates a new context from ctx and attaches stream to it.
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+func [SendHeader](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L2067) [¶](#SendHeader)
+SendHeader sends header metadata. It may be called at most once, and may not be called after any event that causes headers to be sent (see SetHeader for a complete list). The provided md and headers set by SetHeader() will be sent.
+The error returned is compatible with the status package. However, the status code will often not match the RPC status as seen by the client application, and therefore, should not be relied upon for this purpose.
+func [SetHeader](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L2048) [¶](#SetHeader)
+added in
+v1.0.3
+SetHeader sets the header metadata to be sent from the server to the client. The context provided must be the context passed to the server's handler.
+Streaming RPCs should prefer the SetHeader method of the ServerStream.
+When called multiple times, all the provided metadata will be merged. All the metadata will be sent out when one of the following happens:
+- grpc.SendHeader is called, or for streaming handlers, stream.SendHeader.
+- The first response message is sent. For unary handlers, this occurs when the handler returns; for streaming handlers, this can happen when stream's SendMsg method is called.
+- An RPC status is sent out (error or success). This occurs when the handler returns.
+SetHeader will fail if called after any of the events above.
+The error returned is compatible with the status package. However, the status code will often not match the RPC status as seen by the client application, and therefore, should not be relied upon for this purpose.
+func [SetSendCompressor](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L2101) [¶](#SetSendCompressor)
+added in
+v1.54.0
+SetSendCompressor sets a compressor for outbound messages from the server. It must not be called after any event that causes headers to be sent (see ServerStream.SetHeader for the complete list). Provided compressor is used when below conditions are met:
+- compressor is registered via encoding.RegisterCompressor
+- compressor name must exist in the client advertised compressor names sent in grpc-accept-encoding header. Use ClientSupportedCompressors to get client supported compressor names.
+The context provided must be the context passed to the server's handler. It must be noted that compressor name encoding.Identity disables the outbound compression. By default, server messages will be sent using the same compressor with which request messages were sent.
+It is not safe to call SetSendCompressor concurrently with SendHeader and SendMsg.
+Experimental [¶](#hdr-Experimental)
+Notice: This function is EXPERIMENTAL and may be changed or removed in a later release.
+func [SetTrailer](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L2138) [¶](#SetTrailer)
+SetTrailer sets the trailer metadata that will be sent when an RPC returns. When called more than once, all the provided metadata will be merged.
+The error returned is compatible with the status package. However, the status code will often not match the RPC status as seen by the client application, and therefore, should not be relied upon for this purpose.
+Types [¶](#pkg-types)
+type [BackoffConfig](https://github.com/grpc/grpc-go/blob/v1.66.0/backoff.go#L41)
+deprecated
+[BackoffConfig](https://github.com/grpc/grpc-go/blob/v1.66.0/backoff.go#L41)deprecated
+type [BidiStreamingClient](https://github.com/grpc/grpc-go/blob/v1.66.0/stream_interfaces.go#L61) [¶](#BidiStreamingClient)
+added in
+v1.64.0
+type BidiStreamingClient[Req[any], Res[any]] interface { Send(*Req)[error]Recv() (*Res,[error])[ClientStream]}
+BidiStreamingClient represents the client side of a bidirectional-streaming (many requests, many responses) RPC. It is generic over both the type of the request message stream and the type of the response message stream. It is used in generated code.
+type [BidiStreamingServer](https://github.com/grpc/grpc-go/blob/v1.66.0/stream_interfaces.go#L71) [¶](#BidiStreamingServer)
+added in
+v1.64.0
+type BidiStreamingServer[Req[any], Res[any]] interface { Recv() (*Req,[error]) Send(*Res)[error][ServerStream]}
+BidiStreamingServer represents the server side of a bidirectional-streaming (many requests, many responses) RPC. It is generic over both the type of the request message stream and the type of the response message stream. It is used in generated code.
+type [CallOption](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L174) [¶](#CallOption)
+type CallOption interface {
+// contains filtered or unexported methods
+}
+CallOption configures a Call before it starts or extracts information from a Call after it completes.
+func [CallContentSubtype](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L459) [¶](#CallContentSubtype)
+added in
+v1.10.0
+func CallContentSubtype(contentSubtype[string])[CallOption]
+CallContentSubtype returns a CallOption that will set the content-subtype
+for a call. For example, if content-subtype is "json", the Content-Type over
+the wire will be "application/grpc+json". The content-subtype is converted
+to lowercase before being included in Content-Type. See Content-Type on
+[https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md#requests](https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md#requests) for
+more details.
+If ForceCodec is not also used, the content-subtype will be used to look up the Codec to use in the registry controlled by RegisterCodec. See the documentation on RegisterCodec for details on registration. The lookup of content-subtype is case-insensitive. If no such Codec is found, the call will result in an error with code codes.Internal.
+If ForceCodec is also used, that Codec will be used for all request and response messages, with the content-subtype set to the given contentSubtype here for requests.
+func [CallCustomCodec](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L563)
+deprecated
+added in
+v1.10.0
+[CallCustomCodec](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L563)deprecated added in v1.10.0
+func CallCustomCodec(codec[Codec])[CallOption]
+CallCustomCodec behaves like ForceCodec, but accepts a grpc.Codec instead of an encoding.Codec.
+Deprecated: use ForceCodec instead.
+func [FailFast](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L288)
+deprecated
+[FailFast](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L288)deprecated
+func FailFast(failFast[bool])[CallOption]
+FailFast is the opposite of WaitForReady.
+Deprecated: use WaitForReady.
+func [ForceCodec](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L498) [¶](#ForceCodec)
+added in
+v1.19.0
+func ForceCodec(codec[encoding].[Codec])[CallOption]
+ForceCodec returns a CallOption that will set codec to be used for all request and response messages for a call. The result of calling Name() will be used as the content-subtype after converting to lowercase, unless CallContentSubtype is also used.
+See Content-Type on
+[https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md#requests](https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md#requests) for
+more details. Also see the documentation on RegisterCodec and
+CallContentSubtype for more details on the interaction between Codec and
+content-subtype.
+This function is provided for advanced users; prefer to use only CallContentSubtype to select a registered codec instead.
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+func [ForceCodecV2](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L537) [¶](#ForceCodecV2)
+added in
+v1.66.0
+func ForceCodecV2(codec[encoding].[CodecV2])[CallOption]
+ForceCodecV2 returns a CallOption that will set codec to be used for all request and response messages for a call. The result of calling Name() will be used as the content-subtype after converting to lowercase, unless CallContentSubtype is also used.
+See Content-Type on
+[https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md#requests](https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md#requests) for
+more details. Also see the documentation on RegisterCodec and
+CallContentSubtype for more details on the interaction between Codec and
+content-subtype.
+This function is provided for advanced users; prefer to use only CallContentSubtype to select a registered codec instead.
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+func [Header](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L208) [¶](#Header)
+func Header(md *[metadata].[MD])[CallOption]
+Header returns a CallOptions that retrieves the header metadata for a unary RPC.
+func [MaxCallRecvMsgSize](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L347) [¶](#MaxCallRecvMsgSize)
+added in
+v1.4.0
+func MaxCallRecvMsgSize(bytes[int])[CallOption]
+MaxCallRecvMsgSize returns a CallOption which sets the maximum message size in bytes the client can receive. If this is not set, gRPC uses the default 4MB.
+func [MaxCallSendMsgSize](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L371) [¶](#MaxCallSendMsgSize)
+added in
+v1.4.0
+func MaxCallSendMsgSize(bytes[int])[CallOption]
+MaxCallSendMsgSize returns a CallOption which sets the maximum message size in bytes the client can send. If this is not set, gRPC uses the default `math.MaxInt32`.
+func [MaxRetryRPCBufferSize](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L591) [¶](#MaxRetryRPCBufferSize)
+added in
+v1.14.0
+func MaxRetryRPCBufferSize(bytes[int])[CallOption]
+MaxRetryRPCBufferSize returns a CallOption that limits the amount of memory used for buffering this RPC's requests for retry purposes.
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+func [OnFinish](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L320) [¶](#OnFinish)
+added in
+v1.54.0
+func OnFinish(onFinish func(err[error]))[CallOption]
+OnFinish returns a CallOption that configures a callback to be called when the call completes. The error passed to the callback is the status of the RPC, and may be nil. The onFinish callback provided will only be called once by gRPC. This is mainly used to be used by streaming interceptors, to be notified when the RPC completes along with information about the status of the RPC.
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+func [Peer](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L252) [¶](#Peer)
+added in
+v1.2.0
+func Peer(p *[peer].[Peer])[CallOption]
+Peer returns a CallOption that retrieves peer information for a unary RPC. The peer field will be populated *after* the RPC completes.
+func [PerRPCCredentials](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L394) [¶](#PerRPCCredentials)
+added in
+v1.4.0
+func PerRPCCredentials(creds[credentials].[PerRPCCredentials])[CallOption]
+PerRPCCredentials returns a CallOption that sets credentials.PerRPCCredentials for a call.
+func [StaticMethod](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L196) [¶](#StaticMethod)
+added in
+v1.62.0
+func StaticMethod()[CallOption]
+StaticMethod returns a CallOption which specifies that a call is being made to a method that is static, which means the method is known at compile time and doesn't change at runtime. This can be used as a signal to stats plugins that this method is safe to include as a key to a measurement.
+func [Trailer](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L230) [¶](#Trailer)
+func Trailer(md *[metadata].[MD])[CallOption]
+Trailer returns a CallOptions that retrieves the trailer metadata for a unary RPC.
+func [UseCompressor](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L423) [¶](#UseCompressor)
+added in
+v1.8.0
+func UseCompressor(name[string])[CallOption]
+UseCompressor returns a CallOption which sets the compressor used when sending the request. If WithCompressor is also set, UseCompressor has higher priority.
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+func [WaitForReady](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L281) [¶](#WaitForReady)
+added in
+v1.18.0
+func WaitForReady(waitForReady[bool])[CallOption]
+WaitForReady configures the RPC's behavior when the client is in TRANSIENT_FAILURE, which occurs when all addresses fail to connect. If waitForReady is false, the RPC will fail immediately. Otherwise, the client will wait until a connection becomes available or the RPC's deadline is reached.
+By default, RPCs do not "wait for ready".
+type [ClientConn](https://github.com/grpc/grpc-go/blob/v1.66.0/clientconn.go#L593) [¶](#ClientConn)
+type ClientConn struct {
+// contains filtered or unexported fields
+}
+ClientConn represents a virtual connection to a conceptual endpoint, to perform RPCs.
+A ClientConn is free to have zero or more actual connections to the endpoint based on configuration, load, etc. It is also free to determine which actual endpoints to use and may change it every RPC, permitting client-side load balancing.
+A ClientConn encapsulates a range of functionality including name resolution, TCP connection establishment (with retries and backoff) and TLS handshakes. It also handles errors on established connections by re-resolving the name and reconnecting.
+func [Dial](https://github.com/grpc/grpc-go/blob/v1.66.0/clientconn.go#L210)
+deprecated
+[Dial](https://github.com/grpc/grpc-go/blob/v1.66.0/clientconn.go#L210)deprecated
+func Dial(target[string], opts ...[DialOption]) (*[ClientConn],[error])
+Dial calls DialContext(context.Background(), target, opts...).
+Deprecated: use NewClient instead. Will be supported throughout 1.x.
+func [DialContext](https://github.com/grpc/grpc-go/blob/v1.66.0/clientconn.go#L225)
+deprecated
+added in
+v1.0.2
+[DialContext](https://github.com/grpc/grpc-go/blob/v1.66.0/clientconn.go#L225)deprecated added in v1.0.2
+func DialContext(ctx[context].[Context], target[string], opts ...[DialOption]) (conn *[ClientConn], err[error])
+DialContext calls NewClient and then exits idle mode. If WithBlock(true) is used, it calls Connect and WaitForStateChange until either the context expires or the state of the ClientConn is Ready.
+One subtle difference between NewClient and Dial and DialContext is that the former uses "dns" as the default name resolver, while the latter use "passthrough" for backward compatibility. This distinction should not matter to most users, but could matter to legacy users that specify a custom dialer and expect it to receive the target string directly.
+Deprecated: use NewClient instead. Will be supported throughout 1.x.
+func [NewClient](https://github.com/grpc/grpc-go/blob/v1.66.0/clientconn.go#L131) [¶](#NewClient)
+added in
+v1.63.0
+func NewClient(target[string], opts ...[DialOption]) (conn *[ClientConn], err[error])
+NewClient creates a new gRPC "channel" for the target URI provided. No I/O is performed. Use of the ClientConn for RPCs will automatically cause it to connect. Connect may be used to manually create a connection, but for most users this is unnecessary.
+The target name syntax is defined in
+[https://github.com/grpc/grpc/blob/master/doc/naming.md](https://github.com/grpc/grpc/blob/master/doc/naming.md). e.g. to use dns
+resolver, a "dns:///" prefix should be applied to the target.
+The DialOptions returned by WithBlock, WithTimeout, WithReturnConnectionError, and FailOnNonTempDialError are ignored by this function.
+func (*ClientConn) [CanonicalTarget](https://github.com/grpc/grpc-go/blob/v1.66.0/clientconn.go#L875) [¶](#ClientConn.CanonicalTarget)
+added in
+v1.63.0
+func (cc *[ClientConn]) CanonicalTarget()[string]
+CanonicalTarget returns the canonical target string of the ClientConn.
+func (*ClientConn) [Close](https://github.com/grpc/grpc-go/blob/v1.66.0/clientconn.go#L1112) [¶](#ClientConn.Close)
+func (cc *[ClientConn]) Close()[error]
+Close tears down the ClientConn and all underlying connections.
+func (*ClientConn) [Connect](https://github.com/grpc/grpc-go/blob/v1.66.0/clientconn.go#L661) [¶](#ClientConn.Connect)
+added in
+v1.41.0
+func (cc *[ClientConn]) Connect()
+Connect causes all subchannels in the ClientConn to attempt to connect if the channel is idle. Does not wait for the connection attempts to begin before returning.
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+func (*ClientConn) [GetMethodConfig](https://github.com/grpc/grpc-go/blob/v1.66.0/clientconn.go#L1033) [¶](#ClientConn.GetMethodConfig)
+added in
+v1.4.0
+func (cc *[ClientConn]) GetMethodConfig(method[string])[MethodConfig]
+GetMethodConfig gets the method config of the input method. If there's an exact match for input method (i.e. /service/method), we return the corresponding MethodConfig. If there isn't an exact match for the input method, we look for the service's default config under the service (i.e /service/) and then for the default for all services (empty string).
+If there is a default MethodConfig for the service, we return it. Otherwise, we return an empty MethodConfig.
+func (*ClientConn) [GetState](https://github.com/grpc/grpc-go/blob/v1.66.0/clientconn.go#L649) [¶](#ClientConn.GetState)
+added in
+v1.5.2
+func (cc *[ClientConn]) GetState()[connectivity].[State]
+GetState returns the connectivity.State of ClientConn.
+func (*ClientConn) [Invoke](https://github.com/grpc/grpc-go/blob/v1.66.0/call.go#L29) [¶](#ClientConn.Invoke)
+added in
+v1.8.0
+func (cc *[ClientConn]) Invoke(ctx[context].[Context], method[string], args, reply[any], opts ...[CallOption])[error]
+Invoke sends the RPC request on the wire and returns after response is received. This is typically called by generated code.
+All errors returned by Invoke are compatible with the status package.
+func (*ClientConn) [NewStream](https://github.com/grpc/grpc-go/blob/v1.66.0/stream.go#L162) [¶](#ClientConn.NewStream)
+added in
+v1.8.0
+func (cc *[ClientConn]) NewStream(ctx[context].[Context], desc *[StreamDesc], method[string], opts ...[CallOption]) ([ClientStream],[error])
+NewStream creates a new Stream for the client side. This is typically called by generated code. ctx is used for the lifetime of the stream.
+To ensure resources are not leaked due to the stream returned, one of the following actions must be performed:
+- Call Close on the ClientConn.
+- Cancel the context provided.
+- Call RecvMsg until a non-nil error is returned. A protobuf-generated client-streaming RPC, for instance, might use the helper function CloseAndRecv (note that CloseSend does not Recv, therefore is not guaranteed to release all resources).
+- Receive a non-nil, non-io.EOF error from Header or SendMsg.
+If none of the above happen, a goroutine and a context will be leaked, and grpc will not call the optionally-configured stats handler with a stats.End message.
+func (*ClientConn) [ResetConnectBackoff](https://github.com/grpc/grpc-go/blob/v1.66.0/clientconn.go#L1102) [¶](#ClientConn.ResetConnectBackoff)
+added in
+v1.15.0
+func (cc *[ClientConn]) ResetConnectBackoff()
+ResetConnectBackoff wakes up all subchannels in transient failure and causes them to attempt another connection immediately. It also resets the backoff times used for subsequent attempts regardless of the current state.
+In general, this function should not be used. Typical service or network outages result in a reasonable client reconnection strategy by default. However, if a previously unavailable network becomes available, this may be used to trigger an immediate reconnect.
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+func (*ClientConn) [Target](https://github.com/grpc/grpc-go/blob/v1.66.0/clientconn.go#L870) [¶](#ClientConn.Target)
+added in
+v1.14.0
+func (cc *[ClientConn]) Target()[string]
+Target returns the target string of the ClientConn.
+func (*ClientConn) [WaitForStateChange](https://github.com/grpc/grpc-go/blob/v1.66.0/clientconn.go#L635) [¶](#ClientConn.WaitForStateChange)
+added in
+v1.5.2
+func (cc *[ClientConn]) WaitForStateChange(ctx[context].[Context], sourceState[connectivity].[State])[bool]
+WaitForStateChange waits until the connectivity.State of ClientConn changes from sourceState or ctx expires. A true value is returned in former case and false in latter.
+type [ClientConnInterface](https://github.com/grpc/grpc-go/blob/v1.66.0/clientconn.go#L570) [¶](#ClientConnInterface)
+added in
+v1.27.0
+type ClientConnInterface interface { // Invoke performs a unary RPC and returns after the response is received // into reply. Invoke(ctx[context].[Context], method[string], args[any], reply[any], opts ...[CallOption])[error]// NewStream begins a streaming RPC. NewStream(ctx[context].[Context], desc *[StreamDesc], method[string], opts ...[CallOption]) ([ClientStream],[error]) }
+ClientConnInterface defines the functions clients need to perform unary and streaming RPCs. It is implemented by *ClientConn, and is only intended to be referenced by generated code.
+type [ClientStream](https://github.com/grpc/grpc-go/blob/v1.66.0/stream.go#L94) [¶](#ClientStream)
+type ClientStream interface { // Header returns the header metadata received from the server if there // is any. It blocks if the metadata is not ready to read. If the metadata // is nil and the error is also nil, then the stream was terminated without // headers, and the status can be discovered by calling RecvMsg. Header() ([metadata].[MD],[error]) // Trailer returns the trailer metadata from the server, if there is any. // It must only be called after stream.CloseAndRecv has returned, or // stream.Recv has returned a non-nil error (including io.EOF). Trailer()[metadata].[MD]// CloseSend closes the send direction of the stream. It closes the stream // when non-nil error is met. It is also not safe to call CloseSend // concurrently with SendMsg. CloseSend()[error]// Context returns the context for this stream. // // It should not be called until after Header or RecvMsg has returned. Once // called, subsequent client-side retries are disabled. Context()[context].[Context]// SendMsg is generally called by generated code. On error, SendMsg aborts // the stream. If the error was generated by the client, the status is // returned directly; otherwise, io.EOF is returned and the status of // the stream may be discovered using RecvMsg. // // SendMsg blocks until: // - There is sufficient flow control to schedule m with the transport, or // - The stream is done, or // - The stream breaks. // // SendMsg does not wait until the message is received by the server. An // untimely stream closure may result in lost messages. To ensure delivery, // users should ensure the RPC completed successfully using RecvMsg. // // It is safe to have a goroutine calling SendMsg and another goroutine // calling RecvMsg on the same stream at the same time, but it is not safe // to call SendMsg on the same stream in different goroutines. It is also // not safe to call CloseSend concurrently with SendMsg. // // It is not safe to modify the message after calling SendMsg. Tracing // libraries and stats handlers may use the message lazily. SendMsg(m[any])[error]// RecvMsg blocks until it receives a message into m or the stream is // done. It returns io.EOF when the stream completes successfully. On // any other error, the stream is aborted and the error contains the RPC // status. // // It is safe to have a goroutine calling SendMsg and another goroutine // calling RecvMsg on the same stream at the same time, but it is not // safe to call RecvMsg on the same stream in different goroutines. RecvMsg(m[any])[error]}
+ClientStream defines the client-side behavior of a streaming RPC.
+All errors returned from ClientStream methods are compatible with the status package.
+func [NewClientStream](https://github.com/grpc/grpc-go/blob/v1.66.0/stream.go#L174) [¶](#NewClientStream)
+func NewClientStream(ctx[context].[Context], desc *[StreamDesc], cc *[ClientConn], method[string], opts ...[CallOption]) ([ClientStream],[error])
+NewClientStream is a wrapper for ClientConn.NewStream.
+type [ClientStreamingClient](https://github.com/grpc/grpc-go/blob/v1.66.0/stream_interfaces.go#L41) [¶](#ClientStreamingClient)
+added in
+v1.64.0
+type ClientStreamingClient[Req[any], Res[any]] interface { Send(*Req)[error]CloseAndRecv() (*Res,[error])[ClientStream]}
+ClientStreamingClient represents the client side of a client-streaming (many requests, one response) RPC. It is generic over both the type of the request message stream and the type of the unary response message. It is used in generated code.
+type [ClientStreamingServer](https://github.com/grpc/grpc-go/blob/v1.66.0/stream_interfaces.go#L51) [¶](#ClientStreamingServer)
+added in
+v1.64.0
+type ClientStreamingServer[Req[any], Res[any]] interface { Recv() (*Req,[error]) SendAndClose(*Res)[error][ServerStream]}
+ClientStreamingServer represents the server side of a client-streaming (many requests, one response) RPC. It is generic over both the type of the request message stream and the type of the unary response message. It is used in generated code.
+type [Codec](https://github.com/grpc/grpc-go/blob/v1.66.0/codec.go#L97)
+deprecated
+[Codec](https://github.com/grpc/grpc-go/blob/v1.66.0/codec.go#L97)deprecated
+type Codec interface { // Marshal returns the wire format of v. Marshal(v[any]) ([][byte],[error]) // Unmarshal parses the wire format into v. Unmarshal(data [][byte], v[any])[error]// String returns the name of the Codec implementation. This is unused by // gRPC. String()[string]}
+Codec defines the interface gRPC uses to encode and decode messages. Note that implementations of this interface must be thread safe; a Codec's methods can be called from concurrent goroutines.
+Deprecated: use encoding.Codec instead.
+type [Compressor](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L47)
+deprecated
+[Compressor](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L47)deprecated
+type Compressor interface { // Do compresses p into w. Do(w[io].[Writer], p [][byte])[error]// Type returns the compression algorithm the Compressor uses. Type()[string]}
+Compressor defines the interface gRPC uses to compress a message.
+Deprecated: use package encoding.
+func [NewGZIPCompressor](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L61)
+deprecated
+[NewGZIPCompressor](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L61)deprecated
+func NewGZIPCompressor()[Compressor]
+NewGZIPCompressor creates a Compressor based on GZIP.
+Deprecated: use package encoding/gzip.
+func [NewGZIPCompressorWithLevel](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L72)
+deprecated
+added in
+v1.11.0
+[NewGZIPCompressorWithLevel](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L72)deprecated added in v1.11.0
+func NewGZIPCompressorWithLevel(level[int]) ([Compressor],[error])
+NewGZIPCompressorWithLevel is like NewGZIPCompressor but specifies the gzip compression level instead of assuming DefaultCompression.
+The error returned will be nil if the level is valid.
+Deprecated: use package encoding/gzip.
+type [CompressorCallOption](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L433) [¶](#CompressorCallOption)
+added in
+v1.11.0
+type CompressorCallOption struct {
+CompressorType [string](/builtin#string)
+}
+CompressorCallOption is a CallOption that indicates the compressor to use.
+Experimental [¶](#hdr-Experimental)
+Notice: This type is EXPERIMENTAL and may be changed or removed in a later release.
+type [ConnectParams](https://github.com/grpc/grpc-go/blob/v1.66.0/backoff.go#L55) [¶](#ConnectParams)
+added in
+v1.25.0
+type ConnectParams struct { // Backoff specifies the configuration options for connection backoff. Backoff[backoff].[Config]// MinConnectTimeout is the minimum amount of time we are willing to give a // connection to complete. MinConnectTimeout[time].[Duration]}
+ConnectParams defines the parameters for connecting and retrying. Users are
+encouraged to use this instead of the BackoffConfig type defined above. See
+here for more details:
+[https://github.com/grpc/grpc/blob/master/doc/connection-backoff.md](https://github.com/grpc/grpc/blob/master/doc/connection-backoff.md).
+Experimental [¶](#hdr-Experimental)
+Notice: This type is EXPERIMENTAL and may be changed or removed in a later release.
+type [ContentSubtypeCallOption](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L470) [¶](#ContentSubtypeCallOption)
+added in
+v1.11.0
+type ContentSubtypeCallOption struct {
+ContentSubtype [string](/builtin#string)
+}
+ContentSubtypeCallOption is a CallOption that indicates the content-subtype used for marshaling messages.
+Experimental [¶](#hdr-Experimental)
+Notice: This type is EXPERIMENTAL and may be changed or removed in a later release.
+type [CustomCodecCallOption](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L574) [¶](#CustomCodecCallOption)
+added in
+v1.11.0
+type CustomCodecCallOption struct {
+Codec [Codec](#Codec)
+}
+CustomCodecCallOption is a CallOption that indicates the codec used for marshaling messages.
+Experimental [¶](#hdr-Experimental)
+Notice: This type is EXPERIMENTAL and may be changed or removed in a later release.
+type [Decompressor](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L106)
+deprecated
+[Decompressor](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L106)deprecated
+type Decompressor interface { // Do reads the data from r and uncompress them. Do(r[io].[Reader]) ([][byte],[error]) // Type returns the compression algorithm the Decompressor uses. Type()[string]}
+Decompressor defines the interface gRPC uses to decompress a message.
+Deprecated: use package encoding.
+func [NewGZIPDecompressor](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L120)
+deprecated
+[NewGZIPDecompressor](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L120)deprecated
+func NewGZIPDecompressor()[Decompressor]
+NewGZIPDecompressor creates a Decompressor based on GZIP.
+Deprecated: use package encoding/gzip.
+type [DialOption](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L101) [¶](#DialOption)
+type DialOption interface {
+// contains filtered or unexported methods
+}
+DialOption configures how we set up the connection.
+func [FailOnNonTempDialError](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L505)
+deprecated
+added in
+v1.0.5
+[FailOnNonTempDialError](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L505)deprecated added in v1.0.5
+func FailOnNonTempDialError(f[bool])[DialOption]
+FailOnNonTempDialError returns a DialOption that specifies if gRPC fails on non-temporary dial errors. If f is true, and dialer returns a non-temporary error, gRPC will fail the connection to the network address and won't try to reconnect. The default value of FailOnNonTempDialError is false.
+FailOnNonTempDialError only affects the initial dial, and does not do anything useful unless you are also using WithBlock().
+Use of this feature is not recommended. For more information, please see:
+[https://github.com/grpc/grpc-go/blob/master/Documentation/anti-patterns.md](https://github.com/grpc/grpc-go/blob/master/Documentation/anti-patterns.md)
+Deprecated: this DialOption is not supported by NewClient. This API may be changed or removed in a later release.
+func [WithAuthority](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L571) [¶](#WithAuthority)
+added in
+v1.2.0
+func WithAuthority(a[string])[DialOption]
+WithAuthority returns a DialOption that specifies the value to be used as the :authority pseudo-header and as the server name in authentication handshake.
+func [WithBackoffConfig](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L309)
+deprecated
+[WithBackoffConfig](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L309)deprecated
+func WithBackoffConfig(b[BackoffConfig])[DialOption]
+WithBackoffConfig configures the dialer to use the provided backoff parameters after connection failures.
+Deprecated: use WithConnectParams instead. Will be supported throughout 1.x.
+func [WithBackoffMaxDelay](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L301)
+deprecated
+[WithBackoffMaxDelay](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L301)deprecated
+func WithBackoffMaxDelay(md[time].[Duration])[DialOption]
+WithBackoffMaxDelay configures the dialer to use the provided maximum delay when backing off after failed connection attempts.
+Deprecated: use WithConnectParams instead. Will be supported throughout 1.x.
+func [WithBlock](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L334)
+deprecated
+[WithBlock](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L334)deprecated
+func WithBlock()[DialOption]
+WithBlock returns a DialOption which makes callers of Dial block until the underlying connection is up. Without this, Dial returns immediately and connecting the server happens in background.
+Use of this feature is not recommended. For more information, please see:
+[https://github.com/grpc/grpc-go/blob/master/Documentation/anti-patterns.md](https://github.com/grpc/grpc-go/blob/master/Documentation/anti-patterns.md)
+Deprecated: this DialOption is not supported by NewClient. Will be supported throughout 1.x.
+func [WithChainStreamInterceptor](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L563) [¶](#WithChainStreamInterceptor)
+added in
+v1.21.0
+func WithChainStreamInterceptor(interceptors ...[StreamClientInterceptor])[DialOption]
+WithChainStreamInterceptor returns a DialOption that specifies the chained interceptor for streaming RPCs. The first interceptor will be the outer most, while the last interceptor will be the inner most wrapper around the real call. All interceptors added by this method will be chained, and the interceptor defined by WithStreamInterceptor will always be prepended to the chain.
+func [WithChainUnaryInterceptor](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L544) [¶](#WithChainUnaryInterceptor)
+added in
+v1.21.0
+func WithChainUnaryInterceptor(interceptors ...[UnaryClientInterceptor])[DialOption]
+WithChainUnaryInterceptor returns a DialOption that specifies the chained interceptor for unary RPCs. The first interceptor will be the outer most, while the last interceptor will be the inner most wrapper around the real call. All interceptors added by this method will be chained, and the interceptor defined by WithUnaryInterceptor will always be prepended to the chain.
+func [WithChannelzParentID](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L585) [¶](#WithChannelzParentID)
+added in
+v1.12.0
+func WithChannelzParentID(c[channelz].[Identifier])[DialOption]
+WithChannelzParentID returns a DialOption that specifies the channelz ID of current ClientConn's parent. This function is used in nested channel creation (e.g. grpclb dial).
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+func [WithCodec](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L249)
+deprecated
+[WithCodec](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L249)deprecated
+func WithCodec(c[Codec])[DialOption]
+WithCodec returns a DialOption which sets a codec for message marshaling and unmarshaling.
+Deprecated: use WithDefaultCallOptions(ForceCodec(_)) instead. Will be supported throughout 1.x.
+func [WithCompressor](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L258)
+deprecated
+[WithCompressor](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L258)deprecated
+func WithCompressor(cp[Compressor])[DialOption]
+WithCompressor returns a DialOption which sets a Compressor to use for message compression. It has lower priority than the compressor set by the UseCompressor CallOption.
+Deprecated: use UseCompressor instead. Will be supported throughout 1.x.
+func [WithConnectParams](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L288) [¶](#WithConnectParams)
+added in
+v1.25.0
+func WithConnectParams(p[ConnectParams])[DialOption]
+WithConnectParams configures the ClientConn to use the provided ConnectParams for creating and maintaining connections to servers.
+The backoff configuration specified as part of the ConnectParams overrides
+all defaults specified in
+[https://github.com/grpc/grpc/blob/master/doc/connection-backoff.md](https://github.com/grpc/grpc/blob/master/doc/connection-backoff.md). Consider
+using the backoff.DefaultConfig as a base, in cases where you want to
+override only a subset of the backoff configuration.
+func [WithContextDialer](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L442) [¶](#WithContextDialer)
+added in
+v1.19.0
+WithContextDialer returns a DialOption that sets a dialer to create connections. If FailOnNonTempDialError() is set to true, and an error is returned by f, gRPC checks the error's Temporary() method to decide if it should try to reconnect to the network address.
+Note: All supported releases of Go (as of December 2023) override the OS defaults for TCP keepalive time and interval to 15s. To enable TCP keepalive with OS defaults for keepalive time and interval, use a net.Dialer that sets the KeepAlive field to a negative value, and sets the SO_KEEPALIVE socket option to true from the Control field. For a concrete example of how to do this, see internal.NetDialerWithTCPKeepalive().
+For more information, please see [issue 23459](https://github.com/golang/go/issues/23459) in the Go github repo.
+func [WithCredentialsBundle](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L410) [¶](#WithCredentialsBundle)
+added in
+v1.16.0
+func WithCredentialsBundle(b[credentials].[Bundle])[DialOption]
+WithCredentialsBundle returns a DialOption to set a credentials bundle for the ClientConn.WithCreds. This should not be used together with WithTransportCredentials.
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+func [WithDecompressor](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L274)
+deprecated
+[WithDecompressor](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L274)deprecated
+func WithDecompressor(dc[Decompressor])[DialOption]
+WithDecompressor returns a DialOption which sets a Decompressor to use for incoming message decompression. If incoming response messages are encoded using the decompressor's Type(), it will be used. Otherwise, the message encoding will be used to look up the compressor registered via encoding.RegisterCompressor, which will then be used to decompress the message. If no compressor is registered for the encoding, an Unimplemented status error will be returned.
+Deprecated: use encoding.RegisterCompressor instead. Will be supported throughout 1.x.
+func [WithDefaultCallOptions](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L238) [¶](#WithDefaultCallOptions)
+added in
+v1.4.0
+func WithDefaultCallOptions(cos ...[CallOption])[DialOption]
+WithDefaultCallOptions returns a DialOption which sets the default CallOptions for calls over the connection.
+func [WithDefaultServiceConfig](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L616) [¶](#WithDefaultServiceConfig)
+added in
+v1.20.0
+func WithDefaultServiceConfig(s[string])[DialOption]
+WithDefaultServiceConfig returns a DialOption that configures the default service config, which will be used in cases where:
+1. WithDisableServiceConfig is also used, or
+2. The name resolver does not provide a service config or provides an invalid service config.
+The parameter s is the JSON representation of the default service config.
+For more information about service configs, see:
+[https://github.com/grpc/grpc/blob/master/doc/service_config.md](https://github.com/grpc/grpc/blob/master/doc/service_config.md)
+For a simple example of usage, see:
+examples/features/load_balancing/client/main.go
+func [WithDialer](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L459)
+deprecated
+[WithDialer](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L459)deprecated
+WithDialer returns a DialOption that specifies a function to use for dialing network addresses. If FailOnNonTempDialError() is set to true, and an error is returned by f, gRPC checks the error's Temporary() method to decide if it should try to reconnect to the network address.
+Deprecated: use WithContextDialer instead. Will be supported throughout 1.x.
+func [WithDisableHealthCheck](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L657) [¶](#WithDisableHealthCheck)
+added in
+v1.17.0
+func WithDisableHealthCheck()[DialOption]
+WithDisableHealthCheck disables the LB channel health checking for all SubConns of this ClientConn.
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+func [WithDisableRetry](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L626) [¶](#WithDisableRetry)
+added in
+v1.14.0
+func WithDisableRetry()[DialOption]
+WithDisableRetry returns a DialOption that disables retries, even if the service config enables them. This does not impact transparent retries, which will happen automatically if no data is written to the wire or if the RPC is unprocessed by the remote server.
+func [WithDisableServiceConfig](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L597) [¶](#WithDisableServiceConfig)
+added in
+v1.12.0
+func WithDisableServiceConfig()[DialOption]
+WithDisableServiceConfig returns a DialOption that causes gRPC to ignore any service config provided by the resolver and provides a hint to the resolver to not fetch service configs.
+Note that this dial option only disables service config from resolver. If default service config is provided, gRPC will use the default service config.
+func [WithIdleTimeout](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L738) [¶](#WithIdleTimeout)
+added in
+v1.56.0
+func WithIdleTimeout(d[time].[Duration])[DialOption]
+WithIdleTimeout returns a DialOption that configures an idle timeout for the channel. If the channel is idle for the configured timeout, i.e there are no ongoing RPCs and no new RPCs are initiated, the channel will enter idle mode and as a result the name resolver and load balancer will be shut down. The channel will exit idle mode when the Connect() method is called or when an RPC is initiated.
+A default timeout of 30 minutes will be used if this dial option is not set at dial time and idleness can be disabled by passing a timeout of zero.
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+func [WithInitialConnWindowSize](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L221) [¶](#WithInitialConnWindowSize)
+added in
+v1.4.0
+func WithInitialConnWindowSize(s[int32])[DialOption]
+WithInitialConnWindowSize returns a DialOption which sets the value for initial window size on a connection. The lower bound for window size is 64K and any value smaller than that will be ignored.
+func [WithInitialWindowSize](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L212) [¶](#WithInitialWindowSize)
+added in
+v1.4.0
+func WithInitialWindowSize(s[int32])[DialOption]
+WithInitialWindowSize returns a DialOption which sets the value for initial window size on a stream. The lower bound for window size is 64K and any value smaller than that will be ignored.
+func [WithInsecure](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L366)
+deprecated
+[WithInsecure](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L366)deprecated
+func WithInsecure()[DialOption]
+WithInsecure returns a DialOption which disables transport security for this ClientConn. Under the hood, it uses insecure.NewCredentials().
+Note that using this DialOption with per-RPC credentials (through WithCredentialsBundle or WithPerRPCCredentials) which require transport security is incompatible and will cause grpc.Dial() to fail.
+Deprecated: use WithTransportCredentials and insecure.NewCredentials() instead. Will be supported throughout 1.x.
+func [WithKeepaliveParams](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L521) [¶](#WithKeepaliveParams)
+added in
+v1.2.0
+func WithKeepaliveParams(kp[keepalive].[ClientParameters])[DialOption]
+WithKeepaliveParams returns a DialOption that specifies keepalive parameters for the client transport.
+func [WithMaxCallAttempts](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L752) [¶](#WithMaxCallAttempts)
+added in
+v1.65.0
+func WithMaxCallAttempts(n[int])[DialOption]
+WithMaxCallAttempts returns a DialOption that configures the maximum number of attempts per call (including retries and hedging) using the channel. Service owners may specify a higher value for these parameters, but higher values will be treated as equal to the maximum value by the client implementation. This mitigates security concerns related to the service config being transferred to the client via DNS.
+A value of 5 will be used if this dial option is not set or n < 2.
+func [WithMaxHeaderListSize](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L644) [¶](#WithMaxHeaderListSize)
+added in
+v1.14.0
+func WithMaxHeaderListSize(s[uint32])[DialOption]
+WithMaxHeaderListSize returns a DialOption that specifies the maximum (uncompressed) size of header list that the client is prepared to accept.
+func [WithMaxMsgSize](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L232)
+deprecated
+added in
+v1.2.0
+[WithMaxMsgSize](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L232)deprecated added in v1.2.0
+func WithMaxMsgSize(s[int])[DialOption]
+WithMaxMsgSize returns a DialOption which sets the maximum message size the client can receive.
+Deprecated: use WithDefaultCallOptions(MaxCallRecvMsgSize(s)) instead. Will be supported throughout 1.x.
+func [WithNoProxy](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L379) [¶](#WithNoProxy)
+added in
+v1.29.0
+func WithNoProxy()[DialOption]
+WithNoProxy returns a DialOption which disables the use of proxies for this ClientConn. This is ignored if WithDialer or WithContextDialer are used.
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+func [WithPerRPCCredentials](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L396) [¶](#WithPerRPCCredentials)
+func WithPerRPCCredentials(creds[credentials].[PerRPCCredentials])[DialOption]
+WithPerRPCCredentials returns a DialOption which sets credentials and places auth state on each outbound RPC.
+func [WithReadBufferSize](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L203) [¶](#WithReadBufferSize)
+added in
+v1.7.0
+func WithReadBufferSize(s[int])[DialOption]
+WithReadBufferSize lets you set the size of read buffer, this determines how much data can be read at most for each read syscall.
+The default value for this buffer is 32KB. Zero or negative values will disable read buffer for a connection so data framer can access the underlying conn directly.
+func [WithResolvers](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L718) [¶](#WithResolvers)
+added in
+v1.27.0
+func WithResolvers(rs ...[resolver].[Builder])[DialOption]
+WithResolvers allows a list of resolver implementations to be registered locally with the ClientConn without needing to be globally registered via resolver.Register. They will be matched against the scheme used for the current Dial only, and will take precedence over the global registry.
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+func [WithReturnConnectionError](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L350)
+deprecated
+added in
+v1.30.0
+[WithReturnConnectionError](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L350)deprecated added in v1.30.0
+func WithReturnConnectionError()[DialOption]
+WithReturnConnectionError returns a DialOption which makes the client connection return a string containing both the last connection error that occurred and the context.DeadlineExceeded error. Implies WithBlock()
+Use of this feature is not recommended. For more information, please see:
+[https://github.com/grpc/grpc-go/blob/master/Documentation/anti-patterns.md](https://github.com/grpc/grpc-go/blob/master/Documentation/anti-patterns.md)
+Deprecated: this DialOption is not supported by NewClient. Will be supported throughout 1.x.
+func [WithSharedWriteBuffer](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L179) [¶](#WithSharedWriteBuffer)
+added in
+v1.58.0
+func WithSharedWriteBuffer(val[bool])[DialOption]
+WithSharedWriteBuffer allows reusing per-connection transport write buffer. If this option is set to true every connection will release the buffer after flushing the data on the wire.
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+func [WithStatsHandler](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L471) [¶](#WithStatsHandler)
+added in
+v1.2.0
+func WithStatsHandler(h[stats].[Handler])[DialOption]
+WithStatsHandler returns a DialOption that specifies the stats handler for all the RPCs and underlying network connections in this ClientConn.
+func [WithStreamInterceptor](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L552) [¶](#WithStreamInterceptor)
+added in
+v1.0.2
+func WithStreamInterceptor(f[StreamClientInterceptor])[DialOption]
+WithStreamInterceptor returns a DialOption that specifies the interceptor for streaming RPCs.
+func [WithTimeout](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L421)
+deprecated
+[WithTimeout](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L421)deprecated
+func WithTimeout(d[time].[Duration])[DialOption]
+WithTimeout returns a DialOption that configures a timeout for dialing a ClientConn initially. This is valid if and only if WithBlock() is present.
+Deprecated: this DialOption is not supported by NewClient. Will be supported throughout 1.x.
+func [WithTransportCredentials](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L388) [¶](#WithTransportCredentials)
+func WithTransportCredentials(creds[credentials].[TransportCredentials])[DialOption]
+WithTransportCredentials returns a DialOption which configures a connection level security credentials (e.g., TLS/SSL). This should not be used together with WithCredentialsBundle.
+func [WithUnaryInterceptor](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L533) [¶](#WithUnaryInterceptor)
+added in
+v1.0.2
+func WithUnaryInterceptor(f[UnaryClientInterceptor])[DialOption]
+WithUnaryInterceptor returns a DialOption that specifies the interceptor for unary RPCs.
+func [WithUserAgent](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L513) [¶](#WithUserAgent)
+func WithUserAgent(s[string])[DialOption]
+WithUserAgent returns a DialOption that specifies a user agent string for all the RPCs.
+func [WithWriteBufferSize](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L191) [¶](#WithWriteBufferSize)
+added in
+v1.7.0
+func WithWriteBufferSize(s[int])[DialOption]
+WithWriteBufferSize determines how much data can be batched before doing a write on the wire. The default value for this buffer is 32KB.
+Zero or negative values will disable the write buffer such that each write will be on underlying connection. Note: A Send call may not directly translate to a write.
+type [EmptyCallOption](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L187) [¶](#EmptyCallOption)
+added in
+v1.4.0
+type EmptyCallOption struct{}
+EmptyCallOption does not alter the Call configuration. It can be embedded in another structure to carry satellite data for use by interceptors.
+type [EmptyDialOption](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L127) [¶](#EmptyDialOption)
+added in
+v1.14.0
+type EmptyDialOption struct{}
+EmptyDialOption does not alter the dial configuration. It can be embedded in another structure to build custom dial options.
+Experimental [¶](#hdr-Experimental)
+Notice: This type is EXPERIMENTAL and may be changed or removed in a later release.
+type [EmptyServerOption](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L201) [¶](#EmptyServerOption)
+added in
+v1.21.0
+type EmptyServerOption struct{}
+EmptyServerOption does not alter the server configuration. It can be embedded in another structure to build custom server options.
+Experimental [¶](#hdr-Experimental)
+Notice: This type is EXPERIMENTAL and may be changed or removed in a later release.
+type [FailFastCallOption](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L299) [¶](#FailFastCallOption)
+added in
+v1.11.0
+type FailFastCallOption struct {
+FailFast [bool](/builtin#bool)
+}
+FailFastCallOption is a CallOption for indicating whether an RPC should fail fast or not.
+Experimental [¶](#hdr-Experimental)
+Notice: This type is EXPERIMENTAL and may be changed or removed in a later release.
+type [ForceCodecCallOption](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L509) [¶](#ForceCodecCallOption)
+added in
+v1.19.0
+ForceCodecCallOption is a CallOption that indicates the codec used for marshaling messages.
+Experimental [¶](#hdr-Experimental)
+Notice: This type is EXPERIMENTAL and may be changed or removed in a later release.
+type [ForceCodecV2CallOption](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L548) [¶](#ForceCodecV2CallOption)
+added in
+v1.66.0
+ForceCodecV2CallOption is a CallOption that indicates the codec used for marshaling messages.
+Experimental [¶](#hdr-Experimental)
+Notice: This type is EXPERIMENTAL and may be changed or removed in a later release.
+type [GenericClientStream](https://github.com/grpc/grpc-go/blob/v1.66.0/stream_interfaces.go#L79) [¶](#GenericClientStream)
+added in
+v1.64.0
+type GenericClientStream[Req[any], Res[any]] struct {[ClientStream]}
+GenericClientStream implements the ServerStreamingClient, ClientStreamingClient, and BidiStreamingClient interfaces. It is used in generated code.
+func (*GenericClientStream[Req, Res]) [CloseAndRecv](https://github.com/grpc/grpc-go/blob/v1.66.0/stream_interfaces.go#L108) [¶](#GenericClientStream.CloseAndRecv)
+added in
+v1.64.0
+func (x *[GenericClientStream][Req, Res]) CloseAndRecv() (*Res,[error])
+CloseAndRecv closes the sending side of the stream, then receives the unary response from the server. The type of message which it returns is determined by the Res type parameter of the GenericClientStream receiver.
+func (*GenericClientStream[Req, Res]) [Recv](https://github.com/grpc/grpc-go/blob/v1.66.0/stream_interfaces.go#L97) [¶](#GenericClientStream.Recv)
+added in
+v1.64.0
+func (x *[GenericClientStream][Req, Res]) Recv() (*Res,[error])
+Recv reads one message from the stream of responses generated by the server. The type of the message returned is determined by the Res type parameter of the GenericClientStream receiver.
+func (*GenericClientStream[Req, Res]) [Send](https://github.com/grpc/grpc-go/blob/v1.66.0/stream_interfaces.go#L90) [¶](#GenericClientStream.Send)
+added in
+v1.64.0
+func (x *[GenericClientStream][Req, Res]) Send(m *Req)[error]
+Send pushes one message into the stream of requests to be consumed by the server. The type of message which can be sent is determined by the Req type parameter of the GenericClientStream receiver.
+type [GenericServerStream](https://github.com/grpc/grpc-go/blob/v1.66.0/stream_interfaces.go#L121) [¶](#GenericServerStream)
+added in
+v1.64.0
+type GenericServerStream[Req[any], Res[any]] struct {[ServerStream]}
+GenericServerStream implements the ServerStreamingServer, ClientStreamingServer, and BidiStreamingServer interfaces. It is used in generated code.
+func (*GenericServerStream[Req, Res]) [Recv](https://github.com/grpc/grpc-go/blob/v1.66.0/stream_interfaces.go#L146) [¶](#GenericServerStream.Recv)
+added in
+v1.64.0
+func (x *[GenericServerStream][Req, Res]) Recv() (*Req,[error])
+Recv reads one message from the stream of requests generated by the client. The type of the message returned is determined by the Req type parameter of the clientStreamServer receiver.
+func (*GenericServerStream[Req, Res]) [Send](https://github.com/grpc/grpc-go/blob/v1.66.0/stream_interfaces.go#L132) [¶](#GenericServerStream.Send)
+added in
+v1.64.0
+func (x *[GenericServerStream][Req, Res]) Send(m *Res)[error]
+Send pushes one message into the stream of responses to be consumed by the client. The type of message which can be sent is determined by the Res type parameter of the serverStreamServer receiver.
+func (*GenericServerStream[Req, Res]) [SendAndClose](https://github.com/grpc/grpc-go/blob/v1.66.0/stream_interfaces.go#L139) [¶](#GenericServerStream.SendAndClose)
+added in
+v1.64.0
+func (x *[GenericServerStream][Req, Res]) SendAndClose(m *Res)[error]
+SendAndClose pushes the unary response to the client. The type of message which can be sent is determined by the Res type parameter of the clientStreamServer receiver.
+type [HeaderCallOption](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L219) [¶](#HeaderCallOption)
+added in
+v1.11.0
+HeaderCallOption is a CallOption for collecting response header metadata. The metadata field will be populated *after* the RPC completes.
+Experimental [¶](#hdr-Experimental)
+Notice: This type is EXPERIMENTAL and may be changed or removed in a later release.
+type [MaxHeaderListSizeDialOption](https://github.com/grpc/grpc-go/blob/v1.66.0/dialoptions.go#L634) [¶](#MaxHeaderListSizeDialOption)
+added in
+v1.64.0
+type MaxHeaderListSizeDialOption struct {
+MaxHeaderListSize [uint32](/builtin#uint32)
+}
+MaxHeaderListSizeDialOption is a DialOption that specifies the maximum (uncompressed) size of header list that the client is prepared to accept.
+type [MaxHeaderListSizeServerOption](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L548) [¶](#MaxHeaderListSizeServerOption)
+added in
+v1.64.0
+type MaxHeaderListSizeServerOption struct {
+MaxHeaderListSize [uint32](/builtin#uint32)
+}
+MaxHeaderListSizeServerOption is a ServerOption that sets the max (uncompressed) size of header list that the server is prepared to accept.
+type [MaxRecvMsgSizeCallOption](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L358) [¶](#MaxRecvMsgSizeCallOption)
+added in
+v1.11.0
+type MaxRecvMsgSizeCallOption struct {
+MaxRecvMsgSize [int](/builtin#int)
+}
+MaxRecvMsgSizeCallOption is a CallOption that indicates the maximum message size in bytes the client can receive.
+Experimental [¶](#hdr-Experimental)
+Notice: This type is EXPERIMENTAL and may be changed or removed in a later release.
+type [MaxRetryRPCBufferSizeCallOption](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L602) [¶](#MaxRetryRPCBufferSizeCallOption)
+added in
+v1.14.0
+type MaxRetryRPCBufferSizeCallOption struct {
+MaxRetryRPCBufferSize [int](/builtin#int)
+}
+MaxRetryRPCBufferSizeCallOption is a CallOption indicating the amount of memory to be used for caching this RPC for retry purposes.
+Experimental [¶](#hdr-Experimental)
+Notice: This type is EXPERIMENTAL and may be changed or removed in a later release.
+type [MaxSendMsgSizeCallOption](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L382) [¶](#MaxSendMsgSizeCallOption)
+added in
+v1.11.0
+type MaxSendMsgSizeCallOption struct {
+MaxSendMsgSize [int](/builtin#int)
+}
+MaxSendMsgSizeCallOption is a CallOption that indicates the maximum message size in bytes the client can send.
+Experimental [¶](#hdr-Experimental)
+Notice: This type is EXPERIMENTAL and may be changed or removed in a later release.
+type [MethodConfig](https://github.com/grpc/grpc-go/blob/v1.66.0/service_config.go#L45)
+deprecated
+added in
+v1.2.0
+[MethodConfig](https://github.com/grpc/grpc-go/blob/v1.66.0/service_config.go#L45)deprecated added in v1.2.0
+type MethodConfig =[internalserviceconfig].[MethodConfig]
+MethodConfig defines the configuration recommended by the service providers for a particular method.
+Deprecated: Users should not use this struct. Service config should be received
+through name resolver, as specified here
+[https://github.com/grpc/grpc/blob/master/doc/service_config.md](https://github.com/grpc/grpc/blob/master/doc/service_config.md)
+type [MethodDesc](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L93) [¶](#MethodDesc)
+type MethodDesc struct { MethodName[string]Handler methodHandler }
+MethodDesc represents an RPC service's method specification.
+type [MethodInfo](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L759) [¶](#MethodInfo)
+type MethodInfo struct { // Name is the method name only, without the service name or package name. Name[string]// IsClientStream indicates whether the RPC is a client streaming RPC. IsClientStream[bool]// IsServerStream indicates whether the RPC is a server streaming RPC. IsServerStream[bool]}
+MethodInfo contains the information of an RPC including its method name and type.
+type [OnFinishCallOption](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L333) [¶](#OnFinishCallOption)
+added in
+v1.54.0
+type OnFinishCallOption struct {
+OnFinish func([error](/builtin#error))
+}
+OnFinishCallOption is CallOption that indicates a callback to be called when the call completes.
+Experimental [¶](#hdr-Experimental)
+Notice: This type is EXPERIMENTAL and may be changed or removed in a later release.
+type [PeerCallOption](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L263) [¶](#PeerCallOption)
+added in
+v1.11.0
+PeerCallOption is a CallOption for collecting the identity of the remote peer. The peer field will be populated *after* the RPC completes.
+Experimental [¶](#hdr-Experimental)
+Notice: This type is EXPERIMENTAL and may be changed or removed in a later release.
+type [PerRPCCredsCallOption](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L405) [¶](#PerRPCCredsCallOption)
+added in
+v1.11.0
+type PerRPCCredsCallOption struct {
+Creds [credentials](/google.golang.org/grpc@v1.66.0/credentials).[PerRPCCredentials](/google.golang.org/grpc@v1.66.0/credentials#PerRPCCredentials)
+}
+PerRPCCredsCallOption is a CallOption that indicates the per-RPC credentials to use for the call.
+Experimental [¶](#hdr-Experimental)
+Notice: This type is EXPERIMENTAL and may be changed or removed in a later release.
+type [PreparedMsg](https://github.com/grpc/grpc-go/blob/v1.66.0/preloader.go#L33) [¶](#PreparedMsg)
+added in
+v1.21.0
+type PreparedMsg struct {
+// contains filtered or unexported fields
+}
+PreparedMsg is responsible for creating a Marshalled and Compressed object.
+Experimental [¶](#hdr-Experimental)
+Notice: This type is EXPERIMENTAL and may be changed or removed in a later release.
+type [Server](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L120) [¶](#Server)
+type Server struct {
+// contains filtered or unexported fields
+}
+Server is a gRPC server to serve RPC requests.
+func [NewServer](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L655) [¶](#NewServer)
+func NewServer(opt ...[ServerOption]) *[Server]
+NewServer creates a gRPC server which has no service registered and has not started to accept requests yet.
+func (*Server) [GetServiceInfo](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L777) [¶](#Server.GetServiceInfo)
+func (s *[Server]) GetServiceInfo() map[[string]][ServiceInfo]
+GetServiceInfo returns a map from service names to ServiceInfo. Service names include the package names, in the form of <package>.<service>.
+func (*Server) [GracefulStop](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L1896) [¶](#Server.GracefulStop)
+added in
+v1.0.2
+func (s *[Server]) GracefulStop()
+GracefulStop stops the gRPC server gracefully. It stops the server from accepting new connections and RPCs and blocks until all the pending RPCs are finished.
+func (*Server) [RegisterService](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L720) [¶](#Server.RegisterService)
+func (s *[Server]) RegisterService(sd *[ServiceDesc], ss[any])
+RegisterService registers a service and its implementation to the gRPC server. It is called from the IDL generated code. This must be called before invoking Serve. If ss is non-nil (for legacy code), its type is checked to ensure it implements sd.HandlerType.
+func (*Server) [Serve](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L838) [¶](#Server.Serve)
+Serve accepts incoming connections on the listener lis, creating a new ServerTransport and service goroutine for each. The service goroutines read gRPC requests and then call the registered handlers to reply to them. Serve returns when lis.Accept fails with fatal errors. lis will be closed when this method returns. Serve will return a non-nil error unless Stop or GracefulStop is called.
+Note: All supported releases of Go (as of December 2023) override the OS defaults for TCP keepalive time and interval to 15s. To enable TCP keepalive with OS defaults for keepalive time and interval, callers need to do the following two things:
+- pass a net.Listener created by calling the Listen method on a net.ListenConfig with the `KeepAlive` field set to a negative value. This will result in the Go standard library not overriding OS defaults for TCP keepalive interval and time. But this will also result in the Go standard library not enabling TCP keepalives by default.
+- override the Accept method on the passed in net.Listener and set the SO_KEEPALIVE socket option to enable TCP keepalives, with OS defaults.
+func (*Server) [ServeHTTP](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L1074) [¶](#Server.ServeHTTP)
+func (s *[Server]) ServeHTTP(w[http].[ResponseWriter], r *[http].[Request])
+ServeHTTP implements the Go standard library's http.Handler interface by responding to the gRPC request r, by looking up the requested gRPC method in the gRPC server s.
+The provided HTTP request must have arrived on an HTTP/2 connection. When using the Go standard library's server, practically this means that the Request must also have arrived over TLS.
+To share one port (such as 443 for https) between gRPC and an existing http.Handler, use a root http.Handler such as:
+if r.ProtoMajor == 2 && strings.HasPrefix( r.Header.Get("Content-Type"), "application/grpc") { grpcServer.ServeHTTP(w, r) } else { yourMux.ServeHTTP(w, r) }
+Note that ServeHTTP uses Go's HTTP/2 server implementation which is totally separate from grpc-go's HTTP/2 server. Performance and features may vary between the two paths. ServeHTTP does not support some gRPC features available through grpc-go's HTTP/2 server.
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+type [ServerOption](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L190) [¶](#ServerOption)
+type ServerOption interface {
+// contains filtered or unexported methods
+}
+A ServerOption sets options such as credentials, codec and keepalive parameters, etc.
+func [ChainStreamInterceptor](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L470) [¶](#ChainStreamInterceptor)
+added in
+v1.28.0
+func ChainStreamInterceptor(interceptors ...[StreamServerInterceptor])[ServerOption]
+ChainStreamInterceptor returns a ServerOption that specifies the chained interceptor for streaming RPCs. The first interceptor will be the outer most, while the last interceptor will be the inner most wrapper around the real call. All stream interceptors added by this method will be chained.
+func [ChainUnaryInterceptor](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L449) [¶](#ChainUnaryInterceptor)
+added in
+v1.28.0
+func ChainUnaryInterceptor(interceptors ...[UnaryServerInterceptor])[ServerOption]
+ChainUnaryInterceptor returns a ServerOption that specifies the chained interceptor for unary RPCs. The first interceptor will be the outer most, while the last interceptor will be the inner most wrapper around the real call. All unary interceptors added by this method will be chained.
+func [ConnectionTimeout](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L540) [¶](#ConnectionTimeout)
+added in
+v1.7.3
+func ConnectionTimeout(d[time].[Duration])[ServerOption]
+ConnectionTimeout returns a ServerOption that sets the timeout for connection establishment (up to and including HTTP/2 handshaking) for all new connections. If this is not set, the default is 120 seconds. A zero or negative value will result in an immediate timeout.
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+func [Creds](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L427) [¶](#Creds)
+func Creds(c[credentials].[TransportCredentials])[ServerOption]
+Creds returns a ServerOption that sets credentials for server connections.
+func [CustomCodec](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L315)
+deprecated
+[CustomCodec](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L315)deprecated
+func CustomCodec(codec[Codec])[ServerOption]
+CustomCodec returns a ServerOption that sets a codec for message marshaling and unmarshaling.
+This will override any lookups by content-subtype for Codecs registered with RegisterCodec.
+Deprecated: register codecs using encoding.RegisterCodec. The server will
+automatically use registered codecs based on the incoming requests' headers.
+See also
+[https://github.com/grpc/grpc-go/blob/master/Documentation/encoding.md#using-a-codec](https://github.com/grpc/grpc-go/blob/master/Documentation/encoding.md#using-a-codec).
+Will be supported throughout 1.x.
+func [ForceServerCodec](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L344) [¶](#ForceServerCodec)
+added in
+v1.38.0
+func ForceServerCodec(codec[encoding].[Codec])[ServerOption]
+ForceServerCodec returns a ServerOption that sets a codec for message marshaling and unmarshaling.
+This will override any lookups by content-subtype for Codecs registered with RegisterCodec.
+See Content-Type on
+[https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md#requests](https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md#requests) for
+more details. Also see the documentation on RegisterCodec and
+CallContentSubtype for more details on the interaction between encoding.Codec
+and content-subtype.
+This function is provided for advanced users; prefer to register codecs
+using encoding.RegisterCodec.
+The server will automatically use registered codecs based on the incoming
+requests' headers. See also
+[https://github.com/grpc/grpc-go/blob/master/Documentation/encoding.md#using-a-codec](https://github.com/grpc/grpc-go/blob/master/Documentation/encoding.md#using-a-codec).
+Will be supported throughout 1.x.
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+func [ForceServerCodecV2](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L359) [¶](#ForceServerCodecV2)
+added in
+v1.66.0
+func ForceServerCodecV2(codecV2[encoding].[CodecV2])[ServerOption]
+ForceServerCodecV2 is the equivalent of ForceServerCodec, but for the new CodecV2 interface.
+Will be supported throughout 1.x.
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+func [HeaderTableSize](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L571) [¶](#HeaderTableSize)
+added in
+v1.25.0
+func HeaderTableSize(s[uint32])[ServerOption]
+HeaderTableSize returns a ServerOption that sets the size of dynamic header table for stream.
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+func [InTapHandle](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L483) [¶](#InTapHandle)
+added in
+v1.0.5
+func InTapHandle(h[tap].[ServerInHandle])[ServerOption]
+InTapHandle returns a ServerOption that sets the tap handle for all the server transport to be created. Only one can be installed.
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+func [InitialConnWindowSize](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L281) [¶](#InitialConnWindowSize)
+added in
+v1.4.0
+func InitialConnWindowSize(s[int32])[ServerOption]
+InitialConnWindowSize returns a ServerOption that sets window size for a connection. The lower bound for window size is 64K and any value smaller than that will be ignored.
+func [InitialWindowSize](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L273) [¶](#InitialWindowSize)
+added in
+v1.4.0
+func InitialWindowSize(s[int32])[ServerOption]
+InitialWindowSize returns a ServerOption that sets window size for stream. The lower bound for window size is 64K and any value smaller than that will be ignored.
+func [KeepaliveEnforcementPolicy](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L300) [¶](#KeepaliveEnforcementPolicy)
+added in
+v1.3.0
+func KeepaliveEnforcementPolicy(kep[keepalive].[EnforcementPolicy])[ServerOption]
+KeepaliveEnforcementPolicy returns a ServerOption that sets keepalive enforcement policy for the server.
+func [KeepaliveParams](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L288) [¶](#KeepaliveParams)
+added in
+v1.3.0
+func KeepaliveParams(kp[keepalive].[ServerParameters])[ServerOption]
+KeepaliveParams returns a ServerOption that sets keepalive and max-age parameters for the server.
+func [MaxConcurrentStreams](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L417) [¶](#MaxConcurrentStreams)
+func MaxConcurrentStreams(n[uint32])[ServerOption]
+MaxConcurrentStreams returns a ServerOption that will apply a limit on the number of concurrent streams to each ServerTransport.
+func [MaxHeaderListSize](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L558) [¶](#MaxHeaderListSize)
+added in
+v1.14.0
+func MaxHeaderListSize(s[uint32])[ServerOption]
+MaxHeaderListSize returns a ServerOption that sets the max (uncompressed) size of header list that the server is prepared to accept.
+func [MaxMsgSize](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L395)
+deprecated
+added in
+v1.0.2
+[MaxMsgSize](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L395)deprecated added in v1.0.2
+func MaxMsgSize(m[int])[ServerOption]
+MaxMsgSize returns a ServerOption to set the max message size in bytes the server can receive. If this is not set, gRPC uses the default limit.
+Deprecated: use MaxRecvMsgSize instead. Will be supported throughout 1.x.
+func [MaxRecvMsgSize](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L401) [¶](#MaxRecvMsgSize)
+added in
+v1.4.0
+func MaxRecvMsgSize(m[int])[ServerOption]
+MaxRecvMsgSize returns a ServerOption to set the max message size in bytes the server can receive. If this is not set, gRPC uses the default 4MB.
+func [MaxSendMsgSize](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L409) [¶](#MaxSendMsgSize)
+added in
+v1.4.0
+func MaxSendMsgSize(m[int])[ServerOption]
+MaxSendMsgSize returns a ServerOption to set the max message size in bytes the server can send. If this is not set, gRPC uses the default `math.MaxInt32`.
+func [NumStreamWorkers](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L586) [¶](#NumStreamWorkers)
+added in
+v1.30.0
+func NumStreamWorkers(numServerWorkers[uint32])[ServerOption]
+NumStreamWorkers returns a ServerOption that sets the number of worker goroutines that should be used to process incoming streams. Setting this to zero (default) will disable workers and spawn a new goroutine for each stream.
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+func [RPCCompressor](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L373)
+deprecated
+[RPCCompressor](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L373)deprecated
+func RPCCompressor(cp[Compressor])[ServerOption]
+RPCCompressor returns a ServerOption that sets a compressor for outbound messages. For backward compatibility, all outbound messages will be sent using this compressor, regardless of incoming message compression. By default, server messages will be sent using the same compressor with which request messages were sent.
+Deprecated: use encoding.RegisterCompressor instead. Will be supported throughout 1.x.
+func [RPCDecompressor](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L385)
+deprecated
+[RPCDecompressor](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L385)deprecated
+func RPCDecompressor(dc[Decompressor])[ServerOption]
+RPCDecompressor returns a ServerOption that sets a decompressor for inbound messages. It has higher priority than decompressors registered via encoding.RegisterCompressor.
+Deprecated: use encoding.RegisterCompressor instead. Will be supported throughout 1.x.
+func [ReadBufferSize](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L265) [¶](#ReadBufferSize)
+added in
+v1.7.0
+func ReadBufferSize(s[int])[ServerOption]
+ReadBufferSize lets you set the size of read buffer, this determines how much data can be read at most for one read syscall. The default value for this buffer is 32KB. Zero or negative values will disable read buffer for a connection so data framer can access the underlying conn directly.
+func [SharedWriteBuffer](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L245) [¶](#SharedWriteBuffer)
+added in
+v1.58.0
+func SharedWriteBuffer(val[bool])[ServerOption]
+SharedWriteBuffer allows reusing per-connection transport write buffer. If this option is set to true every connection will release the buffer after flushing the data on the wire.
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+func [StatsHandler](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L493) [¶](#StatsHandler)
+added in
+v1.2.0
+func StatsHandler(h[stats].[Handler])[ServerOption]
+StatsHandler returns a ServerOption that sets the stats handler for the server.
+func [StreamInterceptor](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L457) [¶](#StreamInterceptor)
+func StreamInterceptor(i[StreamServerInterceptor])[ServerOption]
+StreamInterceptor returns a ServerOption that sets the StreamServerInterceptor for the server. Only one stream interceptor can be installed.
+func [UnaryInterceptor](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L436) [¶](#UnaryInterceptor)
+func UnaryInterceptor(i[UnaryServerInterceptor])[ServerOption]
+UnaryInterceptor returns a ServerOption that sets the UnaryServerInterceptor for the server. Only one unary interceptor can be installed. The construction of multiple interceptors (e.g., chaining) can be implemented at the caller.
+func [UnknownServiceHandler](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L519) [¶](#UnknownServiceHandler)
+added in
+v1.2.0
+func UnknownServiceHandler(streamHandler[StreamHandler])[ServerOption]
+UnknownServiceHandler returns a ServerOption that allows for adding a custom unknown service handler. The provided method is a bidi-streaming RPC service handler that will be invoked instead of returning the "unimplemented" gRPC error whenever a request is received for an unregistered service or method. The handling function and stream interceptor (if set) have full access to the ServerStream, including its Context.
+func [WaitForHandlers](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L605) [¶](#WaitForHandlers)
+added in
+v1.61.0
+func WaitForHandlers(w[bool])[ServerOption]
+WaitForHandlers cause Stop to wait until all outstanding method handlers have exited before returning. If false, Stop will return as soon as all connections have closed, but method handlers may still be running. By default, Stop does not wait for method handlers to return.
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+func [WriteBufferSize](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L255) [¶](#WriteBufferSize)
+added in
+v1.7.0
+func WriteBufferSize(s[int])[ServerOption]
+WriteBufferSize determines how much data can be batched before doing a write on the wire. The default value for this buffer is 32KB. Zero or negative values will disable the write buffer such that each write will be on underlying connection. Note: A Send call may not directly translate to a write.
+type [ServerStream](https://github.com/grpc/grpc-go/blob/v1.66.0/stream.go#L1531) [¶](#ServerStream)
+type ServerStream interface { // SetHeader sets the header metadata. It may be called multiple times. // When call multiple times, all the provided metadata will be merged. // All the metadata will be sent out when one of the following happens: // - ServerStream.SendHeader() is called; // - The first response is sent out; // - An RPC status is sent out (error or success). SetHeader([metadata].[MD])[error]// SendHeader sends the header metadata. // The provided md and headers set by SetHeader() will be sent. // It fails if called multiple times. SendHeader([metadata].[MD])[error]// SetTrailer sets the trailer metadata which will be sent with the RPC status. // When called more than once, all the provided metadata will be merged. SetTrailer([metadata].[MD]) // Context returns the context for this stream. Context()[context].[Context]// SendMsg sends a message. On error, SendMsg aborts the stream and the // error is returned directly. // // SendMsg blocks until: // - There is sufficient flow control to schedule m with the transport, or // - The stream is done, or // - The stream breaks. // // SendMsg does not wait until the message is received by the client. An // untimely stream closure may result in lost messages. // // It is safe to have a goroutine calling SendMsg and another goroutine // calling RecvMsg on the same stream at the same time, but it is not safe // to call SendMsg on the same stream in different goroutines. // // It is not safe to modify the message after calling SendMsg. Tracing // libraries and stats handlers may use the message lazily. SendMsg(m[any])[error]// RecvMsg blocks until it receives a message into m or the stream is // done. It returns io.EOF when the client has performed a CloseSend. On // any non-EOF error, the stream is aborted and the error contains the // RPC status. // // It is safe to have a goroutine calling SendMsg and another goroutine // calling RecvMsg on the same stream at the same time, but it is not // safe to call RecvMsg on the same stream in different goroutines. RecvMsg(m[any])[error]}
+ServerStream defines the server-side behavior of a streaming RPC.
+Errors returned from ServerStream methods are compatible with the status package. However, the status code will often not match the RPC status as seen by the client application, and therefore, should not be relied upon for this purpose.
+type [ServerStreamingClient](https://github.com/grpc/grpc-go/blob/v1.66.0/stream_interfaces.go#L24) [¶](#ServerStreamingClient)
+added in
+v1.64.0
+type ServerStreamingClient[Res[any]] interface { Recv() (*Res,[error])[ClientStream]}
+ServerStreamingClient represents the client side of a server-streaming (one request, many responses) RPC. It is generic over the type of the response message. It is used in generated code.
+type [ServerStreamingServer](https://github.com/grpc/grpc-go/blob/v1.66.0/stream_interfaces.go#L32) [¶](#ServerStreamingServer)
+added in
+v1.64.0
+type ServerStreamingServer[Res[any]] interface { Send(*Res)[error][ServerStream]}
+ServerStreamingServer represents the server side of a server-streaming (one request, many responses) RPC. It is generic over the type of the response message. It is used in generated code.
+type [ServerTransportStream](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L1864) [¶](#ServerTransportStream)
+added in
+v1.11.0
+type ServerTransportStream interface { Method()[string]SetHeader(md[metadata].[MD])[error]SendHeader(md[metadata].[MD])[error]SetTrailer(md[metadata].[MD])[error]}
+ServerTransportStream is a minimal interface that a transport stream must implement. This can be used to mock an actual transport stream for tests of handler code that use, for example, grpc.SetHeader (which requires some stream to be in context).
+See also NewContextWithServerTransportStream.
+Experimental [¶](#hdr-Experimental)
+Notice: This type is EXPERIMENTAL and may be changed or removed in a later release.
+func [ServerTransportStreamFromContext](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L1879) [¶](#ServerTransportStreamFromContext)
+added in
+v1.12.0
+func ServerTransportStreamFromContext(ctx[context].[Context])[ServerTransportStream]
+ServerTransportStreamFromContext returns the ServerTransportStream saved in ctx. Returns nil if the given context has no stream associated with it (which implies it is not an RPC invocation context).
+Experimental [¶](#hdr-Experimental)
+Notice: This API is EXPERIMENTAL and may be changed or removed in a later release.
+type [ServiceConfig](https://github.com/grpc/grpc-go/blob/v1.66.0/service_config.go#L53)
+deprecated
+added in
+v1.2.0
+[ServiceConfig](https://github.com/grpc/grpc-go/blob/v1.66.0/service_config.go#L53)deprecated added in v1.2.0
+type ServiceConfig struct {[serviceconfig].[Config]// Methods contains a map for the methods in this service. If there is an // exact match for a method (i.e. /service/method) in the map, use the // corresponding MethodConfig. If there's no exact match, look for the // default config for the service (/service/) and use the corresponding // MethodConfig if it exists. Otherwise, the method has no MethodConfig to // use. Methods map[[string]][MethodConfig]// contains filtered or unexported fields }
+ServiceConfig is provided by the service provider and contains parameters for how clients that connect to the service should behave.
+Deprecated: Users should not use this struct. Service config should be received
+through name resolver, as specified here
+[https://github.com/grpc/grpc/blob/master/doc/service_config.md](https://github.com/grpc/grpc/blob/master/doc/service_config.md)
+type [ServiceDesc](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L99) [¶](#ServiceDesc)
+type ServiceDesc struct { ServiceName[string]// The pointer to the service interface. Used to check whether the user // provided implementation satisfies the interface requirements. HandlerType[any]Methods [][MethodDesc]Streams [][StreamDesc]Metadata[any]}
+ServiceDesc represents an RPC service's specification.
+type [ServiceInfo](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L769) [¶](#ServiceInfo)
+type ServiceInfo struct { Methods [][MethodInfo]// Metadata is the metadata specified in ServiceDesc when registering service. Metadata[any]}
+ServiceInfo contains unary RPC method info, streaming RPC method info and metadata for a service.
+type [ServiceRegistrar](https://github.com/grpc/grpc-go/blob/v1.66.0/server.go#L707) [¶](#ServiceRegistrar)
+added in
+v1.32.0
+type ServiceRegistrar interface { // RegisterService registers a service and its implementation to the // concrete type implementing this interface. It may not be called // once the server has started serving. // desc describes the service and its methods and handlers. impl is the // service implementation which is passed to the method handlers. RegisterService(desc *[ServiceDesc], impl[any]) }
+ServiceRegistrar wraps a single method that supports service registration. It enables users to pass concrete types other than grpc.Server to the service registration methods exported by the IDL generated code.
+type [StaticMethodCallOption](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L202) [¶](#StaticMethodCallOption)
+added in
+v1.62.0
+type StaticMethodCallOption struct {
+[EmptyCallOption](#EmptyCallOption)
+}
+StaticMethodCallOption is a CallOption that specifies that a call comes from a static method.
+type [Stream](https://github.com/grpc/grpc-go/blob/v1.66.0/stream.go#L81)
+deprecated
+[Stream](https://github.com/grpc/grpc-go/blob/v1.66.0/stream.go#L81)deprecated
+type Stream interface { // Deprecated: See ClientStream and ServerStream documentation instead. Context()[context].[Context]// Deprecated: See ClientStream and ServerStream documentation instead. SendMsg(m[any])[error]// Deprecated: See ClientStream and ServerStream documentation instead. RecvMsg(m[any])[error]}
+Stream defines the common interface a client or server stream has to satisfy.
+Deprecated: See ClientStream and ServerStream documentation instead.
+type [StreamClientInterceptor](https://github.com/grpc/grpc-go/blob/v1.66.0/interceptor.go#L63) [¶](#StreamClientInterceptor)
+added in
+v1.0.2
+type StreamClientInterceptor func(ctx[context].[Context], desc *[StreamDesc], cc *[ClientConn], method[string], streamer[Streamer], opts ...[CallOption]) ([ClientStream],[error])
+StreamClientInterceptor intercepts the creation of a ClientStream. Stream interceptors can be specified as a DialOption, using WithStreamInterceptor() or WithChainStreamInterceptor(), when creating a ClientConn. When a stream interceptor(s) is set on the ClientConn, gRPC delegates all stream creations to the interceptor, and it is the responsibility of the interceptor to call streamer.
+desc contains a description of the stream. cc is the ClientConn on which the RPC was invoked. streamer is the handler to create a ClientStream and it is the responsibility of the interceptor to call it. opts contain all applicable call options, including defaults from the ClientConn as well as per-call options.
+StreamClientInterceptor may return a custom ClientStream to intercept all I/O operations. The returned error must be compatible with the status package.
+type [StreamDesc](https://github.com/grpc/grpc-go/blob/v1.66.0/stream.go#L65) [¶](#StreamDesc)
+type StreamDesc struct { // StreamName and Handler are only used when registering handlers on a // server. StreamName[string]// the name of the method excluding the service Handler[StreamHandler]// the handler called for the method // ServerStreams and ClientStreams are used for registering handlers on a // server as well as defining RPC behavior when passed to NewClientStream // and ClientConn.NewStream. At least one must be true. ServerStreams[bool]// indicates the server can perform streaming sends ClientStreams[bool]// indicates the client can perform streaming sends }
+StreamDesc represents a streaming RPC service's method specification. Used on the server when registering services and on the client when initiating new streams.
+type [StreamHandler](https://github.com/grpc/grpc-go/blob/v1.66.0/stream.go#L60) [¶](#StreamHandler)
+type StreamHandler func(srv[any], stream[ServerStream])[error]
+StreamHandler defines the handler called by gRPC server to complete the execution of a streaming RPC.
+If a StreamHandler returns an error, it should either be produced by the status package, or be one of the context errors. Otherwise, gRPC will use codes.Unknown as the status code and err.Error() as the status message of the RPC.
+type [StreamServerInfo](https://github.com/grpc/grpc-go/blob/v1.66.0/interceptor.go#L91) [¶](#StreamServerInfo)
+type StreamServerInfo struct { // FullMethod is the full RPC method string, i.e., /package.service/method. FullMethod[string]// IsClientStream indicates whether the RPC is a client streaming RPC. IsClientStream[bool]// IsServerStream indicates whether the RPC is a server streaming RPC. IsServerStream[bool]}
+StreamServerInfo consists of various information about a streaming RPC on server side. All per-rpc information may be mutated by the interceptor.
+type [StreamServerInterceptor](https://github.com/grpc/grpc-go/blob/v1.66.0/interceptor.go#L104) [¶](#StreamServerInterceptor)
+type StreamServerInterceptor func(srv[any], ss[ServerStream], info *[StreamServerInfo], handler[StreamHandler])[error]
+StreamServerInterceptor provides a hook to intercept the execution of a streaming RPC on the server. info contains all the information of this RPC the interceptor can operate on. And handler is the service method implementation. It is the responsibility of the interceptor to invoke handler to complete the RPC.
+type [Streamer](https://github.com/grpc/grpc-go/blob/v1.66.0/interceptor.go#L46) [¶](#Streamer)
+added in
+v1.0.2
+type Streamer func(ctx[context].[Context], desc *[StreamDesc], cc *[ClientConn], method[string], opts ...[CallOption]) ([ClientStream],[error])
+Streamer is called by StreamClientInterceptor to create a ClientStream.
+type [TrailerCallOption](https://github.com/grpc/grpc-go/blob/v1.66.0/rpc_util.go#L241) [¶](#TrailerCallOption)
+added in
+v1.11.0
+TrailerCallOption is a CallOption for collecting response trailer metadata. The metadata field will be populated *after* the RPC completes.
+Experimental [¶](#hdr-Experimental)
+Notice: This type is EXPERIMENTAL and may be changed or removed in a later release.
+type [UnaryClientInterceptor](https://github.com/grpc/grpc-go/blob/v1.66.0/interceptor.go#L43) [¶](#UnaryClientInterceptor)
+added in
+v1.0.2
+type UnaryClientInterceptor func(ctx[context].[Context], method[string], req, reply[any], cc *[ClientConn], invoker[UnaryInvoker], opts ...[CallOption])[error]
+UnaryClientInterceptor intercepts the execution of a unary RPC on the client. Unary interceptors can be specified as a DialOption, using WithUnaryInterceptor() or WithChainUnaryInterceptor(), when creating a ClientConn. When a unary interceptor(s) is set on a ClientConn, gRPC delegates all unary RPC invocations to the interceptor, and it is the responsibility of the interceptor to call invoker to complete the processing of the RPC.
+method is the RPC name. req and reply are the corresponding request and response messages. cc is the ClientConn on which the RPC was invoked. invoker is the handler to complete the RPC and it is the responsibility of the interceptor to call it. opts contain all applicable call options, including defaults from the ClientConn as well as per-call options.
+The returned error must be compatible with the status package.
+type [UnaryHandler](https://github.com/grpc/grpc-go/blob/v1.66.0/interceptor.go#L81) [¶](#UnaryHandler)
+UnaryHandler defines the handler invoked by UnaryServerInterceptor to complete the normal execution of a unary RPC.
+If a UnaryHandler returns an error, it should either be produced by the status package, or be one of the context errors. Otherwise, gRPC will use codes.Unknown as the status code and err.Error() as the status message of the RPC.
+type [UnaryInvoker](https://github.com/grpc/grpc-go/blob/v1.66.0/interceptor.go#L26) [¶](#UnaryInvoker)
+added in
+v1.0.2
+type UnaryInvoker func(ctx[context].[Context], method[string], req, reply[any], cc *[ClientConn], opts ...[CallOption])[error]
+UnaryInvoker is called by UnaryClientInterceptor to complete RPCs.
+type [UnaryServerInfo](https://github.com/grpc/grpc-go/blob/v1.66.0/interceptor.go#L67) [¶](#UnaryServerInfo)
+type UnaryServerInfo struct { // Server is the service implementation the user provides. This is read-only. Server[any]// FullMethod is the full RPC method string, i.e., /package.service/method. FullMethod[string]}
+UnaryServerInfo consists of various information about a unary RPC on server side. All per-rpc information may be mutated by the interceptor.
+type [UnaryServerInterceptor](https://github.com/grpc/grpc-go/blob/v1.66.0/interceptor.go#L87) [¶](#UnaryServerInterceptor)
+type UnaryServerInterceptor func(ctx[context].[Context], req[any], info *[UnaryServerInfo], handler[UnaryHandler]) (resp[any], err[error])
+UnaryServerInterceptor provides a hook to intercept the execution of a unary RPC on the server. info contains all the information of this RPC the interceptor can operate on. And handler is the wrapper of the service method implementation. It is the responsibility of the interceptor to invoke handler to complete the RPC.
+Source Files
+[¶](#section-sourcefiles)
+Directories
+[¶](#section-directories)
+Path | Synopsis |
+---|---|
+Package admin provides a convenient method for registering a collection of administration services to a gRPC server.
+|
+Package admin provides a convenient method for registering a collection of administration services to a gRPC server. |
+Package test contains test only functions for package admin.
+|
+Package test contains test only functions for package admin. |
+Package attributes defines a generic key/value store used in various gRPC components.
+|
+Package attributes defines a generic key/value store used in various gRPC components. |
+Package authz exposes methods to manage authorization within gRPC.
+|
+Package authz exposes methods to manage authorization within gRPC. |
+Package audit contains interfaces for audit logging during authorization.
+|
+Package audit contains interfaces for audit logging during authorization. |
+Package stdout defines an stdout audit logger.
+|
+Package stdout defines an stdout audit logger. |
+Package backoff provides configuration options for backoff.
+|
+Package backoff provides configuration options for backoff. |
+Package balancer defines APIs for load balancing in gRPC.
+|
+Package balancer defines APIs for load balancing in gRPC. |
+Package base defines a balancer base that can be used to build balancers with different picking algorithms.
+|
+Package base defines a balancer base that can be used to build balancers with different picking algorithms. |
+Package endpointsharding implements a load balancing policy that manages homogeneous child policies each owning a single endpoint.
+|
+Package endpointsharding implements a load balancing policy that manages homogeneous child policies each owning a single endpoint. |
+Package grpclb defines a grpclb balancer.
+|
+Package grpclb defines a grpclb balancer. |
+Package state declares grpclb types to be set by resolvers wishing to pass information to grpclb via resolver.State Attributes.
+|
+Package state declares grpclb types to be set by resolvers wishing to pass information to grpclb via resolver.State Attributes. |
+Package leastrequest implements a least request load balancer.
+|
+Package leastrequest implements a least request load balancer. |
+Package pickfirst contains the pick_first load balancing policy.
+|
+Package pickfirst contains the pick_first load balancing policy. |
+Package rls implements the RLS LB policy.
+|
+Package rls implements the RLS LB policy. |
+Package adaptive provides functionality for adaptive client-side throttling.
+|
+Package adaptive provides functionality for adaptive client-side throttling. |
+Package keys provides functionality required to build RLS request keys.
+|
+Package keys provides functionality required to build RLS request keys. |
+Package e2e contains utilities for end-to-end RouteLookupService tests.
+|
+Package e2e contains utilities for end-to-end RouteLookupService tests. |
+Package roundrobin defines a roundrobin balancer.
+|
+Package roundrobin defines a roundrobin balancer. |
+Package weightedroundrobin provides an implementation of the weighted round robin LB policy, as defined in [gRFC A58].
+|
+Package weightedroundrobin provides an implementation of the weighted round robin LB policy, as defined in [gRFC A58]. |
+Package internal allows for easier testing of the weightedroundrobin package.
+|
+Package internal allows for easier testing of the weightedroundrobin package. |
+Package weightedtarget implements the weighted_target balancer.
+|
+Package weightedtarget implements the weighted_target balancer. |
+Package weightedaggregator implements state aggregator for weighted_target balancer.
+|
+Package weightedaggregator implements state aggregator for weighted_target balancer. |
+Package benchmark implements the building blocks to setup end-to-end gRPC benchmarks.
+|
+Package benchmark implements the building blocks to setup end-to-end gRPC benchmarks. |
+Package main provides benchmark with setting flags.
+|
+Package main provides benchmark with setting flags. |
+To format the benchmark result:
+|
+To format the benchmark result: |
+Package main provides a client used for benchmarking.
+|
+Package main provides a client used for benchmarking. |
+Package flags provide convenience types and routines to accept specific types of flag values on the command line.
+|
+Package flags provide convenience types and routines to accept specific types of flag values on the command line. |
+Package latency provides wrappers for net.Conn, net.Listener, and net.Dialers, designed to interoperate to inject real-world latency into network connections.
+|
+Package latency provides wrappers for net.Conn, net.Listener, and net.Dialers, designed to interoperate to inject real-world latency into network connections. |
+Package main provides a server used for benchmarking.
+|
+Package main provides a server used for benchmarking. |
+Package stats tracks the statistics associated with benchmark runs.
+|
+Package stats tracks the statistics associated with benchmark runs. |
+Binary worker implements the benchmark worker that can turn into a benchmark client or server.
+|
+Binary worker implements the benchmark worker that can turn into a benchmark client or server. |
+Package binarylog implementation binary logging as defined in https://github.com/grpc/proposal/blob/master/A16-binary-logging.md.
+|
+Package binarylog implementation binary logging as defined in https://github.com/grpc/proposal/blob/master/A16-binary-logging.md. |
+Package channelz exports internals of the channelz implementation as required by other gRPC packages.
+|
+Package channelz exports internals of the channelz implementation as required by other gRPC packages. |
+Package protoconv supports converting between the internal channelz implementation and the protobuf representation of all the entities.
+|
+Package protoconv supports converting between the internal channelz implementation and the protobuf representation of all the entities. |
+Package service provides an implementation for channelz service server.
+|
+Package service provides an implementation for channelz service server. |
+cmd
+|
+|
+|
+|
+Package codes defines the canonical error codes used by gRPC.
+|
+Package codes defines the canonical error codes used by gRPC. |
+Package connectivity defines connectivity semantics.
+|
+Package connectivity defines connectivity semantics. |
+Package credentials implements various credentials supported by gRPC library, which encapsulate all the state needed by a client to authenticate with a server and make various assertions, e.g., about the client's identity, role, or whether it is authorized to make a particular call.
+|
+Package credentials implements various credentials supported by gRPC library, which encapsulate all the state needed by a client to authenticate with a server and make various assertions, e.g., about the client's identity, role, or whether it is authorized to make a particular call. |
+Package alts implements the ALTS credential support by gRPC library, which encapsulates all the state needed by a client to authenticate with a server using ALTS and make various assertions, e.g., about the client's identity, role, or whether it is authorized to make a particular call.
+|
+Package alts implements the ALTS credential support by gRPC library, which encapsulates all the state needed by a client to authenticate with a server using ALTS and make various assertions, e.g., about the client's identity, role, or whether it is authorized to make a particular call. |
+Package internal contains common core functionality for ALTS.
+|
+Package internal contains common core functionality for ALTS. |
+Package authinfo provide authentication information returned by handshakers.
+|
+Package authinfo provide authentication information returned by handshakers. |
+Package conn contains an implementation of a secure channel created by gRPC handshakers.
+|
+Package conn contains an implementation of a secure channel created by gRPC handshakers. |
+Package handshaker provides ALTS handshaking functionality for GCP.
+|
+Package handshaker provides ALTS handshaking functionality for GCP. |
+Package service manages connections between the VM application and the ALTS handshaker service.
+|
+Package service manages connections between the VM application and the ALTS handshaker service. |
+Package testutil include useful test utilities for the handshaker.
+|
+Package testutil include useful test utilities for the handshaker. |
+Package google defines credentials for google cloud services.
+|
+Package google defines credentials for google cloud services. |
+Package insecure provides an implementation of the credentials.TransportCredentials interface which disables transport security.
+|
+Package insecure provides an implementation of the credentials.TransportCredentials interface which disables transport security. |
+Package local implements local transport credentials.
+|
+Package local implements local transport credentials. |
+Package oauth implements gRPC credentials using OAuth.
+|
+Package oauth implements gRPC credentials using OAuth. |
+Package sts implements call credentials using STS (Security Token Service) as defined in https://tools.ietf.org/html/rfc8693.
+|
+Package sts implements call credentials using STS (Security Token Service) as defined in https://tools.ietf.org/html/rfc8693. |
+Package certprovider defines APIs for Certificate Providers in gRPC.
+|
+Package certprovider defines APIs for Certificate Providers in gRPC. |
+Package pemfile provides a file watching certificate provider plugin implementation which works for files with PEM contents.
+|
+Package pemfile provides a file watching certificate provider plugin implementation which works for files with PEM contents. |
+Package xds provides a transport credentials implementation where the security configuration is pushed by a management server using xDS APIs.
+|
+Package xds provides a transport credentials implementation where the security configuration is pushed by a management server using xDS APIs. |
+Package encoding defines the interface for the compressor and codec, and functions to register and retrieve compressors and codecs.
+|
+Package encoding defines the interface for the compressor and codec, and functions to register and retrieve compressors and codecs. |
+Package gzip implements and registers the gzip compressor during the initialization.
+|
+Package gzip implements and registers the gzip compressor during the initialization. |
+Package proto defines the protobuf codec.
+|
+Package proto defines the protobuf codec. |
+|
+|
+|
+|
+Package experimental is a collection of experimental features that might have some rough edges to them.
+|
+Package experimental is a collection of experimental features that might have some rough edges to them. |
+Package stats contains experimental metrics/stats API's.
+|
+Package stats contains experimental metrics/stats API's. |
+gcp
+|
+|
+|
+|
+Package grpclog defines logging for grpc.
+|
+Package grpclog defines logging for grpc. |
+Package glogger defines glog-based logging for grpc.
+|
+Package glogger defines glog-based logging for grpc. |
+Package internal contains functionality internal to the grpclog package.
+|
+Package internal contains functionality internal to the grpclog package. |
+Package health provides a service that exposes server's health and it must be imported to enable support for client-side health checks.
+|
+Package health provides a service that exposes server's health and it must be imported to enable support for client-side health checks. |
+Package internal contains gRPC-internal code, to avoid polluting the godoc of the top-level grpc package.
+|
+Package internal contains gRPC-internal code, to avoid polluting the godoc of the top-level grpc package. |
+Package admin contains internal implementation for admin service.
+|
+Package admin contains internal implementation for admin service. |
+Package backoff implement the backoff strategy for gRPC.
+|
+Package backoff implement the backoff strategy for gRPC. |
+Package gracefulswitch implements a graceful switch load balancer.
+|
+Package gracefulswitch implements a graceful switch load balancer. |
+Package nop implements a balancer with all of its balancer operations as no-ops, other than returning a Transient Failure Picker on a Client Conn update.
+|
+Package nop implements a balancer with all of its balancer operations as no-ops, other than returning a Transient Failure Picker on a Client Conn update. |
+Package stub implements a balancer for testing purposes.
+|
+Package stub implements a balancer for testing purposes. |
+Package balancergroup implements a utility struct to bind multiple balancers into one balancer.
+|
+Package balancergroup implements a utility struct to bind multiple balancers into one balancer. |
+Package balancerload defines APIs to parse server loads in trailers.
+|
+Package balancerload defines APIs to parse server loads in trailers. |
+Package binarylog implementation binary logging as defined in https://github.com/grpc/proposal/blob/master/A16-binary-logging.md.
+|
+Package binarylog implementation binary logging as defined in https://github.com/grpc/proposal/blob/master/A16-binary-logging.md. |
+Package buffer provides an implementation of an unbounded buffer.
+|
+Package buffer provides an implementation of an unbounded buffer. |
+Package cache implements caches to be used in gRPC.
+|
+Package cache implements caches to be used in gRPC. |
+Package channelz defines internal APIs for enabling channelz service, entry registration/deletion, and accessing channelz data.
+|
+Package channelz defines internal APIs for enabling channelz service, entry registration/deletion, and accessing channelz data. |
+Package credentials defines APIs for parsing SPIFFE ID.
+|
+Package credentials defines APIs for parsing SPIFFE ID. |
+Package xds contains non-user facing functionality of the xds credentials.
+|
+Package xds contains non-user facing functionality of the xds credentials. |
+Package envconfig contains grpc settings configured by environment variables.
+|
+Package envconfig contains grpc settings configured by environment variables. |
+Package googlecloud contains internal helpful functions for google cloud.
+|
+Package googlecloud contains internal helpful functions for google cloud. |
+Package grpclog provides logging functionality for internal gRPC packages, outside of the functionality provided by the external `grpclog` package.
+|
+Package grpclog provides logging functionality for internal gRPC packages, outside of the functionality provided by the external `grpclog` package. |
+Package grpcsync implements additional synchronization primitives built upon the sync package.
+|
+Package grpcsync implements additional synchronization primitives built upon the sync package. |
+Package grpctest implements testing helpers.
+|
+Package grpctest implements testing helpers. |
+Package grpcutil provides utility functions used across the gRPC codebase.
+|
+Package grpcutil provides utility functions used across the gRPC codebase. |
+Package hierarchy contains functions to set and get hierarchy string from addresses.
+|
+Package hierarchy contains functions to set and get hierarchy string from addresses. |
+Package idle contains a component for managing idleness (entering and exiting) based on RPC activity.
+|
+Package idle contains a component for managing idleness (entering and exiting) based on RPC activity. |
+Package leakcheck contains functions to check leaked goroutines and buffers.
+|
+Package leakcheck contains functions to check leaked goroutines and buffers. |
+Package metadata contains functions to set and get metadata from addresses.
+|
+Package metadata contains functions to set and get metadata from addresses. |
+Package pretty defines helper functions to pretty-print structs for logging.
+|
+Package pretty defines helper functions to pretty-print structs for logging. |
+Package profiling contains two logical components: buffer.go and profiling.go.
+|
+Package profiling contains two logical components: buffer.go and profiling.go. |
+Package buffer provides a high-performant lock free implementation of a circular buffer used by the profiling code.
+|
+Package buffer provides a high-performant lock free implementation of a circular buffer used by the profiling code. |
+Package resolver provides internal resolver-related functionality.
+|
+Package resolver provides internal resolver-related functionality. |
+Package dns implements a dns resolver to be installed as the default resolver in grpc.
+|
+Package dns implements a dns resolver to be installed as the default resolver in grpc. |
+Package internal contains functionality internal to the dns resolver package.
+|
+Package internal contains functionality internal to the dns resolver package. |
+Package passthrough implements a pass-through resolver.
+|
+Package passthrough implements a pass-through resolver. |
+Package unix implements a resolver for unix targets.
+|
+Package unix implements a resolver for unix targets. |
+Package serviceconfig contains utility functions to parse service config.
+|
+Package serviceconfig contains utility functions to parse service config. |
+Package stats provides internal stats related functionality.
+|
+Package stats provides internal stats related functionality. |
+Package status implements errors returned by gRPC.
+|
+Package status implements errors returned by gRPC. |
+Package stubserver is a stubbable implementation of google.golang.org/grpc/interop/grpc_testing for testing purposes.
+|
+Package stubserver is a stubbable implementation of google.golang.org/grpc/interop/grpc_testing for testing purposes. |
+Package syscall provides functionalities that grpc uses to get low-level operating system stats/info.
+|
+Package syscall provides functionalities that grpc uses to get low-level operating system stats/info. |
+Package testutils contains testing helpers.
+|
+Package testutils contains testing helpers. |
+Package fakegrpclb provides a fake implementation of the grpclb server.
+|
+Package fakegrpclb provides a fake implementation of the grpclb server. |
+Package pickfirst contains helper functions to check for pickfirst load balancing of RPCs in tests.
+|
+Package pickfirst contains helper functions to check for pickfirst load balancing of RPCs in tests. |
+Package rls contains utilities for RouteLookupService e2e tests.
+|
+Package rls contains utilities for RouteLookupService e2e tests. |
+Package roundrobin contains helper functions to check for roundrobin and weighted-roundrobin load balancing of RPCs in tests.
+|
+Package roundrobin contains helper functions to check for roundrobin and weighted-roundrobin load balancing of RPCs in tests. |
+Package stats implements a TestMetricsRecorder utility.
+|
+Package stats implements a TestMetricsRecorder utility. |
+Package e2e provides utilities for end2end testing of xDS functionality.
+|
+Package e2e provides utilities for end2end testing of xDS functionality. |
+Package setup implements setup helpers for xDS e2e tests.
+|
+Package setup implements setup helpers for xDS e2e tests. |
+Package fakeserver provides a fake implementation of the management server.
+|
+Package fakeserver provides a fake implementation of the management server. |
+Package transport defines and implements message oriented communication channel to complete various transactions (e.g., an RPC).
+|
+Package transport defines and implements message oriented communication channel to complete various transactions (e.g., an RPC). |
+Package grpchttp2 defines HTTP/2 types and a framer API and implementation.
+|
+Package grpchttp2 defines HTTP/2 types and a framer API and implementation. |
+Package networktype declares the network type to be used in the default dialer.
+|
+Package networktype declares the network type to be used in the default dialer. |
+Package wrr contains the interface and common implementations of wrr algorithms.
+|
+Package wrr contains the interface and common implementations of wrr algorithms. |
+Package xds contains methods to Get/Set handshake cluster names.
+|
+Package xds contains methods to Get/Set handshake cluster names. |
+Package bootstrap provides the functionality to initialize certain aspects of an xDS client by reading a bootstrap file.
+|
+Package bootstrap provides the functionality to initialize certain aspects of an xDS client by reading a bootstrap file. |
+Package tlscreds implements mTLS Credentials in xDS Bootstrap File.
+|
+Package tlscreds implements mTLS Credentials in xDS Bootstrap File. |
+Package matcher contains types that need to be shared between code under google.golang.org/grpc/xds/...
+|
+Package matcher contains types that need to be shared between code under google.golang.org/grpc/xds/... |
+Package rbac provides service-level and method-level access control for a service.
+|
+Package rbac provides service-level and method-level access control for a service. |
+Package interop contains functions used by interop client/server.
+|
+Package interop contains functions used by interop client/server. |
+This binary can only run on Google Cloud Platform (GCP).
+|
+This binary can only run on Google Cloud Platform (GCP). |
+This binary can only run on Google Cloud Platform (GCP).
+|
+This binary can only run on Google Cloud Platform (GCP). |
+Binary client is an interop client.
+|
+Binary client is an interop client. |
+This file is for testing only.
+|
+This file is for testing only. |
+Binary grpclb_fallback is an interop test client for grpclb fallback.
+|
+Binary grpclb_fallback is an interop test client for grpclb fallback. |
+Binary http2 is used to test http2 error edge cases like GOAWAYs and RST_STREAMs
+|
+Binary http2 is used to test http2 error edge cases like GOAWAYs and RST_STREAMs |
+Binary server is an interop server.
+|
+Binary server is an interop server. |
+client starts an interop client to do stress test and a metrics server to report qps.
+|
+client starts an interop client to do stress test and a metrics server to report qps. |
+Binary metrics_client is a client to retrieve metrics from the server.
+|
+Binary metrics_client is a client to retrieve metrics from the server. |
+Binary client is an interop client.
+|
+Binary client is an interop client. |
+|
+|
+|
+|
+Package keepalive defines configurable parameters for point-to-point healthcheck.
+|
+Package keepalive defines configurable parameters for point-to-point healthcheck. |
+Package mem provides utilities that facilitate memory reuse in byte slices that are used as buffers.
+|
+Package mem provides utilities that facilitate memory reuse in byte slices that are used as buffers. |
+Package metadata define the structure of the metadata supported by gRPC library.
+|
+Package metadata define the structure of the metadata supported by gRPC library. |
+Package orca implements Open Request Cost Aggregation, which is an open standard for request cost aggregation and reporting by backends and the corresponding aggregation of such reports by L7 load balancers (such as Envoy) on the data plane.
+|
+Package orca implements Open Request Cost Aggregation, which is an open standard for request cost aggregation and reporting by backends and the corresponding aggregation of such reports by L7 load balancers (such as Envoy) on the data plane. |
+Package internal contains orca-internal code, for testing purposes and to avoid polluting the godoc of the top-level orca package.
+|
+Package internal contains orca-internal code, for testing purposes and to avoid polluting the godoc of the top-level orca package. |
+Package peer defines various peer information associated with RPCs and corresponding utils.
+|
+Package peer defines various peer information associated with RPCs and corresponding utils. |
+Package profiling exposes methods to manage profiling within gRPC.
+|
+Package profiling exposes methods to manage profiling within gRPC. |
+Binary cmd is a command-line tool for profiling management.
+|
+Binary cmd is a command-line tool for profiling management. |
+Package service defines methods to register a gRPC client/service for a profiling service that is exposed in the same server.
+|
+Package service defines methods to register a gRPC client/service for a profiling service that is exposed in the same server. |
+Package reflection implements server reflection service.
+|
+Package reflection implements server reflection service. |
+Package internal contains code that is shared by both reflection package and the test package.
+|
+Package internal contains code that is shared by both reflection package and the test package. |
+|
+|
+Package resolver defines APIs for name resolution in gRPC.
+|
+Package resolver defines APIs for name resolution in gRPC. |
+Package dns implements a dns resolver to be installed as the default resolver in grpc.
+|
+Package dns implements a dns resolver to be installed as the default resolver in grpc. |
+Package manual defines a resolver that can be used to manually send resolved addresses to ClientConn.
+|
+Package manual defines a resolver that can be used to manually send resolved addresses to ClientConn. |
+Package passthrough implements a pass-through resolver.
+|
+Package passthrough implements a pass-through resolver. |
+security
+|
+|
+|
+|
+|
+|
+|
+|
+Package serviceconfig defines types and methods for operating on gRPC service configs.
+|
+Package serviceconfig defines types and methods for operating on gRPC service configs. |
+Package stats is for collecting and reporting various network and RPC stats.
+|
+Package stats is for collecting and reporting various network and RPC stats. |
+|
+|
+|
+|
+Package status implements errors returned by gRPC.
+|
+Package status implements errors returned by gRPC. |
+Package tap defines the function handles which are executed on the transport layer of gRPC-Go and related information.
+|
+Package tap defines the function handles which are executed on the transport layer of gRPC-Go and related information. |
+Package test contains tests.
+|
+Package test contains tests. |
+Package bufconn provides a net.Conn implemented by a buffer and related dialing and listening functionality.
+|
+Package bufconn provides a net.Conn implemented by a buffer and related dialing and listening functionality. |
+|
+|
+Package xds contains an implementation of the xDS suite of protocols, to be used by gRPC client and server applications.
+|
+Package xds contains an implementation of the xDS suite of protocols, to be used by gRPC client and server applications. |
+Package bootstrap provides the functionality to register possible options for aspects of the xDS client through the bootstrap file.
+|
+Package bootstrap provides the functionality to register possible options for aspects of the xDS client through the bootstrap file. |
+Package csds implements features to dump the status (xDS responses) the xds_client is using.
+|
+Package csds implements features to dump the status (xDS responses) the xds_client is using. |
+Package googledirectpath implements a resolver that configures xds to make cloud to prod directpath connection.
+|
+Package googledirectpath implements a resolver that configures xds to make cloud to prod directpath connection. |
+Package internal contains functions/structs shared by xds balancers/resolvers.
+|
+Package internal contains functions/structs shared by xds balancers/resolvers. |
+Package balancer installs all the xds balancers.
+|
+Package balancer installs all the xds balancers. |
+Package cdsbalancer implements a balancer to handle CDS responses.
+|
+Package cdsbalancer implements a balancer to handle CDS responses. |
+Package clusterimpl implements the xds_cluster_impl balancing policy.
+|
+Package clusterimpl implements the xds_cluster_impl balancing policy. |
+Package clustermanager implements the cluster manager LB policy for xds.
+|
+Package clustermanager implements the cluster manager LB policy for xds. |
+Package clusterresolver contains the implementation of the cluster_resolver_experimental LB policy which resolves endpoint addresses using a list of one or more discovery mechanisms.
+|
+Package clusterresolver contains the implementation of the cluster_resolver_experimental LB policy which resolves endpoint addresses using a list of one or more discovery mechanisms. |
+Package loadstore contains the loadStoreWrapper shared by the balancers.
+|
+Package loadstore contains the loadStoreWrapper shared by the balancers. |
+Package outlierdetection provides an implementation of the outlier detection LB policy, as defined in https://github.com/grpc/proposal/blob/master/A50-xds-outlier-detection.md.
+|
+Package outlierdetection provides an implementation of the outlier detection LB policy, as defined in https://github.com/grpc/proposal/blob/master/A50-xds-outlier-detection.md. |
+Package priority implements the priority balancer.
+|
+Package priority implements the priority balancer. |
+Package ringhash implements the ringhash balancer.
+|
+Package ringhash implements the ringhash balancer. |
+Package wrrlocality provides an implementation of the wrr locality LB policy, as defined in [A52 - xDS Custom LB Policies].
+|
+Package wrrlocality provides an implementation of the wrr locality LB policy, as defined in [A52 - xDS Custom LB Policies]. |
+Package clusterspecifier contains the ClusterSpecifier interface and a registry for storing and retrieving their implementations.
+|
+Package clusterspecifier contains the ClusterSpecifier interface and a registry for storing and retrieving their implementations. |
+Package rls implements the RLS cluster specifier plugin.
+|
+Package rls implements the RLS cluster specifier plugin. |
+Package httpfilter contains the HTTPFilter interface and a registry for storing and retrieving their implementations.
+|
+Package httpfilter contains the HTTPFilter interface and a registry for storing and retrieving their implementations. |
+Package fault implements the Envoy Fault Injection HTTP filter.
+|
+Package fault implements the Envoy Fault Injection HTTP filter. |
+Package rbac implements the Envoy RBAC HTTP filter.
+|
+Package rbac implements the Envoy RBAC HTTP filter. |
+Package router implements the Envoy Router HTTP filter.
+|
+Package router implements the Envoy Router HTTP filter. |
+Package resolver implements the xds resolver, that does LDS and RDS to find the cluster to use.
+|
+Package resolver implements the xds resolver, that does LDS and RDS to find the cluster to use. |
+Package internal contains functionality internal to the xDS resolver.
+|
+Package internal contains functionality internal to the xDS resolver. |
+Package server contains internal server-side functionality used by the public facing xds package.
+|
+Package server contains internal server-side functionality used by the public facing xds package. |
+Package e2e implements xds e2e tests using go-control-plane.
+|
+Package e2e implements xds e2e tests using go-control-plane. |
+Package testutils provides utility types, for use in xds tests.
+|
+Package testutils provides utility types, for use in xds tests. |
+Package fakeclient provides a fake implementation of an xDS client.
+|
+Package fakeclient provides a fake implementation of an xDS client. |
+Package xdsclient implements a full fledged gRPC client for the xDS API used by the xds resolver and balancer implementations.
+|
+Package xdsclient implements a full fledged gRPC client for the xDS API used by the xds resolver and balancer implementations. |
+Package internal contains functionality internal to the xdsclient package.
+|
+Package internal contains functionality internal to the xdsclient package. |
+Package load provides functionality to record and maintain load data.
+|
+Package load provides functionality to record and maintain load data. |
+Package transport implements the xDS transport protocol functionality required by the xdsclient.
+|
+Package transport implements the xDS transport protocol functionality required by the xdsclient. |
+Package internal contains functionality internal to the transport package.
+|
+Package internal contains functionality internal to the transport package. |
+Package xdslbregistry provides a registry of converters that convert proto from load balancing configuration, defined by the xDS API spec, to JSON load balancing configuration.
+|
+Package xdslbregistry provides a registry of converters that convert proto from load balancing configuration, defined by the xDS API spec, to JSON load balancing configuration. |
+Package converter provides converters to convert proto load balancing configuration, defined by the xDS API spec, to JSON load balancing configuration.
+|
+Package converter provides converters to convert proto load balancing configuration, defined by the xDS API spec, to JSON load balancing configuration. |
+Package xdsresource implements the xDS data model layer.
+|
+Package xdsresource implements the xDS data model layer. |
+Package version defines constants to distinguish between supported xDS API versions.
+|
+Package version defines constants to distinguish between supported xDS API versions. |

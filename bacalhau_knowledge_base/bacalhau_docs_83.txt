@@ -1,3 +1,91 @@
-URL: https://docs.bacalhau.org/examples/molecular-dynamics/genomics-data-generation
+Source: bacalhau_docs
+URL: https://docs.bacalhau.org/examples/model-inference/stable-diffusion-checkpoint-inference
 
-Bacalhau Docsv.1.4.0v.1.3.0v.1.3.1v.1.3.2v.1.4.0GitHubSlackContactMoreGitHubSlackContactAsk or SearchCtrl+ KWelcomeGetting StartedHow Bacalhau WorksInstallationCreate NetworkHardware SetupContainer OnboardingDocker WorkloadsWebAssembly (Wasm) WorkloadsSetting UpRunning NodesNode OnboardingGPU InstallationJob selection policyAccess ManagementNode persistenceConnect StorageConfiguration ManagementConfiguring Transport Level SecurityLimits and TimeoutsTest Network LocallyBacalhau WebUIWorkload OnboardingContainerDocker Workload OnboardingWebAssembly (Wasm) WorkloadsBacalhau Docker ImageHow To Work With Custom Containers in BacalhauPythonBuilding and Running Custom Python ContainerRunning Pandas on BacalhauRunning a Python ScriptRunning Jupyter Notebooks on BacalhauScripting Bacalhau with PythonR (language)Building and Running your Custom R Containers on BacalhauRunning a Simple R Script on BacalhauRun CUDA programs on BacalhauRunning a Prolog ScriptReading Data from Multiple S3 Buckets using BacalhauRunning Rust programs as WebAssembly (WASM)Generate Synthetic Data using Sparkov Data Generation techniqueData IngestionCopy Data from URL to Public StoragePinning DataRunning a Job over S3 dataNetworking InstructionsAccessing the Internet from JobsUtilizing NATS.io within BacalhauGPU Workloads SetupAutomatic Update CheckingMarketplace DeploymentsGoogle Cloud MarketplaceGuidesWrite a config.yamlWrite a SpecConfigExamplesData EngineeringUsing Bacalhau with DuckDBEthereum Blockchain Analysis with Ethereum-ETL and BacalhauConvert CSV To Parquet Or AvroSimple Image ProcessingOceanography - Data ConversionVideo ProcessingModel InferenceEasyOCR (Optical Character Recognition) on BacalhauRunning Inference on Dolly 2.0 Model with Hugging FaceSpeech Recognition using WhisperStable Diffusion on a GPUStable Diffusion on a CPUObject Detection with YOLOv5 on BacalhauGenerate Realistic Images using StyleGAN3 and BacalhauStable Diffusion Checkpoint InferenceRunning Inference on a Model stored on S3Model TrainingTraining Pytorch Model with BacalhauTraining Tensorflow ModelStable Diffusion Dreambooth (Finetuning)Molecular DynamicsRunning BIDS Apps on BacalhauCoresets On BacalhauGenomics Data GenerationGromacs for AnalysisMolecular Simulation with OpenMM and BacalhauReferencesJobs GuideJob SpecificationJob TypesTask SpecificationEnginesDocker Engine SpecificationWebAssembly (WASM) Engine SpecificationPublishersIPFS Publisher SpecificationLocal Publisher SpecificationS3 Publisher SpecificationSourcesIPFS Source SpecificationLocal Source SpecificationS3 Source SpecificationURL Source SpecificationNetwork SpecificationInput Source SpecificationResources SpecificationResultPath SpecificationConstraint SpecificationLabels SpecificationMeta SpecificationJob TemplatesQueuing & TimeoutsJob QueuingTimeouts SpecificationJob ResultsStateCLI GuideSingle CLI commandsAgentAgent OverviewAgent AliveAgent NodeAgent VersionConfigConfig OverviewConfig Auto-ResourcesConfig DefaultConfig ListConfig SetJobJob OverviewJob DescribeJob ExecJob ExecutionsJob HistoryJob ListJob LogsJob RunJob StopNodeNode OverviewNode ApproveNode DeleteNode ListNode DescribeNode RejectCLI Commands OverviewCommand MigrationAPI GuideBacalhau API overviewBest PracticesAgent EndpointOrchestrator EndpointMigration APINode ManagementAuthentication & AuthorizationDatabase IntegrationDebuggingDebugging Failed JobsDebugging LocallyOpen Telemetry in BacalhauRunning locally in 'devstack'Setting up Dev EnvironmentHelp & FAQBacalhau FAQsRelease NotesGlossaryIntegrationsApache Airflow Provider for BacalhauLilypadBacalhau Python SDKObservability for WebAssembly WorkloadsCommunitySocial MediaStyle GuideWays to ContributePowered by GitBookGenomics Data GenerationIntroduction​Kipoi(pronounce: kípi; from the Greek κήποι: gardens)is an API and a repository of ready-to-use trained models for genomics. It currently contains 2201 different models, covering canonical predictive tasks in transcriptional and post-transcriptional gene regulation. Kipoi's API is implemented as apython package, and it is also accessible from the command line.In this tutorial example, we will run a genomics model on Bacalhau.Prerequisite​To get started, you need to install the Bacalhau client, see more informationhereRunning Locally​​To run locally you need to install kipoi-veff2. You can find out the information about installing and usagehereIn our case this will be the following command:Copykipoi_veff2_predict ./examples/input/test.vcf ./examples/input/test.fa ./output.tsv -m "DeepSEA/predict" -s "diff" -s "logit"Containerize Script using Docker​To run Genomics on Bacalhau we need to set up a Docker container. To do this, you'll need to create aDockerfileand add your desired configuration. The Dockerfile is a text document that contains the commands that specify how the image will be built.CopyFROMkipoi/kipoi-veff2:py37RUN kipoi_veff2_predict ./examples/input/test.vcf ./examples/input/test.fa ./output.tsv -m "DeepSEA/predict" -s "diff" -s "logit"We will use thekipoi/kipoi-veff2:py37image and perform variant-centered effect prediction using thekipoi_veff2_predicttool.See more information on how to containerize your script/apphereBuild the container​Thedocker buildcommand builds Docker images from a Dockerfile.Copydockerbuild-t<hub-user>/<repo-name>:<tag>.Before running the command replace:hub-userwith your docker hub username. If you don’t have a docker hub accountfollow these instructions to create a Docker Account, and use the username of the account you createdrepo-namewith the name of the container, you can name it anything you wanttagthis is not required but you can use the latest tagIn our case:Copydockerbuild-tjsacex/kipoi-veff2:py37.Push the container​Next, upload the image to the registry. This can be done by using the Docker hub username, repo name or tag.Copydockerpush<hub-user>/<repo-name>:<tag>Running a Bacalhau job​After the repo image has been pushed to Docker Hub, we can now use the container for running on Bacalhau. To submit a job for generating genomics data, run the following Bacalhau command:CopyexportJOB_ID=$(bacalhaudockerrun\--id-only\--memory20Gb\--wait\--timeout3600\--wait-timeout-secs3600\--publisheripfs\jsacex/kipoi-veff2:py37\-- kipoi_veff2_predict ./examples/input/test.vcf ./examples/input/test.fa ../outputs/output.tsv -m "DeepSEA/predict" -s "diff" -s "logit")Structure of the command​Let's look closely at the command above:bacalhau docker run: call to Bacalhaujsacex/kipoi-veff2:py37: the name of the image we are usingkipoi_veff2_predict ./examples/input/test.vcf ./examples/input/test.fa ../outputs/output.tsv -m "DeepSEA/predict" -s "diff" -s "logit": the command that will be executed inside the container. It performs variant-centered effect prediction using the kipoi_veff2_predict tool./examples/input/test.vcf: the path to a Variant Call Format (VCF) file containing information about genetic variants./examples/input/test.fa: the path to a FASTA file containing DNA sequences. FASTA files contain nucleotide sequences used for variant effect prediction../outputs/output.tsv: the path to the output file where the prediction results will be stored. The output file format is Tab-Separated Values (TSV), and it will contain information about the predicted variant effects-m "DeepSEA/predict": specifies the model to be used for prediction-s "diff" -s "logit": indicates using two scoring functions for comparing prediction results. In this case, the "diff" and "logit" scoring functions are used. These scoring functions can be employed to analyze differences between predictions for the reference and alternative alleles.When a job is submitted, Bacalhau prints out the relatedjob_id. We store that in an environment variable so that we can reuse it later on.Declarative job description​The same job can be presented in thedeclarativeformat. In this case, the description will look like this:Copyname: Genomicstype: batchcount: 1tasks:- name: My main taskEngine:type: dockerparams:Image: jsacex/kipoi-veff2:py37Entrypoint:- /bin/bashParameters:- -c- kipoi_veff2_predict ./examples/input/test.vcf ./examples/input/test.fa ../outputs/output.tsv -m "DeepSEA/predict" -s "diff" -s "logit"Publisher:Type: ipfsResultPaths:- Name: outputsPath: /outputsResources:Memory: 20gbThe job description should be saved in.yamlformat, e.g.genomics.yaml, and then run with the command:Copybacalhau job run genomics.yamlChecking the State of your Jobs​Job status: You can check the status of the job usingbacalhau job list.Copybacalhaujoblist--id-filter${JOB_ID}--wideWhen it saysPublishedorCompleted, that means the job is done, and we can get the results.Job information: You can find out more information about your job by usingbacalhau job describe.Copybacalhaujobdescribe${JOB_ID}Job download: You can download your job results directly by usingbacalhau job get. Alternatively, you can choose to create a directory to store your results. In the command below, we created a directory (results) and downloaded our job output to be stored in that directory.Copyrm-rfresults&&mkdir-presultsbacalhaujobget$JOB_ID--output-dirresultsViewing your Job Output​To view the file, run the following command:Copycatresults/outputs/output.tsv|head-n10Support​If you have questions or need support or guidance, please reach out to theBacalhau team via Slack(#generalchannel).PreviousCoresets On BacalhauNextGromacs for AnalysisLast updated1 month agoOn this pageIntroduction​Prerequisite​Running Locally​​Containerize Script using Docker​Build the container​Push the container​Running a Bacalhau job​Structure of the command​Declarative job description​Checking the State of your Jobs​Viewing your Job Output​Support​Was this helpful?Edit on GitHubExport as PDFGet SupportExpansoSupportUse CasesDistributed ETLEdge MLDistributed Data WarehousingFlett ManagementAbout UsWho we areWhat we valueNews & BlogBlogNewsExpanso (2024). All Rights Reserved.
+Stable Diffusion Checkpoint Inference
+Introduction
+[Stable Diffusion](https://github.com/CompVis/stable-diffusion) is a state of the art text-to-image model that generates images from text and was developed as an open-source alternative to [DALL·E 2](https://openai.com/dall-e-2/). It is based on a [Diffusion Probabilistic Model](https://arxiv.org/abs/2102.09672) and uses a [Transformer](https://arxiv.org/abs/1706.03762) to generate images from text.
+This example demonstrates how to use stable diffusion using a finetuned model and run inference on it. The first section describes the development of the code and the container - it is optional as users don't need to build their own containers to use their own custom model. The second section demonstrates how to convert your model weights to ckpt. The third section demonstrates how to run the job using Bacalhau.
+The following guide is using the fine-tuned model, which was finetuned on Bacalhau. To learn how to finetune your own stable diffusion model refer to [this guide](/examples/model-training/stable-diffusion-dreambooth-finetuning).
+TL;DR
+Convert your existing model weights to the
+ckpt
+format and upload to the IPFS storage.Create a job using
+bacalhau docker run
+, relevant docker image, model weights and any prompt.Download results using
+bacalhau job get
+and the job id.
+Prerequisite
+To get started, you need to install:
+Bacalhau client, see more information
+[here](/getting-started/installation)NVIDIA GPU
+CUDA drivers
+NVIDIA docker
+Running Locally
+Containerize your Script using Docker
+This part of the guide is optional - you can skip it and proceed to the [Running a Bacalhau job](/examples/model-inference/stable-diffusion-checkpoint-inference#running-a-bacalhau-job) if you are not going to use your own custom image.
+To build your own docker container, create a Dockerfile
+, which contains instructions to containerize the code for inference.
+This container is using the pytorch/pytorch:1.13.0-cuda11.6-cudnn8-runtime
+image and the working directory is set. Next the Dockerfile installs required dependencies. Then we add our custom code and pull the dependent repositories.
+See more information on how to containerize your script/app [here](https://docs.docker.com/get-started/02_our_app/)
+Build the container
+We will run docker build
+command to build the container.
+Before running the command replace:
+hub-user with your docker hub username, If you don’t have a docker hub account
+[follow these instructions to create the Docker account](https://docs.docker.com/docker-id/), and use the username of the account you createdrepo-name with the name of the container, you can name it anything you want
+tag this is not required but you can use the
+latest
+tag
+So in our case, the command will look like this:
+Push the container
+Next, upload the image to the registry. This can be done by using the Docker hub username, repo name or tag.
+Thus, in this case, the command would look this way:
+After the repo image has been pushed to Docker Hub, you can now use the container for running on Bacalhau. But before that you need to check whether your model is a ckpt
+file or not. If your model is a ckpt
+file you can skip to the running on Bacalhau, and if not - the next section describes how to convert your model into the ckpt
+format.
+Converting model weights to CKPT
+To download the convert script:
+To convert the model weights into ckpt
+format, the --half
+flag cuts the size of the output model from 4GB to 2GB:
+Running a Bacalhau Job
+To do inference on your own checkpoint on Bacalhau you need to first upload it to your public storage, which can be mounted anywhere on your machine. In this case, we will be using [NFT.Storage](https://nft.storage/) (Recommended Option). To upload your dataset using [NFTup](https://nft.storage/docs/how-to/nftup/) drag and drop your directory and it will upload it to IPFS.
+After the checkpoint file has been uploaded copy its CID.
+Some of the jobs presented in the Examples section may require more resources than are currently available on the demo network. Consider [starting your own network](/getting-started/create-private-network) or running less resource-intensive jobs on the demo network
+Structure of the command
+Let's look closely at the command above:
+export JOB_ID=$( ... )
+: Export results of a command execution as environment variableThe
+--gpu 1
+flag is set to specify hardware requirements, a GPU is needed to run such a job-i ipfs://QmUCJuFZ2v7KvjBGHRP2K1TMPFce3reTkKVGF2BJY5bXdZ:/model.ckpt
+: Path to mount the checkpoint-- conda run --no-capture-output -n ldm
+: since we are using conda we need to specify the name of the environment which we are going to use, in this case it isldm
+scripts/txt2img.py
+: running the python script--prompt "a photo of a person drinking coffee"
+: the prompt you need to specify the session name in the prompt.--plms
+: the sampler you want to use. In this case we will use theplms
+sampler--ckpt ../model.ckpt
+: here we specify the path to our checkpoint--n_samples 1
+: no of samples we want to produce--skip_grid
+: skip creating a grid of images--outdir ../outputs
+: path to store the outputs--seed $RANDOM
+: The output generated on the same prompt will always be the same for different outputs on the same prompt set the seed parameter to random
+When a job is submitted, Bacalhau prints out the related job_id
+. We store that in an environment variable so that we can reuse it later on.
+Checking the State of your Jobs
+Job status: You can check the status of the job using bacalhau job list
+:
+When it says Completed
+, that means the job is done, and we can get the results.
+Job information: You can find out more information about your job by using bacalhau job describe
+:
+Job download: You can download your job results directly by using bacalhau job get
+. Alternatively, you can choose to create a directory to store your results. In the command below, we created a directory and downloaded our job output to be stored in that directory.
+Viewing your Job Output
+After the download has finished we can see the results in the results/outputs
+folder. We received following image for our prompt:
+[PreviousGenerate Realistic Images using StyleGAN3 and Bacalhau](/examples/model-inference/generate-realistic-images-using-stylegan3-and-bacalhau)
+[NextRunning Inference on a Model stored on S3](/examples/model-inference/running-inference-on-a-model-stored-on-s3)
+Last updated

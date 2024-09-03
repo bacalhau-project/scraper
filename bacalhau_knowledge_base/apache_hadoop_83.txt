@@ -1,34 +1,43 @@
-URL: https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/ShortCircuitLocalReads.html
+Source: apache_hadoop
+URL: http://hadoop.apache.org/docs/r3.3.5/hadoop-project-dist/hadoop-hdfs/HdfsEditsViewer.html
 
-Wiki|git|Apache Hadoop| Last Published: 2024-03-04
-               | Version: 3.4.0GeneralOverviewSingle Node SetupCluster SetupCommands ReferenceFileSystem ShellCompatibility SpecificationDownstream Developer's GuideAdmin Compatibility GuideInterface ClassificationFileSystem SpecificationCommonCLI Mini ClusterFair Call QueueNative LibrariesProxy UserRack AwarenessSecure ModeService Level AuthorizationHTTP AuthenticationCredential Provider APIHadoop KMSTracingUnix Shell GuideRegistryAsync ProfilerHDFSArchitectureUser GuideCommands ReferenceNameNode HA With QJMNameNode HA With NFSObserver NameNodeFederationViewFsViewFsOverloadSchemeSnapshotsEdits ViewerImage ViewerPermissions and HDFSQuotas and HDFSlibhdfs (C API)WebHDFS (REST API)HttpFSShort Circuit Local ReadsCentralized Cache ManagementNFS GatewayRolling UpgradeExtended AttributesTransparent EncryptionMultihomingStorage PoliciesMemory Storage SupportSynthetic Load GeneratorErasure CodingDisk BalancerUpgrade DomainDataNode AdminRouter FederationProvided StorageMapReduceTutorialCommands ReferenceCompatibility with 1.xEncrypted ShufflePluggable Shuffle/SortDistributed Cache DeploySupport for YARN Shared CacheMapReduce REST APIsMR Application MasterMR History ServerYARNArchitectureCommands ReferenceCapacity SchedulerFair SchedulerResourceManager RestartResourceManager HAResource ModelNode LabelsNode AttributesWeb Application ProxyTimeline ServerTimeline Service V.2Writing YARN ApplicationsYARN Application SecurityNodeManagerRunning Applications in Docker ContainersRunning Applications in runC ContainersUsing CGroupsSecure ContainersReservation SystemGraceful DecommissionOpportunistic ContainersYARN FederationShared CacheUsing GPUUsing FPGAPlacement ConstraintsYARN UI2YARN REST APIsIntroductionResource ManagerNode ManagerTimeline ServerTimeline Service V.2YARN ServiceOverviewQuickStartConceptsYarn Service APIService DiscoverySystem ServicesHadoop Compatible File SystemsAliyun OSSAmazon S3Azure Blob StorageAzure Data Lake StorageTencent COSHuaweicloud OBSAuthOverviewExamplesConfigurationBuildingToolsHadoop StreamingHadoop ArchivesHadoop Archive LogsDistCpHDFS Federation BalanceGridMixRumenResource Estimator ServiceScheduler Load SimulatorHadoop BenchmarkingDynamometerReferenceChangelog and Release NotesJava API docsUnix Shell APIMetricsConfigurationcore-default.xmlhdfs-default.xmlhdfs-rbf-default.xmlmapred-default.xmlyarn-default.xmlkms-default.xmlhttpfs-default.xmlDeprecated PropertiesHDFS Short-Circuit Local ReadsShort-Circuit Local ReadsBackgroundSetupExample ConfigurationLegacy HDFS Short-Circuit Local ReadsShort-Circuit Local ReadsBackgroundInHDFS, reads normally go through theDataNode. Thus, when the client asks theDataNodeto read a file, theDataNodereads that file off of the disk and sends the data to the client over a TCP socket. So-called “short-circuit” reads bypass theDataNode, allowing the client to read the file directly. Obviously, this is only possible in cases where the client is co-located with the data. Short-circuit reads provide a substantial performance boost to many applications.SetupTo configure short-circuit local reads, you will need to enablelibhadoop.so. SeeNative Librariesfor details on enabling this library.Short-circuit reads make use of a UNIX domain socket. This is a special path in the filesystem that allows the client and theDataNodes to communicate. You will need to set a path to this socket. TheDataNodeneeds to be able to create this path. On the other hand, it should not be possible for any user except the HDFS user or root to create this path. For this reason, paths under/var/runor/var/libare often used.The client and theDataNodeexchange information via a shared memory segment on/dev/shm.Short-circuit local reads need to be configured on both theDataNodeand the client.Example ConfigurationHere is an example configuration.<configuration>
-  <property>
-    <name>dfs.client.read.shortcircuit</name>
-    <value>true</value>
-  </property>
-  <property>
-    <name>dfs.domain.socket.path</name>
-    <value>/var/lib/hadoop-hdfs/dn_socket</value>
-  </property>
-</configuration>Legacy HDFS Short-Circuit Local ReadsLegacy implementation of short-circuit local reads on which the clients directly open the HDFS block files is still available for platforms other than the Linux. Setting the value ofdfs.client.use.legacy.blockreader.localin addition todfs.client.read.shortcircuitto true enables this feature.You also need to set the value ofdfs.datanode.data.dir.permto750instead of the default700and chmod/chown the directory tree underdfs.datanode.data.diras readable to the client and theDataNode. You must take caution because this means that the client can read all of the block files bypassing HDFS permission.Because Legacy short-circuit local reads is insecure, access to this feature is limited to the users listed in the value ofdfs.block.local-path-access.user.<configuration>
-  <property>
-    <name>dfs.client.read.shortcircuit</name>
-    <value>true</value>
-  </property>
-  <property>
-    <name>dfs.client.use.legacy.blockreader.local</name>
-    <value>true</value>
-  </property>
-  <property>
-    <name>dfs.datanode.data.dir.perm</name>
-    <value>750</value>
-  </property>
-  <property>
-    <name>dfs.block.local-path-access.user</name>
-    <value>foo,bar</value>
-  </property>
-</configuration>©            2008-2024
-              Apache Software Foundation
-            
-                          -Privacy Policy.
-        Apache Maven, Maven, Apache, the Apache feather logo, and the Apache Maven project logos are trademarks of The Apache Software Foundation.
+Offline Edits Viewer is a tool to parse the Edits log file. The current processors are mostly useful for conversion between different formats, including XML which is human readable and easier to edit than native binary format.
+The tool can parse the edits formats -18 (roughly Hadoop 0.19) and later. The tool operates on files only, it does not need Hadoop cluster to be running.
+Input formats supported:
+.xml
+(case insensitive) extensionNote: XML/Binary format input file is not allowed to be processed by the same type processor.
+The Offline Edits Viewer provides several output processors (unless stated otherwise the output of the processor can be converted back to original edits file):
+XML processor can create an XML file that contains the edits log information. Users can specify input and output file via -i and -o command-line.
+bash$ bin/hdfs oev -p xml -i edits -o edits.xml
+XML processor is the default processor in Offline Edits Viewer, users can also use the following command:
+bash$ bin/hdfs oev -i edits -o edits.xml
+This would result in the following output:
+<?xml version="1.0" encoding="UTF-8"?> <EDITS> <EDITS_VERSION>-64</EDITS_VERSION> <RECORD> <OPCODE>OP_START_LOG_SEGMENT</OPCODE> <DATA> <TXID>1</TXID> </DATA> </RECORD> <RECORD> <OPCODE>OP_UPDATE_MASTER_KEY</OPCODE> <DATA> <TXID>2</TXID> <DELEGATION_KEY> <KEY_ID>1</KEY_ID> <EXPIRY_DATE>1487921580728</EXPIRY_DATE> <KEY>2e127ca41c7de215</KEY> </DELEGATION_KEY> </DATA> </RECORD> <RECORD> ...remaining output omitted...
+Binary processor is the opposite of the XML processor. Users can specify input XML file and output file via -i and -o command-line.
+bash$ bin/hdfs oev -p binary -i edits.xml -o edits
+This will reconstruct an edits log file from an XML file.
+Stats processor is used to aggregate counts of op codes contained in the edits log file. Users can specify this processor by -p option.
+bash$ bin/hdfs oev -p stats -i edits -o edits.stats
+The output result of this processor should be like the following output:
+VERSION : -64 OP_ADD ( 0): 8 OP_RENAME_OLD ( 1): 1 OP_DELETE ( 2): 1 OP_MKDIR ( 3): 1 OP_SET_REPLICATION ( 4): 1 OP_DATANODE_ADD ( 5): 0 OP_DATANODE_REMOVE ( 6): 0 OP_SET_PERMISSIONS ( 7): 1 OP_SET_OWNER ( 8): 1 OP_CLOSE ( 9): 9 OP_SET_GENSTAMP_V1 ( 10): 0 ...some output omitted... OP_APPEND ( 47): 1 OP_SET_QUOTA_BY_STORAGETYPE ( 48): 1 OP_ADD_ERASURE_CODING_POLICY ( 49): 0 OP_ENABLE_ERASURE_CODING_POLICY ( 50): 1 OP_DISABLE_ERASURE_CODING_POLICY ( 51): 0 OP_REMOVE_ERASURE_CODING_POLICY ( 52): 0 OP_INVALID ( -1): 0
+The output is formatted as a colon separated two column table: OpCode and OpCodeCount. Each OpCode corresponding to the specific operation(s) in NameNode.
+Flag | Description |
+---|---|
+[-i ; --inputFile ] input file |
+Specify the input edits log file to process. Xml (case insensitive) extension means XML format otherwise binary format is assumed. Required. |
+[-o ; --outputFile ] output file |
+Specify the output filename, if the specified output processor generates one. If the specified file already exists, it is silently overwritten. Required. |
+[-p ; --processor ] processor |
+Specify the image processor to apply against the image file. Currently valid options are binary , xml (default) and stats . |
+[-v ; --verbose ] |
+Print the input and output filenames and pipe output of processor to console as well as specified file. On extremely large files, this may increase processing time by an order of magnitude. |
+[-f ; --fix-txids ] |
+Renumber the transaction IDs in the input, so that there are no gaps or invalid transaction IDs. |
+[-r ; --recover ] |
+When reading binary edit logs, use recovery mode. This will give you the chance to skip corrupt parts of the edit log. |
+[-h ; --help ] |
+Display the tool usage and help information and exit. |
+In case there is some problem with hadoop cluster and the edits file is corrupted it is possible to save at least part of the edits file that is correct. This can be done by converting the binary edits to XML, edit it manually and then convert it back to binary. The most common problem is that the edits file is missing the closing record (record that has opCode -1). This should be recognized by the tool and the XML format should be properly closed.
+If there is no closing record in the XML file you can add one after last correct record. Anything after the record with opCode -1 is ignored.
+Example of a closing record (with opCode -1):
+<RECORD> <OPCODE>-1</OPCODE> <DATA> </DATA> </RECORD>

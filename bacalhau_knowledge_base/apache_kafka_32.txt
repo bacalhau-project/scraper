@@ -1,29 +1,302 @@
-URL: https://kafka.apache.org/uses#uses_commitlog
+Source: apache_kafka
+URL: https://kafka.apache.org/0101/documentation.html
 
-Apache KafkaToggle navigationGet StartedIntroductionQuickstartUse CasesBooks & PapersVideosPodcastsDocsKey ConceptsAPIsConfigurationDesignImplementationOperationsSecurityClientsKafka ConnectKafka StreamsPowered ByCommunityBlogKafka SummitProject InfoTrademarkEcosystemEventsContact usApacheLicenseDonateSponsorsSecurityPrivacyApache.orgDownload KafkaUse casesHere is a description of a few of the popular use cases for Apache Kafka®.
-For an overview of a number of these areas in action, seethis blog post.MessagingKafka works well as a replacement for a more traditional message broker.
-Message brokers are used for a variety of reasons (to decouple processing from data producers, to buffer unprocessed messages, etc).
-In comparison to most messaging systems Kafka has better throughput, built-in partitioning, replication, and fault-tolerance which makes it a good
-solution for large scale message processing applications.In our experience messaging uses are often comparatively low-throughput, but may require low end-to-end latency and often depend on the strong
-durability guarantees Kafka provides.In this domain Kafka is comparable to traditional messaging systems such asActiveMQorRabbitMQ.Website Activity TrackingThe original use case for Kafka was to be able to rebuild a user activity tracking pipeline as a set of real-time publish-subscribe feeds.
-This means site activity (page views, searches, or other actions users may take) is published to central topics with one topic per activity type.
-These feeds are available for subscription for a range of use cases including real-time processing, real-time monitoring, and loading into Hadoop or
-offline data warehousing systems for offline processing and reporting.Activity tracking is often very high volume as many activity messages are generated for each user page view.MetricsKafka is often used for operational monitoring data.
-This involves aggregating statistics from distributed applications to produce centralized feeds of operational data.Log AggregationMany people use Kafka as a replacement for a log aggregation solution.
-Log aggregation typically collects physical log files off servers and puts them in a central place (a file server or HDFS perhaps) for processing.
-Kafka abstracts away the details of files and gives a cleaner abstraction of log or event data as a stream of messages.
-This allows for lower-latency processing and easier support for multiple data sources and distributed data consumption.
-
-In comparison to log-centric systems like Scribe or Flume, Kafka offers equally good performance, stronger durability guarantees due to replication,
-and much lower end-to-end latency.Stream ProcessingMany users of Kafka process data in processing pipelines consisting of multiple stages, where raw input data is consumed from Kafka topics and then
-aggregated, enriched, or otherwise transformed into new topics for further consumption or follow-up processing.
-For example, a processing pipeline for recommending news articles might crawl article content from RSS feeds and publish it to an "articles" topic;
-further processing might normalize or deduplicate this content and publish the cleansed article content to a new topic;
-a final processing stage might attempt to recommend this content to users.
-Such processing pipelines create graphs of real-time data flows based on the individual topics.
-Starting in 0.10.0.0, a light-weight but powerful stream processing library calledKafka Streamsis available in Apache Kafka to perform such data processing as described above.
-Apart from Kafka Streams, alternative open source stream processing tools includeApache StormandApache Samza.Event SourcingEvent sourcingis a style of application design where state changes are logged as a
-time-ordered sequence of records. Kafka's support for very large stored log data makes it an excellent backend for an application built in this style.Commit LogKafka can serve as a kind of external commit-log for a distributed system. The log helps replicate data between nodes and acts as a re-syncing
-mechanism for failed nodes to restore their data.
-Thelog compactionfeature in Kafka helps support this usage.
-In this usage Kafka is similar toApache BookKeeperproject.The contents of this website are © 2024Apache Software Foundationunder the terms of theApache License v2.Apache Kafka, Kafka, and the Kafka logo are either registered trademarks or trademarks of The Apache Software Foundationin the United States and other countries.Security|Donate|Thanks|Events|License|Privacy
+[You're viewing documentation for an older version of Kafka - check out our current documentation here.](/documentation)
+Documentation
+Kafka 0.10.1 Documentation
+Prior releases:[0.7.x](/07/documentation.html),
+[0.8.0](/08/documentation.html),
+[0.8.1.X](/081/documentation.html),
+[0.8.2.X](/082/documentation.html),
+[0.9.0.X](/090/documentation.html),
+[0.10.0.X](/0100/documentation.html).
+[1. Getting Started](#gettingStarted)[2. APIs](#api)[3. Configuration](#configuration)[4. Design](#design)[5. Implementation](#implementation)[6. Operations](#operations)[7. Security](#security)[8. Kafka Connect](#connect)[9. Kafka Streams](/0101/documentation/streams)
+[1. Getting Started](#gettingStarted)
+[1.1 Introduction](#introduction)
+[1.2 Use Cases](#uses)
+Here is a description of a few of the popular use cases for Apache Kafka®. For an overview of a number of these areas in action, see [this blog post](http://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying).
+[Messaging](#uses_messaging)
+Kafka works well as a replacement for a more traditional message broker. Message brokers are used for a variety of reasons (to decouple processing from data producers, to buffer unprocessed messages, etc). In comparison to most messaging systems Kafka has better throughput, built-in partitioning, replication, and fault-tolerance which makes it a good solution for large scale message processing applications.
+In our experience messaging uses are often comparatively low-throughput, but may require low end-to-end latency and often depend on the strong durability guarantees Kafka provides.
+In this domain Kafka is comparable to traditional messaging systems such as [ActiveMQ](http://activemq.apache.org) or [RabbitMQ](https://www.rabbitmq.com).
+[Website Activity Tracking](#uses_website)
+The original use case for Kafka was to be able to rebuild a user activity tracking pipeline as a set of real-time publish-subscribe feeds. This means site activity (page views, searches, or other actions users may take) is published to central topics with one topic per activity type. These feeds are available for subscription for a range of use cases including real-time processing, real-time monitoring, and loading into Hadoop or offline data warehousing systems for offline processing and reporting.
+Activity tracking is often very high volume as many activity messages are generated for each user page view.
+[Metrics](#uses_metrics)
+Kafka is often used for operational monitoring data. This involves aggregating statistics from distributed applications to produce centralized feeds of operational data.
+[Log Aggregation](#uses_logs)
+Many people use Kafka as a replacement for a log aggregation solution. Log aggregation typically collects physical log files off servers and puts them in a central place (a file server or HDFS perhaps) for processing. Kafka abstracts away the details of files and gives a cleaner abstraction of log or event data as a stream of messages. This allows for lower-latency processing and easier support for multiple data sources and distributed data consumption.
+In comparison to log-centric systems like Scribe or Flume, Kafka offers equally good performance, stronger durability guarantees due to replication, and much lower end-to-end latency.
+[Stream Processing](#uses_streamprocessing)
+Many users of Kafka process data in processing pipelines consisting of multiple stages, where raw input data is consumed from Kafka topics and then aggregated, enriched, or otherwise transformed into new topics for further consumption or follow-up processing. For example, a processing pipeline for recommending news articles might crawl article content from RSS feeds and publish it to an "articles" topic; further processing might normalize or deduplicate this content and publish the cleansed article content to a new topic; a final processing stage might attempt to recommend this content to users. Such processing pipelines create graphs of real-time data flows based on the individual topics. Starting in 0.10.0.0, a light-weight but powerful stream processing library called [Kafka Streams](#streams_overview)is available in Apache Kafka to perform such data processing as described above. Apart from Kafka Streams, alternative open source stream processing tools include
+[Apache Storm](https://storm.apache.org/)and
+[Apache Samza](http://samza.apache.org/).
+[Event Sourcing](#uses_eventsourcing)
+[Event sourcing](http://martinfowler.com/eaaDev/EventSourcing.html)is a style of application design where state changes are logged as a time-ordered sequence of records. Kafka's support for very large stored log data makes it an excellent backend for an application built in this style.
+[Commit Log](#uses_commitlog)
+Kafka can serve as a kind of external commit-log for a distributed system. The log helps replicate data between nodes and acts as a re-syncing mechanism for failed nodes to restore their data. The [log compaction](/documentation.html#compaction)feature in Kafka helps support this usage. In this usage Kafka is similar to
+[Apache BookKeeper](http://zookeeper.apache.org/bookkeeper/)project.
+[1.3 Quick Start](#quickstart)
+This tutorial assumes you are starting fresh and have no existing Kafka® or ZooKeeper data.
+Since Kafka console scripts are different for Unix-based and Windows platforms, on Windows platforms use bin\windows\
+instead of bin/
+, and change the script extension to .bat
+.
+[Step 1: Download the code](#quickstart_download)
+[Download](https://www.apache.org/dyn/closer.cgi?path=/kafka/0.10.1.0/kafka_2.11-0.10.1.0.tgz)the 0.10.1.0 release and un-tar it.
+> tar -xzf kafka_2.11-0.10.1.0.tgz > cd kafka_2.11-0.10.1.0
+[Step 2: Start the server](#quickstart_startserver)
+Kafka uses ZooKeeper so you need to first start a ZooKeeper server if you don't already have one. You can use the convenience script packaged with kafka to get a quick-and-dirty single-node ZooKeeper instance.
+> bin/zookeeper-server-start.sh config/zookeeper.properties [2013-04-22 15:01:37,495] INFO Reading configuration from: config/zookeeper.properties (org.apache.zookeeper.server.quorum.QuorumPeerConfig) ...
+Now start the Kafka server:
+> bin/kafka-server-start.sh config/server.properties [2013-04-22 15:01:47,028] INFO Verifying properties (kafka.utils.VerifiableProperties) [2013-04-22 15:01:47,051] INFO Property socket.send.buffer.bytes is overridden to 1048576 (kafka.utils.VerifiableProperties) ...
+[Step 3: Create a topic](#quickstart_createtopic)
+Let's create a topic named "test" with a single partition and only one replica:
+> bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+We can now see that topic if we run the list topic command:
+> bin/kafka-topics.sh --list --zookeeper localhost:2181 test
+Alternatively, instead of manually creating topics you can also configure your brokers to auto-create topics when a non-existent topic is published to.
+[Step 4: Send some messages](#quickstart_send)
+Kafka comes with a command line client that will take input from a file or from standard input and send it out as messages to the Kafka cluster. By default, each line will be sent as a separate message.
+Run the producer and then type a few messages into the console to send to the server.
+> bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test This is a message This is another message
+[Step 5: Start a consumer](#quickstart_consume)
+Kafka also has a command line consumer that will dump out messages to standard output.
+> bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --from-beginning This is a message This is another message
+If you have each of the above commands running in a different terminal then you should now be able to type messages into the producer terminal and see them appear in the consumer terminal.
+All of the command line tools have additional options; running the command with no arguments will display usage information documenting them in more detail.
+[Step 6: Setting up a multi-broker cluster](#quickstart_multibroker)
+So far we have been running against a single broker, but that's no fun. For Kafka, a single broker is just a cluster of size one, so nothing much changes other than starting a few more broker instances. But just to get feel for it, let's expand our cluster to three nodes (still all on our local machine).
+First we make a config file for each of the brokers (on Windows use the copy
+command instead):
+> cp config/server.properties config/server-1.properties > cp config/server.properties config/server-2.properties
+Now edit these new files and set the following properties:
+config/server-1.properties: broker.id=1 listeners=PLAINTEXT://:9093 log.dir=/tmp/kafka-logs-1 config/server-2.properties: broker.id=2 listeners=PLAINTEXT://:9094 log.dir=/tmp/kafka-logs-2
+The broker.id
+property is the unique and permanent name of each node in the cluster. We have to override the port and log directory only because we are running these all on the same machine and we want to keep the brokers from all trying to register on the same port or overwrite each other's data.
+We already have Zookeeper and our single node started, so we just need to start the two new nodes:
+> bin/kafka-server-start.sh config/server-1.properties & ... > bin/kafka-server-start.sh config/server-2.properties & ...
+Now create a new topic with a replication factor of three:
+> bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 3 --partitions 1 --topic my-replicated-topic
+Okay but now that we have a cluster how can we know which broker is doing what? To see that run the "describe topics" command:
+> bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic my-replicated-topic Topic:my-replicated-topic PartitionCount:1 ReplicationFactor:3 Configs: Topic: my-replicated-topic Partition: 0 Leader: 1 Replicas: 1,2,0 Isr: 1,2,0
+Here is an explanation of output. The first line gives a summary of all the partitions, each additional line gives information about one partition. Since we have only one partition for this topic there is only one line.
+- "leader" is the node responsible for all reads and writes for the given partition. Each node will be the leader for a randomly selected portion of the partitions.
+- "replicas" is the list of nodes that replicate the log for this partition regardless of whether they are the leader or even if they are currently alive.
+- "isr" is the set of "in-sync" replicas. This is the subset of the replicas list that is currently alive and caught-up to the leader.
+Note that in my example node 1 is the leader for the only partition of the topic.
+We can run the same command on the original topic we created to see where it is:
+> bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic test Topic:test PartitionCount:1 ReplicationFactor:1 Configs: Topic: test Partition: 0 Leader: 0 Replicas: 0 Isr: 0
+So there is no surprise there—the original topic has no replicas and is on server 0, the only server in our cluster when we created it.
+Let's publish a few messages to our new topic:
+> bin/kafka-console-producer.sh --broker-list localhost:9092 --topic my-replicated-topic ... my test message 1 my test message 2 ^C
+Now let's consume these messages:
+> bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning --topic my-replicated-topic ... my test message 1 my test message 2 ^C
+Now let's test out fault-tolerance. Broker 1 was acting as the leader so let's kill it:
+> ps aux | grep server-1.properties 7564 ttys002 0:15.91 /System/Library/Frameworks/JavaVM.framework/Versions/1.8/Home/bin/java... > kill -9 7564On Windows use:
+> wmic process get processid,caption,commandline | find "java.exe" | find "server-1.properties" java.exe java -Xmx1G -Xms1G -server -XX:+UseG1GC ... build\libs\kafka_2.10-0.10.1.0.jar" kafka.Kafka config\server-1.properties 644 > taskkill /pid 644 /f
+Leadership has switched to one of the slaves and node 1 is no longer in the in-sync replica set:
+> bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic my-replicated-topic Topic:my-replicated-topic PartitionCount:1 ReplicationFactor:3 Configs: Topic: my-replicated-topic Partition: 0 Leader: 2 Replicas: 1,2,0 Isr: 2,0
+But the messages are still available for consumption even though the leader that took the writes originally is down:
+> bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning --topic my-replicated-topic ... my test message 1 my test message 2 ^C
+[Step 7: Use Kafka Connect to import/export data](#quickstart_kafkaconnect)
+Writing data from the console and writing it back to the console is a convenient place to start, but you'll probably want to use data from other sources or export data from Kafka to other systems. For many systems, instead of writing custom integration code you can use Kafka Connect to import or export data.
+Kafka Connect is a tool included with Kafka that imports and exports data to Kafka. It is an extensible tool that runs connectors, which implement the custom logic for interacting with an external system. In this quickstart we'll see how to run Kafka Connect with simple connectors that import data from a file to a Kafka topic and export data from a Kafka topic to a file.
+First, we'll start by creating some seed data to test with:
+> echo -e "foo\nbar" > test.txt
+Next, we'll start two connectors running in standalone mode, which means they run in a single, local, dedicated process. We provide three configuration files as parameters. The first is always the configuration for the Kafka Connect process, containing common configuration such as the Kafka brokers to connect to and the serialization format for data. The remaining configuration files each specify a connector to create. These files include a unique connector name, the connector class to instantiate, and any other configuration required by the connector.
+> bin/connect-standalone.sh config/connect-standalone.properties config/connect-file-source.properties config/connect-file-sink.properties
+These sample configuration files, included with Kafka, use the default local cluster configuration you started earlier and create two connectors: the first is a source connector that reads lines from an input file and produces each to a Kafka topic and the second is a sink connector that reads messages from a Kafka topic and produces each as a line in an output file.
+During startup you'll see a number of log messages, including some indicating that the connectors are being instantiated.
+Once the Kafka Connect process has started, the source connector should start reading lines from test.txt
+and
+producing them to the topic connect-test
+, and the sink connector should start reading messages from the topic connect-test
+and write them to the file test.sink.txt
+. We can verify the data has been delivered through the entire pipeline
+by examining the contents of the output file:
+> cat test.sink.txt foo bar
+Note that the data is being stored in the Kafka topic connect-test
+, so we can also run a console consumer to see the
+data in the topic (or use custom consumer code to process it):
+> bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic connect-test --from-beginning {"schema":{"type":"string","optional":false},"payload":"foo"} {"schema":{"type":"string","optional":false},"payload":"bar"} ...
+The connectors continue to process data, so we can add data to the file and see it move through the pipeline:
+> echo "Another line" >> test.txt
+You should see the line appear in the console consumer output and in the sink file.
+[Step 8: Use Kafka Streams to process data](#quickstart_kafkastreams)
+Kafka Streams is a client library of Kafka for real-time stream processing and analyzing data stored in Kafka brokers.
+This quickstart example will demonstrate how to run a streaming application coded in this library. Here is the gist
+of the WordCountDemo
+example code (converted to use Java 8 lambda expressions for easy reading).
+KTablewordCounts = textLines // Split each text line, by whitespace, into words. .flatMapValues(value -> Arrays.asList(value.toLowerCase().split("\\W+"))) // Ensure the words are available as record keys for the next aggregate operation. .map((key, value) -> new KeyValue<>(value, value)) // Count the occurrences of each word (record key) and store the results into a table named "Counts". .countByKey("Counts")
+It implements the WordCount algorithm, which computes a word occurrence histogram from the input text. However, unlike other WordCount examples you might have seen before that operate on bounded data, the WordCount demo application behaves slightly differently because it is designed to operate on an infinite, unbounded stream of data. Similar to the bounded variant, it is a stateful algorithm that tracks and updates the counts of words. However, since it must assume potentially unbounded input data, it will periodically output its current state and results while continuing to process more data because it cannot know when it has processed "all" the input data.
+We will now prepare input data to a Kafka topic, which will subsequently be processed by a Kafka Streams application.
+> echo -e "all streams lead to kafka\nhello kafka streams\njoin kafka summit" > file-input.txtOr on Windows:
+> echo all streams lead to kafka> file-input.txt > echo hello kafka streams>> file-input.txt > echo|set /p=join kafka summit>> file-input.txt
+Next, we send this input data to the input topic named streams-file-input using the console producer (in practice, stream data will likely be flowing continuously into Kafka where the application will be up and running):
+> bin/kafka-topics.sh --create \ --zookeeper localhost:2181 \ --replication-factor 1 \ --partitions 1 \ --topic streams-file-input
+> bin/kafka-console-producer.sh --broker-list localhost:9092 --topic streams-file-input < file-input.txt
+We can now run the WordCount demo application to process the input data:
+> bin/kafka-run-class.sh org.apache.kafka.streams.examples.wordcount.WordCountDemo
+There won't be any STDOUT output except log entries as the results are continuously written back into another topic named streams-wordcount-output in Kafka. The demo will run for a few seconds and then, unlike typical stream processing applications, terminate automatically.
+We can now inspect the output of the WordCount demo application by reading from its output topic:
+> bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 \ --topic streams-wordcount-output \ --from-beginning \ --formatter kafka.tools.DefaultMessageFormatter \ --property print.key=true \ --property print.value=true \ --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer \ --property value.deserializer=org.apache.kafka.common.serialization.LongDeserializer
+with the following output data being printed to the console:
+all 1 lead 1 to 1 hello 1 streams 2 join 1 kafka 3 summit 1
+Here, the first column is the Kafka message key, and the second column is the message value, both in in java.lang.String
+format.
+Note that the output is actually a continuous stream of updates, where each data record (i.e. each line in the original output above) is
+an updated count of a single word, aka record key such as "kafka". For multiple records with the same key, each later record is an update of the previous one.
+Now you can write more input messages to the streams-file-input topic and observe additional messages added to streams-wordcount-output topic, reflecting updated word counts (e.g., using the console producer and the console consumer, as described above).
+You can stop the console consumer via Ctrl-C.
+[1.4 Ecosystem](#ecosystem)
+There are a plethora of tools that integrate with Kafka outside the main distribution. The [ecosystem page](https://cwiki.apache.org/confluence/display/KAFKA/Ecosystem)lists many of these, including stream processing systems, Hadoop integration, monitoring, and deployment tools.
+[1.5 Upgrading From Previous Versions](#upgrade)
+[Upgrading from 0.8.x, 0.9.x or 0.10.0.X to 0.10.1.0](#upgrade_10_1)
+0.10.1.0 has wire protocol changes. By following the recommended rolling upgrade plan below, you guarantee no downtime during the upgrade.
+However, please notice the [Potential breaking changes in 0.10.1.0](#upgrade_10_1_breaking)before upgrade.
+Note: Because new protocols are introduced, it is important to upgrade your Kafka clusters before upgrading your clients (i.e. 0.10.1.x clients only support 0.10.1.x or later brokers while 0.10.1.x brokers also support older clients).
+For a rolling upgrade:
+- Update server.properties file on all brokers and add the following properties:
+- inter.broker.protocol.version=CURRENT_KAFKA_VERSION (e.g. 0.8.2.0, 0.9.0.0 or 0.10.0.0).
+- log.message.format.version=CURRENT_KAFKA_VERSION (See
+[potential performance impact following the upgrade](#upgrade_10_performance_impact)for the details on what this configuration does.)
+- Upgrade the brokers one at a time: shut down the broker, update the code, and restart it.
+- Once the entire cluster is upgraded, bump the protocol version by editing inter.broker.protocol.version and setting it to 0.10.1.0.
+- If your previous message format is 0.10.0, change log.message.format.version to 0.10.1 (this is a no-op as the message format is the same for both 0.10.0 and 0.10.1). If your previous message format version is lower than 0.10.0, do not change log.message.format.version yet - this parameter should only change once all consumers have been upgraded to 0.10.0.0 or later.
+- Restart the brokers one by one for the new protocol version to take effect.
+- If log.message.format.version is still lower than 0.10.0 at this point, wait until all consumers have been upgraded to 0.10.0 or later, then change log.message.format.version to 0.10.1 on each broker and restart them one by one.
+Note: If you are willing to accept downtime, you can simply take all the brokers down, update the code and start all of them. They will start with the new protocol by default.
+Note: Bumping the protocol version and restarting can be done any time after the brokers were upgraded. It does not have to be immediately after.
+[Potential breaking changes in 0.10.1.0](#upgrade_10_1_breaking)
+- The log retention time is no longer based on last modified time of the log segments. Instead it will be based on the largest timestamp of the messages in a log segment.
+- The log rolling time is no longer depending on log segment create time. Instead it is now based on the timestamp in the messages. More specifically. if the timestamp of the first message in the segment is T, the log will be rolled out when a new message has a timestamp greater than or equal to T + log.roll.ms
+- The open file handlers of 0.10.0 will increase by ~33% because of the addition of time index files for each segment.
+- The time index and offset index share the same index size configuration. Since each time index entry is 1.5x the size of offset index entry. User may need to increase log.index.size.max.bytes to avoid potential frequent log rolling.
+- Due to the increased number of index files, on some brokers with large amount the log segments (e.g. >15K), the log loading process during the broker startup could be longer. Based on our experiment, setting the num.recovery.threads.per.data.dir to one may reduce the log loading time.
+[Notable changes in 0.10.1.0](#upgrade_1010_notable)
+- The new Java consumer is no longer in beta and we recommend it for all new development. The old Scala consumers are still supported, but they will be deprecated in the next release and will be removed in a future major release.
+- The
+--new-consumer
+/--new.consumer
+switch is no longer required to use tools like MirrorMaker and the Console Consumer with the new consumer; one simply needs to pass a Kafka broker to connect to instead of the ZooKeeper ensemble. In addition, usage of the Console Consumer with the old consumer has been deprecated and it will be removed in a future major release. - Kafka clusters can now be uniquely identified by a cluster id. It will be automatically generated when a broker is upgraded to 0.10.1.0. The cluster id is available via the kafka.server:type=KafkaServer,name=ClusterId metric and it is part of the Metadata response. Serializers, client interceptors and metric reporters can receive the cluster id by implementing the ClusterResourceListener interface.
+- The BrokerState "RunningAsController" (value 4) has been removed. Due to a bug, a broker would only be in this state briefly before transitioning out of it and hence the impact of the removal should be minimal. The recommended way to detect if a given broker is the controller is via the kafka.controller:type=KafkaController,name=ActiveControllerCount metric.
+- The new Java Consumer now allows users to search offsets by timestamp on partitions.
+- The new Java Consumer now supports heartbeating from a background thread. There is a new configuration
+max.poll.interval.ms
+which controls the maximum time between poll invocations before the consumer will proactively leave the group (5 minutes by default). The value of the configurationrequest.timeout.ms
+must always be larger thanmax.poll.interval.ms
+because this is the maximum time that a JoinGroup request can block on the server while the consumer is rebalancing, so we have changed its default value to just above 5 minutes. Finally, the default value ofsession.timeout.ms
+has been adjusted down to 10 seconds, and the default value ofmax.poll.records
+has been changed to 500. - When using an Authorizer and a user doesn't have Describe authorization on a topic, the broker will no longer return TOPIC_AUTHORIZATION_FAILED errors to requests since this leaks topic names. Instead, the UNKNOWN_TOPIC_OR_PARTITION error code will be returned. This may cause unexpected timeouts or delays when using the producer and consumer since Kafka clients will typically retry automatically on unknown topic errors. You should consult the client logs if you suspect this could be happening.
+- Fetch responses have a size limit by default (50 MB for consumers and 10 MB for replication). The existing per partition limits also apply (1 MB for consumers and replication). Note that neither of these limits is an absolute maximum as explained in the next point.
+- Consumers and replicas can make progress if a message larger than the response/partition size limit is found. More concretely, if the first message in the first non-empty partition of the fetch is larger than either or both limits, the message will still be returned.
+- Overloaded constructors were added to
+kafka.api.FetchRequest
+andkafka.javaapi.FetchRequest
+to allow the caller to specify the order of the partitions (since order is significant in v3). The previously existing constructors were deprecated and the partitions are shuffled before the request is sent to avoid starvation issues.
+[New Protocol Versions](#upgrade_1010_new_protocols)
+- ListOffsetRequest v1 supports accurate offset search based on timestamps.
+- MetadataResponse v2 introduces a new field: "cluster_id".
+- FetchRequest v3 supports limiting the response size (in addition to the existing per partition limit), it returns messages bigger than the limits if required to make progress and the order of partitions in the request is now significant.
+- JoinGroup v1 introduces a new field: "rebalance_timeout".
+[Upgrading from 0.8.x or 0.9.x to 0.10.0.0](#upgrade_10)
+0.10.0.0 has [potential breaking changes](#upgrade_10_breaking)(please review before upgrading) and possible
+[performance impact following the upgrade](#upgrade_10_performance_impact). By following the recommended rolling upgrade plan below, you guarantee no downtime and no performance impact during and following the upgrade.
+Note: Because new protocols are introduced, it is important to upgrade your Kafka clusters before upgrading your clients. Notes to clients with version 0.9.0.0: Due to a bug introduced in 0.9.0.0, clients that depend on ZooKeeper (old Scala high-level Consumer and MirrorMaker if used with the old consumer) will not work with 0.10.0.x brokers. Therefore, 0.9.0.0 clients should be upgraded to 0.9.0.1 before brokers are upgraded to 0.10.0.x. This step is not necessary for 0.8.X or 0.9.0.1 clients.
+For a rolling upgrade:
+- Update server.properties file on all brokers and add the following properties:
+- inter.broker.protocol.version=CURRENT_KAFKA_VERSION (e.g. 0.8.2 or 0.9.0.0).
+- log.message.format.version=CURRENT_KAFKA_VERSION (See
+[potential performance impact following the upgrade](#upgrade_10_performance_impact)for the details on what this configuration does.)
+- Upgrade the brokers. This can be done a broker at a time by simply bringing it down, updating the code, and restarting it.
+- Once the entire cluster is upgraded, bump the protocol version by editing inter.broker.protocol.version and setting it to 0.10.0.0. NOTE: You shouldn't touch log.message.format.version yet - this parameter should only change once all consumers have been upgraded to 0.10.0.0
+- Restart the brokers one by one for the new protocol version to take effect.
+- Once all consumers have been upgraded to 0.10.0, change log.message.format.version to 0.10.0 on each broker and restart them one by one.
+Note: If you are willing to accept downtime, you can simply take all the brokers down, update the code and start all of them. They will start with the new protocol by default.
+Note: Bumping the protocol version and restarting can be done any time after the brokers were upgraded. It does not have to be immediately after.
+[Potential performance impact following upgrade to 0.10.0.0](#upgrade_10_performance_impact)
+The message format in 0.10.0 includes a new timestamp field and uses relative offsets for compressed messages. The on disk message format can be configured through log.message.format.version in the server.properties file. The default on-disk message format is 0.10.0. If a consumer client is on a version before 0.10.0.0, it only understands message formats before 0.10.0. In this case, the broker is able to convert messages from the 0.10.0 format to an earlier format before sending the response to the consumer on an older version. However, the broker can't use zero-copy transfer in this case. Reports from the Kafka community on the performance impact have shown CPU utilization going from 20% before to 100% after an upgrade, which forced an immediate upgrade of all clients to bring performance back to normal. To avoid such message conversion before consumers are upgraded to 0.10.0.0, one can set log.message.format.version to 0.8.2 or 0.9.0 when upgrading the broker to 0.10.0.0. This way, the broker can still use zero-copy transfer to send the data to the old consumers. Once consumers are upgraded, one can change the message format to 0.10.0 on the broker and enjoy the new message format that includes new timestamp and improved compression. The conversion is supported to ensure compatibility and can be useful to support a few apps that have not updated to newer clients yet, but is impractical to support all consumer traffic on even an overprovisioned cluster. Therefore, it is critical to avoid the message conversion as much as possible when brokers have been upgraded but the majority of clients have not.
+For clients that are upgraded to 0.10.0.0, there is no performance impact.
+Note: By setting the message format version, one certifies that all existing messages are on or below that message format version. Otherwise consumers before 0.10.0.0 might break. In particular, after the message format is set to 0.10.0, one should not change it back to an earlier format as it may break consumers on versions before 0.10.0.0.
+Note: Due to the additional timestamp introduced in each message, producers sending small messages may see a message throughput degradation because of the increased overhead. Likewise, replication now transmits an additional 8 bytes per message. If you're running close to the network capacity of your cluster, it's possible that you'll overwhelm the network cards and see failures and performance issues due to the overload.
+Note: If you have enabled compression on producers, you may notice reduced producer throughput and/or lower compression rate on the broker in some cases. When receiving compressed messages, 0.10.0 brokers avoid recompressing the messages, which in general reduces the latency and improves the throughput. In certain cases, however, this may reduce the batching size on the producer, which could lead to worse throughput. If this happens, users can tune linger.ms and batch.size of the producer for better throughput. In addition, the producer buffer used for compressing messages with snappy is smaller than the one used by the broker, which may have a negative impact on the compression ratio for the messages on disk. We intend to make this configurable in a future Kafka release.
+[Potential breaking changes in 0.10.0.0](#upgrade_10_breaking)
+- Starting from Kafka 0.10.0.0, the message format version in Kafka is represented as the Kafka version. For example, message format 0.9.0 refers to the highest message version supported by Kafka 0.9.0.
+- Message format 0.10.0 has been introduced and it is used by default. It includes a timestamp field in the messages and relative offsets are used for compressed messages.
+- ProduceRequest/Response v2 has been introduced and it is used by default to support message format 0.10.0
+- FetchRequest/Response v2 has been introduced and it is used by default to support message format 0.10.0
+- MessageFormatter interface was changed from
+def writeTo(key: Array[Byte], value: Array[Byte], output: PrintStream)
+todef writeTo(consumerRecord: ConsumerRecord[Array[Byte], Array[Byte]], output: PrintStream)
+- MessageReader interface was changed from
+def readMessage(): KeyedMessage[Array[Byte], Array[Byte]]
+todef readMessage(): ProducerRecord[Array[Byte], Array[Byte]]
+- MessageFormatter's package was changed from
+kafka.tools
+tokafka.common
+- MessageReader's package was changed from
+kafka.tools
+tokafka.common
+- MirrorMakerMessageHandler no longer exposes the
+handle(record: MessageAndMetadata[Array[Byte], Array[Byte]])
+method as it was never called. - The 0.7 KafkaMigrationTool is no longer packaged with Kafka. If you need to migrate from 0.7 to 0.10.0, please migrate to 0.8 first and then follow the documented upgrade process to upgrade from 0.8 to 0.10.0.
+- The new consumer has standardized its APIs to accept
+java.util.Collection
+as the sequence type for method parameters. Existing code may have to be updated to work with the 0.10.0 client library. - LZ4-compressed message handling was changed to use an interoperable framing specification (LZ4f v1.5.1). To maintain compatibility with old clients, this change only applies to Message format 0.10.0 and later. Clients that Produce/Fetch LZ4-compressed messages using v0/v1 (Message format 0.9.0) should continue to use the 0.9.0 framing implementation. Clients that use Produce/Fetch protocols v2 or later should use interoperable LZ4f framing. A list of interoperable LZ4 libraries is available at http://www.lz4.org/
+[Notable changes in 0.10.0.0](#upgrade_10_notable)
+- Starting from Kafka 0.10.0.0, a new client library named Kafka Streams is available for stream processing on data stored in Kafka topics. This new client library only works with 0.10.x and upward versioned brokers due to message format changes mentioned above. For more information please read
+[this section](#streams_overview). - The default value of the configuration parameter
+receive.buffer.bytes
+is now 64K for the new consumer. - The new consumer now exposes the configuration parameter
+exclude.internal.topics
+to restrict internal topics (such as the consumer offsets topic) from accidentally being included in regular expression subscriptions. By default, it is enabled. - The old Scala producer has been deprecated. Users should migrate their code to the Java producer included in the kafka-clients JAR as soon as possible.
+- The new consumer API has been marked stable.
+[Upgrading from 0.8.0, 0.8.1.X or 0.8.2.X to 0.9.0.0](#upgrade_9)
+0.9.0.0 has [potential breaking changes](#upgrade_9_breaking)(please review before upgrading) and an inter-broker protocol change from previous versions. This means that upgraded brokers and clients may not be compatible with older versions. It is important that you upgrade your Kafka cluster before upgrading your clients. If you are using MirrorMaker downstream clusters should be upgraded first as well.
+For a rolling upgrade:
+- Update server.properties file on all brokers and add the following property: inter.broker.protocol.version=0.8.2.X
+- Upgrade the brokers. This can be done a broker at a time by simply bringing it down, updating the code, and restarting it.
+- Once the entire cluster is upgraded, bump the protocol version by editing inter.broker.protocol.version and setting it to 0.9.0.0.
+- Restart the brokers one by one for the new protocol version to take effect
+Note: If you are willing to accept downtime, you can simply take all the brokers down, update the code and start all of them. They will start with the new protocol by default.
+Note: Bumping the protocol version and restarting can be done any time after the brokers were upgraded. It does not have to be immediately after.
+[Potential breaking changes in 0.9.0.0](#upgrade_9_breaking)
+- Java 1.6 is no longer supported.
+- Scala 2.9 is no longer supported.
+- Broker IDs above 1000 are now reserved by default to automatically assigned broker IDs. If your cluster has existing broker IDs above that threshold make sure to increase the reserved.broker.max.id broker configuration property accordingly.
+- Configuration parameter replica.lag.max.messages was removed. Partition leaders will no longer consider the number of lagging messages when deciding which replicas are in sync.
+- Configuration parameter replica.lag.time.max.ms now refers not just to the time passed since last fetch request from replica, but also to time since the replica last caught up. Replicas that are still fetching messages from leaders but did not catch up to the latest messages in replica.lag.time.max.ms will be considered out of sync.
+- Compacted topics no longer accept messages without key and an exception is thrown by the producer if this is attempted. In 0.8.x, a message without key would cause the log compaction thread to subsequently complain and quit (and stop compacting all compacted topics).
+- MirrorMaker no longer supports multiple target clusters. As a result it will only accept a single --consumer.config parameter. To mirror multiple source clusters, you will need at least one MirrorMaker instance per source cluster, each with its own consumer configuration.
+- Tools packaged under org.apache.kafka.clients.tools.* have been moved to org.apache.kafka.tools.*. All included scripts will still function as usual, only custom code directly importing these classes will be affected.
+- The default Kafka JVM performance options (KAFKA_JVM_PERFORMANCE_OPTS) have been changed in kafka-run-class.sh.
+- The kafka-topics.sh script (kafka.admin.TopicCommand) now exits with non-zero exit code on failure.
+- The kafka-topics.sh script (kafka.admin.TopicCommand) will now print a warning when topic names risk metric collisions due to the use of a '.' or '_' in the topic name, and error in the case of an actual collision.
+- The kafka-console-producer.sh script (kafka.tools.ConsoleProducer) will use the Java producer instead of the old Scala producer be default, and users have to specify 'old-producer' to use the old producer.
+- By default, all command line tools will print all logging messages to stderr instead of stdout.
+[Notable changes in 0.9.0.1](#upgrade_901_notable)
+- The new broker id generation feature can be disabled by setting broker.id.generation.enable to false.
+- Configuration parameter log.cleaner.enable is now true by default. This means topics with a cleanup.policy=compact will now be compacted by default, and 128 MB of heap will be allocated to the cleaner process via log.cleaner.dedupe.buffer.size. You may want to review log.cleaner.dedupe.buffer.size and the other log.cleaner configuration values based on your usage of compacted topics.
+- Default value of configuration parameter fetch.min.bytes for the new consumer is now 1 by default.
+Deprecations in 0.9.0.0
+- Altering topic configuration from the kafka-topics.sh script (kafka.admin.TopicCommand) has been deprecated. Going forward, please use the kafka-configs.sh script (kafka.admin.ConfigCommand) for this functionality.
+- The kafka-consumer-offset-checker.sh (kafka.tools.ConsumerOffsetChecker) has been deprecated. Going forward, please use kafka-consumer-groups.sh (kafka.admin.ConsumerGroupCommand) for this functionality.
+- The kafka.tools.ProducerPerformance class has been deprecated. Going forward, please use org.apache.kafka.tools.ProducerPerformance for this functionality (kafka-producer-perf-test.sh will also be changed to use the new class).
+- The producer config block.on.buffer.full has been deprecated and will be removed in future release. Currently its default value has been changed to false. The KafkaProducer will no longer throw BufferExhaustedException but instead will use max.block.ms value to block, after which it will throw a TimeoutException. If block.on.buffer.full property is set to true explicitly, it will set the max.block.ms to Long.MAX_VALUE and metadata.fetch.timeout.ms will not be honoured
+[Upgrading from 0.8.1 to 0.8.2](#upgrade_82)
+0.8.2 is fully compatible with 0.8.1. The upgrade can be done one broker at a time by simply bringing it down, updating the code, and restarting it.
+[Upgrading from 0.8.0 to 0.8.1](#upgrade_81)
+0.8.1 is fully compatible with 0.8. The upgrade can be done one broker at a time by simply bringing it down, updating the code, and restarting it.
+[Upgrading from 0.7](#upgrade_7)
+Release 0.7 is incompatible with newer releases. Major changes were made to the API, ZooKeeper data structures, and protocol, and configuration in order to add replication (Which was missing in 0.7). The upgrade from 0.7 to later versions requires a [special tool](https://cwiki.apache.org/confluence/display/KAFKA/Migrating+from+0.7+to+0.8)for migration. This migration can be done without downtime.
+[2. APIs](#api)
+[3. Configuration](#configuration)
+[4. Design](#design)
+[5. Implementation](#implementation)
+[6. Operations](#operations)
+[7. Security](#security)
+[8. Kafka Connect](#connect)
+[9. Kafka Streams](/0101/documentation/streams)
+Kafka Streams is a client library for processing and analyzing data stored in Kafka and either write the resulting data back to Kafka or send the final output to an external system. It builds upon important stream processing concepts such as properly distinguishing between event time and processing time, windowing support, and simple yet efficient management of application state.
+Kafka Streams has a low barrier to entry: You can quickly write and run a small-scale proof-of-concept on a single machine; and you only need to run additional instances of your application on multiple machines to scale up to high-volume production workloads. Kafka Streams transparently handles the load balancing of multiple instances of the same application by leveraging Kafka's parallelism model.

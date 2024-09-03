@@ -1,49 +1,126 @@
-URL: https://grpc.io/docs/what-is-grpc/introduction
+Source: grpc_io
+URL: https://grpc.io/docs/languages/go/quickstart/
 
-gRPCAboutMeetDocsGuidesShowcaseBlogCommunitygRPConf 2024 is happening NEXT WEEK onAug. 27th!-Register nowand get 25% off with the code GOOGLE25.DocsWhat is gRPC?IntroductionCore conceptsFAQLanguagesC# / .NETAPI (legacy)Daily builds (legacy)C++Quick startBasics tutorialAsync-API tutorialAsynchronous Callback API TutorialBest Practices for gRPC C++ API and FAQALTSAPIDartQuick startBasics tutorialAPIGoQuick startBasics tutorialALTSAPIGenerated codeJavaQuick startBasics tutorialALTSAPIGenerated codeKotlinQuick startBasics tutorialAPINodeQuick startBasics tutorialAPIObjective-CQuick startBasics tutorialOAuth2APIPHPQuick startBasics tutorialAPIDaily buildsPythonQuick startBasics tutorialALTSGenerated codeAPIDaily buildsRubyQuick startBasics tutorialAPIDaily buildsPlatformsAndroidJavaQuick startBasics tutorialAPIKotlinQuick startAPIWebQuick startBasics tutorialGuidesAuthenticationBenchmarkingCancellationCompressionCustom Backend MetricsCustom Load Balancing PoliciesCustom Name ResolutionDeadlinesDebuggingError handlingFlow ControlHealth CheckingInterceptorsKeepaliveMetadataOpenTelemetry MetricsPerformance Best PracticesReflectionRequest HedgingRetryService ConfigStatus CodesWait-for-ReadyView page sourceEdit this pageCreate child pageCreate documentation issueCreate project issueOverviewWorking with Protocol BuffersProtocol buffer versionsDocsWhat is gRPC?IntroductionIntroduction to gRPCAn introduction to gRPC and protocol buffers.ContentsOverviewWorking with Protocol BuffersProtocol buffer versionsIntroduction to gRPCAn introduction to gRPC and protocol buffers.This page introduces you to gRPC and protocol buffers. gRPC can use
-protocol buffers as both its Interface Definition Language (IDL) and as its underlying message
-interchange format. If you’re new to gRPC and/or protocol buffers, read this!
-If you just want to dive in and see gRPC in action first,select a languageand try itsQuick start.OverviewIn gRPC, a client application can directly call a method on a server application
-on a different machine as if it were a local object, making it easier for you to
-create distributed applications and services. As in many RPC systems, gRPC is
-based around the idea of defining a service, specifying the methods that can be
-called remotely with their parameters and return types. On the server side, the
-server implements this interface and runs a gRPC server to handle client calls.
-On the client side, the client has a stub (referred to as just a client in some
-languages) that provides the same methods as the server.gRPC clients and servers can run and talk to each other in a variety of
-environments - from servers inside Google to your own desktop - and can be
-written in any of gRPC’s supported languages. So, for example, you can easily
-create a gRPC server in Java with clients in Go, Python, or Ruby. In addition,
-the latest Google APIs will have gRPC versions of their interfaces, letting you
-easily build Google functionality into your applications.Working with Protocol BuffersBy default, gRPC usesProtocol Buffers, Google’s
-mature open source mechanism for serializing structured data (although it
-can be used with other data formats such as JSON). Here’s a quick intro to how
-it works. If you’re already familiar with protocol buffers, feel free to skip
-ahead to the next section.The first step when working with protocol buffers is to define the structure
-for the data you want to serialize in aproto file: this is an ordinary text
-file with a.protoextension. Protocol buffer data is structured asmessages, where each message is a small logical record of information
-containing a series of name-value pairs calledfields. Here’s a simple
-example:messagePerson{stringname=1;int32id=2;boolhas_ponycopter=3;}Then, once you’ve specified your data structures, you use the protocol buffer
-compilerprotocto generate data access classes in your preferred language(s)
-from your proto definition. These provide simple accessors for each field,
-likename()andset_name(), as well as methods to serialize/parse
-the whole structure to/from raw bytes. So, for instance, if your chosen
-language is C++, running the compiler on the example above will generate a
-class calledPerson. You can then use this class in your application to
-populate, serialize, and retrievePersonprotocol buffer messages.You define gRPC services
-in ordinary proto files, with RPC method parameters and return types specified as
-protocol buffer messages:// The greeter service definition.serviceGreeter {// Sends a greetingrpcSayHello (HelloRequest)returns(HelloReply) {}}// The request message containing the user's name.messageHelloRequest{stringname=1;}// The response message containing the greetingsmessageHelloReply{stringmessage=1;}gRPC usesprotocwith a special gRPC plugin to
-generate code from your proto file: you get
-generated gRPC client and server code, as well as the regular protocol buffer
-code for populating, serializing, and retrieving your message types. To learn more about protocol buffers, including how to installprotocwith the
-gRPC plugin in your chosen language, see theprotocol buffers documentation.Protocol buffer versionsWhileprotocol buffershave been available to open source users for some time,
-most examples from this site use protocol buffers version 3 (proto3), which has
-a slightly simplified syntax, some useful new features, and supports more
-languages. Proto3 is currently available in Java, C++, Dart, Python,
-Objective-C, C#, a lite-runtime (Android Java), Ruby, and JavaScript from theprotocol buffers GitHub repo, as well as a Go language generator from thegolang/protobuf official package, with more languages in development. You can
-find out more in theproto3 language guideand thereference
-documentationavailable for each language. The reference documentation also
-includes aformal specificationfor the.protofile format.In general, while you can use proto2 (the current default protocol buffers
-version), we recommend that you use proto3 with gRPC as it lets you use the
-full range of gRPC-supported languages, as well as avoiding compatibility
-issues with proto2 clients talking to proto3 servers and vice versa.Last modified July 25, 2024:Embed relevent YT videos to docs (#1325) (a732b16)View page sourceEdit this pageCreate child pageCreate documentation issueCreate project issue© 2024 gRPC AuthorsTerms|Privacy|Trademarks|License|About
+Quick start
+This guide gets you started with gRPC in Go with a simple working example.
+Quick start
+Prerequisites
+[Go](https://golang.org), any one of the two latest major[releases of Go](https://golang.org/doc/devel/release.html).For installation instructions, see Go’s
+[Getting Started](https://golang.org/doc/install)guide.[Protocol buffer](https://developers.google.com/protocol-buffers)compiler,protoc
+,[version 3](https://protobuf.dev/programming-guides/proto3).For installation instructions, see
+[Protocol Buffer Compiler Installation](/docs/protoc-installation/).Go plugins for the protocol compiler:
+Install the protocol compiler plugins for Go using the following commands:
+$ go install google.golang.org/protobuf/cmd/protoc-gen-go@latest $ go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+Update your
+PATH
+so that theprotoc
+compiler can find the plugins:$ export PATH="$PATH:$(go env GOPATH)/bin"
+Get the example code
+The example code is part of the [grpc-go](https://github.com/grpc/grpc-go) repo.
+[Download the repo as a zip file](https://github.com/grpc/grpc-go/archive/v1.66.0.zip)and unzip it, or clone the repo:$ git clone -b v1.66.0 --depth 1 https://github.com/grpc/grpc-go
+Change to the quick start example directory:
+$ cd grpc-go/examples/helloworld
+Run the example
+From the examples/helloworld
+directory:
+Compile and execute the server code:
+$ go run greeter_server/main.go
+From a different terminal, compile and execute the client code to see the client output:
+$ go run greeter_client/main.go Greeting: Hello world
+Congratulations! You’ve just run a client-server application with gRPC.
+Update the gRPC service
+In this section you’ll update the application with an extra server method. The
+gRPC service is defined using [protocol buffers](https://developers.google.com/protocol-buffers). To learn more about how to
+define a service in a .proto
+file see [Basics tutorial](../basics/).
+For now, all you need to know is that both the
+server and the client stub have a SayHello()
+RPC method that takes a
+HelloRequest
+parameter from the client and returns a HelloReply
+from the
+server, and that the method is defined like this:
+// The greeting service definition.
+service Greeter {
+// Sends a greeting
+rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+// The request message containing the user's name.
+message HelloRequest {
+string name = 1;
+}
+// The response message containing the greetings
+message HelloReply {
+string message = 1;
+}
+Open helloworld/helloworld.proto
+and add a new SayHelloAgain()
+method, with
+the same request and response types:
+// The greeting service definition.
+service Greeter {
+// Sends a greeting
+rpc SayHello (HelloRequest) returns (HelloReply) {}
+// Sends another greeting
+rpc SayHelloAgain (HelloRequest) returns (HelloReply) {}
+}
+// The request message containing the user's name.
+message HelloRequest {
+string name = 1;
+}
+// The response message containing the greetings
+message HelloReply {
+string message = 1;
+}
+Remember to save the file!
+Regenerate gRPC code
+Before you can use the new service method, you need to recompile the updated
+.proto
+file.
+While still in the examples/helloworld
+directory, run the following command:
+$ protoc --go_out=. --go_opt=paths=source_relative \
+--go-grpc_out=. --go-grpc_opt=paths=source_relative \
+helloworld/helloworld.proto
+This will regenerate the helloworld/helloworld.pb.go
+and helloworld/helloworld_grpc.pb.go
+files, which contain:
+- Code for populating, serializing, and retrieving
+HelloRequest
+andHelloReply
+message types. - Generated client and server code.
+Update and run the application
+You have regenerated server and client code, but you still need to implement and call the new method in the human-written parts of the example application.
+Update the server
+Open greeter_server/main.go
+and add the following function to it:
+func (s *server) SayHelloAgain(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
+return &pb.HelloReply{Message: "Hello again " + in.GetName()}, nil
+}
+Update the client
+Open greeter_client/main.go
+to add the following code to the end of the
+main()
+function body:
+r, err = c.SayHelloAgain(ctx, &pb.HelloRequest{Name: *name})
+if err != nil {
+log.Fatalf("could not greet: %v", err)
+}
+log.Printf("Greeting: %s", r.GetMessage())
+Remember to save your changes.
+Run!
+Run the client and server like you did before. Execute the following commands
+from the examples/helloworld
+directory:
+Run the server:
+$ go run greeter_server/main.go
+From another terminal, run the client. This time, add a name as a command-line argument:
+$ go run greeter_client/main.go --name=Alice
+You’ll see the following output:
+Greeting: Hello Alice Greeting: Hello again Alice
+What’s next
+- Learn how gRPC works in
+[Introduction to gRPC](/docs/what-is-grpc/introduction/)and[Core concepts](/docs/what-is-grpc/core-concepts/). - Work through the
+[Basics tutorial](../basics/). - Explore the
+[API reference](../api).
+[Add missing version specifications for go install (#1343) (445745e)](https://github.com/grpc/grpc.io/commit/445745e1fadc1477a41f47b0aaccb2ab77a75690)

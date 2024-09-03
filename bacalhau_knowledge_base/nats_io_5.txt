@@ -1,19 +1,33 @@
+Source: nats_io
 URL: https://nats.io/blog
 
-AboutDownloadDocumentationBlogCommunitySupportPrivacyNATS BlogWelcome to the NATS Blog! We have content from NATS Maintainers, end-users, and community contributors. We always appreciate outside contributions so if you would like to contribute a blog post, see ourContributor's Guidefor more information.Real-time analytics from Edge to multiple factories with NATS and i-flowJAN STREHL— July 22, 2024In the competitive landscape of the manufacturing industry (e.g., automotive), achieving efficient and scalable operations across multiple factory locations is critical. This case study examines the implementation of a real-time analytics solution using NATS and i-flow to overcome common challenges such as data silos, real-time processing requirements, scalability, and communication inefficiencies in OT/IT environments. The primary design goal was to seamlessly scale real-time analytics across various factory locations.
-Challenge There are several critical challenges that typically hinder operational efficiency and scalability through real-time analytics:Read more...Delegate with trustVINCENT VERMERSCH— May 21, 2024When speaking about async patterns (messaging, event sourcing, etc.) with other developers, they often seem afraid of eventual consistency. However, it is often expressed in the form of:
-The frontend needs the answer directly
-The business process needs to be validated with perfect data
-My next page needs fresh data to display properly
-With a messaging system, you have to wait for the message to be processed and the state to be updated.Read more...Nothin' but NATS - Building NatsterKEVIN HOFFMAN— March 26, 2024This is the first post in a new series where we explore patterns, practices, and samples of applications built using nothing but features available from NATS. We take a critical look at dependencies and frameworks and ask, “Do we really need the extra complexity?". If we’re already using NATS, then what would it be like to use nothing but our NATS infrastructure for application development?
-Introducing Natster Natster is an open source reference application that illustrates how to build a secure media sharing platform that leverages core NATS primitives for things we might otherwise get from third party applications, platforms, or libraries.Read more...Guest Post: Real-time IoT monitoring with NATS JetStream, RisingWave, and SupersetFAHAD SHAH— February 29, 2024In the realm of IoT, real-time data processing presents specific challenges, including limited edge computing resources, network constraints, scalability considerations, and device diversity. Overcoming these obstacles requires the application of efficient edge computing techniques, robust security measures, standardized protocols, scalable management systems, and advanced data processing capabilities.
-By combining the strengths of NATS JetStream, RisingWave, and Superset, a powerful solution emerges for the development of reliable and scalable real-time IoT applications.Read more...Introducing the NATS Execution EngineKEVIN HOFFMAN— January 22, 2024As people continue to leverage their NATS infrastructure by increasing the number of apps and services that rely on NATS, we tend to see some common patterns emerge. People end up with two different views of their infrastructure: the NATS connectivity map and the cluster-style resource views that come from their workload scheduler(s).
-With so many distributed applications, the infrastructure and connectivity is in place to support NATS and NATS-based applications, but is often underutilized.Read more...Recovering Quorum After Renaming ServersJOHN WELDON— January 20, 2024Occasionally, a NATS cluster can lose quorum for various reasons.
-Here, we’ll look at one specific case, and how to recover from it.Read more...Streamlining Asynchronous Services with FastStreamTVRTKO STERNAK— October 23, 2023Ever felt lost in the complexity of microservices and message queues? That’s precisely why FastStream was created. Initially, it was our solution to the challenges we faced with messaging queues in our own projects. But as it simplified our lives, we realized it could do the same for others. So, we decided to share it with the world.
-FastStream is a Python framework for building asynchronous services that interact with event streams like Apache Kafka, RabbitMQ, and NATS.Read more...NATS Server 2.10 ReleaseBYRON RUTH— October 3, 2023It’s finally here! 🤩 The NATS team is thrilled to announce the 2.10 release of the NATS Server!
-We want to thank everyone who contributed through discussions, raising issues, code contribution and testing early versions. ❤️
-The journey to 2.10 Before diving into 2.10 itself, let’s reflect on the journey leading up to this release and why it is significant.
-It has been just over a year since the 2.9.x series started and a record 22 patch releases have landed since then.Read more...NATS Server 2.9.22 ReleaseBYRON RUTH— September 8, 2023The NATS maintainers are thrilled to announce the 2.9.22 release ! This brings a handful of fixes and improvements leading up to the 2.10.0 release coming later this month.
-We want to thank all of the people who contributed to this release through reporting issues, documentation improvements, and code contributions. As always, if you are interested in contributing, please check out all the ways you can .
-Before diving into 2.Read more...NASCAR uses NATS to distribute real-time telemetry dataJEAN-NOËL MOYNE— July 31, 2023Pushing the boundaries from the edge to the cloud at ultra-low latency: how NASCAR uses NATS to deliver real-time racing data to broadcasters, racing teams, and fans.
-Distributing live telemetry data NASCAR’s NextGen cars feature a host of changes including being fitted with sensors generating 60 data points hundreds of times per second for the duration of the race. This telemetry data is transmitted over UHF radio waves to the NASCAR mobile data center (literally a data center in a semi-truck trailer that goes to each track venue), where it is then ingested and retransmitted both to the racing teams and broadcasters on-site at the track but also to the AWS cloud where it is both stored for historical analysis and re-distributed in real-time to the team’s back offices and to racing fans.Read more...«««123…12»»»Copyright © NATS Authors 2024NATS is aCloud Native Computing Foundationincubating projectThe Linux Foundation has registered trademarks and uses trademarks.For a list of trademarks of The Linux Foundation, please seeTrademark Usage page.
+[Read more...](/blog/i-flow-case-study/)
+NATS Blog
+Welcome to the NATS Blog! We have content from NATS Maintainers, end-users, and community contributors. We always appreciate outside contributions so if you would like to contribute a blog post, see our [Contributor's Guide](/contributing/#contributing-a-blog-post) for more information.
+[Real-time analytics from Edge to multiple factories with NATS and i-flow](/blog/i-flow-case-study/)
+JAN STREHL — July 22, 2024
+VINCENT VERMERSCH — May 21, 2024
+[Read more...](/blog/jetstream-eventual-consistency/)
+[Nothin' but NATS - Building Natster](/blog/nbn-building-natster/)
+KEVIN HOFFMAN — March 26, 2024
+[Read more...](/blog/nbn-building-natster/)
+[Guest Post: Real-time IoT monitoring with NATS JetStream, RisingWave, and Superset](/blog/real-time-monitoring-solution-jetstream-risingwave-superset/)
+FAHAD SHAH — February 29, 2024
+[Read more...](/blog/real-time-monitoring-solution-jetstream-risingwave-superset/)
+[Introducing the NATS Execution Engine](/blog/introducing_nex/)
+KEVIN HOFFMAN — January 22, 2024
+[Read more...](/blog/introducing_nex/)
+[Recovering Quorum After Renaming Servers](/blog/nats-recover-quorum/)
+JOHN WELDON — January 20, 2024
+Occasionally, a NATS cluster can lose quorum for various reasons. Here, we’ll look at one specific case, and how to recover from it.
+[Read more...](/blog/nats-recover-quorum/)
+[Streamlining Asynchronous Services with FastStream](/blog/nats-supported-by-faststream/)
+TVRTKO STERNAK — October 23, 2023
+[Read more...](/blog/nats-supported-by-faststream/)
+BYRON RUTH — October 3, 2023
+[Read more...](/blog/nats-server-2.10-release/)
+BYRON RUTH — September 8, 2023
+[Read more...](/blog/nats-server-2.9.22-release/)
+[NASCAR uses NATS to distribute real-time telemetry data](/blog/nascar-nats-blog/)
+JEAN-NOËL MOYNE — July 31, 2023
+[Read more...](/blog/nascar-nats-blog/)

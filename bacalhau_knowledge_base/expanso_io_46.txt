@@ -1,3 +1,51 @@
-URL: https://expanso.io/events/list/?eventDisplay=past
+Source: expanso_io
+URL: https://expanso.io/use-cases/#main
 
-Skip to contentWhy Expanso?Why Choose Expanso?Security and GovernanceProductBacalhauFeaturesSolutionsUse CasesDistributed Data WarehouseLog ProcessingEdge Machine LearningDistributed Fleet ManagementResourcesDocumentationGitHubBacalhau BlogEventsFAQsHelp CenterCompanyWhat We ValueWho We AreCareersNewsroomContactGitHubInstall FreeMenuWhy Expanso?Why Choose Expanso?Security and GovernanceProductBacalhauFeaturesSolutionsUse CasesDistributed Data WarehouseLog ProcessingEdge Machine LearningDistributed Fleet ManagementResourcesDocumentationGitHubBacalhau BlogEventsFAQsHelp CenterCompanyWhat We ValueWho We AreCareersNewsroomContactGitHubInstall FreeInstall FreeEventsHighlightedBacalhau Office HourJoin us for a Bacalhau Office Hour! This is a unique opportunity to engage with our team, gain insights into what’s brewing, and discuss innovative solutions that are shaping the future. Whether you’re a tech enthusiast, a professional in the industry, or just curious about the future of technology, thisRead MoreBacalhau Office HourJoin us for a Bacalhau Office Hour! This is a unique opportunity to engage with our team, gain insights into what’s brewing, and discuss innovative solutions that are shaping the future. Whether you’re a tech enthusiast, a professional in the industry, or just curious about the future of technology, thisRead MoreLoading view.Events Search and Views NavigationSearchEnter Keyword. Search for Events by Keyword.Find EventsHide filtersEvent Views NavigationListListMonthDayToday11/28/2023November 28, 2023-9/1/2024NowSelect date.FiltersChanging any of the form inputs will cause the list of events to refresh with the filtered results.DoneClearEvent Category:Open filterClose filterEvent CategoryFeatured Events:Open filterClose filterFeatured EventsShow featured events onlyTags:Open filterClose filterTagsDay:Open filterClose filterDayMondayTuesdayWednesdayThursdayFridaySaturdaySundayTime:Open filterClose filterTimeAll DayMorningAfternoonEveningNightEvent Status:Open filterClose filterEvent StatusHide canceled eventsHide postponed eventsNovember 2023Tue28November 28, 2023 @ 4:30 pm-5:30 pmBacalhau Office HourJoin us for a Bacalhau Office Hour! This is a unique opportunity to engage with our team, gain insights into what's brewing, and discuss innovative solutions that are shaping the future. Whether you're a tech enthusiast, a professional in the industry, or just curious about the future of technology, this session is for you! If...December 2023Tue12December 12, 2023 @ 4:30 pm-5:30 pmBacalhau Office HourJoin us for a Bacalhau Office Hour! This is a unique opportunity to engage with our team, gain insights into what's brewing, and discuss innovative solutions that are shaping the future. Whether you're a tech enthusiast, a professional in the industry, or just curious about the future of technology, this session is for you! If...December 2023Tue12December 12, 2023 @ 4:30 pm-5:30 pmBacalhau Office HourJoin us for a Bacalhau Office Hour! This is a unique opportunity to engage with our team, gain insights into what's brewing, and discuss innovative solutions that are shaping the future. Whether you're a tech enthusiast, a professional in the industry, or just curious about the future of technology, this session is for you! If...December 2023Tue12December 12, 2023 @ 4:30 pm-5:30 pmBacalhau Office HourJoin us for a Bacalhau Office Hour! This is a unique opportunity to engage with our team, gain insights into what's brewing, and discuss innovative solutions that are shaping the future. Whether you're a tech enthusiast, a professional in the industry, or just curious about the future of technology, this session is for you! If...December 2023Tue12December 12, 2023 @ 4:30 pm-5:30 pmBacalhau Office HourJoin us for a Bacalhau Office Hour! This is a unique opportunity to engage with our team, gain insights into what's brewing, and discuss innovative solutions that are shaping the future. Whether you're a tech enthusiast, a professional in the industry, or just curious about the future of technology, this session is for you! If...December 2023Tue12December 12, 2023 @ 4:30 pm-5:30 pmBacalhau Office HourJoin us for a Bacalhau Office Hour! This is a unique opportunity to engage with our team, gain insights into what's brewing, and discuss innovative solutions that are shaping the future. Whether you're a tech enthusiast, a professional in the industry, or just curious about the future of technology, this session is for you! If...December 2023Tue12December 12, 2023 @ 4:30 pm-5:30 pmBacalhau Office HourJoin us for a Bacalhau Office Hour! This is a unique opportunity to engage with our team, gain insights into what's brewing, and discuss innovative solutions that are shaping the future. Whether you're a tech enthusiast, a professional in the industry, or just curious about the future of technology, this session is for you! If...PreviousEventsTodayNextEventsStay up to date and sign up to our blog:Visit BlogThe Compute Over Data PlatformCompanyHomeWhat We ValueWho We AreNewsroomContact UsCareersResourcesDocumentationFAQBlogSupportSocialLinkedInYouTubeSlackX ExpansoX BacalhauGitHub© Expanso Inc. All Rights Reserved 2023Privacy PolicyTrademarksTerms & ConditionsPrivacy PolicyTrademarksTerms & Conditions
+Explore the transformative power of Expanso in data management, edge computing and machine learning deployment.
+In this section, we showcase a selection of remarkable use cases that demonstrate how Expanso can revolutionize your approach to data processing and machine learning.
+Log vending on device
+The current logs are sent uncompressed, are processed and saved in the cloud. A significant portion of the log data is unimportant, resulting in unnecessary bandwidth consumption and expensive compute power usage.
+Solution
+Expanso supports log vending on devices, eliminating the need for costly data transfers and compute to/on central servers.
+Benefit
+Save on expensive data transfer and cloud compute power costs, especially in scenarios where large volumes of logs need to be managed.
+ML inference on the edge
+Data governance frequently hinders the deployment of machine learning inference models on the edge and the model orchestration can be challenging.
+Solution
+With Expanso, you can effortlessly deploy machine learning models on edge devices for real-time inference.
+Benefit
+With Expanso, you can effortlessly deploy machine learning models on edge devices for real-time inference.
+Cloud image search across geo locations
+Implementing a cloud image search while keeping data within your premises.
+Solution
+Expanso empowers you to train machine learning models right where your data is stored, eliminating the need for sensitive data to leave your premises.
+Benefit
+Gain full control over your data, streamline data governance, enhance data security, all while harnessing the advantages of cloud-based image search capabilities.
+Distributed fleet management
+Fleet data is hard to access, has to be centralized for any usage, has additional security risks and is therefore costly to use.
+Solution
+Bacalhau’s OSQuery integration and container execution provides a distributed SQL-like engine to query fleet data in-place and support for arbitrary, end-user specific binaries.
+Distributed data warehouse
+Managing multiple data sources can hinder effective data utilization and often necessitates centralization.
+Solution
+Bacalhau offers a virtual data warehouse by federating queries across distributed data sources.
+Benefit
+Eliminate the need for central data storage and transfers, simultaneously enhancing cost efficiency and security.
+Running jobs over irregular / unreliable network connections
+Unreliable network connections pose difficulties in data transfer and deployment of containers for software on edge devices.
+Solution
+Bacalhau employs decentralized job coordination to execute workloads robustly on unreliable edge networks.
+Benefit
+Achieve resilient deployment in challenging external conditions, making it an ideal solution for use in remote edge computing environments.
+Federated learning with isolated divisions
+Companies face barriers in collaboratively training Machine Learning models across divisions separated by regulatory barriers. This hinders model development, with existing solutions either lacking global insights, leaking sensitive information, or compromising on data quality.
+Solution
+Bacalhau enables collaborative ML model training without the need to transfer raw data. Stringent data controls ensure that only the authorized insights are shared while effectively coordinating the learning process across divisions.
+Benefit
+Companies achieve accurate ML models, minimize compliance risks, and enjoy controlled coordination for optimized learning.
+Shared server
+Specialized computing resources are often a tradeoff between dedicated hardware cost and coordination/permission obstacles.
+Solution
+Bacalhau offers a decentralized platform for scheduling and coordinating experiments across shared GPU/TPU hardware, without transferring private code/data.
+Benefit
+Bacalhau optimizes hardware usage through sharing, accelerates research speed via scalable distributed access, and ensures data security, significantly benefiting cross-institutional collaborative efforts.

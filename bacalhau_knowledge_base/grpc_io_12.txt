@@ -1,16 +1,141 @@
-URL: https://grpc.io/docs/languages/java/quickstart/
+Source: grpc_io
+URL: https://grpc.io/docs/languages/python/quickstart/
 
-gRPCAboutMeetDocsGuidesShowcaseBlogCommunitygRPConf 2024 is happening NEXT WEEK onAug. 27th!-Register nowand get 25% off with the code GOOGLE25.DocsWhat is gRPC?IntroductionCore conceptsFAQLanguagesC# / .NETAPI (legacy)Daily builds (legacy)C++Quick startBasics tutorialAsync-API tutorialAsynchronous Callback API TutorialBest Practices for gRPC C++ API and FAQALTSAPIDartQuick startBasics tutorialAPIGoQuick startBasics tutorialALTSAPIGenerated codeJavaQuick startBasics tutorialALTSAPIGenerated codeKotlinQuick startBasics tutorialAPINodeQuick startBasics tutorialAPIObjective-CQuick startBasics tutorialOAuth2APIPHPQuick startBasics tutorialAPIDaily buildsPythonQuick startBasics tutorialALTSGenerated codeAPIDaily buildsRubyQuick startBasics tutorialAPIDaily buildsPlatformsAndroidJavaQuick startBasics tutorialAPIKotlinQuick startAPIWebQuick startBasics tutorialGuidesAuthenticationBenchmarkingCancellationCompressionCustom Backend MetricsCustom Load Balancing PoliciesCustom Name ResolutionDeadlinesDebuggingError handlingFlow ControlHealth CheckingInterceptorsKeepaliveMetadataOpenTelemetry MetricsPerformance Best PracticesReflectionRequest HedgingRetryService ConfigStatus CodesWait-for-ReadyView page sourceEdit this pageCreate child pageCreate documentation issueCreate project issuePrerequisitesGet the example codeRun the exampleUpdate the gRPC serviceUpdate the appUpdate the serverUpdate the clientRun the updated appWhat’s nextDocsLanguagesJavaQuick startQuick startThis guide gets you started with gRPC in Java with a simple working example.ContentsPrerequisitesGet the example codeRun the exampleUpdate the gRPC serviceUpdate the appUpdate the serverUpdate the clientRun the updated appWhat’s nextQuick startThis guide gets you started with gRPC in Java with a simple working example.PrerequisitesJDKversion 7 or higherGet the example codeThe example code is part of thegrpc-javarepo.Download the repo as a zip fileand unzip it, or clone
-the repo:$ git clone -b v1.66.0 --depth1https://github.com/grpc/grpc-javaChange to the examples directory:$cdgrpc-java/examplesRun the exampleFrom theexamplesdirectory:Compile the client and server$ ./gradlew installDistRun the server:$ ./build/install/examples/bin/hello-world-serverINFO: Server started, listening on50051From another terminal, run the client:$ ./build/install/examples/bin/hello-world-clientINFO: Will try to greet world ...INFO: Greeting: Hello worldCongratulations! You’ve just run a client-server application with gRPC.NoteWe’ve omitted timestamps from the client and server trace output shown in this
-page.Update the gRPC serviceIn this section you’ll update the application by adding an extra server method.
-The gRPC service is defined usingprotocol buffers. To learn more about
-how to define a service in a.protofile seeBasics tutorial. For now, all
-you need to know is that both the server and the client stub have aSayHello()RPC method that takes aHelloRequestparameter from the client and returns aHelloReplyfrom the server, and that the method is defined like this:// The greeting service definition.serviceGreeter {// Sends a greetingrpcSayHello (HelloRequest)returns(HelloReply) {}}// The request message containing the user's name.messageHelloRequest{stringname=1;}// The response message containing the greetingsmessageHelloReply{stringmessage=1;}Opensrc/main/proto/helloworld.protoand add a newSayHelloAgain()method
-with the same request and response types asSayHello():// The greeting service definition.serviceGreeter {// Sends a greeting. Original method.rpcSayHello (HelloRequest)returns(HelloReply) {}// Sends another greeting. New method.rpcSayHelloAgain (HelloRequest)returns(HelloReply) {}}// The request message containing the user's name.messageHelloRequest{// The name of the user.stringname=1;}// The response message containing the greetingsmessageHelloReply{// The greeting message.stringmessage=1;}Remember to save the file!Update the appWhen you build the example, the build process regeneratesGreeterGrpc.java,
-which contains the generated gRPC client and server classes. This also
-regenerates classes for populating, serializing, and retrieving our request and
-response types.However, you still need to implement and call the new method in the
-hand-written parts of the example app.Update the serverIn the same directory, opensrc/main/java/io/grpc/examples/helloworld/HelloWorldServer.java. Implement the
-new method like this:// Implementation of the gRPC service on the server-side.privateclassGreeterImplextendsGreeterGrpc.GreeterImplBase{@OverridepublicvoidsayHello(HelloRequest req,StreamObserver<HelloReply>responseObserver){// Generate a greeting message for the original methodHelloReply reply=HelloReply.newBuilder().setMessage("Hello "+req.getName()).build();// Send the reply back to the client.responseObserver.onNext(reply);// Indicate that no further messages will be sent to the client.responseObserver.onCompleted();}@OverridepublicvoidsayHelloAgain(HelloRequest req,StreamObserver<HelloReply>responseObserver){// Generate another greeting message for the new method.HelloReply reply=HelloReply.newBuilder().setMessage("Hello again "+req.getName()).build();// Send the reply back to the client.responseObserver.onNext(reply);// Indicate that no further messages will be sent to the client.responseObserver.onCompleted();}}Update the clientIn the same directory, opensrc/main/java/io/grpc/examples/helloworld/HelloWorldClient.java. Call the new
-method like this:// Client-side logic for interacting with the gRPC service.publicvoidgreet(String name){// Log a message indicating the intention to greet a user.logger.info("Will try to greet "+name+" ...");// Creating a request with the user's name.HelloRequest request=HelloRequest.newBuilder().setName(name).build();HelloReply response;try{// Call the original method on the server.response=blockingStub.sayHello(request);}catch(StatusRuntimeException e){// Log a warning if the RPC fails.logger.log(Level.WARNING,"RPC failed: {0}",e.getStatus());return;}// Log the response from the original method.logger.info("Greeting: "+response.getMessage());try{// Call the new method on the server.response=blockingStub.sayHelloAgain(request);}catch(StatusRuntimeException e){// Log a warning if the RPC fails.logger.log(Level.WARNING,"RPC failed: {0}",e.getStatus());return;}// Log the response from the new method.logger.info("Greeting: "+response.getMessage());}Run the updated appRun the client and server like you did before. Execute the following commands
-from theexamplesdirectory:Compile the client and server:$ ./gradlew installDistRun the server:$ ./build/install/examples/bin/hello-world-serverINFO: Server started, listening on50051From another terminal, run the client:$ ./build/install/examples/bin/hello-world-clientINFO: Will try to greet world ...INFO: Greeting: Hello worldINFO: Greeting: Hello again worldWhat’s nextLearn how gRPC works inIntroduction to gRPCandCore concepts.Work through theBasics tutorial.Explore theAPI reference.Last modified January 25, 2024:Added comments on quickstart, java: To enhancing user comprehension a… (#1250) (4f7949c)View page sourceEdit this pageCreate child pageCreate documentation issueCreate project issue© 2024 gRPC AuthorsTerms|Privacy|Trademarks|License|About
+Quick start
+This guide gets you started with gRPC in Python with a simple working example.
+Quick start
+Prerequisites
+- Python 3.7 or higher
+pip
+version 9.0.1 or higher
+If necessary, upgrade your version of pip
+:
+$ python -m pip install --upgrade pip
+If you cannot upgrade pip
+due to a system-owned installation, you can
+run the example in a virtualenv:
+$ python -m pip install virtualenv
+$ virtualenv venv
+$ source venv/bin/activate
+$ python -m pip install --upgrade pip
+gRPC
+Install gRPC:
+$ python -m pip install grpcio
+Or, to install it system wide:
+$ sudo python -m pip install grpcio
+gRPC tools
+Python’s gRPC tools include the protocol buffer compiler protoc
+and the
+special plugin for generating server and client code from .proto
+service
+definitions. For the first part of our quick-start example, we’ve already
+generated the server and client stubs from
+[helloworld.proto](https://github.com/grpc/grpc/tree/v1.66.0/examples/protos/helloworld.proto),
+but you’ll need the tools for the rest of our quick start, as well as later
+tutorials and your own projects.
+To install gRPC tools, run:
+$ python -m pip install grpcio-tools
+Download the example
+You’ll need a local copy of the example code to work through this quick start. Download the example code from our GitHub repository (the following command clones the entire repository, but you just need the examples for this quick start and other tutorials):
+# Clone the repository to get the example code:
+$ git clone -b v1.66.0 --depth 1 --shallow-submodules https://github.com/grpc/grpc
+# Navigate to the "hello, world" Python example:
+$ cd grpc/examples/python/helloworld
+Run a gRPC application
+From the examples/python/helloworld
+directory:
+Run the server:
+$ python greeter_server.py
+From another terminal, run the client:
+$ python greeter_client.py
+Congratulations! You’ve just run a client-server application with gRPC.
+Update the gRPC service
+Now let’s look at how to update the application with an extra method on the
+server for the client to call. Our gRPC service is defined using protocol
+buffers; you can find out lots more about how to define a service in a .proto
+file in [Introduction to gRPC](/docs/what-is-grpc/introduction/) and [Basics tutorial](../basics/). For now all you need
+to know is that both the server and the client “stub” have a SayHello
+RPC
+method that takes a HelloRequest
+parameter from the client and returns a
+HelloReply
+from the server, and that this method is defined like this:
+// The greeting service definition.
+service Greeter {
+// Sends a greeting
+rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+// The request message containing the user's name.
+message HelloRequest {
+string name = 1;
+}
+// The response message containing the greetings
+message HelloReply {
+string message = 1;
+}
+Let’s update this so that the Greeter
+service has two methods. Edit
+examples/protos/helloworld.proto
+and update it with a new SayHelloAgain
+method, with the same request and response types:
+// The greeting service definition.
+service Greeter {
+// Sends a greeting
+rpc SayHello (HelloRequest) returns (HelloReply) {}
+// Sends another greeting
+rpc SayHelloAgain (HelloRequest) returns (HelloReply) {}
+}
+// The request message containing the user's name.
+message HelloRequest {
+string name = 1;
+}
+// The response message containing the greetings
+message HelloReply {
+string message = 1;
+}
+Remember to save the file!
+Generate gRPC code
+Next we need to update the gRPC code used by our application to use the new service definition.
+From the examples/python/helloworld
+directory, run:
+$ python -m grpc_tools.protoc -I../../protos --python_out=. --pyi_out=. --grpc_python_out=. ../../protos/helloworld.proto
+This regenerates helloworld_pb2.py
+which contains our generated request and
+response classes and helloworld_pb2_grpc.py
+which contains our generated
+client and server classes.
+Update and run the application
+We now have new generated server and client code, but we still need to implement and call the new method in the human-written parts of our example application.
+Update the server
+In the same directory, open greeter_server.py
+. Implement the new method like
+this:
+class Greeter(helloworld_pb2_grpc.GreeterServicer):
+def SayHello(self, request, context):
+return helloworld_pb2.HelloReply(message=f"Hello, {request.name}!")
+def SayHelloAgain(self, request, context):
+return helloworld_pb2.HelloReply(message=f"Hello again, {request.name}!")
+...
+Update the client
+In the same directory, open greeter_client.py
+. Call the new method like this:
+def run():
+with grpc.insecure_channel('localhost:50051') as channel:
+stub = helloworld_pb2_grpc.GreeterStub(channel)
+response = stub.SayHello(helloworld_pb2.HelloRequest(name='you'))
+print("Greeter client received: " + response.message)
+response = stub.SayHelloAgain(helloworld_pb2.HelloRequest(name='you'))
+print("Greeter client received: " + response.message)
+Run!
+Just like we did before, from the examples/python/helloworld
+directory:
+Run the server:
+$ python greeter_server.py
+From another terminal, run the client:
+$ python greeter_client.py
+What’s next
+- Learn how gRPC works in
+[Introduction to gRPC](/docs/what-is-grpc/introduction/)and[Core concepts](/docs/what-is-grpc/core-concepts/). - Work through the
+[Basics tutorial](../basics/). - Explore the
+[API reference](../api).
+[Format python snippets (#1187) (e76a103)](https://github.com/grpc/grpc.io/commit/e76a1038c3ebe81fdc346106167a2697bf7eada2)

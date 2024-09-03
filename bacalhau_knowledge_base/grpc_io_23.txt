@@ -1,3 +1,12 @@
-URL: https://grpc.io/docs/what-is-grpc/
+Source: grpc_io
+URL: https://grpc.io/docs/languages/python/
 
-gRPCAboutMeetDocsGuidesShowcaseBlogCommunitygRPConf 2024 is happening NEXT WEEK onAug. 27th!-Register nowand get 25% off with the code GOOGLE25.DocsWhat is gRPC?IntroductionCore conceptsFAQLanguagesC# / .NETAPI (legacy)Daily builds (legacy)C++Quick startBasics tutorialAsync-API tutorialAsynchronous Callback API TutorialBest Practices for gRPC C++ API and FAQALTSAPIDartQuick startBasics tutorialAPIGoQuick startBasics tutorialALTSAPIGenerated codeJavaQuick startBasics tutorialALTSAPIGenerated codeKotlinQuick startBasics tutorialAPINodeQuick startBasics tutorialAPIObjective-CQuick startBasics tutorialOAuth2APIPHPQuick startBasics tutorialAPIDaily buildsPythonQuick startBasics tutorialALTSGenerated codeAPIDaily buildsRubyQuick startBasics tutorialAPIDaily buildsPlatformsAndroidJavaQuick startBasics tutorialAPIKotlinQuick startAPIWebQuick startBasics tutorialGuidesAuthenticationBenchmarkingCancellationCompressionCustom Backend MetricsCustom Load Balancing PoliciesCustom Name ResolutionDeadlinesDebuggingError handlingFlow ControlHealth CheckingInterceptorsKeepaliveMetadataOpenTelemetry MetricsPerformance Best PracticesReflectionRequest HedgingRetryService ConfigStatus CodesWait-for-ReadyView page sourceEdit this pageCreate child pageCreate documentation issueCreate project issueDocsWhat is gRPC?What is gRPC?New to gRPC? Start with the following pagesIntroduction to gRPCAn introduction to gRPC and protocol buffers.Core concepts, architecture and lifecycleAn introduction to key gRPC concepts, with an overview of gRPC architecture and RPC life cycle.FAQLast modified July 25, 2024:Embed relevent YT videos to docs (#1325) (a732b16)View page sourceEdit this pageCreate child pageCreate documentation issueCreate project issue© 2024 gRPC AuthorsTerms|Privacy|Trademarks|License|About
+Python
+[Quick start](quickstart/)
+Run your first Python gRPC app in minutes!
+[Basics tutorial](basics/)
+Learn about Python gRPC basics.
+Reference
+Last modified December 18, 2020:
+Run your first Python gRPC app in minutes!
+Learn about Python gRPC basics.

@@ -1,3 +1,93 @@
-URL: https://docs.bacalhau.org/setting-up/workload-onboarding/index-1
+Source: bacalhau_docs
+URL: https://docs.bacalhau.org/setting-up/workload-onboarding/container/docker-workload-onboarding
 
-Bacalhau Docsv.1.4.0v.1.3.0v.1.3.1v.1.3.2v.1.4.0GitHubSlackContactMoreGitHubSlackContactAsk or SearchCtrl+ KWelcomeGetting StartedHow Bacalhau WorksInstallationCreate NetworkHardware SetupContainer OnboardingDocker WorkloadsWebAssembly (Wasm) WorkloadsSetting UpRunning NodesNode OnboardingGPU InstallationJob selection policyAccess ManagementNode persistenceConnect StorageConfiguration ManagementConfiguring Transport Level SecurityLimits and TimeoutsTest Network LocallyBacalhau WebUIWorkload OnboardingContainerDocker Workload OnboardingWebAssembly (Wasm) WorkloadsBacalhau Docker ImageHow To Work With Custom Containers in BacalhauPythonBuilding and Running Custom Python ContainerRunning Pandas on BacalhauRunning a Python ScriptRunning Jupyter Notebooks on BacalhauScripting Bacalhau with PythonR (language)Building and Running your Custom R Containers on BacalhauRunning a Simple R Script on BacalhauRun CUDA programs on BacalhauRunning a Prolog ScriptReading Data from Multiple S3 Buckets using BacalhauRunning Rust programs as WebAssembly (WASM)Generate Synthetic Data using Sparkov Data Generation techniqueData IngestionCopy Data from URL to Public StoragePinning DataRunning a Job over S3 dataNetworking InstructionsAccessing the Internet from JobsUtilizing NATS.io within BacalhauGPU Workloads SetupAutomatic Update CheckingMarketplace DeploymentsGoogle Cloud MarketplaceGuidesWrite a config.yamlWrite a SpecConfigExamplesData EngineeringUsing Bacalhau with DuckDBEthereum Blockchain Analysis with Ethereum-ETL and BacalhauConvert CSV To Parquet Or AvroSimple Image ProcessingOceanography - Data ConversionVideo ProcessingModel InferenceEasyOCR (Optical Character Recognition) on BacalhauRunning Inference on Dolly 2.0 Model with Hugging FaceSpeech Recognition using WhisperStable Diffusion on a GPUStable Diffusion on a CPUObject Detection with YOLOv5 on BacalhauGenerate Realistic Images using StyleGAN3 and BacalhauStable Diffusion Checkpoint InferenceRunning Inference on a Model stored on S3Model TrainingTraining Pytorch Model with BacalhauTraining Tensorflow ModelStable Diffusion Dreambooth (Finetuning)Molecular DynamicsRunning BIDS Apps on BacalhauCoresets On BacalhauGenomics Data GenerationGromacs for AnalysisMolecular Simulation with OpenMM and BacalhauReferencesJobs GuideJob SpecificationJob TypesTask SpecificationEnginesDocker Engine SpecificationWebAssembly (WASM) Engine SpecificationPublishersIPFS Publisher SpecificationLocal Publisher SpecificationS3 Publisher SpecificationSourcesIPFS Source SpecificationLocal Source SpecificationS3 Source SpecificationURL Source SpecificationNetwork SpecificationInput Source SpecificationResources SpecificationResultPath SpecificationConstraint SpecificationLabels SpecificationMeta SpecificationJob TemplatesQueuing & TimeoutsJob QueuingTimeouts SpecificationJob ResultsStateCLI GuideSingle CLI commandsAgentAgent OverviewAgent AliveAgent NodeAgent VersionConfigConfig OverviewConfig Auto-ResourcesConfig DefaultConfig ListConfig SetJobJob OverviewJob DescribeJob ExecJob ExecutionsJob HistoryJob ListJob LogsJob RunJob StopNodeNode OverviewNode ApproveNode DeleteNode ListNode DescribeNode RejectCLI Commands OverviewCommand MigrationAPI GuideBacalhau API overviewBest PracticesAgent EndpointOrchestrator EndpointMigration APINode ManagementAuthentication & AuthorizationDatabase IntegrationDebuggingDebugging Failed JobsDebugging LocallyOpen Telemetry in BacalhauRunning locally in 'devstack'Setting up Dev EnvironmentHelp & FAQBacalhau FAQsRelease NotesGlossaryIntegrationsApache Airflow Provider for BacalhauLilypadBacalhau Python SDKObservability for WebAssembly WorkloadsCommunitySocial MediaStyle GuideWays to ContributePowered by GitBookRunning a Prolog ScriptIntroductionProlog is intended primarily as a declarative programming language: the program logic is expressed in terms of relations, represented as facts and rules. A computation is initiated by running a query over these relations. Prolog is well-suited for specific tasks that benefit from rule-based logical queries such as searching databases, voice control systems, and filling templates.This tutorial is a quick guide on how to run a hello world script on Bacalhau.PrerequisitesTo get started, you need to install the Bacalhau client, see more informationhere1. Running Locally​To get started, installswiplCopysudoadd-apt-repositoryppa:swi-prolog/stablesudoapt-getupdatesudoapt-getinstallswi-prologCreate a file calledhelloworld.pl. The following script prints ‘Hello World’ to the stdout:Copy# helloworld.plhello_world:-write('Hello World'),nl,halt.Running the script to print out the output:Copyswipl-q-shelloworld.pl-ghello_worldAfter the script has run successfully locally, we can now run it on Bacalhau.Before running it on Bacalhau we need to upload it to IPFS.Using theIPFS cli:Copywgethttps://dist.ipfs.io/go-ipfs/v0.4.2/go-ipfs_v0.4.2_linux-amd64.tar.gztarxvfzgo-ipfs_v0.4.2_linux-amd64.tar.gzmvgo-ipfs/ipfs/usr/local/bin/ipfsipfsinitipfscat/ipfs/QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG/readmeipfsconfigAddresses.Gateway/ip4/127.0.0.1/tcp/8082ipfsconfigAddresses.API/ip4/127.0.0.1/tcp/5002nohupipfsdaemon>startup.log&Run the command below to check if our script has been uploaded.Copyipfsaddhelloworld.plThis command outputs the CID. Copy the CID of the file, which in our case isQmYq9ipYf3vsj7iLv5C67BXZcpLHxZbvFAJbtj7aKN5qiiSince the data uploaded to IPFS isn’t pinned, we will need to do that manually. Check this information on how to pin yourdataWe recommend usingNFT.Storage.2. Running a Bacalhau JobWe will mount the script to the container using the-iflag:-i: ipfs://< CID >:/< name-of-the-script >.To submit a job, run the following Bacalhau command:CopyexportJOB_ID=$(bacalhaudockerrun\-iipfs://QmYq9ipYf3vsj7iLv5C67BXZcpLHxZbvFAJbtj7aKN5qii:/helloworld.pl\--wait\--id-only\swipl\--swipl-q-shelloworld.pl-ghello_world)Structure of the Command-i ipfs://QmYq9ipYf3vsj7iLv5C67BXZcpLHxZbvFAJbtj7aKN5qii:/helloworld.pl: Sets the input data for the container.mYq9ipYf3vsj7iLv5C67BXZcpLHxZbvFAJbtj7aKN5qiiis our CID which points to thehelloworld.plfile on the IPFS network. This file will be accessible within the container.-- swipl -q -s helloworld.pl -g hello_world: instructs SWI-Prolog to load the program from thehelloworld.plfile and execute thehello_worldfunction in quiet mode:-q: running in quiet mode-s: load file as a script. In this case we want to run thehelloworld.plscript-g: is the name of the function you want to execute. In this case itshello_worldWhen a job is submitted, Bacalhau prints out the relatedjob_id. We store that in an environment variable so that we can reuse it later on:3. Checking the State of your JobsJob status: You can check the status of the job usingbacalhau job list.Copybacalhaujoblist--id-filter${JOB_ID}--wideWhen it saysPublishedorCompleted, that means the job is done, and we can get the results.Job information: You can find out more information about your job by usingbacalhau job describe.Copybacalhaujobdescribe${JOB_ID}Job download: You can download your job results directly by usingbacalhau job get. Alternatively, you can choose to create a directory to store your results. In the command below, we created a directory (results) and downloaded our job output to be stored in that directory.Copyrm-rfresults&&mkdir-presultsbacalhaujobget$JOB_ID--output-dirresults4. Viewing your Job OutputTo view the file, run the following command:Copycatresults/stdoutSupportIf you have questions or need support or guidance, please reach out to theBacalhau team via Slack(#generalchannel).PreviousRun CUDA programs on BacalhauNextReading Data from Multiple S3 Buckets using BacalhauLast updated2 months agoOn this pageIntroductionPrerequisites1. Running Locally​2. Running a Bacalhau JobStructure of the Command3. Checking the State of your Jobs4. Viewing your Job OutputSupportWas this helpful?Edit on GitHubExport as PDFGet SupportExpansoSupportUse CasesDistributed ETLEdge MLDistributed Data WarehousingFlett ManagementAbout UsWho we areWhat we valueNews & BlogBlogNewsExpanso (2024). All Rights Reserved.
+Docker Workload Onboarding
+How to use docker containers with Bacalhau
+Docker Workloads
+Bacalhau executes jobs by running them within containers. Bacalhau employs a syntax closely resembling Docker, allowing you to utilize the same containers. The key distinction lies in how input and output data are transmitted to the container via IPFS, enabling scalability on a global level.
+This section describes how to migrate a workload based on a Docker container into a format that will work with the Bacalhau client.
+You can check out this example tutorial on [how to work with custom containers in Bacalhau](/setting-up/workload-onboarding/container/index-1) to see how we used all these steps together.
+Requirements
+Here are few things to note before getting started:
+Container Registry: Ensure that the container is published to a public container registry that is accessible from the Bacalhau network.
+Architecture Compatibility: Bacalhau supports only images that match the host node's architecture. Typically, most nodes run on
+linux/amd64
+, so containers inarm64
+format are not able to run.Input Flags: The
+--input ipfs://...
+flag supports only directories and does not support CID subpaths. The--input https://...
+flag supports only single files and does not support URL directories. The--input s3://...
+flag supports S3 keys and prefixes. For example,s3://bucket/logs-2023-04*
+includes all logs for April 2023.
+You can check to see a [list of example public containers](https://github.com/orgs/bacalhau-project/packages?repo_name=examples) used by the Bacalhau team
+Note: Only about a third of examples have their containers here. The rest are under random docker hub registries.
+Runtime Restrictions
+To help provide a safe, secure network for all users, we add the following runtime restrictions:
+Limited Ingress/Egress Networking:
+All ingress/egress networking is limited as described in the [networking](/setting-up/networking-instructions) documentation. You won't be able to pull data/code/weights/
+etc. from an external source.
+Data Passing with Docker Volumes:
+A job includes the concept of input and output volumes, and the Docker executor implements support for these. This means you can specify your CIDs, URLs, and/or S3 objects as input
+paths and also write results to an output
+volume. This can be seen in the following example:
+The above example demonstrates an input volume flag -i s3://mybucket/logs-2023-04*
+, which mounts all S3 objects in bucket mybucket
+with logs-2023-04
+prefix within the docker container at location /input
+(root).
+Output volumes are mounted to the Docker container at the location specified. In the example above, any content written to /output_folder
+will be made available within the apples
+folder in the job results CID.
+Once the job has run on the executor, the contents of stdout
+and stderr
+will be added to any named output volumes the job has used (in this case apples
+), and all those entities will be packaged into the results folder which is then published to a remote location by the publisher.
+Onboarding Your Workload
+Step 1 - Read Data From Your Directory
+If you need to pass data into your container you will do this through a Docker volume. You'll need to modify your code to read from a local directory.
+We make the assumption that you are reading from a directory called /inputs
+, which is set as the default.
+You can specify which directory the data is written to with the [ --input](/references/cli-reference/all-flags#docker-run) CLI flag.
+Step 2 - Write Data to the Your Directory
+If you need to return data from your container you will do this through a Docker volume. You'll need to modify your code to write to a local directory.
+We make the assumption that you are writing to a directory called /outputs
+, which is set as the default.
+You can specify which directory the data is written to with the [ --output-volumes](/references/cli-reference/all-flags#docker-run) CLI flag.
+Step 3 - Build and Push Your Image To a Registry
+At this step, you create (or update) a Docker image that Bacalhau will use to perform your task. You [build your image](https://docs.docker.com/engine/reference/commandline/build/) from your code and dependencies, then [push it](https://docs.docker.com/engine/reference/commandline/push/) to a public registry so that Bacalhau can access it. This is necessary for other Bacalhau nodes to run your container and execute the given task.
+Most Bacalhau nodes are of an x86_64
+architecture, therefore containers should be built for [ x86_64 systems](/setting-up/workload-onboarding/container/docker-workload-onboarding#what-containers-to-use).
+For example:
+Step 4 - Test Your Container
+To test your docker image locally, you'll need to execute the following command, changing the environment variables as necessary:
+Let's see what each command will be used for:
+Bacalhau will use the [default ENTRYPOINT](https://docs.docker.com/engine/reference/builder/#entrypoint) if your image contains one. If you need to specify another entrypoint, use the --entrypoint
+flag to bacalhau docker run
+.
+For example:
+The result of the commands' execution is shown below:
+Step 5 - Upload the Input Data
+Data is identified by its content identifier (CID) and can be accessed by anyone who knows the CID. You can use either of these methods to upload your data:
+[Copy data from a URL to public storage](/setting-up/data-ingestion/from-url)
+[Copy Data from S3 Bucket to public storage](/setting-up/data-ingestion/s3)
+You can mount your data anywhere on your machine, and Bacalhau will be able to run against that data
+Step 6 - Run the Workload on Bacalhau
+To launch your workload in a Docker container, using the specified image and working with input
+data specified via IPFS CID, run the following command:
+To check the status of your job, run the following command:
+To get more information on your job,run:
+To download your job, run:
+For example, running:
+outputs:
+The --input
+flag does not support CID subpaths for ipfs://
+content.
+Alternatively, you can run your workload with a publicly accessible http(s) URL, which will download the data temporarily into your public storage:
+The --input
+flag does not support URL directories.
+Troubleshooting
+If you run into this compute error while running your docker image
+This can often be resolved by re-tagging your docker image
+Support
+If you have questions or need support or guidance, please reach out to the [Bacalhau team via Slack](https://bacalhauproject.slack.com/ssb/redirect) (#general channel)
+Last updated

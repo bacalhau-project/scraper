@@ -1,4 +1,0 @@
-URL: https://www.the-paper-trail.org/%20/tags/java
-
-Paper TrailBlogJava20142014-01-10ByteArrayOutputStream is really, really slow sometimes in JDK6©  - 2023 ·Paper Trail·
-  ThemeSimplenessPowered byHugo·

@@ -1,90 +1,33 @@
-URL: https://nats.io/blog/nats-recover-quorum/#fnref:1
+Source: nats_io
+URL: https://nats.io/blog/cybervet/
 
-AboutDownloadDocumentationBlogCommunitySupportPrivacyRecovering Quorum After Renaming ServersJohn Weldon— January 20, 2024Back to BlogOccasionally, a NATS cluster can lose quorum for various reasons.
-Here, we’ll look at one specific case, and how to recover from it.ContextHow To Rename Servers in a ClusterThe recommended way to rename NATS servers in a cluster is to rename one at a time.
-After each rename, the cluster will have a record of both the old name and the new name.
-The former will appear offline, and the latter should appear online.
-You should remove the record of the old name before renaming the next server, otherwise, the
-cluster may, sooner or later, end up with too many faux-offline servers, and will consider
-itself to have lost quorum.NATS Helm Chart Caveats -A Brief DiversionThevalues.yamlfile for theNATS Helm Charthas an option
-to set aserverNamePrefix, which you might be tempted to use to
-rename the servers in a helm chart deployed cluster.This setting should only be changed before the first installation.
-Once the cluster is up and running, if you change this value, and then upgrade the
-helm release, you’ll cause all of the servers in the cluster to be simultaneously renamed.
-This will double the number of recorded servers in the cluster (half with the old name, and
-half with the new name, per the changedserverNamePrefix).
-Consequently, there will not be enough servers active in the cluster to retain quorum.A Case StudyFor the sake of this article, we’ll assume a helm chart1deployed cluster of three servers.2We start by “breaking” this cluster, simply modifying theserverNamePrefixto rename the
-servers, and update the release.First Indication of TroubleLogsThe first indication of trouble is when you see thisWRNwarning andINFmessage in the logs:[WRN]Healthcheck failed:"JetStream has not established contact with a meta leader"[INF]JetStream cluster no metadata leaderEventsAnother indication is that the NATS pods fail to progress to a ready state;
-the NATS container specifically shows that it’s running, but the readiness is false.The events will show a warning with the messageReadiness probe failed: HTTP probe failed with statuscode:503NATS CLIUsing the NATS CLI, running thenats server report jetstreamwill also show an error;
-depending on the cluster state it could be any one of the following:Before Quorum is LostAt first, you’ll just see half the servers (with the old name) as being offline:$ nats server report jetstream
-╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│                                                 JetStream Summary                                                 │
-├─────────────────────┬────────────────┬─────────┬───────────┬──────────┬───────┬────────┬──────┬─────────┬─────────┤
-│ Server              │ Cluster        │ Streams │ Consumers │ Messages │ Bytes │ Memory │ File │ API Req │ API Err │
-├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
-│ x-nats-helm-kind-0  │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-│ x-nats-helm-kind-1  │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-│ x-nats-helm-kind-2* │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
-│                     │                │0│0│0│0B   │0B    │0B  │0│0│
-╰─────────────────────┴────────────────┴─────────┴───────────┴──────────┴───────┴────────┴──────┴─────────┴─────────╯
-
-╭───────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│                                        RAFT Meta Group Information                                        │
-├─────────────────────────────────────────────────────┬──────────┬────────┬─────────┬────────┬────────┬─────┤
-│ Name                                                │ ID       │ Leader │ Current │ Online │ Active │ Lag │
-├─────────────────────────────────────────────────────┼──────────┼────────┼─────────┼────────┼────────┼─────┤
-│ Server name unknown at thistime(peerID: Wp0X92Zu)│ Wp0X92Zu │        │false│false│ 0s     │0│
-│ nats-helm-kind-0                                    │ YMpQSy04 │        │false│false│ 19.53s │1│
-│ nats-helm-kind-1                                    │ MGRogjE4 │        │false│false│ 0s     │13│
-│ x-nats-helm-kind-0                                  │ svvjmHnE │        │true│true│ 526ms  │0│
-│ x-nats-helm-kind-1                                  │ XCzEfWSa │        │true│true│ 525ms  │0│
-│ x-nats-helm-kind-2                                  │ XGX0cX6V │ yes    │true│true│ 0s     │0│
-╰─────────────────────────────────────────────────────┴──────────┴────────┴─────────┴────────┴────────┴─────╯After Quorum is LostAfter the quorum is lost, but before the readiness probes cause the servers to stop responding,
-for a brief window of time you’ll see the error in the jetstream report:$ nats server report jetstream
-╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│                                                 JetStream Summary                                                │
-├────────────────────┬────────────────┬─────────┬───────────┬──────────┬───────┬────────┬──────┬─────────┬─────────┤
-│ Server             │ Cluster        │ Streams │ Consumers │ Messages │ Bytes │ Memory │ File │ API Req │ API Err │
-├────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
-│ x-nats-helm-kind-0 │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-│ x-nats-helm-kind-1 │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-│ x-nats-helm-kind-2 │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-├────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
-│                    │                │0│0│0│0B   │0B    │0B  │0│0│
-╰────────────────────┴────────────────┴─────────┴───────────┴──────────┴───────┴────────┴──────┴─────────┴─────────╯
-
-
-WARNING: No cluster meta leader found. The cluster expects6nodes but only3responded. JetStream operation require at least4up nodes.After Servers Stop RespondingFinally, the servers will possibly stop responding, giving you the general error:$ nats server report jetstream
-nats: error: nats: no servers availableforconnectioncommandterminated withexitcode1How To RecoverRegain QuorumTo recover, the cluster must first regain quorum.
-In this case, the cluster thinks that there are six nodes3in the cluster,
-so to regain quorum there needs to be a minimum of four nodes3reachable from each other.The way to do this is to add one more server, which will allow quorum to be regained.
-You can do this by scaling the stateful set:$ kubectl scale --replicas=4statefulset/nats-helm-kindWhich, once complete, should result in quorum being regained:$ nats server report jetstream
-╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│                                                 JetStream Summary                                                 │
-├─────────────────────┬────────────────┬─────────┬───────────┬──────────┬───────┬────────┬──────┬─────────┬─────────┤
-│ Server              │ Cluster        │ Streams │ Consumers │ Messages │ Bytes │ Memory │ File │ API Req │ API Err │
-├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
-│ x-nats-helm-kind-0  │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-│ x-nats-helm-kind-1  │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-│ x-nats-helm-kind-2* │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-│ x-nats-helm-kind-3  │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
-│                     │                │0│0│0│0B   │0B    │0B  │0│0│
-╰─────────────────────┴────────────────┴─────────┴───────────┴──────────┴───────┴────────┴──────┴─────────┴─────────╯
-
-╭───────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│                                        RAFT Meta Group Information                                        │
-├─────────────────────────────────────────────────────┬──────────┬────────┬─────────┬────────┬────────┬─────┤
-│ Name                                                │ ID       │ Leader │ Current │ Online │ Active │ Lag │
-├─────────────────────────────────────────────────────┼──────────┼────────┼─────────┼────────┼────────┼─────┤
-│ Server name unknown at thistime(peerID: Wp0X92Zu)│ Wp0X92Zu │        │false│false│ 0s     │0│
-│ nats-helm-kind-0                                    │ YMpQSy04 │        │false│false│ 47m27s │6│
-│ nats-helm-kind-1                                    │ MGRogjE4 │        │false│false│ 0s     │18│
-│ x-nats-helm-kind-0                                  │ svvjmHnE │        │true│true│ 461ms  │0│
-│ x-nats-helm-kind-1                                  │ XCzEfWSa │        │true│true│ 461ms  │0│
-│ x-nats-helm-kind-2                                  │ XGX0cX6V │ yes    │true│true│ 0s     │0│
-│ x-nats-helm-kind-3                                  │ G7oD67bf │        │true│true│ 461ms  │0│
-╰─────────────────────────────────────────────────────┴──────────┴────────┴─────────┴────────┴────────┴─────╯Remove Offline/Old ServersNow you can begin cleaning up the old server records.
-You can do this either with the CLI or by using NATS directly.CLIUsing the CLI4:$ nats server cluster peer-remove -f <peer ID>Using NATS DirectlyYou can also remove a peer directly by publishing to the JetStream API subjects:$ nats publish'$JS.API.SERVER.REMOVE''{"peer":"","peer_id":"YMpQSy04"}'Which will send a response message on the same channel that confirms the action:{"type":"io.nats.jetstream.api.v1.meta_server_remove_response","success":true}Remove Temporarily Added ServerScale Back Down to Three ServersNow that the number of servers is four instead of six, it’s safe to scale back down to three servers,
-and then remove the record of the server we temporarily added.$ kubectl scale --replicas=3statefulset/nats-helm-kindRemove Peer$ nats server cluster peer-remove -f G7oD67bfSuccess!Finally, the state of the cluster should be restored now, with three servers.About The AuthorJohn Weldon is a Customer Solutions Architect atSynadia Communications.The name of the helm release in this article isnats-helm-kind; it could be anything, often the default is justnats↩︎You can replicate thekindenvironment I used in this article, by referring tothisrepository.↩︎NATS Servers are also called “nodes” - sometimes interchangeably.↩︎Throughout this article I use nats-box to execute nats commands; the simple way to do it from the command line is:kubectl exec -it deployment/nats-helm-kind-box -- nats <command> <args>nats-box is deployed by default in the nats helm chart.For simplicity, I’ll just show the plain NATS command in the examples.↩︎Back to BlogCopyright © NATS Authors 2024NATS is aCloud Native Computing Foundationincubating projectThe Linux Foundation has registered trademarks and uses trademarks.For a list of trademarks of The Linux Foundation, please seeTrademark Usage page.
+[Back to Blog](/blog)
+Building a Data-Driven Healthcare Demo with NATS.io
+David Gee — June 26, 2023
+We’re lucky to have partners and customers in healthcare and even luckier to have a team of highly skilled and talented software engineers. So when the challenge came along to build a meaningful demo for a Telehealth scenario, we couldn’t resist. No conversation on this topic would be complete without a sprinkle of AI or ML and so we posit that when used for good, these technologies can be applied to the preservation and quality of human life. That said, there are many challenges which range from measuring and digitizing signals from humans, to processing that data into meaningful actions and managing services at a high level for patient care.
+NATS is perfectly positioned as a data substrate, making it easy to acquire data and interact with systems from the nearest, farthest and tiniest of edges, transporting data to the processing systems, and storing the data in key-value stores, data streams and object-stores. In fact, if you didn’t know that NATS has been around for over a decade, you might guess that it was made for the job.
+Data-Driven Healthcare
+Many people already walk our streets with pacemakers that have connected sensors and in a hospital ward, patients are attached to life sustaining machinery and sensors in closed feedback loops. In the case of a pacemaker, patients receive notifications on their phones when something is wrong or when a change has been made. With high frequency data from patients and great analysis, medical professionals can tune treatment and medication, they can decide on better courses of health management and the societal benefits of healthy humans needs no explanation.
+![](/img/blog/cybervet_post_hospital_bed.png)
+Where NATS is concerned, messages are transported in payloads that have a name, called a subject and these subjects can be tokenised, which can be very helpful. Let’s go through an example. At a basic level, a patient is onboarded into a biodata system and sensors are attached. The patient has an identifier like an internal ID and each sensor has its own ID like so: patientId.sensorId.
+If we were thinking about this in the scope of a global system, we could add further tokens to this subject name like this: uk.royalcollege.patientId.sensorId.
+With NATS and a tokenized naming approach, it’s possible to subscribe at the country level (don’t do that unless you’re ready for the firehose!), the area, to the patient or to the individual sensor. Systems that show interest for the subject can then process the data in real time, or the data can be put into a stream that enables temporal decoupling patterns and non-real-time processing. Data can be processed in stages and stored in a key-value bucket, or even as an object, which is where the final processed payload could reside. Not every patient has the same care requirements or response times and so, if we have a global system with a well-thought-out tenant scheme and subject naming scheme, we can set priorities on a patient’s data compute and sovereignty requirements and thus, some patients data can be processed in real-time, with others processed non-real-time or in quiet times when compute costs are lower.
+This is a fascinating topic and this article barely scratches the surface. If you want to explore more, feel free to
+[get in touch](mailto:info@synadia.com)
+! We would love to hear from you.
+Making Ideas Memorable
+[Synadia](https://synadia.com)
+is all about big bang demos and injecting thoughts beyond Powerpoint presentations. We decided to do something about Telehealth just after KubeCon EU in April 2023 and since then, we committed to a one of a kind demo in the form of an arcade game, Cybervet, entirely powered by NATS for Susecon in Munich which spanned the 20th - 22nd of June 2023. The game has patients and surgeons, in which surgeons try to save the patients, but with a twist. As a patient, you can inflict infections and damage against your game patient character, with the worst move being to present the patient with the medical bill. Check out the video below for a tour of Cybervet, or you can go play at
+[http://cybervet.io](http://cybervet.io)
+.
+Every action is controlled by the game server and every action results in state changes either in the user or match key-value store, in a data stream or in the transmission of telemetry for operations. NATS extends data and command and control capabilities from the data center right out to the tiniest of edge locations and in our data-driven world, you only need one platform for ephemeral and persistent publish-subscribe, request-response, key-value, data streaming and object storage. We had an absolute blast sharing the game at our booth at Susecon23 and special thanks goes to
+[Delaney Gillian](https://www.linkedin.com/in/delaney-gillilan-338734a8/)
+, a fellow Synadian who not only accepted the challenge of creating the game, but made Cybervet a reality.
+Questions? Join our
+[Slack channel](https://slack.nats.io)
+or email
+[info@synadia.com](mailto:info@synadia.com)
+About the Author
+[David Gee](https://www.linkedin.com/in/davedotdev/)
+is a systems engineer at Synadia Communications with twenty years of experience in constrained systems, industrial process control, network control software & automation and more. He specialises in IoT, IIoT and edge systems.
+[Back to Blog](/blog)

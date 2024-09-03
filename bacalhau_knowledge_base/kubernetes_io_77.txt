@@ -1,60 +1,382 @@
-URL: https://kubernetes.io/docs/setup/best-practices/multiple-zones/
+Source: kubernetes_io
+URL: https://kubernetes.io/docs/reference/config-api/kubelet-config.v1beta1/
 
-DocumentationKubernetes BlogTrainingPartnersCommunityCase StudiesVersionsRelease Informationv1.31v1.30v1.29v1.28v1.27English中文 (Chinese)Bahasa Indonesia (Indonesian)日本語 (Japanese)한국어 (Korean)DocumentationAvailable Documentation VersionsGetting startedLearning environmentProduction environmentContainer RuntimesInstalling Kubernetes with deployment toolsBootstrapping clusters with kubeadmInstalling kubeadmTroubleshooting kubeadmCreating a cluster with kubeadmCustomizing components with the kubeadm APIOptions for Highly Available TopologyCreating Highly Available Clusters with kubeadmSet up a High Availability etcd Cluster with kubeadmConfiguring each kubelet in your cluster using kubeadmDual-stack support with kubeadmTurnkey Cloud SolutionsBest practicesConsiderations for large clustersRunning in multiple zonesValidate node setupEnforcing Pod Security StandardsPKI certificates and requirementsConceptsOverviewKubernetes ComponentsObjects In KubernetesKubernetes Object ManagementObject Names and IDsLabels and SelectorsNamespacesAnnotationsField SelectorsFinalizersOwners and DependentsRecommended LabelsThe Kubernetes APICluster ArchitectureNodesCommunication between Nodes and the Control PlaneControllersLeasesCloud Controller ManagerAbout cgroup v2Container Runtime Interface (CRI)Garbage CollectionMixed Version ProxyContainersImagesContainer EnvironmentRuntime ClassContainer Lifecycle HooksWorkloadsPodsPod LifecycleInit ContainersSidecar ContainersEphemeral ContainersDisruptionsPod Quality of Service ClassesUser NamespacesDownward APIWorkload ManagementDeploymentsReplicaSetStatefulSetsDaemonSetJobsAutomatic Cleanup for Finished JobsCronJobReplicationControllerAutoscaling WorkloadsManaging WorkloadsServices, Load Balancing, and NetworkingServiceIngressIngress ControllersGateway APIEndpointSlicesNetwork PoliciesDNS for Services and PodsIPv4/IPv6 dual-stackTopology Aware RoutingNetworking on WindowsService ClusterIP allocationService Internal Traffic PolicyStorageVolumesPersistent VolumesProjected VolumesEphemeral VolumesStorage ClassesVolume Attributes ClassesDynamic Volume ProvisioningVolume SnapshotsVolume Snapshot ClassesCSI Volume CloningStorage CapacityNode-specific Volume LimitsVolume Health MonitoringWindows StorageConfigurationConfiguration Best PracticesConfigMapsSecretsLiveness, Readiness, and Startup ProbesResource Management for Pods and ContainersOrganizing Cluster Access Using kubeconfig FilesResource Management for Windows nodesSecurityCloud Native SecurityPod Security StandardsPod Security AdmissionService AccountsPod Security PoliciesSecurity For Windows NodesControlling Access to the Kubernetes APIRole Based Access Control Good PracticesGood practices for Kubernetes SecretsMulti-tenancyHardening Guide - Authentication MechanismsKubernetes API Server Bypass RisksLinux kernel security constraints for Pods and containersSecurity ChecklistPoliciesLimit RangesResource QuotasProcess ID Limits And ReservationsNode Resource ManagersScheduling, Preemption and EvictionKubernetes SchedulerAssigning Pods to NodesPod OverheadPod Scheduling ReadinessPod Topology Spread ConstraintsTaints and TolerationsScheduling FrameworkDynamic Resource AllocationScheduler Performance TuningResource Bin PackingPod Priority and PreemptionNode-pressure EvictionAPI-initiated EvictionCluster AdministrationNode ShutdownsCertificatesCluster NetworkingLogging ArchitectureMetrics For Kubernetes System ComponentsMetrics for Kubernetes Object StatesSystem LogsTraces For Kubernetes System ComponentsProxies in KubernetesAPI Priority and FairnessCluster AutoscalingInstalling AddonsCoordinated Leader ElectionWindows in KubernetesWindows containers in KubernetesGuide for Running Windows Containers in KubernetesExtending KubernetesCompute, Storage, and Networking ExtensionsNetwork PluginsDevice PluginsExtending the Kubernetes APICustom ResourcesKubernetes API Aggregation LayerOperator patternTasksInstall ToolsInstall and Set Up kubectl on LinuxInstall and Set Up kubectl on macOSInstall and Set Up kubectl on WindowsAdminister a ClusterAdministration with kubeadmCertificate Management with kubeadmConfiguring a cgroup driverReconfiguring a kubeadm clusterUpgrading kubeadm clustersUpgrading Linux nodesUpgrading Windows nodesChanging The Kubernetes Package RepositoryMigrating from dockershimChanging the Container Runtime on a Node from Docker Engine to containerdMigrate Docker Engine nodes from dockershim to cri-dockerdFind Out What Container Runtime is Used on a NodeTroubleshooting CNI plugin-related errorsCheck whether dockershim removal affects youMigrating telemetry and security agents from dockershimGenerate Certificates ManuallyManage Memory, CPU, and API ResourcesConfigure Default Memory Requests and Limits for a NamespaceConfigure Default CPU Requests and Limits for a NamespaceConfigure Minimum and Maximum Memory Constraints for a NamespaceConfigure Minimum and Maximum CPU Constraints for a NamespaceConfigure Memory and CPU Quotas for a NamespaceConfigure a Pod Quota for a NamespaceInstall a Network Policy ProviderUse Antrea for NetworkPolicyUse Calico for NetworkPolicyUse Cilium for NetworkPolicyUse Kube-router for NetworkPolicyRomana for NetworkPolicyWeave Net for NetworkPolicyAccess Clusters Using the Kubernetes APIAdvertise Extended Resources for a NodeAutoscale the DNS Service in a ClusterChange the Access Mode of a PersistentVolume to ReadWriteOncePodChange the default StorageClassSwitching from Polling to CRI Event-based Updates to Container StatusChange the Reclaim Policy of a PersistentVolumeCloud Controller Manager AdministrationConfigure a kubelet image credential providerConfigure Quotas for API ObjectsControl CPU Management Policies on the NodeControl Topology Management Policies on a nodeCustomizing DNS ServiceDebugging DNS ResolutionDeclare Network PolicyDeveloping Cloud Controller ManagerEnable Or Disable A Kubernetes APIEncrypting Confidential Data at RestDecrypt Confidential Data that is Already Encrypted at RestGuaranteed Scheduling For Critical Add-On PodsIP Masquerade Agent User GuideLimit Storage ConsumptionMigrate Replicated Control Plane To Use Cloud Controller ManagerNamespaces WalkthroughOperating etcd clusters for KubernetesReserve Compute Resources for System DaemonsRunning Kubernetes Node Components as a Non-root UserSafely Drain a NodeSecuring a ClusterSet Kubelet Parameters Via A Configuration FileShare a Cluster with NamespacesUpgrade A ClusterUse Cascading Deletion in a ClusterUsing a KMS provider for data encryptionUsing CoreDNS for Service DiscoveryUsing NodeLocal DNSCache in Kubernetes ClustersUsing sysctls in a Kubernetes ClusterUtilizing the NUMA-aware Memory ManagerVerify Signed Kubernetes ArtifactsConfigure Pods and ContainersAssign Memory Resources to Containers and PodsAssign CPU Resources to Containers and PodsConfigure GMSA for Windows Pods and containersResize CPU and Memory Resources assigned to ContainersConfigure RunAsUserName for Windows pods and containersCreate a Windows HostProcess PodConfigure Quality of Service for PodsAssign Extended Resources to a ContainerConfigure a Pod to Use a Volume for StorageConfigure a Pod to Use a PersistentVolume for StorageConfigure a Pod to Use a Projected Volume for StorageConfigure a Security Context for a Pod or ContainerConfigure Service Accounts for PodsPull an Image from a Private RegistryConfigure Liveness, Readiness and Startup ProbesAssign Pods to NodesAssign Pods to Nodes using Node AffinityConfigure Pod InitializationAttach Handlers to Container Lifecycle EventsConfigure a Pod to Use a ConfigMapShare Process Namespace between Containers in a PodUse a User Namespace With a PodUse an Image Volume With a PodCreate static PodsTranslate a Docker Compose File to Kubernetes ResourcesEnforce Pod Security Standards by Configuring the Built-in Admission ControllerEnforce Pod Security Standards with Namespace LabelsMigrate from PodSecurityPolicy to the Built-In PodSecurity Admission ControllerMonitoring, Logging, and DebuggingTroubleshooting ApplicationsDebug PodsDebug ServicesDebug a StatefulSetDetermine the Reason for Pod FailureDebug Init ContainersDebug Running PodsGet a Shell to a Running ContainerTroubleshooting ClustersTroubleshooting kubectlResource metrics pipelineTools for Monitoring ResourcesMonitor Node HealthDebugging Kubernetes nodes with crictlAuditingDebugging Kubernetes Nodes With KubectlDeveloping and debugging services locally using telepresenceWindows debugging tipsManage Kubernetes ObjectsDeclarative Management of Kubernetes Objects Using Configuration FilesDeclarative Management of Kubernetes Objects Using KustomizeManaging Kubernetes Objects Using Imperative CommandsImperative Management of Kubernetes Objects Using Configuration FilesUpdate API Objects in Place Using kubectl patchMigrate Kubernetes Objects Using Storage Version MigrationManaging SecretsManaging Secrets using kubectlManaging Secrets using Configuration FileManaging Secrets using KustomizeInject Data Into ApplicationsDefine a Command and Arguments for a ContainerDefine Dependent Environment VariablesDefine Environment Variables for a ContainerExpose Pod Information to Containers Through Environment VariablesExpose Pod Information to Containers Through FilesDistribute Credentials Securely Using SecretsRun ApplicationsRun a Stateless Application Using a DeploymentRun a Single-Instance Stateful ApplicationRun a Replicated Stateful ApplicationScale a StatefulSetDelete a StatefulSetForce Delete StatefulSet PodsHorizontal Pod AutoscalingHorizontalPodAutoscaler WalkthroughSpecifying a Disruption Budget for your ApplicationAccessing the Kubernetes API from a PodRun JobsRunning Automated Tasks with a CronJobCoarse Parallel Processing Using a Work QueueFine Parallel Processing Using a Work QueueIndexed Job for Parallel Processing with Static Work AssignmentJob with Pod-to-Pod CommunicationParallel Processing using ExpansionsHandling retriable and non-retriable pod failures with Pod failure policyAccess Applications in a ClusterDeploy and Access the Kubernetes DashboardAccessing ClustersConfigure Access to Multiple ClustersUse Port Forwarding to Access Applications in a ClusterUse a Service to Access an Application in a ClusterConnect a Frontend to a Backend Using ServicesCreate an External Load BalancerList All Container Images Running in a ClusterSet up Ingress on Minikube with the NGINX Ingress ControllerCommunicate Between Containers in the Same Pod Using a Shared VolumeConfigure DNS for a ClusterAccess Services Running on ClustersExtend KubernetesConfigure the Aggregation LayerUse Custom ResourcesExtend the Kubernetes API with CustomResourceDefinitionsVersions in CustomResourceDefinitionsSet up an Extension API ServerConfigure Multiple SchedulersUse an HTTP Proxy to Access the Kubernetes APIUse a SOCKS5 Proxy to Access the Kubernetes APISet up Konnectivity serviceTLSConfigure Certificate Rotation for the KubeletManage TLS Certificates in a ClusterManual Rotation of CA CertificatesManage Cluster DaemonsPerform a Rolling Update on a DaemonSetPerform a Rollback on a DaemonSetRunning Pods on Only Some NodesNetworkingAdding entries to Pod /etc/hosts with HostAliasesExtend Service IP RangesValidate IPv4/IPv6 dual-stackExtend kubectl with pluginsManage HugePagesSchedule GPUsTutorialsHello MinikubeLearn Kubernetes BasicsCreate a ClusterUsing Minikube to Create a ClusterDeploy an AppUsing kubectl to Create a DeploymentExplore Your AppViewing Pods and NodesExpose Your App PubliclyUsing a Service to Expose Your AppScale Your AppRunning Multiple Instances of Your AppUpdate Your AppPerforming a Rolling UpdateConfigurationExample: Configuring a Java MicroserviceExternalizing config using MicroProfile, ConfigMaps and SecretsUpdating Configuration via a ConfigMapConfiguring Redis using a ConfigMapAdopting Sidecar ContainersSecurityApply Pod Security Standards at the Cluster LevelApply Pod Security Standards at the Namespace LevelRestrict a Container's Access to Resources with AppArmorRestrict a Container's Syscalls with seccompStateless ApplicationsExposing an External IP Address to Access an Application in a ClusterExample: Deploying PHP Guestbook application with RedisStateful ApplicationsStatefulSet BasicsExample: Deploying WordPress and MySQL with Persistent VolumesExample: Deploying Cassandra with a StatefulSetRunning ZooKeeper, A Distributed System CoordinatorServicesConnecting Applications with ServicesUsing Source IPExplore Termination Behavior for Pods And Their EndpointsReferenceGlossaryAPI OverviewKubernetes API ConceptsServer-Side ApplyClient LibrariesCommon Expression Language in KubernetesKubernetes Deprecation PolicyDeprecated API Migration GuideKubernetes API health endpointsAPI Access ControlAuthenticatingAuthenticating with Bootstrap TokensAuthorizationUsing RBAC AuthorizationUsing Node AuthorizationWebhook ModeUsing ABAC AuthorizationAdmission ControllersDynamic Admission ControlManaging Service AccountsCertificates and Certificate Signing RequestsMapping PodSecurityPolicies to Pod Security StandardsKubelet authentication/authorizationTLS bootstrappingValidating Admission PolicyWell-Known Labels, Annotations and TaintsAudit AnnotationsKubernetes APIWorkload ResourcesPodBindingPodTemplateReplicationControllerReplicaSetDeploymentStatefulSetControllerRevisionDaemonSetJobCronJobHorizontalPodAutoscalerHorizontalPodAutoscalerPriorityClassPodSchedulingContext v1alpha3ResourceClaim v1alpha3ResourceClaimTemplate v1alpha3ResourceSlice v1alpha3Service ResourcesServiceEndpointsEndpointSliceIngressIngressClassConfig and Storage ResourcesConfigMapSecretCSIDriverCSINodeCSIStorageCapacityPersistentVolumeClaimPersistentVolumeStorageClassStorageVersionMigration v1alpha1VolumeVolumeAttachmentVolumeAttributesClass v1beta1Authentication ResourcesServiceAccountTokenRequestTokenReviewCertificateSigningRequestClusterTrustBundle v1alpha1SelfSubjectReviewAuthorization ResourcesLocalSubjectAccessReviewSelfSubjectAccessReviewSelfSubjectRulesReviewSubjectAccessReviewClusterRoleClusterRoleBindingRoleRoleBindingPolicy ResourcesFlowSchemaLimitRangeResourceQuotaNetworkPolicyPodDisruptionBudgetPriorityLevelConfigurationValidatingAdmissionPolicyValidatingAdmissionPolicyBindingExtend ResourcesCustomResourceDefinitionDeviceClass v1alpha3MutatingWebhookConfigurationValidatingWebhookConfigurationCluster ResourcesAPIServiceComponentStatusEventIPAddress v1beta1LeaseLeaseCandidate v1alpha1NamespaceNodeRuntimeClassServiceCIDR v1beta1Common DefinitionsDeleteOptionsLabelSelectorListMetaLocalObjectReferenceNodeSelectorRequirementObjectFieldSelectorObjectMetaObjectReferencePatchQuantityResourceFieldSelectorStatusTypedLocalObjectReferenceCommon ParametersInstrumentationService Level Indicator MetricsCRI Pod & Container MetricsNode metrics dataKubernetes Metrics ReferenceKubernetes Issues and SecurityKubernetes Issue TrackerKubernetes Security and Disclosure InformationCVE feedNode Reference InformationKubelet Checkpoint APILinux Kernel Version RequirementsArticles on dockershim Removal and on Using CRI-compatible RuntimesNode Labels Populated By The KubeletKubelet Configuration Directory MergingKubelet Device Manager API VersionsNode StatusNetworking ReferenceProtocols for ServicesPorts and ProtocolsVirtual IPs and Service ProxiesSetup toolsKubeadmkubeadm initkubeadm joinkubeadm upgradekubeadm configkubeadm resetkubeadm tokenkubeadm versionkubeadm alphakubeadm certskubeadm init phasekubeadm join phasekubeadm kubeconfigkubeadm reset phasekubeadm upgrade phaseImplementation detailsCommand line tool (kubectl)Introduction to kubectlkubectl Quick Referencekubectl referencekubectlkubectl annotatekubectl api-resourceskubectl api-versionskubectl applykubectl apply edit-last-appliedkubectl apply set-last-appliedkubectl apply view-last-appliedkubectl attachkubectl authkubectl auth can-ikubectl auth reconcilekubectl auth whoamikubectl autoscalekubectl certificatekubectl certificate approvekubectl certificate denykubectl cluster-infokubectl cluster-info dumpkubectl completionkubectl configkubectl config current-contextkubectl config delete-clusterkubectl config delete-contextkubectl config delete-userkubectl config get-clusterskubectl config get-contextskubectl config get-userskubectl config rename-contextkubectl config setkubectl config set-clusterkubectl config set-contextkubectl config set-credentialskubectl config unsetkubectl config use-contextkubectl config viewkubectl cordonkubectl cpkubectl createkubectl create clusterrolekubectl create clusterrolebindingkubectl create configmapkubectl create cronjobkubectl create deploymentkubectl create ingresskubectl create jobkubectl create namespacekubectl create poddisruptionbudgetkubectl create priorityclasskubectl create quotakubectl create rolekubectl create rolebindingkubectl create secretkubectl create secret docker-registrykubectl create secret generickubectl create secret tlskubectl create servicekubectl create service clusteripkubectl create service externalnamekubectl create service loadbalancerkubectl create service nodeportkubectl create serviceaccountkubectl create tokenkubectl debugkubectl deletekubectl describekubectl diffkubectl drainkubectl editkubectl eventskubectl execkubectl explainkubectl exposekubectl getkubectl kustomizekubectl labelkubectl logskubectl optionskubectl patchkubectl pluginkubectl plugin listkubectl port-forwardkubectl proxykubectl replacekubectl rolloutkubectl rollout historykubectl rollout pausekubectl rollout restartkubectl rollout resumekubectl rollout statuskubectl rollout undokubectl runkubectl scalekubectl setkubectl set envkubectl set imagekubectl set resourceskubectl set selectorkubectl set serviceaccountkubectl set subjectkubectl taintkubectl topkubectl top nodekubectl top podkubectl uncordonkubectl versionkubectl waitkubectl CommandskubectlJSONPath Supportkubectl for Docker Userskubectl Usage ConventionsComponent toolsFeature GatesFeature Gates (removed)kubeletkube-apiserverkube-controller-managerkube-proxykube-schedulerDebug clusterFlow controlConfiguration APIsClient Authentication (v1)Client Authentication (v1beta1)Event Rate Limit Configuration (v1alpha1)Image Policy API (v1alpha1)kube-apiserver Admission (v1)kube-apiserver Audit Configuration (v1)kube-apiserver Configuration (v1)kube-apiserver Configuration (v1alpha1)kube-apiserver Configuration (v1beta1)kube-controller-manager Configuration (v1alpha1)kube-proxy Configuration (v1alpha1)kube-scheduler Configuration (v1)kubeadm Configuration (v1beta3)kubeadm Configuration (v1beta4)kubeconfig (v1)Kubelet Configuration (v1)Kubelet Configuration (v1alpha1)Kubelet Configuration (v1beta1)Kubelet CredentialProvider (v1)WebhookAdmission Configuration (v1)External APIsKubernetes Custom Metrics (v1beta2)Kubernetes External Metrics (v1beta1)Kubernetes Metrics (v1beta1)SchedulingScheduler ConfigurationScheduling PoliciesOther ToolsMapping from dockercli to crictlContributeContribute to Kubernetes DocumentationSuggesting content improvementsContributing new contentOpening a pull requestDocumenting for a releaseBlogs and case studiesReviewing changesReviewing pull requestsFor approvers and reviewersLocalizing Kubernetes documentationParticipating in SIG DocsRoles and responsibilitiesIssue WranglersPR wranglersDocumentation style overviewContent guideStyle guideDiagram guideWriting a new topicPage content typesContent organizationCustom Hugo ShortcodesUpdating Reference DocumentationQuickstartContributing to the Upstream Kubernetes CodeGenerating Reference Documentation for the Kubernetes APIGenerating Reference Documentation for kubectl CommandsGenerating Reference Documentation for MetricsGenerating Reference Pages for Kubernetes Components and ToolsAdvanced contributingViewing Site AnalyticsDocs smoke test pageKubernetes DocumentationGetting startedBest practicesRunning in multiple zonesRunning in multiple zonesThis page describes running Kubernetes across multiple zones.BackgroundKubernetes is designed so that a single Kubernetes cluster can run
-across multiple failure zones, typically where these zones fit within
-a logical grouping called aregion. Major cloud providers define a region
-as a set of failure zones (also calledavailability zones) that provide
-a consistent set of features: within a region, each zone offers the same
-APIs and services.Typical cloud architectures aim to minimize the chance that a failure in
-one zone also impairs services in another zone.Control plane behaviorAllcontrol plane componentssupport running as a pool of interchangeable resources, replicated per
-component.When you deploy a cluster control plane, place replicas of
-control plane components across multiple failure zones. If availability is
-an important concern, select at least three failure zones and replicate
-each individual control plane component (API server, scheduler, etcd,
-cluster controller manager) across at least three failure zones.
-If you are running a cloud controller manager then you should
-also replicate this across all the failure zones you selected.Note:Kubernetes does not provide cross-zone resilience for the API server
-endpoints. You can use various techniques to improve availability for
-the cluster API server, including DNS round-robin, SRV records, or
-a third-party load balancing solution with health checking.Node behaviorKubernetes automatically spreads the Pods for
-workload resources (such asDeploymentorStatefulSet)
-across different nodes in a cluster. This spreading helps
-reduce the impact of failures.When nodes start up, the kubelet on each node automatically addslabelsto the Node object
-that represents that specific kubelet in the Kubernetes API.
-These labels can includezone information.If your cluster spans multiple zones or regions, you can use node labels
-in conjunction withPod topology spread constraintsto control how Pods are spread across your cluster among fault domains:
-regions, zones, and even specific nodes.
-These hints enable theschedulerto place
-Pods for better expected availability, reducing the risk that a correlated
-failure affects your whole workload.For example, you can set a constraint to make sure that the
-3 replicas of a StatefulSet are all running in different zones to each
-other, whenever that is feasible. You can define this declaratively
-without explicitly defining which availability zones are in use for
-each workload.Distributing nodes across zonesKubernetes' core does not create nodes for you; you need to do that yourself,
-or use a tool such as theCluster APIto
-manage nodes on your behalf.Using tools such as the Cluster API you can define sets of machines to run as
-worker nodes for your cluster across multiple failure domains, and rules to
-automatically heal the cluster in case of whole-zone service disruption.Manual zone assignment for PodsYou can applynode selector constraintsto Pods that you create, as well as to Pod templates in workload resources
-such as Deployment, StatefulSet, or Job.Storage access for zonesWhen persistent volumes are created, Kubernetes automatically adds zone labels
-to any PersistentVolumes that are linked to a specific zone.
-Theschedulerthen ensures,
-through itsNoVolumeZoneConflictpredicate, that pods which claim a given PersistentVolume
-are only placed into the same zone as that volume.Please note that the method of adding zone labels can depend on your
-cloud provider and the storage provisioner you’re using. Always refer to the specific
-documentation for your environment to ensure correct configuration.You can specify aStorageClassfor PersistentVolumeClaims that specifies the failure domains (zones) that the
-storage in that class may use.
-To learn about configuring a StorageClass that is aware of failure domains or zones,
-seeAllowed topologies.NetworkingBy itself, Kubernetes does not include zone-aware networking. You can use anetwork pluginto configure cluster networking, and that network solution might have zone-specific
-elements. For example, if your cloud provider supports Services withtype=LoadBalancer, the load balancer might only send traffic to Pods running in the
-same zone as the load balancer element processing a given connection.
-Check your cloud provider's documentation for details.For custom or on-premises deployments, similar considerations apply.ServiceandIngressbehavior, including handling
-of different failure zones, does vary depending on exactly how your cluster is set up.Fault recoveryWhen you set up your cluster, you might also need to consider whether and how
-your setup can restore service if all the failure zones in a region go
-off-line at the same time. For example, do you rely on there being at least
-one node able to run Pods in a zone?Make sure that any cluster-critical repair work does not rely
-on there being at least one healthy node in your cluster. For example: if all nodes
-are unhealthy, you might need to run a repair Job with a specialtolerationso that the repair
-can complete enough to bring at least one node into service.Kubernetes doesn't come with an answer for this challenge; however, it's
-something to consider.What's nextTo learn how the scheduler places Pods in a cluster, honoring the configured constraints,
-visitScheduling and Eviction.FeedbackWas this page helpful?YesNoThanks for the feedback. If you have a specific, answerable question about how to use Kubernetes, ask it onStack Overflow.
-Open an issue in theGitHub Repositoryif you want toreport a problemorsuggest an improvement.Last modified September 01, 2024 at 1:54 AM PST:Fix broken links from "overview/components/#..." to "architecture/#..." (#47724) (7e64c2db82)Edit this pageCreate child pageCreate documentation issuePrint entire sectionBackgroundControl plane behaviorNode behaviorDistributing nodes across zonesManual zone assignment for PodsStorage access for zonesNetworkingFault recoveryWhat's nextDocumentationBlogTrainingPartnersCommunityCase Studies© 2024 The Kubernetes Authors | Documentation Distributed underCC BY 4.0Copyright © 2024 The Linux Foundation ®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see ourTrademark Usage pageICP license: 京ICP备17074266号-3
+Kubelet Configuration (v1beta1)
+Resource Types
+FormatOptions
+Appears in:
+FormatOptions contains options for the different logging formats.
+Field | Description |
+---|---|
+text [Required]
+TextOptions | [Alpha] Text contains options for logging format "text". Only available when the LoggingAlphaOptions feature gate is enabled. |
+json [Required]
+JSONOptions | [Alpha] JSON contains options for logging format "json". Only available when the LoggingAlphaOptions feature gate is enabled. |
+JSONOptions
+Appears in:
+JSONOptions contains options for logging format "json".
+Field | Description |
+---|---|
+OutputRoutingOptions [Required]
+OutputRoutingOptions | (Members of OutputRoutingOptions are embedded into this type.)
+No description provided. |
+LogFormatFactory
+LogFormatFactory provides support for a certain additional, non-default log format.
+LoggingConfiguration
+Appears in:
+LoggingConfiguration contains logging options.
+Field | Description |
+---|---|
+format [Required]string | Format Flag specifies the structure of log messages.
+default value of format is |
+flushFrequency [Required]
+TimeOrMetaDuration | Maximum time between log flushes. If a string, parsed as a duration (i.e. "1s") If an int, the maximum number of nanoseconds (i.e. 1s = 1000000000). Ignored if the selected logging backend writes log messages without buffering. |
+verbosity [Required]
+VerbosityLevel | Verbosity is the threshold that determines which log messages are logged. Default is zero which logs only the most important messages. Higher values enable additional messages. Error messages are always logged. |
+vmodule [Required]
+VModuleConfiguration | VModule overrides the verbosity threshold for individual files. Only supported for "text" log format. |
+options [Required]
+FormatOptions | [Alpha] Options holds additional parameters that are specific to the different logging formats. Only the options for the selected format get used, but all of them get validated. Only available when the LoggingAlphaOptions feature gate is enabled. |
+LoggingOptions
+LoggingOptions can be used with ValidateAndApplyWithOptions to override certain global defaults.
+Field | Description |
+---|---|
+ErrorStream [Required]
+io.Writer | ErrorStream can be used to override the os.Stderr default. |
+InfoStream [Required]
+io.Writer | InfoStream can be used to override the os.Stdout default. |
+OutputRoutingOptions
+Appears in:
+OutputRoutingOptions contains options that are supported by both "text" and "json".
+Field | Description |
+---|---|
+splitStream [Required]bool | [Alpha] SplitStream redirects error messages to stderr while info messages go to stdout, with buffering. The default is to write both to stdout, without buffering. Only available when the LoggingAlphaOptions feature gate is enabled. |
+infoBufferSize [Required]
+k8s.io/apimachinery/pkg/api/resource.QuantityValue | [Alpha] InfoBufferSize sets the size of the info stream when using split streams. The default is zero, which disables buffering. Only available when the LoggingAlphaOptions feature gate is enabled. |
+TextOptions
+Appears in:
+TextOptions contains options for logging format "text".
+Field | Description |
+---|---|
+OutputRoutingOptions [Required]
+OutputRoutingOptions | (Members of OutputRoutingOptions are embedded into this type.)
+No description provided. |
+TimeOrMetaDuration
+Appears in:
+TimeOrMetaDuration is present only for backwards compatibility for the flushFrequency field, and new fields should use metav1.Duration.
+Field | Description |
+---|---|
+Duration [Required]
+meta/v1.Duration | Duration holds the duration |
+- [Required]bool | SerializeAsString controls whether the value is serialized as a string or an integer |
+TracingConfiguration
+Appears in:
+TracingConfiguration provides versioned configuration for OpenTelemetry tracing clients.
+Field | Description |
+---|---|
+endpoint string | Endpoint of the collector this component will report traces to. The connection is insecure, and does not currently support TLS. Recommended is unset, and endpoint is the otlp grpc default, localhost:4317. |
+samplingRatePerMillion int32 | SamplingRatePerMillion is the number of samples to collect per million spans. Recommended is unset. If unset, sampler respects its parent span's sampling rate, but otherwise never samples. |
+VModuleConfiguration
+(Alias of []k8s.io/component-base/logs/api/v1.VModuleItem
+)
+Appears in:
+VModuleConfiguration is a collection of individual file names or patterns and the corresponding verbosity threshold.
+VerbosityLevel
+(Alias of uint32
+)
+Appears in:
+VerbosityLevel represents a klog or logr verbosity threshold.
+CredentialProviderConfig
+CredentialProviderConfig is the configuration containing information about each exec credential provider. Kubelet reads this configuration from disk and enables each provider as specified by the CredentialProvider type.
+Field | Description |
+---|---|
+apiVersion string | kubelet.config.k8s.io/v1beta1 |
+kind string | CredentialProviderConfig |
+providers [Required]
+[]CredentialProvider | providers is a list of credential provider plugins that will be enabled by the kubelet. Multiple providers may match against a single image, in which case credentials from all providers will be returned to the kubelet. If multiple providers are called for a single image, the results are combined. If providers return overlapping auth keys, the value from the provider earlier in this list is used. |
+KubeletConfiguration
+KubeletConfiguration contains the configuration for the Kubelet
+Field | Description |
+---|---|
+apiVersion string | kubelet.config.k8s.io/v1beta1 |
+kind string | KubeletConfiguration |
+enableServer [Required]bool | enableServer enables Kubelet's secured server. Note: Kubelet's insecure port is controlled by the readOnlyPort option. Default: true |
+staticPodPath string | staticPodPath is the path to the directory containing local (static) pods to run, or the path to a single static pod file. Default: "" |
+podLogsDir string | podLogsDir is a custom root directory path kubelet will use to place pod's log files. Default: "/var/log/pods/" Note: it is not recommended to use the temp folder as a log directory as it may cause unexpected behavior in many places. |
+syncFrequency
+meta/v1.Duration | syncFrequency is the max period between synchronizing running containers and config. Default: "1m" |
+fileCheckFrequency
+meta/v1.Duration | fileCheckFrequency is the duration between checking config files for new data. Default: "20s" |
+httpCheckFrequency
+meta/v1.Duration | httpCheckFrequency is the duration between checking http for new data. Default: "20s" |
+staticPodURL string | staticPodURL is the URL for accessing static pods to run. Default: "" |
+staticPodURLHeader map[string][]string | staticPodURLHeader is a map of slices with HTTP headers to use when accessing the podURL. Default: nil |
+address string | address is the IP address for the Kubelet to serve on (set to 0.0.0.0 for all interfaces). Default: "0.0.0.0" |
+port int32 | port is the port for the Kubelet to serve on. The port number must be between 1 and 65535, inclusive. Default: 10250 |
+readOnlyPort int32 | readOnlyPort is the read-only port for the Kubelet to serve on with no authentication/authorization. The port number must be between 1 and 65535, inclusive. Setting this field to 0 disables the read-only service. Default: 0 (disabled) |
+tlsCertFile string | tlsCertFile is the file containing x509 Certificate for HTTPS. (CA cert, if any, concatenated after server cert). If tlsCertFile and tlsPrivateKeyFile are not provided, a self-signed certificate and key are generated for the public address and saved to the directory passed to the Kubelet's --cert-dir flag. Default: "" |
+tlsPrivateKeyFile string | tlsPrivateKeyFile is the file containing x509 private key matching tlsCertFile. Default: "" |
+tlsCipherSuites []string | tlsCipherSuites is the list of allowed cipher suites for the server. Note that TLS 1.3 ciphersuites are not configurable. Values are from tls package constants (https://golang.org/pkg/crypto/tls/#pkg-constants). Default: nil |
+tlsMinVersion string | tlsMinVersion is the minimum TLS version supported. Values are from tls package constants (https://golang.org/pkg/crypto/tls/#pkg-constants). Default: "" |
+rotateCertificates bool | rotateCertificates enables client certificate rotation. The Kubelet will request a new certificate from the certificates.k8s.io API. This requires an approver to approve the certificate signing requests. Default: false |
+serverTLSBootstrap bool | serverTLSBootstrap enables server certificate bootstrap. Instead of self signing a serving certificate, the Kubelet will request a certificate from the 'certificates.k8s.io' API. This requires an approver to approve the certificate signing requests (CSR). The RotateKubeletServerCertificate feature must be enabled when setting this field. Default: false |
+authentication
+KubeletAuthentication | authentication specifies how requests to the Kubelet's server are authenticated. Defaults: anonymous: enabled: false webhook: enabled: true cacheTTL: "2m" |
+authorization
+KubeletAuthorization | authorization specifies how requests to the Kubelet's server are authorized. Defaults: mode: Webhook webhook: cacheAuthorizedTTL: "5m" cacheUnauthorizedTTL: "30s" |
+registryPullQPS int32 | registryPullQPS is the limit of registry pulls per second. The value must not be a negative number. Setting it to 0 means no limit. Default: 5 |
+registryBurst int32 | registryBurst is the maximum size of bursty pulls, temporarily allows pulls to burst to this number, while still not exceeding registryPullQPS. The value must not be a negative number. Only used if registryPullQPS is greater than 0. Default: 10 |
+eventRecordQPS int32 | eventRecordQPS is the maximum event creations per second. If 0, there is no limit enforced. The value cannot be a negative number. Default: 50 |
+eventBurst int32 | eventBurst is the maximum size of a burst of event creations, temporarily allows event creations to burst to this number, while still not exceeding eventRecordQPS. This field canot be a negative number and it is only used when eventRecordQPS > 0. Default: 100 |
+enableDebuggingHandlers bool | enableDebuggingHandlers enables server endpoints for log access and local running of containers and commands, including the exec, attach, logs, and portforward features. Default: true |
+enableContentionProfiling bool | enableContentionProfiling enables block profiling, if enableDebuggingHandlers is true. Default: false |
+healthzPort int32 | healthzPort is the port of the localhost healthz endpoint (set to 0 to disable). A valid number is between 1 and 65535. Default: 10248 |
+healthzBindAddress string | healthzBindAddress is the IP address for the healthz server to serve on. Default: "127.0.0.1" |
+oomScoreAdj int32 | oomScoreAdj is The oom-score-adj value for kubelet process. Values must be within the range [-1000, 1000]. Default: -999 |
+clusterDomain string | clusterDomain is the DNS domain for this cluster. If set, kubelet will configure all containers to search this domain in addition to the host's search domains. Default: "" |
+clusterDNS []string | clusterDNS is a list of IP addresses for the cluster DNS server. If set, kubelet will configure all containers to use this for DNS resolution instead of the host's DNS servers. Default: nil |
+streamingConnectionIdleTimeout
+meta/v1.Duration | streamingConnectionIdleTimeout is the maximum time a streaming connection can be idle before the connection is automatically closed. Default: "4h" |
+nodeStatusUpdateFrequency
+meta/v1.Duration | nodeStatusUpdateFrequency is the frequency that kubelet computes node status. If node lease feature is not enabled, it is also the frequency that kubelet posts node status to master. Note: When node lease feature is not enabled, be cautious when changing the constant, it must work with nodeMonitorGracePeriod in nodecontroller. Default: "10s" |
+nodeStatusReportFrequency
+meta/v1.Duration | nodeStatusReportFrequency is the frequency that kubelet posts node status to master if node status does not change. Kubelet will ignore this frequency and post node status immediately if any change is detected. It is only used when node lease feature is enabled. nodeStatusReportFrequency's default value is 5m. But if nodeStatusUpdateFrequency is set explicitly, nodeStatusReportFrequency's default value will be set to nodeStatusUpdateFrequency for backward compatibility. Default: "5m" |
+nodeLeaseDurationSeconds int32 | nodeLeaseDurationSeconds is the duration the Kubelet will set on its corresponding Lease. NodeLease provides an indicator of node health by having the Kubelet create and periodically renew a lease, named after the node, in the kube-node-lease namespace. If the lease expires, the node can be considered unhealthy. The lease is currently renewed every 10s, per KEP-0009. In the future, the lease renewal interval may be set based on the lease duration. The field value must be greater than 0. Default: 40 |
+imageMinimumGCAge
+meta/v1.Duration | imageMinimumGCAge is the minimum age for an unused image before it is garbage collected. Default: "2m" |
+imageMaximumGCAge
+meta/v1.Duration | imageMaximumGCAge is the maximum age an image can be unused before it is garbage collected. The default of this field is "0s", which disables this field--meaning images won't be garbage collected based on being unused for too long. Default: "0s" (disabled) |
+imageGCHighThresholdPercent int32 | imageGCHighThresholdPercent is the percent of disk usage after which image garbage collection is always run. The percent is calculated by dividing this field value by 100, so this field must be between 0 and 100, inclusive. When specified, the value must be greater than imageGCLowThresholdPercent. Default: 85 |
+imageGCLowThresholdPercent int32 | imageGCLowThresholdPercent is the percent of disk usage before which image garbage collection is never run. Lowest disk usage to garbage collect to. The percent is calculated by dividing this field value by 100, so the field value must be between 0 and 100, inclusive. When specified, the value must be less than imageGCHighThresholdPercent. Default: 80 |
+volumeStatsAggPeriod
+meta/v1.Duration | volumeStatsAggPeriod is the frequency for calculating and caching volume disk usage for all pods. Default: "1m" |
+kubeletCgroups string | kubeletCgroups is the absolute name of cgroups to isolate the kubelet in Default: "" |
+systemCgroups string | systemCgroups is absolute name of cgroups in which to place all non-kernel processes that are not already in a container. Empty for no container. Rolling back the flag requires a reboot. The cgroupRoot must be specified if this field is not empty. Default: "" |
+cgroupRoot string | cgroupRoot is the root cgroup to use for pods. This is handled by the container runtime on a best effort basis. |
+cgroupsPerQOS bool | cgroupsPerQOS enable QoS based CGroup hierarchy: top level CGroups for QoS classes and all Burstable and BestEffort Pods are brought up under their specific top level QoS CGroup. Default: true |
+cgroupDriver string | cgroupDriver is the driver kubelet uses to manipulate CGroups on the host (cgroupfs or systemd). Default: "cgroupfs" |
+cpuManagerPolicy string | cpuManagerPolicy is the name of the policy to use. Requires the CPUManager feature gate to be enabled. Default: "None" |
+cpuManagerPolicyOptions map[string]string | cpuManagerPolicyOptions is a set of key=value which allows to set extra options to fine tune the behaviour of the cpu manager policies. Requires both the "CPUManager" and "CPUManagerPolicyOptions" feature gates to be enabled. Default: nil |
+cpuManagerReconcilePeriod
+meta/v1.Duration | cpuManagerReconcilePeriod is the reconciliation period for the CPU Manager. Requires the CPUManager feature gate to be enabled. Default: "10s" |
+memoryManagerPolicy string | memoryManagerPolicy is the name of the policy to use by memory manager. Requires the MemoryManager feature gate to be enabled. Default: "none" |
+topologyManagerPolicy string | topologyManagerPolicy is the name of the topology manager policy to use. Valid values include:
+Default: "none" |
+topologyManagerScope string | topologyManagerScope represents the scope of topology hint generation that topology manager requests and hint providers generate. Valid values include:
+Default: "container" |
+topologyManagerPolicyOptions map[string]string | TopologyManagerPolicyOptions is a set of key=value which allows to set extra options to fine tune the behaviour of the topology manager policies. Requires both the "TopologyManager" and "TopologyManagerPolicyOptions" feature gates to be enabled. Default: nil |
+qosReserved map[string]string | qosReserved is a set of resource name to percentage pairs that specify the minimum percentage of a resource reserved for exclusive use by the guaranteed QoS tier. Currently supported resources: "memory" Requires the QOSReserved feature gate to be enabled. Default: nil |
+runtimeRequestTimeout
+meta/v1.Duration | runtimeRequestTimeout is the timeout for all runtime requests except long running requests - pull, logs, exec and attach. Default: "2m" |
+hairpinMode string | hairpinMode specifies how the Kubelet should configure the container bridge for hairpin packets. Setting this flag allows endpoints in a Service to loadbalance back to themselves if they should try to access their own Service. Values:
+Generally, one must set |
+maxPods int32 | maxPods is the maximum number of Pods that can run on this Kubelet. The value must be a non-negative integer. Default: 110 |
+podCIDR string | podCIDR is the CIDR to use for pod IP addresses, only used in standalone mode. In cluster mode, this is obtained from the control plane. Default: "" |
+podPidsLimit int64 | podPidsLimit is the maximum number of PIDs in any pod. Default: -1 |
+resolvConf string | resolvConf is the resolver configuration file used as the basis for the container DNS resolution configuration. If set to the empty string, will override the default and effectively disable DNS lookups. Default: "/etc/resolv.conf" |
+runOnce bool | runOnce causes the Kubelet to check the API server once for pods, run those in addition to the pods specified by static pod files, and exit. Default: false |
+cpuCFSQuota bool | cpuCFSQuota enables CPU CFS quota enforcement for containers that specify CPU limits. Default: true |
+cpuCFSQuotaPeriod
+meta/v1.Duration | cpuCFSQuotaPeriod is the CPU CFS quota period value, |
+nodeStatusMaxImages int32 | nodeStatusMaxImages caps the number of images reported in Node.status.images. The value must be greater than -2. Note: If -1 is specified, no cap will be applied. If 0 is specified, no image is returned. Default: 50 |
+maxOpenFiles int64 | maxOpenFiles is Number of files that can be opened by Kubelet process. The value must be a non-negative number. Default: 1000000 |
+contentType string | contentType is contentType of requests sent to apiserver. Default: "application/vnd.kubernetes.protobuf" |
+kubeAPIQPS int32 | kubeAPIQPS is the QPS to use while talking with kubernetes apiserver. Default: 50 |
+kubeAPIBurst int32 | kubeAPIBurst is the burst to allow while talking with kubernetes API server. This field cannot be a negative number. Default: 100 |
+serializeImagePulls bool | serializeImagePulls when enabled, tells the Kubelet to pull images one at a time. We recommend not changing the default value on nodes that run docker daemon with version < 1.9 or an Aufs storage backend. Issue #10959 has more details. Default: true |
+maxParallelImagePulls int32 | MaxParallelImagePulls sets the maximum number of image pulls in parallel. This field cannot be set if SerializeImagePulls is true. Setting it to nil means no limit. Default: nil |
+evictionHard map[string]string | evictionHard is a map of signal names to quantities that defines hard eviction
+thresholds. For example: |
+evictionSoft map[string]string | evictionSoft is a map of signal names to quantities that defines soft eviction thresholds.
+For example: |
+evictionSoftGracePeriod map[string]string | evictionSoftGracePeriod is a map of signal names to quantities that defines grace
+periods for each soft eviction signal. For example: |
+evictionPressureTransitionPeriod
+meta/v1.Duration | evictionPressureTransitionPeriod is the duration for which the kubelet has to wait before transitioning out of an eviction pressure condition. Default: "5m" |
+evictionMaxPodGracePeriod int32 | evictionMaxPodGracePeriod is the maximum allowed grace period (in seconds) to use when terminating pods in response to a soft eviction threshold being met. This value effectively caps the Pod's terminationGracePeriodSeconds value during soft evictions. Note: Due to issue #64530, the behavior has a bug where this value currently just overrides the grace period during soft eviction, which can increase the grace period from what is set on the Pod. This bug will be fixed in a future release. Default: 0 |
+evictionMinimumReclaim map[string]string | evictionMinimumReclaim is a map of signal names to quantities that defines minimum reclaims,
+which describe the minimum amount of a given resource the kubelet will reclaim when
+performing a pod eviction while that resource is under pressure.
+For example: |
+podsPerCore int32 | podsPerCore is the maximum number of pods per core. Cannot exceed maxPods. The value must be a non-negative integer. If 0, there is no limit on the number of Pods. Default: 0 |
+enableControllerAttachDetach bool | enableControllerAttachDetach enables the Attach/Detach controller to manage attachment/detachment of volumes scheduled to this node, and disables kubelet from executing any attach/detach operations. Note: attaching/detaching CSI volumes is not supported by the kubelet, so this option needs to be true for that use case. Default: true |
+protectKernelDefaults bool | protectKernelDefaults, if true, causes the Kubelet to error if kernel flags are not as it expects. Otherwise the Kubelet will attempt to modify kernel flags to match its expectation. Default: false |
+makeIPTablesUtilChains bool | makeIPTablesUtilChains, if true, causes the Kubelet to create the KUBE-IPTABLES-HINT chain in iptables as a hint to other components about the configuration of iptables on the system. Default: true |
+iptablesMasqueradeBit int32 | iptablesMasqueradeBit formerly controlled the creation of the KUBE-MARK-MASQ chain. Deprecated: no longer has any effect. Default: 14 |
+iptablesDropBit int32 | iptablesDropBit formerly controlled the creation of the KUBE-MARK-DROP chain. Deprecated: no longer has any effect. Default: 15 |
+featureGates map[string]bool | featureGates is a map of feature names to bools that enable or disable experimental features. This field modifies piecemeal the built-in default values from "k8s.io/kubernetes/pkg/features/kube_features.go". Default: nil |
+failSwapOn bool | failSwapOn tells the Kubelet to fail to start if swap is enabled on the node. Default: true |
+memorySwap
+MemorySwapConfiguration | memorySwap configures swap memory available to container workloads. |
+containerLogMaxSize string | containerLogMaxSize is a quantity defining the maximum size of the container log file before it is rotated. For example: "5Mi" or "256Ki". Default: "10Mi" |
+containerLogMaxFiles int32 | containerLogMaxFiles specifies the maximum number of container log files that can be present for a container. Default: 5 |
+containerLogMaxWorkers int32 | ContainerLogMaxWorkers specifies the maximum number of concurrent workers to spawn for performing the log rotate operations. Set this count to 1 for disabling the concurrent log rotation workflows Default: 1 |
+containerLogMonitorInterval
+meta/v1.Duration | ContainerLogMonitorInterval specifies the duration at which the container logs are monitored for performing the log rotate operation. This defaults to 10 * time.Seconds. But can be customized to a smaller value based on the log generation rate and the size required to be rotated against Default: 10s |
+configMapAndSecretChangeDetectionStrategy
+ResourceChangeDetectionStrategy | configMapAndSecretChangeDetectionStrategy is a mode in which ConfigMap and Secret managers are running. Valid values include:
+Default: "Watch" |
+systemReserved map[string]string | systemReserved is a set of ResourceName=ResourceQuantity (e.g. cpu=200m,memory=150G) pairs that describe resources reserved for non-kubernetes components. Currently only cpu and memory are supported. See http://kubernetes.io/docs/user-guide/compute-resources for more detail. Default: nil |
+kubeReserved map[string]string | kubeReserved is a set of ResourceName=ResourceQuantity (e.g. cpu=200m,memory=150G) pairs that describe resources reserved for kubernetes system components. Currently cpu, memory and local storage for root file system are supported. See https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ for more details. Default: nil |
+reservedSystemCPUs [Required]string | The reservedSystemCPUs option specifies the CPU list reserved for the host level system threads and kubernetes related threads. This provide a "static" CPU list rather than the "dynamic" list by systemReserved and kubeReserved. This option does not support systemReservedCgroup or kubeReservedCgroup. |
+showHiddenMetricsForVersion string | showHiddenMetricsForVersion is the previous version for which you want to show
+hidden metrics.
+Only the previous minor version is meaningful, other values will not be allowed.
+The format is |
+systemReservedCgroup string | systemReservedCgroup helps the kubelet identify absolute name of top level CGroup used
+to enforce |
+kubeReservedCgroup string | kubeReservedCgroup helps the kubelet identify absolute name of top level CGroup used
+to enforce |
+enforceNodeAllocatable []string | This flag specifies the various Node Allocatable enforcements that Kubelet needs to perform.
+This flag accepts a list of options. Acceptable options are |
+allowedUnsafeSysctls []string | A comma separated whitelist of unsafe sysctls or sysctl patterns (ending in |
+volumePluginDir string | volumePluginDir is the full path of the directory in which to search for additional third party volume plugins. Default: "/usr/libexec/kubernetes/kubelet-plugins/volume/exec/" |
+providerID string | providerID, if set, sets the unique ID of the instance that an external provider (i.e. cloudprovider) can use to identify a specific node. Default: "" |
+kernelMemcgNotification bool | kernelMemcgNotification, if set, instructs the kubelet to integrate with the kernel memcg notification for determining if memory eviction thresholds are exceeded rather than polling. Default: false |
+logging [Required]
+LoggingConfiguration | logging specifies the options of logging.
+Refer to |
+enableSystemLogHandler bool | enableSystemLogHandler enables system logs via web interface host:port/logs/ Default: true |
+enableSystemLogQuery bool | enableSystemLogQuery enables the node log query feature on the /logs endpoint. EnableSystemLogHandler has to be enabled in addition for this feature to work. Default: false |
+shutdownGracePeriod
+meta/v1.Duration | shutdownGracePeriod specifies the total duration that the node should delay the shutdown and total grace period for pod termination during a node shutdown. Default: "0s" |
+shutdownGracePeriodCriticalPods
+meta/v1.Duration | shutdownGracePeriodCriticalPods specifies the duration used to terminate critical pods during a node shutdown. This should be less than shutdownGracePeriod. For example, if shutdownGracePeriod=30s, and shutdownGracePeriodCriticalPods=10s, during a node shutdown the first 20 seconds would be reserved for gracefully terminating normal pods, and the last 10 seconds would be reserved for terminating critical pods. Default: "0s" |
+shutdownGracePeriodByPodPriority
+[]ShutdownGracePeriodByPodPriority | shutdownGracePeriodByPodPriority specifies the shutdown grace period for Pods based on their associated priority class value. When a shutdown request is received, the Kubelet will initiate shutdown on all pods running on the node with a grace period that depends on the priority of the pod, and then wait for all pods to exit. Each entry in the array represents the graceful shutdown time a pod with a priority class value that lies in the range of that value and the next higher entry in the list when the node is shutting down. For example, to allow critical pods 10s to shutdown, priority>=10000 pods 20s to shutdown, and all remaining pods 30s to shutdown. shutdownGracePeriodByPodPriority:
+The time the Kubelet will wait before exiting will at most be the maximum of all shutdownGracePeriodSeconds for each priority class range represented on the node. When all pods have exited or reached their grace periods, the Kubelet will release the shutdown inhibit lock. Requires the GracefulNodeShutdown feature gate to be enabled. This configuration must be empty if either ShutdownGracePeriod or ShutdownGracePeriodCriticalPods is set. Default: nil |
+reservedMemory
+[]MemoryReservation | reservedMemory specifies a comma-separated list of memory reservations for NUMA nodes.
+The parameter makes sense only in the context of the memory manager feature.
+The memory manager will not allocate reserved memory for container workloads.
+For example, if you have a NUMA0 with 10Gi of memory and the reservedMemory was
+specified to reserve 1Gi of memory at NUMA0, the memory manager will assume that
+only 9Gi is available for allocation.
+You can specify a different amount of NUMA node and memory types.
+You can omit this parameter at all, but you should be aware that the amount of
+reserved memory from all NUMA nodes should be equal to the amount of memory specified
+by the
+Default: nil |
+enableProfilingHandler bool | enableProfilingHandler enables profiling via web interface host:port/debug/pprof/ Default: true |
+enableDebugFlagsHandler bool | enableDebugFlagsHandler enables flags endpoint via web interface host:port/debug/flags/v Default: true |
+seccompDefault bool | SeccompDefault enables the use of |
+memoryThrottlingFactor float64 | MemoryThrottlingFactor specifies the factor multiplied by the memory limit or node allocatable memory when setting the cgroupv2 memory.high value to enforce MemoryQoS. Decreasing this factor will set lower high limit for container cgroups and put heavier reclaim pressure while increasing will put less reclaim pressure. See https://kep.k8s.io/2570 for more details. Default: 0.9 |
+registerWithTaints
+[]core/v1.Taint | registerWithTaints are an array of taints to add to a node object when the kubelet registers itself. This only takes effect when registerNode is true and upon the initial registration of the node. Default: nil |
+registerNode bool | registerNode enables automatic registration with the apiserver. Default: true |
+tracing
+TracingConfiguration | Tracing specifies the versioned configuration for OpenTelemetry tracing clients. See https://kep.k8s.io/2832 for more details. Default: nil |
+localStorageCapacityIsolation bool | LocalStorageCapacityIsolation enables local ephemeral storage isolation feature. The default setting is true. This feature allows users to set request/limit for container's ephemeral storage and manage it in a similar way as cpu and memory. It also allows setting sizeLimit for emptyDir volume, which will trigger pod eviction if disk usage from the volume exceeds the limit. This feature depends on the capability of detecting correct root file system disk usage. For certain systems, such as kind rootless, if this capability cannot be supported, the feature LocalStorageCapacityIsolation should be disabled. Once disabled, user should not set request/limit for container's ephemeral storage, or sizeLimit for emptyDir. Default: true |
+containerRuntimeEndpoint [Required]string | ContainerRuntimeEndpoint is the endpoint of container runtime. Unix Domain Sockets are supported on Linux, while npipe and tcp endpoints are supported on Windows. Examples:'unix:///path/to/runtime.sock', 'npipe:////./pipe/runtime' |
+imageServiceEndpoint string | ImageServiceEndpoint is the endpoint of container image service. Unix Domain Socket are supported on Linux, while npipe and tcp endpoints are supported on Windows. Examples:'unix:///path/to/runtime.sock', 'npipe:////./pipe/runtime'. If not specified, the value in containerRuntimeEndpoint is used. |
+failCgroupV1 bool | FailCgroupV1 prevents the kubelet from starting on hosts that use cgroup v1. By default, this is set to 'false', meaning the kubelet is allowed to start on cgroup v1 hosts unless this option is explicitly enabled. Default: false |
+SerializedNodeConfigSource
+SerializedNodeConfigSource allows us to serialize v1.NodeConfigSource. This type is used internally by the Kubelet for tracking checkpointed dynamic configs. It exists in the kubeletconfig API group because it is classified as a versioned input to the Kubelet.
+Field | Description |
+---|---|
+apiVersion string | kubelet.config.k8s.io/v1beta1 |
+kind string | SerializedNodeConfigSource |
+source
+core/v1.NodeConfigSource | source is the source that we are serializing. |
+CredentialProvider
+Appears in:
+CredentialProvider represents an exec plugin to be invoked by the kubelet. The plugin is only invoked when an image being pulled matches the images handled by the plugin (see matchImages).
+Field | Description |
+---|---|
+name [Required]string | name is the required name of the credential provider. It must match the name of the provider executable as seen by the kubelet. The executable must be in the kubelet's bin directory (set by the --image-credential-provider-bin-dir flag). |
+matchImages [Required][]string | matchImages is a required list of strings used to match against images in order to determine if this provider should be invoked. If one of the strings matches the requested image from the kubelet, the plugin will be invoked and given a chance to provide credentials. Images are expected to contain the registry domain and URL path. Each entry in matchImages is a pattern which can optionally contain a port and a path. Globs can be used in the domain, but not in the port or the path. Globs are supported as subdomains like '.k8s.io' or 'k8s..io', and top-level-domains such as 'k8s.'. Matching partial subdomains like 'app.k8s.io' is also supported. Each glob can only match a single subdomain segment, so *.io does not match *.k8s.io. A match exists between an image and a matchImage when all of the below are true:
+Example values of matchImages:
+|
+defaultCacheDuration [Required]
+meta/v1.Duration | defaultCacheDuration is the default duration the plugin will cache credentials in-memory if a cache duration is not provided in the plugin response. This field is required. |
+apiVersion [Required]string | Required input version of the exec CredentialProviderRequest. The returned CredentialProviderResponse MUST use the same encoding version as the input. Current supported values are:
+|
+args []string | Arguments to pass to the command when executing it. |
+env
+[]ExecEnvVar | Env defines additional environment variables to expose to the process. These are unioned with the host's environment, as well as variables client-go uses to pass argument to the plugin. |
+ExecEnvVar
+Appears in:
+ExecEnvVar is used for setting environment variables when executing an exec-based credential plugin.
+Field | Description |
+---|---|
+name [Required]string | No description provided. |
+value [Required]string | No description provided. |
+KubeletAnonymousAuthentication
+Appears in:
+Field | Description |
+---|---|
+enabled bool | enabled allows anonymous requests to the kubelet server.
+Requests that are not rejected by another authentication method are treated as
+anonymous requests.
+Anonymous requests have a username of |
+KubeletAuthentication
+Appears in:
+Field | Description |
+---|---|
+x509
+KubeletX509Authentication | x509 contains settings related to x509 client certificate authentication. |
+webhook
+KubeletWebhookAuthentication | webhook contains settings related to webhook bearer token authentication. |
+anonymous
+KubeletAnonymousAuthentication | anonymous contains settings related to anonymous authentication. |
+KubeletAuthorization
+Appears in:
+Field | Description |
+---|---|
+mode
+KubeletAuthorizationMode | mode is the authorization mode to apply to requests to the kubelet server.
+Valid values are |
+webhook
+KubeletWebhookAuthorization | webhook contains settings related to Webhook authorization. |
+KubeletAuthorizationMode
+(Alias of string
+)
+Appears in:
+KubeletWebhookAuthentication
+Appears in:
+Field | Description |
+---|---|
+enabled bool | enabled allows bearer token authentication backed by the tokenreviews.authentication.k8s.io API. |
+cacheTTL
+meta/v1.Duration | cacheTTL enables caching of authentication results |
+KubeletWebhookAuthorization
+Appears in:
+Field | Description |
+---|---|
+cacheAuthorizedTTL
+meta/v1.Duration | cacheAuthorizedTTL is the duration to cache 'authorized' responses from the webhook authorizer. |
+cacheUnauthorizedTTL
+meta/v1.Duration | cacheUnauthorizedTTL is the duration to cache 'unauthorized' responses from the webhook authorizer. |
+KubeletX509Authentication
+Appears in:
+Field | Description |
+---|---|
+clientCAFile string | clientCAFile is the path to a PEM-encoded certificate bundle. If set, any request presenting a client certificate signed by one of the authorities in the bundle is authenticated with a username corresponding to the CommonName, and groups corresponding to the Organization in the client certificate. |
+MemoryReservation
+Appears in:
+MemoryReservation specifies the memory reservation of different types for each NUMA node
+Field | Description |
+---|---|
+numaNode [Required]int32 | No description provided. |
+limits [Required]
+core/v1.ResourceList | No description provided. |
+MemorySwapConfiguration
+Appears in:
+Field | Description |
+---|---|
+swapBehavior string | swapBehavior configures swap memory available to container workloads. May be one of "", "NoSwap": workloads can not use swap, default option. "LimitedSwap": workload swap usage is limited. The swap limit is proportionate to the container's memory request. |
+ResourceChangeDetectionStrategy
+(Alias of string
+)
+Appears in:
+ResourceChangeDetectionStrategy denotes a mode in which internal managers (secret, configmap) are discovering object changes.
+ShutdownGracePeriodByPodPriority
+Appears in:
+ShutdownGracePeriodByPodPriority specifies the shutdown grace period for Pods based on their associated priority class value
+Field | Description |
+---|---|
+priority [Required]int32 | priority is the priority value associated with the shutdown grace period |
+shutdownGracePeriodSeconds [Required]int64 | shutdownGracePeriodSeconds is the shutdown grace period in seconds |
+This page is automatically generated.
+If you plan to report an issue with this page, mention that the page is auto-generated in your issue description. The fix may need to happen elsewhere in the Kubernetes project.
+[Update config API for v1.31 (f69f28fb6b)](https://github.com/kubernetes/website/commit/f69f28fb6b5b662fb546f4a299aa4ca745454fff)

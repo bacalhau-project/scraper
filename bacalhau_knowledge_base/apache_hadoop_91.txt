@@ -1,22 +1,1553 @@
-URL: https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/MemoryStorage.html
+Source: apache_hadoop
+URL: http://hadoop.apache.org/docs/r3.3.5/api/org/apache/hadoop/fs/FileSystem.html
 
-Wiki|git|Apache Hadoop| Last Published: 2024-03-04
-               | Version: 3.4.0GeneralOverviewSingle Node SetupCluster SetupCommands ReferenceFileSystem ShellCompatibility SpecificationDownstream Developer's GuideAdmin Compatibility GuideInterface ClassificationFileSystem SpecificationCommonCLI Mini ClusterFair Call QueueNative LibrariesProxy UserRack AwarenessSecure ModeService Level AuthorizationHTTP AuthenticationCredential Provider APIHadoop KMSTracingUnix Shell GuideRegistryAsync ProfilerHDFSArchitectureUser GuideCommands ReferenceNameNode HA With QJMNameNode HA With NFSObserver NameNodeFederationViewFsViewFsOverloadSchemeSnapshotsEdits ViewerImage ViewerPermissions and HDFSQuotas and HDFSlibhdfs (C API)WebHDFS (REST API)HttpFSShort Circuit Local ReadsCentralized Cache ManagementNFS GatewayRolling UpgradeExtended AttributesTransparent EncryptionMultihomingStorage PoliciesMemory Storage SupportSynthetic Load GeneratorErasure CodingDisk BalancerUpgrade DomainDataNode AdminRouter FederationProvided StorageMapReduceTutorialCommands ReferenceCompatibility with 1.xEncrypted ShufflePluggable Shuffle/SortDistributed Cache DeploySupport for YARN Shared CacheMapReduce REST APIsMR Application MasterMR History ServerYARNArchitectureCommands ReferenceCapacity SchedulerFair SchedulerResourceManager RestartResourceManager HAResource ModelNode LabelsNode AttributesWeb Application ProxyTimeline ServerTimeline Service V.2Writing YARN ApplicationsYARN Application SecurityNodeManagerRunning Applications in Docker ContainersRunning Applications in runC ContainersUsing CGroupsSecure ContainersReservation SystemGraceful DecommissionOpportunistic ContainersYARN FederationShared CacheUsing GPUUsing FPGAPlacement ConstraintsYARN UI2YARN REST APIsIntroductionResource ManagerNode ManagerTimeline ServerTimeline Service V.2YARN ServiceOverviewQuickStartConceptsYarn Service APIService DiscoverySystem ServicesHadoop Compatible File SystemsAliyun OSSAmazon S3Azure Blob StorageAzure Data Lake StorageTencent COSHuaweicloud OBSAuthOverviewExamplesConfigurationBuildingToolsHadoop StreamingHadoop ArchivesHadoop Archive LogsDistCpHDFS Federation BalanceGridMixRumenResource Estimator ServiceScheduler Load SimulatorHadoop BenchmarkingDynamometerReferenceChangelog and Release NotesJava API docsUnix Shell APIMetricsConfigurationcore-default.xmlhdfs-default.xmlhdfs-rbf-default.xmlmapred-default.xmlyarn-default.xmlkms-default.xmlhttpfs-default.xmlDeprecated PropertiesMemory Storage Support in HDFSIntroductionAdministrator ConfigurationLimit RAM used for replicas in MemorySetup RAM Disks on Data NodesChoosing tmpfs (vs ramfs)Mount RAM DisksTag tmpfs volume with the RAM_DISK Storage TypeEnsure Storage Policies are enabledApplication UsageUse the LAZY_PERSIST Storage PolicyInvoke hdfs storagepolicies command for directoriesCall setStoragePolicy method for directoriesPass LAZY_PERSIST CreateFlag for new filesIntroductionHDFS supports writing to off-heap memory managed by the Data Nodes. The Data Nodes will flush in-memory data to disk asynchronously thus removing expensive disk IO and checksum computations from the performance-sensitive IO path, hence we call such writesLazy Persistwrites. HDFS provides best-effort persistence guarantees for Lazy Persist Writes. Rare data loss is possible in the event of a node restart before replicas are persisted to disk. Applications can choose to use Lazy Persist Writes to trade off some durability guarantees in favor of reduced latency.This feature is available starting with Apache Hadoop 2.6.0 and was developed under JiraHDFS-6581.The target use cases are applications that would benefit from writing relatively low amounts of data (from a few GB up to tens of GBs depending on available memory) with low latency. Memory storage is for applications that run within the cluster and collocated with HDFS Data Nodes. We have observed that the latency overhead from network replication negates the benefits of writing to memory.Applications that use Lazy Persist Writes will continue to work by falling back to DISK storage if memory is insufficient or unconfigured.Administrator ConfigurationThis section enumerates the administrative steps required before applications can start using the feature in a cluster.Limit RAM used for replicas in MemoryFirst decide the amount of memory to be dedicated for replicas stored in memory. Setdfs.datanode.max.locked.memoryaccordingly inhdfs-site.xml. This is the same setting used by theCentralized Cache Managementfeature. The Data Node will ensure that the combined memory used by Lazy Persist Writes and Centralized Cache Management does not exceed the amount configured indfs.datanode.max.locked.memory.E.g. To reserve 32 GB for in-memory replicas<property>
-      <name>dfs.datanode.max.locked.memory</name>
-      <value>34359738368</value>
-    </property>This memory is not allocated by the Data Node on startup.On Unix-like systems, the “locked-in-memory size” ulimit (ulimit -l) of the Data Node user also needs to be increased to match this parameter (see the related section onOS Limits). When setting this value, please remember that you will need space in memory for other things as well, such as the Data Node and application JVM heaps and the operating system page cache. You will also need memory for YARN containers if there is a YARN Node Manager process running on the same node as the Data Node.Setup RAM Disks on Data NodesInitialize a RAM disk on each Data Node. The choice of RAM Disk allows better data persistence across Data Node process restarts. The following setup will work on most Linux distributions. Using RAM disks on other platforms is not currently supported.Choosingtmpfs(vsramfs)Linux supports using two kinds of RAM disks -tmpfsandramfs. The size oftmpfsis limited by the Linux kernel whileramfsgrows to fill all available system memory. There is a downside totmpfssince its contents can be swapped to disk under memory pressure. However many performance-sensitive deployments run with swapping disabled so we do not expect this to be an issue in practice.HDFS currently supports usingtmpfspartitions. Support for addingramfsis in progress (SeeHDFS-8584).Mount RAM DisksMount the RAM Disk partition with the Unixmountcommand. E.g. to mount a 32 GBtmpfspartition under/mnt/dn-tmpfs/sudo mount -t tmpfs -o size=32g tmpfs /mnt/dn-tmpfs/It is recommended you create an entry in the/etc/fstabso the RAM Disk is recreated automatically on node restarts. Another option is to use a sub-directory under/dev/shmwhich is atmpfsmount available by default on most Linux distributions. Ensure that the size of the mount is greater than or equal to yourdfs.datanode.max.locked.memorysetting else override it in/etc/fstab. Using more than onetmpfspartition per Data Node for Lazy Persist Writes is not recommended.Tagtmpfsvolume with the RAM_DISK Storage TypeTag thetmpfsdirectory with the RAM_DISK storage type via thedfs.datanode.data.dirconfiguration setting inhdfs-site.xml. E.g. On a Data Node with three hard disk volumes/grid/0,/grid/1and/grid/2and atmpfsmount/mnt/dn-tmpfs,dfs.datanode.data.dirmust be set as follows:<property>
-      <name>dfs.datanode.data.dir</name>
-      <value>/grid/0,/grid/1,/grid/2,[RAM_DISK]/mnt/dn-tmpfs</value>
-    </property>This step is crucial. Without the RAM_DISK tag, HDFS will treat thetmpfsvolume as non-volatile storage and data will not be saved to persistent storage. You will lose data on node restart.Ensure Storage Policies are enabledEnsure that the global setting to turn on Storage Policies is enabledas documented here. This setting is on by default.Application UsageUse the LAZY_PERSIST Storage PolicyApplications indicate that HDFS can use Lazy Persist Writes for a file with theLAZY_PERSISTstorage policy. Administrative privileges arenotrequired to set the policy and it can be set in one of three ways.Invokehdfs storagepoliciescommand for directoriesSetting the policy on a directory causes it to take effect for all new files in the directory. Thehdfs storagepoliciescommand can be used to set the policy as described in theStorage Policies documentation.hdfs storagepolicies -setStoragePolicy -path <path> -policy LAZY_PERSISTCallsetStoragePolicymethod for directoriesStarting with Apache Hadoop 2.8.0, an application can programmatically set the Storage Policy withFileSystem.setStoragePolicy. E.g.fs.setStoragePolicy(path, "LAZY_PERSIST");PassLAZY_PERSISTCreateFlagfor new filesAn application can passCreateFlag#LAZY_PERSISTwhen creating a new file withFileSystem#createAPI. E.g.FSDataOutputStream fos =
-        fs.create(
-            path,
-            FsPermission.getFileDefault(),
-            EnumSet.of(CreateFlag.CREATE, CreateFlag.LAZY_PERSIST),
-            bufferLength,
-            replicationFactor,
-            blockSize,
-            null);©            2008-2024
-              Apache Software Foundation
-            
-                          -Privacy Policy.
-        Apache Maven, Maven, Apache, the Apache feather logo, and the Apache Maven project logos are trademarks of The Apache Software Foundation.
+@InterfaceAudience.Public @InterfaceStability.Stable public abstract class FileSystem extends[Configured]implements[Closeable], org.apache.hadoop.security.token.DelegationTokenIssuer, org.apache.hadoop.fs.PathCapabilities
+All user code that may potentially use the Hadoop Distributed
+File System should be written to use a FileSystem object or its
+successor, [ FileContext](../../../../org/apache/hadoop/fs/FileContext.html).
+The local implementation is [ LocalFileSystem](../../../../org/apache/hadoop/fs/LocalFileSystem.html) and distributed
+implementation is DistributedFileSystem. There are other implementations
+for object stores and (outside the Apache Hadoop codebase),
+third party filesystems.
+FileSystem
+refers to an instance of this class.filesystem
+refers to the distributed/local filesystem
+itself, rather than the class used to interact with it.java.io.File
+.Important note for developers
+If you are making changes here to the public API or protected methods, you must review the following subclasses and make sure that they are filtering/passing through new methods as appropriate.FilterFileSystem
+TestFilterFileSystem.MustNotImplement
+must be
+updated with the unsupported interface.
+Furthermore, if the new API's support is probed for via
+hasPathCapability(Path, String)
+FilterFileSystem.hasPathCapability(Path, String)
+[ ChecksumFileSystem](../../../../org/apache/hadoop/fs/ChecksumFileSystem.html): checksums are created and
+verified.
+TestHarFileSystem
+will need its MustNotImplement
+interface updated.
+There are some external places your changes will break things. Do co-ordinate changes here.
+HBase: HBossHive: HiveShim23
+shims/0.23/src/main/java/org/apache/hadoop/hive/shims/Hadoop23Shims.java
+Modifier and Type | Field and Description |
+---|---|
+static |
+|
+static |
+|
+static int |
+Priority of the FileSystem shutdown hook: 10.
+|
+protected org.apache.hadoop.fs.FileSystem.Statistics |
+The statistics for this file system.
+|
+static |
+Prefix for trash directory: ".Trash".
+|
+static |
+|
+Modifier | Constructor and Description |
+---|---|
+protected |
+|
+Modifier and Type | Method and Description |
+---|---|
+|
+Append to an existing file (optional operation).
+|
+|
+Append to an existing file (optional operation).
+|
+abstract |
+Append to an existing file (optional operation).
+|
+|
+Create a Builder to append a file.
+|
+static boolean |
+|
+boolean |
+Cancel the scheduled deletion of the path when the FileSystem is closed.
+|
+protected |
+Canonicalize the given URI.
+|
+protected void |
+Check that a Path belongs to this FileSystem.
+|
+static void |
+Reset all statistics for all file systems.
+|
+void |
+Close this FileSystem instance.
+|
+static void |
+Close all cached FileSystem instances.
+|
+static void |
+Close all cached FileSystem instances for a given UGI.
+|
+void |
+Called when we're all done writing to the target.
+|
+void |
+Concat existing files together.
+|
+void |
+The src files are on the local disk.
+|
+void |
+The src file is on the local disk.
+|
+void |
+The src file is on the local disk.
+|
+void |
+The src file is on the local disk.
+|
+void |
+Copy it a file from a remote filesystem to the local one.
+|
+void |
+The src file is under this filesystem, and the dst is on the local disk.
+|
+void |
+Copy it a file from the remote filesystem to the local one.
+|
+static |
+Create a file with the provided permission.
+|
+|
+Create an FSDataOutputStream at the indicated Path.
+|
+|
+Create an FSDataOutputStream at the indicated Path.
+|
+|
+Create an FSDataOutputStream at the indicated Path.
+|
+|
+Create an
+FSDataOutputStream |
+|
+Create an FSDataOutputStream at the indicated Path.
+|
+|
+Create an FSDataOutputStream at the indicated Path with write-progress
+reporting.
+|
+abstract |
+Create an FSDataOutputStream at the indicated Path with write-progress
+reporting.
+|
+|
+Create an FSDataOutputStream at the indicated Path with write-progress
+reporting.
+|
+|
+Create an FSDataOutputStream at the indicated Path with a custom
+checksum option.
+|
+|
+Create an FSDataOutputStream at the indicated Path with write-progress
+reporting.
+|
+|
+Create an FSDataOutputStream at the indicated Path.
+|
+|
+Create an FSDataOutputStream at the indicated Path with write-progress
+reporting.
+|
+protected static |
+Create instance of the standard FSDataOutputStreamBuilder for the
+given filesystem and path.
+|
+|
+Create a new FSDataOutputStreamBuilder for the file with path.
+|
+org.apache.hadoop.fs.MultipartUploaderBuilder |
+Create a multipart uploader.
+|
+boolean |
+Creates the given Path as a brand-new zero-length file.
+|
+|
+Opens an FSDataOutputStream at the indicated Path with write-progress
+reporting.
+|
+|
+Opens an FSDataOutputStream at the indicated Path with write-progress
+reporting.
+|
+|
+Opens an FSDataOutputStream at the indicated Path with write-progress
+reporting.
+|
+protected |
+Hook to implement support for
+PathHandle |
+|
+Create a snapshot with a default name.
+|
+|
+Create a snapshot.
+|
+void |
+|
+boolean |
+Deprecated.
+Use
+delete(Path, boolean) |
+abstract boolean |
+Delete a file.
+|
+boolean |
+Mark a path to be deleted when its FileSystem is closed.
+|
+void |
+Delete a snapshot of a directory.
+|
+static void |
+|
+boolean |
+Check if a path exists.
+|
+protected |
+|
+static |
+Returns the configured FileSystem implementation.
+|
+static |
+Get a FileSystem for this URI's scheme and authority.
+|
+static |
+Get a FileSystem instance based on the uri, the passed in
+configuration and the user.
+|
+|
+Gets the ACL of a file or directory.
+|
+static |
+Deprecated.
+|
+|
+Retrieve all the storage policies supported by this file system.
+|
+long |
+Deprecated.
+Use
+getFileStatus(Path) |
+|
+Get a canonical service name for this FileSystem.
+|
+protected |
+Return a canonicalized form of this FileSystem's URI.
+|
+|
+Return the
+ContentSummary |
+long |
+Deprecated.
+use
+getDefaultBlockSize(Path) |
+long |
+Return the number of bytes that large input files should be optimally
+be split into to minimize I/O time.
+|
+protected int |
+Get the default port for this FileSystem.
+|
+short |
+Deprecated.
+use
+getDefaultReplication(Path) |
+short |
+Get the default replication for a path.
+|
+static |
+Get the default FileSystem URI from a configuration.
+|
+|
+Return an array containing hostnames, offset and size of
+portions of the given file.
+|
+|
+Return an array containing hostnames, offset and size of
+portions of the given file.
+|
+|
+Get the checksum of a file, if the FS supports checksums.
+|
+|
+Get the checksum of a file, from the beginning of the file till the
+specific length.
+|
+|
+|
+abstract |
+Return a file status object that represents the path.
+|
+static |
+Get the FileSystem implementation class of a filesystem.
+|
+protected static |
+|
+static |
+Get the global storage statistics.
+|
+|
+Return the current user's home directory in this FileSystem.
+|
+protected |
+Note: with the new FileContext class, getWorkingDirectory()
+will be removed.
+|
+long |
+Deprecated.
+Use
+getFileStatus(Path) |
+|
+|
+static |
+Get the local FileSystem.
+|
+|
+Deprecated.
+call
+getUri() |
+static |
+Deprecated.
+call
+get(URI, Configuration) |
+|
+Create a durable, serializable handle to the referent of the given
+entity.
+|
+|
+Return the
+QuotaUsage |
+short |
+Deprecated.
+Use
+getFileStatus(Path) |
+|
+Return the protocol scheme for this FileSystem.
+|
+|
+Deprecated.
+use
+getServerDefaults(Path) |
+|
+Return a set of server default configuration values.
+|
+static |
+Deprecated.
+|
+static org.apache.hadoop.fs.FileSystem.Statistics |
+Deprecated.
+|
+|
+Returns a status object describing the use and capacity of the
+filesystem.
+|
+|
+Returns a status object describing the use and capacity of the
+filesystem.
+|
+|
+Query the effective storage policy ID for the given file or directory.
+|
+|
+Get the StorageStatistics for this FileSystem object.
+|
+|
+Get the root directory of Trash for current user when the path specified
+is deleted.
+|
+|
+Get all the trash roots for current user or all users.
+|
+abstract |
+Returns a URI which identifies this FileSystem.
+|
+long |
+Return the total size of all files in the filesystem.
+|
+long |
+Return the total size of all files from a specified path.
+|
+abstract |
+Get the current working directory for the given FileSystem
+|
+byte[] |
+Get an xattr name and value for a file or directory.
+|
+|
+Get all of the xattr name/value pairs for a file or directory.
+|
+|
+Get all of the xattrs name/value pairs for a file or directory.
+|
+|
+Return all the files that match filePattern and are not checksum
+files.
+|
+|
+Return an array of
+FileStatus |
+boolean |
+The base FileSystem implementation generally has no knowledge
+of the capabilities of actual implementations.
+|
+void |
+Initialize a FileSystem.
+|
+boolean |
+Deprecated.
+Use
+getFileStatus(Path) |
+boolean |
+Deprecated.
+Use
+getFileStatus(Path) |
+org.apache.hadoop.fs.RemoteIterator< |
+List corrupted file blocks.
+|
+org.apache.hadoop.fs.RemoteIterator< |
+List the statuses and block locations of the files in the given path.
+|
+org.apache.hadoop.fs.RemoteIterator< |
+List the statuses of the files/directories in the given path if the path is
+a directory.
+|
+protected org.apache.hadoop.fs.RemoteIterator< |
+List a directory.
+|
+abstract |
+List the statuses of the files/directories in the given path if the path is
+a directory.
+|
+|
+Filter files/directories in the given list of paths using default
+path filter.
+|
+|
+Filter files/directories in the given list of paths using user-supplied
+path filter.
+|
+|
+Filter files/directories in the given path using the user-supplied path
+filter.
+|
+org.apache.hadoop.fs.RemoteIterator< |
+Returns a remote iterator so that followup calls are made on demand
+while consuming the entries.
+|
+|
+Get all of the xattr names for a file or directory.
+|
+|
+Qualify a path to one which uses this FileSystem and, if relative,
+made absolute.
+|
+static boolean |
+Create a directory with the provided permission.
+|
+boolean |
+Call
+mkdirs(Path, FsPermission) |
+abstract boolean |
+Make the given file and all non-existent parents into
+directories.
+|
+void |
+Modifies ACL entries of files and directories.
+|
+void |
+The src files is on the local disk.
+|
+void |
+The src file is on the local disk.
+|
+void |
+Copy a file to the local filesystem, then delete it from the
+remote filesystem (if successfully copied).
+|
+void |
+Synchronize client metadata state.
+|
+static |
+Returns a unique configured FileSystem implementation for the default
+filesystem of the supplied configuration.
+|
+static |
+Returns the FileSystem for this URI's scheme and authority.
+|
+static |
+Returns the FileSystem for this URI's scheme and authority and the
+given user.
+|
+static |
+Get a unique local FileSystem object.
+|
+|
+Opens an FSDataInputStream at the indicated Path.
+|
+|
+Open an FSDataInputStream matching the PathHandle instance.
+|
+|
+Open an FSDataInputStream matching the PathHandle instance.
+|
+abstract |
+Opens an FSDataInputStream at the indicated Path.
+|
+|
+Open a file for reading through a builder API.
+|
+|
+Open a file for reading through a builder API.
+|
+protected |
+Execute the actual open file operation.
+|
+protected |
+Execute the actual open file operation.
+|
+protected |
+Deprecated.
+|
+protected boolean |
+Deprecated.
+|
+protected void |
+Deprecated.
+|
+static void |
+Print all statistics for all file systems to
+System.out |
+protected void |
+Delete all paths that were marked as delete-on-exit.
+|
+void |
+Removes all but the base ACL entries of files and directories.
+|
+void |
+Removes ACL entries from files and directories.
+|
+void |
+Removes all default ACL entries from files and directories.
+|
+void |
+Remove an xattr of a file or directory.
+|
+abstract boolean |
+Renames Path src to Path dst.
+|
+protected void |
+Deprecated.
+|
+void |
+Rename a snapshot.
+|
+protected |
+|
+|
+Return the fully-qualified path of path, resolving the path
+through any symlinks or mount point.
+|
+void |
+Set the source path to satisfy storage policy.
+|
+void |
+Fully replaces ACL of files and directories, discarding all existing
+entries.
+|
+static void |
+Set the default FileSystem URI in a configuration.
+|
+static void |
+Set the default FileSystem URI in a configuration.
+|
+void |
+Set owner of a path (i.e.
+|
+void |
+Set permission of a path.
+|
+void |
+Set quota for the given
+Path |
+void |
+Set per storage type quota for the given
+Path |
+boolean |
+Set the replication for an existing file.
+|
+void |
+Set the storage policy for a given file or directory.
+|
+void |
+Set access time of a file.
+|
+void |
+Set the verify checksum flag.
+|
+abstract void |
+Set the current working directory for the given FileSystem.
+|
+void |
+Set the write checksum flag.
+|
+void |
+Set an xattr of a file or directory.
+|
+void |
+Set an xattr of a file or directory.
+|
+|
+Returns a local file that the user can write output to.
+|
+boolean |
+|
+boolean |
+Truncate the file in the indicated path to the indicated size.
+|
+void |
+Unset the storage policy set for a given file or directory.
+|
+[getConf](../../../../org/apache/hadoop/conf/Configured.html#getConf--), [setConf](../../../../org/apache/hadoop/conf/Configured.html#setConf-org.apache.hadoop.conf.Configuration-)
+public static final[String]FS_DEFAULT_NAME_KEY
+public static final[String]DEFAULT_FS
+public static final int SHUTDOWN_HOOK_PRIORITY
+public static final[String]TRASH_PREFIX
+public static final[String]USER_HOME_PREFIX
+protected org.apache.hadoop.fs.FileSystem.Statistics statistics
+public static[FileSystem]get([URI]uri,[Configuration]conf,[String]user) throws[IOException],[InterruptedException]
+uri
+- of the filesystemconf
+- the configuration to useuser
+- to perform the get as[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- failure to load[InterruptedException](https://docs.oracle.com/javase/8/docs/api/java/lang/InterruptedException.html?is-external=true)
+- If the UGI.doAs()
+call was
+somehow interrupted.public static[FileSystem]get([Configuration]conf) throws[IOException]
+conf
+- the configuration to use[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- If an I/O error occurred.public static[URI]getDefaultUri([Configuration]conf)
+conf
+- the configuration to usepublic static void setDefaultUri([Configuration]conf,[URI]uri)
+conf
+- the configuration to alteruri
+- the new default filesystem uripublic static void setDefaultUri([Configuration]conf,[String]uri)
+conf
+- the configuration to alteruri
+- the new default filesystem uripublic void initialize([URI]name,[Configuration]conf) throws[IOException]
+name
+- a URI whose authority section names the host, port, etc.
+for this FileSystemconf
+- the configuration[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- on any failure to initialize this instance.[IllegalArgumentException](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalArgumentException.html?is-external=true)
+- if the URI is considered invalid.public[String]getScheme()
+This implementation throws an UnsupportedOperationException
+.
+[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default).public abstract[URI]getUri()
+protected[URI]getCanonicalUri()
+canonicalizeUri(URI)
+canonicalizeUri(URI)
+protected[URI]canonicalizeUri([URI]uri)
+getDefaultPort()
+uri
+- url.NetUtils.getCanonicalUri(URI, int)
+protected int getDefaultPort()
+protected static[FileSystem]getFSofPath([Path]absOrFqPath,[Configuration]conf) throws[UnsupportedFileSystemException],[IOException]
+@InterfaceAudience.Public @InterfaceStability.Evolving public[String]getCanonicalServiceName()
+getCanonicalServiceName
+in interface org.apache.hadoop.security.token.DelegationTokenIssuer
+SecurityUtil.buildDTServiceName(URI, int)
+[@Deprecated]public[String]getName()
+getUri()
+[@Deprecated]public static[FileSystem]getNamed([String]name,[Configuration]conf) throws[IOException]
+get(URI, Configuration)
+name
+- name.conf
+- configuration.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- If an I/O error occurred.public static[LocalFileSystem]getLocal([Configuration]conf) throws[IOException]
+conf
+- the configuration to configure the FileSystem with
+if it is newly instantiated.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- if somehow the local FS cannot be instantiated.public static[FileSystem]get([URI]uri,[Configuration]conf) throws[IOException]
+"fs.$SCHEME.impl.disable.cache"
+set to true,
+a new instance will be created, initialized with the supplied URI and
+configuration, then returned without being cached.
+uri
+- uri of the filesystem.conf
+- configrution.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- if the FileSystem cannot be instantiated.public static[FileSystem]newInstance([URI]uri,[Configuration]conf,[String]user) throws[IOException],[InterruptedException]
+newInstance(URI, Configuration)
+uri
+- uri of the filesystem.conf
+- the configuration to useuser
+- to perform the get as[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- if the FileSystem cannot be instantiated.[InterruptedException](https://docs.oracle.com/javase/8/docs/api/java/lang/InterruptedException.html?is-external=true)
+- If the UGI.doAs()
+call was
+somehow interrupted.public static[FileSystem]newInstance([URI]uri,[Configuration]config) throws[IOException]
+uri
+- FS URIconfig
+- configuration to use[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- FS creation or initialization failure.public static[FileSystem]newInstance([Configuration]conf) throws[IOException]
+conf
+- the configuration to use[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- FS creation or initialization failure.public static[LocalFileSystem]newInstanceLocal([Configuration]conf) throws[IOException]
+conf
+- the configuration to configure the FileSystem with[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- FS creation or initialization failure.public static void closeAll() throws[IOException]
+[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- a problem arose closing one or more filesystem.public static void closeAllForUGI([UserGroupInformation]ugi) throws[IOException]
+ugi
+- user group info to close[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- a problem arose closing one or more filesystem.public[Path]makeQualified([Path]path)
+path
+- to qualify.[IllegalArgumentException](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalArgumentException.html?is-external=true)
+- if the path has a schema/URI different
+from this FileSystem.Path.makeQualified(URI, Path)
+public static[FSDataOutputStream]create([FileSystem]fs,[Path]file,[FsPermission]permission) throws[IOException]
+fs
+- FileSystemfile
+- the name of the file to be createdpermission
+- the permission of the file[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic static boolean mkdirs([FileSystem]fs,[Path]dir,[FsPermission]permission) throws[IOException]
+fs
+- FileSystem handledir
+- the name of the directory to be createdpermission
+- the permission of the directory[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- A problem creating the directories.create(FileSystem, Path, FsPermission)
+protected void checkPath([Path]path)
+path
+- to check[IllegalArgumentException](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalArgumentException.html?is-external=true)
+- if the path is not considered to be
+part of this FileSystem.public[BlockLocation][] getFileBlockLocations([FileStatus]file, long start, long len) throws[IOException]
+null
+is returned.
+if f == null : result = null elif f.getLen() <= start: result = [] else result = [ locations(FS, b) for b in blocks(FS, p, s, s+l)]This call is most helpful with and distributed filesystem where the hostnames of machines that contain blocks of the given file can be determined. The default implementation returns an array containing one element:
+BlockLocation( { "localhost:9866" }, { "localhost" }, 0, file.getLen())In HDFS, if file is three-replicated, the returned array contains elements like:
+BlockLocation(offset: 0, length: BLOCK_SIZE, hosts: {"host1:9866", "host2:9866, host3:9866"}) BlockLocation(offset: BLOCK_SIZE, length: BLOCK_SIZE, hosts: {"host2:9866", "host3:9866, host4:9866"})And if a file is erasure-coded, the returned BlockLocation are logical block groups. Suppose we have a RS_3_2 coded file (3 data units and 2 parity units). 1. If the file size is less than one stripe size, say 2 * CELL_SIZE, then there will be one BlockLocation returned, with 0 offset, actual file size and 4 hosts (2 data blocks and 2 parity blocks) hosting the actual blocks. 3. If the file size is less than one group size but greater than one stripe size, then there will be one BlockLocation returned, with 0 offset, actual file size with 5 hosts (3 data blocks and 2 parity blocks) hosting the actual blocks. 4. If the file size is greater than one group size, 3 * BLOCK_SIZE + 123 for example, then the result will be like:
+BlockLocation(offset: 0, length: 3 * BLOCK_SIZE, hosts: {"host1:9866", "host2:9866","host3:9866","host4:9866","host5:9866"}) BlockLocation(offset: 3 * BLOCK_SIZE, length: 123, hosts: {"host1:9866", "host4:9866", "host5:9866"})
+file
+- FilesStatus to get data fromstart
+- offset into the given filelen
+- length for which to get locations for[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic[BlockLocation][] getFileBlockLocations([Path]p, long start, long len) throws[IOException]
+null
+is returned.
+This call is most helpful with location-aware distributed
+filesystems, where it returns hostnames of machines that
+contain the given file.
+A FileSystem will normally return the equivalent result
+of passing the FileStatus
+of the path to
+getFileBlockLocations(FileStatus, long, long)
+p
+- path is used to identify an FS since an FS could have
+another FS that it could be delegating the call tostart
+- offset into the given filelen
+- length for which to get locations for[FileNotFoundException](https://docs.oracle.com/javase/8/docs/api/java/io/FileNotFoundException.html?is-external=true)
+- when the path does not exist[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[@Deprecated]public[FsServerDefaults]getServerDefaults() throws[IOException]
+getServerDefaults(Path)
+[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic[FsServerDefaults]getServerDefaults([Path]p) throws[IOException]
+p
+- path is used to identify an FS since an FS could have
+another FS that it could be delegating the call to[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic[Path]resolvePath([Path]p) throws[IOException]
+p
+- path to be resolved[FileNotFoundException](https://docs.oracle.com/javase/8/docs/api/java/io/FileNotFoundException.html?is-external=true)
+- if the path is not present[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- for any other errorpublic abstract[FSDataInputStream]open([Path]f, int bufferSize) throws[IOException]
+f
+- the file name to openbufferSize
+- the size of the buffer to be used.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic[FSDataInputStream]open([Path]f) throws[IOException]
+f
+- the file to open[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic[FSDataInputStream]open([PathHandle]fd) throws[IOException]
+fd
+- PathHandle object returned by the FS authority.[InvalidPathHandleException](../../../../org/apache/hadoop/fs/InvalidPathHandleException.html)
+- If PathHandle
+[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- If open(PathHandle, int)
+public[FSDataInputStream]open([PathHandle]fd, int bufferSize) throws[IOException]
+fd
+- PathHandle object returned by the FS authority.bufferSize
+- the size of the buffer to use[InvalidPathHandleException](../../../../org/apache/hadoop/fs/InvalidPathHandleException.html)
+- If PathHandle
+[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- If not overridden by subclasspublic final[PathHandle]getPathHandle([FileStatus]stat, org.apache.hadoop.fs.Options.HandleOpt... opt)
+stat
+- Referent in the target FileSystemopt
+- If absent, assume Options.HandleOpt.path()
+.[IllegalArgumentException](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalArgumentException.html?is-external=true)
+- If the FileStatus does not belong to
+this FileSystem[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- If createPathHandle(org.apache.hadoop.fs.FileStatus, org.apache.hadoop.fs.Options.HandleOpt...)
+[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- If this FileSystem cannot enforce
+the specified constraints.protected[PathHandle]createPathHandle([FileStatus]stat, org.apache.hadoop.fs.Options.HandleOpt... opt)
+PathHandle
+stat
+- Referent in the target FileSystemopt
+- Constraints that determine the validity of the
+PathHandle
+public[FSDataOutputStream]create([Path]f) throws[IOException]
+f
+- the file to create[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic[FSDataOutputStream]create([Path]f, boolean overwrite) throws[IOException]
+f
+- the file to createoverwrite
+- if a file with this name already exists, then if true,
+the file will be overwritten, and if false an exception will be thrown.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic[FSDataOutputStream]create([Path]f,[Progressable]progress) throws[IOException]
+f
+- the file to createprogress
+- to report progress[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic[FSDataOutputStream]create([Path]f, short replication) throws[IOException]
+f
+- the file to createreplication
+- the replication factor[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic[FSDataOutputStream]create([Path]f, short replication,[Progressable]progress) throws[IOException]
+f
+- the file to createreplication
+- the replication factorprogress
+- to report progress[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic[FSDataOutputStream]create([Path]f, boolean overwrite, int bufferSize) throws[IOException]
+f
+- the file to createoverwrite
+- if a path with this name already exists, then if true,
+the file will be overwritten, and if false an error will be thrown.bufferSize
+- the size of the buffer to be used.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic[FSDataOutputStream]create([Path]f, boolean overwrite, int bufferSize,[Progressable]progress) throws[IOException]
+FSDataOutputStream
+f
+- the path of the file to openoverwrite
+- if a file with this name already exists, then if true,
+the file will be overwritten, and if false an error will be thrown.bufferSize
+- the size of the buffer to be used.progress
+- to report progress.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic[FSDataOutputStream]create([Path]f, boolean overwrite, int bufferSize, short replication, long blockSize) throws[IOException]
+f
+- the file name to openoverwrite
+- if a file with this name already exists, then if true,
+the file will be overwritten, and if false an error will be thrown.bufferSize
+- the size of the buffer to be used.replication
+- required block replication for the file.blockSize
+- the size of the buffer to be used.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic[FSDataOutputStream]create([Path]f, boolean overwrite, int bufferSize, short replication, long blockSize,[Progressable]progress) throws[IOException]
+f
+- the file name to openoverwrite
+- if a file with this name already exists, then if true,
+the file will be overwritten, and if false an error will be thrown.bufferSize
+- the size of the buffer to be used.replication
+- required block replication for the file.blockSize
+- the size of the buffer to be used.progress
+- to report progress.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic abstract[FSDataOutputStream]create([Path]f,[FsPermission]permission, boolean overwrite, int bufferSize, short replication, long blockSize,[Progressable]progress) throws[IOException]
+f
+- the file name to openpermission
+- file permissionoverwrite
+- if a file with this name already exists, then if true,
+the file will be overwritten, and if false an error will be thrown.bufferSize
+- the size of the buffer to be used.replication
+- required block replication for the file.blockSize
+- block sizeprogress
+- the progress reporter[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failuresetPermission(Path, FsPermission)
+public[FSDataOutputStream]create([Path]f,[FsPermission]permission,[EnumSet]<[CreateFlag]> flags, int bufferSize, short replication, long blockSize,[Progressable]progress) throws[IOException]
+f
+- the file name to openpermission
+- file permissionflags
+- CreateFlag
+bufferSize
+- the size of the buffer to be used.replication
+- required block replication for the file.blockSize
+- block sizeprogress
+- the progress reporter[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failuresetPermission(Path, FsPermission)
+public[FSDataOutputStream]create([Path]f,[FsPermission]permission,[EnumSet]<[CreateFlag]> flags, int bufferSize, short replication, long blockSize,[Progressable]progress, org.apache.hadoop.fs.Options.ChecksumOpt checksumOpt) throws[IOException]
+f
+- the file name to openpermission
+- file permissionflags
+- CreateFlag
+bufferSize
+- the size of the buffer to be used.replication
+- required block replication for the file.blockSize
+- block sizeprogress
+- the progress reporterchecksumOpt
+- checksum parameter. If null, the values
+found in conf will be used.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failuresetPermission(Path, FsPermission)
+[@Deprecated]protected[FSDataOutputStream]primitiveCreate([Path]f,[FsPermission]absolutePermission,[EnumSet]<[CreateFlag]> flag, int bufferSize, short replication, long blockSize,[Progressable]progress, org.apache.hadoop.fs.Options.ChecksumOpt checksumOpt) throws[IOException]
+f
+- path.absolutePermission
+- permission.flag
+- create flag.bufferSize
+- buffer size.replication
+- replication.blockSize
+- block size.progress
+- progress.checksumOpt
+- check sum opt.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[@Deprecated]protected boolean primitiveMkdir([Path]f,[FsPermission]absolutePermission) throws[IOException]
+f
+- pathabsolutePermission
+- permissions[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failuremkdirs(Path, FsPermission)
+[@Deprecated]protected void primitiveMkdir([Path]f,[FsPermission]absolutePermission, boolean createParent) throws[IOException]
+f
+- the path.absolutePermission
+- permission.createParent
+- create parent.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure.public[FSDataOutputStream]createNonRecursive([Path]f, boolean overwrite, int bufferSize, short replication, long blockSize,[Progressable]progress) throws[IOException]
+f
+- the file name to openoverwrite
+- if a file with this name already exists, then if true,
+the file will be overwritten, and if false an error will be thrown.bufferSize
+- the size of the buffer to be used.replication
+- required block replication for the file.blockSize
+- block sizeprogress
+- the progress reporter[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failuresetPermission(Path, FsPermission)
+public[FSDataOutputStream]createNonRecursive([Path]f,[FsPermission]permission, boolean overwrite, int bufferSize, short replication, long blockSize,[Progressable]progress) throws[IOException]
+f
+- the file name to openpermission
+- file permissionoverwrite
+- if a file with this name already exists, then if true,
+the file will be overwritten, and if false an error will be thrown.bufferSize
+- the size of the buffer to be used.replication
+- required block replication for the file.blockSize
+- block sizeprogress
+- the progress reporter[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failuresetPermission(Path, FsPermission)
+public[FSDataOutputStream]createNonRecursive([Path]f,[FsPermission]permission,[EnumSet]<[CreateFlag]> flags, int bufferSize, short replication, long blockSize,[Progressable]progress) throws[IOException]
+f
+- the file name to openpermission
+- file permissionflags
+- CreateFlag
+bufferSize
+- the size of the buffer to be used.replication
+- required block replication for the file.blockSize
+- block sizeprogress
+- the progress reporter[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failuresetPermission(Path, FsPermission)
+public boolean createNewFile([Path]f) throws[IOException]
+f
+- path to use for create[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic[FSDataOutputStream]append([Path]f) throws[IOException]
+append(f, getConf().getInt(IO_FILE_BUFFER_SIZE_KEY,
+IO_FILE_BUFFER_SIZE_DEFAULT), null)
+f
+- the existing file to be appended.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default).public[FSDataOutputStream]append([Path]f, int bufferSize) throws[IOException]
+f
+- the existing file to be appended.bufferSize
+- the size of the buffer to be used.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default).public abstract[FSDataOutputStream]append([Path]f, int bufferSize,[Progressable]progress) throws[IOException]
+f
+- the existing file to be appended.bufferSize
+- the size of the buffer to be used.progress
+- for reporting progress if it is not null.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default).public void concat([Path]trg,[Path][] psrcs) throws[IOException]
+trg
+- the path to the target destination.psrcs
+- the paths to the sources to use for the concatenation.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default).[@Deprecated]public short getReplication([Path]src) throws[IOException]
+getFileStatus(Path)
+src
+- file name[FileNotFoundException](https://docs.oracle.com/javase/8/docs/api/java/io/FileNotFoundException.html?is-external=true)
+- if the path does not resolve.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- an IO failurepublic boolean setReplication([Path]src, short replication) throws[IOException]
+src
+- file namereplication
+- new replication[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- an IO failure.public abstract boolean rename([Path]src,[Path]dst) throws[IOException]
+src
+- path to be renameddst
+- new path after rename[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- on failure[@Deprecated]protected void rename([Path]src,[Path]dst, org.apache.hadoop.fs.Options.Rename... options) throws[IOException]
+If OVERWRITE option is not passed as an argument, rename fails if the dst already exists.
+If OVERWRITE option is passed as an argument, rename overwrites the dst if it is a file or an empty directory. Rename fails if dst is a non-empty directory.
+Note that atomicity of rename is dependent on the file system implementation. Please refer to the file system documentation for details. This default implementation is non atomic.This method is deprecated since it is a temporary method added to support the transition from FileSystem to FileContext for user applications.
+src
+- path to be renameddst
+- new path after renameoptions
+- rename options.[FileNotFoundException](https://docs.oracle.com/javase/8/docs/api/java/io/FileNotFoundException.html?is-external=true)
+- src path does not exist, or the parent
+path of dst does not exist.[FileAlreadyExistsException](../../../../org/apache/hadoop/fs/FileAlreadyExistsException.html)
+- dest path exists and is a file[ParentNotDirectoryException](../../../../org/apache/hadoop/fs/ParentNotDirectoryException.html)
+- if the parent path of dest is not
+a directory[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- on failurepublic boolean truncate([Path]f, long newLength) throws[IOException]
+f
+- The path to the file to be truncatednewLength
+- The size the file is to be truncated totrue
+if the file has been truncated to the desired
+newLength
+and is immediately available to be reused for
+write operations such as append
+, or
+false
+if a background process of adjusting the length of
+the last block has been started, and clients should wait for it to
+complete before proceeding with further file updates.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default).[@Deprecated]public boolean delete([Path]f) throws[IOException]
+delete(Path, boolean)
+f
+- the path.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure.public abstract boolean delete([Path]f, boolean recursive) throws[IOException]
+f
+- the path to delete.recursive
+- if path is a directory and set to
+true, the directory is deleted else throws an exception. In
+case of a file the recursive can be set to either true or false.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic boolean deleteOnExit([Path]f) throws[IOException]
+createFileSystem(URI, Configuration)
+close()
+f
+- the path to delete.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic boolean cancelDeleteOnExit([Path]f)
+f
+- the path to cancel deletionprotected void processDeleteOnExit()
+O(paths)
+, with the actual
+time dependent on the time for existence and deletion operations to
+complete, successfully or not.public boolean exists([Path]f) throws[IOException]
+getFileStatus(Path)
+f
+- source path[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[@Deprecated]public boolean isDirectory([Path]f) throws[IOException]
+getFileStatus(Path)
+f
+- path to check[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[@Deprecated]public boolean isFile([Path]f) throws[IOException]
+getFileStatus(Path)
+getFileStatus(Path)
+f
+- path to check[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[@Deprecated]public long getLength([Path]f) throws[IOException]
+getFileStatus(Path)
+f
+- the path.[FileNotFoundException](https://docs.oracle.com/javase/8/docs/api/java/io/FileNotFoundException.html?is-external=true)
+- if the path does not resolve[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic[ContentSummary]getContentSummary([Path]f) throws[IOException]
+ContentSummary
+Path
+f
+- path to use[FileNotFoundException](https://docs.oracle.com/javase/8/docs/api/java/io/FileNotFoundException.html?is-external=true)
+- if the path does not resolve[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic[QuotaUsage]getQuotaUsage([Path]f) throws[IOException]
+QuotaUsage
+Path
+f
+- path to use[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic void setQuota([Path]src, long namespaceQuota, long storagespaceQuota) throws[IOException]
+Path
+src
+- the target path to set quota fornamespaceQuota
+- the namespace quota (i.e., # of files/directories)
+to setstoragespaceQuota
+- the storage space quota to set[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic void setQuotaByStorageType([Path]src,[StorageType]type, long quota) throws[IOException]
+Path
+src
+- the target path to set storage type quota fortype
+- the storage type to setquota
+- the quota to set for the given storage type[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic abstract[FileStatus][] listStatus([Path]f) throws[FileNotFoundException],[IOException]
+Does not guarantee to return the List of files/directories status in a sorted order.
+Will not return null. Expect IOException upon access error.
+f
+- given path[FileNotFoundException](https://docs.oracle.com/javase/8/docs/api/java/io/FileNotFoundException.html?is-external=true)
+- when the path does not exist[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- see specific implementationpublic org.apache.hadoop.fs.RemoteIterator<[Path]> listCorruptFileBlocks([Path]path) throws[IOException]
+path
+- the path.[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default).[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic[FileStatus][] listStatus([Path]f,[PathFilter]filter) throws[FileNotFoundException],[IOException]
+Does not guarantee to return the List of files/directories status in a sorted order.
+f
+- a path namefilter
+- the user-supplied path filter[FileNotFoundException](https://docs.oracle.com/javase/8/docs/api/java/io/FileNotFoundException.html?is-external=true)
+- when the path does not exist[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- see specific implementationpublic[FileStatus][] listStatus([Path][] files) throws[FileNotFoundException],[IOException]
+Does not guarantee to return the List of files/directories status in a sorted order.
+files
+- a list of paths[FileNotFoundException](https://docs.oracle.com/javase/8/docs/api/java/io/FileNotFoundException.html?is-external=true)
+- when the path does not exist[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- see specific implementationpublic[FileStatus][] listStatus([Path][] files,[PathFilter]filter) throws[FileNotFoundException],[IOException]
+Does not guarantee to return the List of files/directories status in a sorted order.
+files
+- a list of pathsfilter
+- the user-supplied path filter[FileNotFoundException](https://docs.oracle.com/javase/8/docs/api/java/io/FileNotFoundException.html?is-external=true)
+- when the path does not exist[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- see specific implementationpublic[FileStatus][] globStatus([Path]pathPattern) throws[IOException]
+Return all the files that match filePattern and are not checksum files. Results are sorted by their names.
+A filename pattern is composed of regular characters and special pattern matching characters, which are:
+pathPattern
+- a glob specifying a path pattern[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic[FileStatus][] globStatus([Path]pathPattern,[PathFilter]filter) throws[IOException]
+FileStatus
+pathPattern
+and is accepted by the user-supplied path filter.
+Results are sorted by their path names.pathPattern
+- a glob specifying the path patternfilter
+- a user-supplied path filterpathPattern
+has no glob and the path does not exist
+an empty array if pathPattern
+has a glob and no path
+matches it else an array of FileStatus
+[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- if any I/O error occurs when fetching file statuspublic org.apache.hadoop.fs.RemoteIterator<[LocatedFileStatus]> listLocatedStatus([Path]f) throws[FileNotFoundException],[IOException]
+f
+- is the path[FileNotFoundException](https://docs.oracle.com/javase/8/docs/api/java/io/FileNotFoundException.html?is-external=true)
+- If f
+does not exist[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- If an I/O error occurredprotected org.apache.hadoop.fs.RemoteIterator<[LocatedFileStatus]> listLocatedStatus([Path]f,[PathFilter]filter) throws[FileNotFoundException],[IOException]
+f
+- a pathfilter
+- a path filter[FileNotFoundException](https://docs.oracle.com/javase/8/docs/api/java/io/FileNotFoundException.html?is-external=true)
+- if f
+does not exist[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- if any I/O error occurredpublic org.apache.hadoop.fs.RemoteIterator<[FileStatus]> listStatusIterator([Path]p) throws[FileNotFoundException],[IOException]
+p
+- target path[FileNotFoundException](https://docs.oracle.com/javase/8/docs/api/java/io/FileNotFoundException.html?is-external=true)
+- if p
+does not exist[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- if any I/O error occurredpublic org.apache.hadoop.fs.RemoteIterator<[LocatedFileStatus]> listFiles([Path]f, boolean recursive) throws[FileNotFoundException],[IOException]
+If the path is a directory, if recursive is false, returns files in the directory; if recursive is true, return files in the subtree rooted at the path. If the path is a file, return the file's status and block locations.
+f
+- is the pathrecursive
+- if the subdirectories need to be traversed recursively[FileNotFoundException](https://docs.oracle.com/javase/8/docs/api/java/io/FileNotFoundException.html?is-external=true)
+- when the path does not exist;[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- see specific implementationpublic[Path]getHomeDirectory()
+"/user/$USER/"
+.public abstract void setWorkingDirectory([Path]new_dir)
+new_dir
+- Path of new working directorypublic abstract[Path]getWorkingDirectory()
+protected[Path]getInitialWorkingDirectory()
+public boolean mkdirs([Path]f) throws[IOException]
+mkdirs(Path, FsPermission)
+f
+- path[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic abstract boolean mkdirs([Path]f,[FsPermission]permission) throws[IOException]
+f
+- path to createpermission
+- to apply to f[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic void copyFromLocalFile([Path]src,[Path]dst) throws[IOException]
+src
+- pathdst
+- path[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic void moveFromLocalFile([Path][] srcs,[Path]dst) throws[IOException]
+srcs
+- source pathsdst
+- path[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic void moveFromLocalFile([Path]src,[Path]dst) throws[IOException]
+src
+- local pathdst
+- path[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic void copyFromLocalFile(boolean delSrc,[Path]src,[Path]dst) throws[IOException]
+delSrc
+- whether to delete the srcsrc
+- pathdst
+- path[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure.public void copyFromLocalFile(boolean delSrc, boolean overwrite,[Path][] srcs,[Path]dst) throws[IOException]
+delSrc
+- whether to delete the srcoverwrite
+- whether to overwrite an existing filesrcs
+- array of paths which are sourcedst
+- path[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic void copyFromLocalFile(boolean delSrc, boolean overwrite,[Path]src,[Path]dst) throws[IOException]
+delSrc
+- whether to delete the srcoverwrite
+- whether to overwrite an existing filesrc
+- pathdst
+- path[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic void copyToLocalFile([Path]src,[Path]dst) throws[IOException]
+src
+- path src file in the remote filesystemdst
+- path local destination[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic void moveToLocalFile([Path]src,[Path]dst) throws[IOException]
+src
+- path src file in the remote filesystemdst
+- path local destination[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic void copyToLocalFile(boolean delSrc,[Path]src,[Path]dst) throws[IOException]
+delSrc
+- whether to delete the srcsrc
+- path src file in the remote filesystemdst
+- path local destination[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic void copyToLocalFile(boolean delSrc,[Path]src,[Path]dst, boolean useRawLocalFileSystem) throws[IOException]
+delSrc
+- whether to delete the srcsrc
+- pathdst
+- pathuseRawLocalFileSystem
+- whether to use RawLocalFileSystem as local file system or not.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- for any IO errorpublic[Path]startLocalOutput([Path]fsOutputFile,[Path]tmpLocalFile) throws[IOException]
+fsOutputFile
+- path of output filetmpLocalFile
+- path of local tmp file[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic void completeLocalOutput([Path]fsOutputFile,[Path]tmpLocalFile) throws[IOException]
+fsOutputFile
+- path of output filetmpLocalFile
+- path to local tmp file[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic void close() throws[IOException]
+deleteOnExit(Path)
+[close](https://docs.oracle.com/javase/8/docs/api/java/io/Closeable.html?is-external=true#close--)
+in interface [Closeable](https://docs.oracle.com/javase/8/docs/api/java/io/Closeable.html?is-external=true)
+[close](https://docs.oracle.com/javase/8/docs/api/java/lang/AutoCloseable.html?is-external=true#close--)
+in interface [AutoCloseable](https://docs.oracle.com/javase/8/docs/api/java/lang/AutoCloseable.html?is-external=true)
+[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic long getUsed() throws[IOException]
+[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic long getUsed([Path]path) throws[IOException]
+path
+- the path.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[@Deprecated]public long getBlockSize([Path]f) throws[IOException]
+getFileStatus(Path)
+f
+- the filename[FileNotFoundException](https://docs.oracle.com/javase/8/docs/api/java/io/FileNotFoundException.html?is-external=true)
+- if the path is not present[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[@Deprecated]public long getDefaultBlockSize()
+getDefaultBlockSize(Path)
+public long getDefaultBlockSize([Path]f)
+f
+- path of file[@Deprecated]public short getDefaultReplication()
+getDefaultReplication(Path)
+public short getDefaultReplication([Path]path)
+path
+- of the filepublic abstract[FileStatus]getFileStatus([Path]f) throws[IOException]
+f
+- The path we want information from[FileNotFoundException](https://docs.oracle.com/javase/8/docs/api/java/io/FileNotFoundException.html?is-external=true)
+- when the path does not exist[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- see specific implementationpublic void msync() throws[IOException],[UnsupportedOperationException]
+In some FileSystem implementations such as HDFS metadata synchronization is essential to guarantee consistency of read requests particularly in HA setting.
+[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- If an I/O error occurred.[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported.protected[Path]fixRelativePart([Path]p)
+p
+- the path.public void createSymlink([Path]target,[Path]link, boolean createParent) throws[AccessControlException],[FileAlreadyExistsException],[FileNotFoundException],[ParentNotDirectoryException],[UnsupportedFileSystemException],[IOException]
+target
+- target path.link
+- link.createParent
+- create parent.[AccessControlException](../../../../org/apache/hadoop/security/AccessControlException.html)
+- if access is denied.[FileAlreadyExistsException](../../../../org/apache/hadoop/fs/FileAlreadyExistsException.html)
+- when the path does not exist.[FileNotFoundException](https://docs.oracle.com/javase/8/docs/api/java/io/FileNotFoundException.html?is-external=true)
+- when the path does not exist.[ParentNotDirectoryException](../../../../org/apache/hadoop/fs/ParentNotDirectoryException.html)
+- if the parent path of dest is not
+a directory.[UnsupportedFileSystemException](../../../../org/apache/hadoop/fs/UnsupportedFileSystemException.html)
+- if there was no known implementation
+for the scheme.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- raised on errors performing I/O.public[FileStatus]getFileLinkStatus([Path]f) throws[AccessControlException],[FileNotFoundException],[UnsupportedFileSystemException],[IOException]
+f
+- the path.[AccessControlException](../../../../org/apache/hadoop/security/AccessControlException.html)
+- if access is denied.[FileNotFoundException](https://docs.oracle.com/javase/8/docs/api/java/io/FileNotFoundException.html?is-external=true)
+- when the path does not exist.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- raised on errors performing I/O.[UnsupportedFileSystemException](../../../../org/apache/hadoop/fs/UnsupportedFileSystemException.html)
+- if there was no known implementation
+for the scheme.public boolean supportsSymlinks()
+public[Path]getLinkTarget([Path]f) throws[IOException]
+f
+- the path.[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default outcome).[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure.protected[Path]resolveLink([Path]f) throws[IOException]
+f
+- the path.[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default outcome).[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure.public[FileChecksum]getFileChecksum([Path]f) throws[IOException]
+f
+- The file path[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic[FileChecksum]getFileChecksum([Path]f, long length) throws[IOException]
+f
+- The file pathlength
+- The length of the file range for checksum calculation[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic void setVerifyChecksum(boolean verifyChecksum)
+verifyChecksum
+- Verify checksum flagpublic void setWriteChecksum(boolean writeChecksum)
+writeChecksum
+- Write checksum flagpublic[FsStatus]getStatus() throws[IOException]
+[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- see specific implementationpublic[FsStatus]getStatus([Path]p) throws[IOException]
+p
+- Path for which status should be obtained. null means
+the default partition.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- see specific implementationpublic void setPermission([Path]p,[FsPermission]permission) throws[IOException]
+p
+- The pathpermission
+- permission[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic void setOwner([Path]p,[String]username,[String]groupname) throws[IOException]
+p
+- The pathusername
+- If it is null, the original username remains unchanged.groupname
+- If it is null, the original groupname remains unchanged.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic void setTimes([Path]p, long mtime, long atime) throws[IOException]
+p
+- The pathmtime
+- Set the modification time of this file.
+The number of milliseconds since Jan 1, 1970.
+A value of -1 means that this call should not set modification time.atime
+- Set the access time of this file.
+The number of milliseconds since Jan 1, 1970.
+A value of -1 means that this call should not set access time.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failurepublic final[Path]createSnapshot([Path]path) throws[IOException]
+path
+- The directory where snapshots will be taken.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupportedpublic[Path]createSnapshot([Path]path,[String]snapshotName) throws[IOException]
+path
+- The directory where snapshots will be taken.snapshotName
+- The name of the snapshot[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupportedpublic void renameSnapshot([Path]path,[String]snapshotOldName,[String]snapshotNewName) throws[IOException]
+path
+- The directory path where the snapshot was takensnapshotOldName
+- Old name of the snapshotsnapshotNewName
+- New name of the snapshot[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default outcome).public void deleteSnapshot([Path]path,[String]snapshotName) throws[IOException]
+path
+- The directory that the to-be-deleted snapshot belongs tosnapshotName
+- The name of the snapshot[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default outcome).public void modifyAclEntries([Path]path,[List]<[AclEntry]> aclSpec) throws[IOException]
+path
+- Path to modifyaclSpec
+- List<AclEntry> describing modifications[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- if an ACL could not be modified[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default outcome).public void removeAclEntries([Path]path,[List]<[AclEntry]> aclSpec) throws[IOException]
+path
+- Path to modifyaclSpec
+- List describing entries to remove[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- if an ACL could not be modified[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default outcome).public void removeDefaultAcl([Path]path) throws[IOException]
+path
+- Path to modify[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- if an ACL could not be modified[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default outcome).public void removeAcl([Path]path) throws[IOException]
+path
+- Path to modify[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- if an ACL could not be removed[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default outcome).public void setAcl([Path]path,[List]<[AclEntry]> aclSpec) throws[IOException]
+path
+- Path to modifyaclSpec
+- List describing modifications, which must include entries
+for user, group, and others for compatibility with permission bits.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- if an ACL could not be modified[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default outcome).public[AclStatus]getAclStatus([Path]path) throws[IOException]
+path
+- Path to get[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- if an ACL could not be read[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default outcome).public void setXAttr([Path]path,[String]name, byte[] value) throws[IOException]
+Refer to the HDFS extended attributes user documentation for details.
+path
+- Path to modifyname
+- xattr name.value
+- xattr value.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default outcome).public void setXAttr([Path]path,[String]name, byte[] value,[EnumSet]<[XAttrSetFlag]> flag) throws[IOException]
+Refer to the HDFS extended attributes user documentation for details.
+path
+- Path to modifyname
+- xattr name.value
+- xattr value.flag
+- xattr set flag[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default outcome).public byte[] getXAttr([Path]path,[String]name) throws[IOException]
+Refer to the HDFS extended attributes user documentation for details.
+path
+- Path to get extended attributename
+- xattr name.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default outcome).public[Map]<[String],byte[]> getXAttrs([Path]path) throws[IOException]
+Refer to the HDFS extended attributes user documentation for details.
+path
+- Path to get extended attributes[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default outcome).public[Map]<[String],byte[]> getXAttrs([Path]path,[List]<[String]> names) throws[IOException]
+Refer to the HDFS extended attributes user documentation for details.
+path
+- Path to get extended attributesnames
+- XAttr names.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default outcome).public[List]<[String]> listXAttrs([Path]path) throws[IOException]
+Refer to the HDFS extended attributes user documentation for details.
+path
+- Path to get extended attributes[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default outcome).public void removeXAttr([Path]path,[String]name) throws[IOException]
+Refer to the HDFS extended attributes user documentation for details.
+path
+- Path to remove extended attributename
+- xattr name[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default outcome).public void satisfyStoragePolicy([Path]path) throws[IOException]
+path
+- The source path referring to either a directory or a file.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- If an I/O error occurred.public void setStoragePolicy([Path]src,[String]policyName) throws[IOException]
+src
+- file or directory path.policyName
+- the name of the target storage policy. The list
+of supported Storage policies can be retrieved
+via getAllStoragePolicies()
+[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default outcome).public void unsetStoragePolicy([Path]src) throws[IOException]
+src
+- file or directory path.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default outcome).public[BlockStoragePolicySpi]getStoragePolicy([Path]src) throws[IOException]
+src
+- file or directory path.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default outcome).public[Collection]<? extends[BlockStoragePolicySpi]> getAllStoragePolicies() throws[IOException]
+[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- IO failure[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if the operation is unsupported
+(default outcome).public[Path]getTrashRoot([Path]path)
+path
+- the trash root of the path to be determined./user/$USER/.Trash
+public[Collection]<[FileStatus]> getTrashRoots(boolean allUsers)
+allUsers
+- return trash roots for all users if true./user/$USER/.Trash
+exists.public boolean hasPathCapability([Path]path,[String]capability) throws[IOException]
+true
+, this instance is explicitly
+declaring that the capability is available.
+If the function returns false
+, it can mean one of:
+Implementors: PathCapabilitiesSupport
+can be used to help implement this method.
+hasPathCapability
+in interface org.apache.hadoop.fs.PathCapabilities
+path
+- path to query the capability of.capability
+- non-null, non-empty string to query the path for support.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- this should not be raised, except on problems
+resolving paths or relaying the call.public static[Class]<? extends[FileSystem]> getFileSystemClass([String]scheme,[Configuration]conf) throws[IOException]
+ServiceLoader
+scheme
+- URL scheme of FSconf
+- configuration: can be null, in which case the check for
+a filesystem binding declaration in the configuration is skipped.[UnsupportedFileSystemException](../../../../org/apache/hadoop/fs/UnsupportedFileSystemException.html)
+- if there was no known implementation
+for the scheme.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- if the filesystem could not be loaded[@Deprecated]public static[Map]<[String],org.apache.hadoop.fs.FileSystem.Statistics> getStatistics()
+getGlobalStorageStatistics()
+[@Deprecated]public static[List]<org.apache.hadoop.fs.FileSystem.Statistics> getAllStatistics()
+getGlobalStorageStatistics()
+[@Deprecated]public static org.apache.hadoop.fs.FileSystem.Statistics getStatistics([String]scheme,[Class]<? extends[FileSystem]> cls)
+getGlobalStorageStatistics()
+scheme
+- scheme.cls
+- the class to lookuppublic static void clearStatistics()
+public static void printStatistics() throws[IOException]
+System.out
+[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- If an I/O error occurred.public static boolean areSymlinksEnabled()
+public static void enableSymlinks()
+public[StorageStatistics]getStorageStatistics()
+This is a default method which is intended to be overridden by subclasses. The default implementation returns an empty storage statistics object.
+public static[GlobalStorageStatistics]getGlobalStorageStatistics()
+@InterfaceStability.Unstable protected static[FSDataOutputStreamBuilder]createDataOutputStreamBuilder([@Nonnull][FileSystem]fileSystem,[@Nonnull][Path]path)
+fileSystem
+- ownerpath
+- path to createpublic[FSDataOutputStreamBuilder]createFile([Path]path)
+path
+- file pathpublic[FSDataOutputStreamBuilder]appendFile([Path]path)
+path
+- file path.FSDataOutputStreamBuilder
+@InterfaceStability.Unstable public[FutureDataInputStreamBuilder]openFile([Path]path) throws[IOException],[UnsupportedOperationException]
+open(Path, int)
+open(Path, int)
+FSDataInputStreamBuilder.build()
+in which the open operation
+takes place -it is there where all preconditions to the operation
+are checked.path
+- file path[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- if some early checks cause IO failures.[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if support is checked early.@InterfaceStability.Unstable public[FutureDataInputStreamBuilder]openFile([PathHandle]pathHandle) throws[IOException],[UnsupportedOperationException]
+open(PathHandle, int)
+FSDataInputStreamBuilder.build()
+command,
+rather than in this openFile()
+operation.pathHandle
+- path handle.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- if some early checks cause IO failures.[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if support is checked early.protected[CompletableFuture]<[FSDataInputStream]> openFileWithOptions([Path]path, org.apache.hadoop.fs.impl.OpenFileParameters parameters) throws[IOException]
+FSDataInputStreamBuilder.build()
+and from DelegateToFileSystem
+and is where
+the action of opening the file should begin.
+The base implementation performs a blocking
+call to open(Path, int)
+CompletableFuture
+.
+This avoids having to create some thread pool, while still
+setting up the expectation that the get()
+call
+is needed to evaluate the result.path
+- path to the fileparameters
+- open file parameters from the builder.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- failure to resolve the link.[IllegalArgumentException](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalArgumentException.html?is-external=true)
+- unknown mandatory keyprotected[CompletableFuture]<[FSDataInputStream]> openFileWithOptions([PathHandle]pathHandle, org.apache.hadoop.fs.impl.OpenFileParameters parameters) throws[IOException]
+open(Path, int)
+CompletableFuture
+.
+This avoids having to create some thread pool, while still
+setting up the expectation that the get()
+call
+is needed to evaluate the result.pathHandle
+- path to the fileparameters
+- open file parameters from the builder.[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- failure to resolve the link.[IllegalArgumentException](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalArgumentException.html?is-external=true)
+- unknown mandatory key[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- PathHandles are not supported.
+This may be deferred until the future is evaluated.@InterfaceStability.Unstable public org.apache.hadoop.fs.MultipartUploaderBuilder createMultipartUploader([Path]basePath) throws[IOException]
+basePath
+- file path under which all files are uploaded[IOException](https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true)
+- if some early checks cause IO failures.[UnsupportedOperationException](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html?is-external=true)
+- if support is checked early.Copyright © 2023 [Apache Software Foundation](https://www.apache.org). All rights reserved.

@@ -1,3 +1,63 @@
-URL: https://expanso.io/newsroom/2/
+Source: expanso_io
+URL: https://expanso.io/contact/#main
 
-Skip to contentWhy Expanso?Why Choose Expanso?Security and GovernanceProductBacalhauFeaturesSolutionsUse CasesDistributed Data WarehouseLog ProcessingEdge Machine LearningDistributed Fleet ManagementResourcesDocumentationGitHubBacalhau BlogEventsFAQsHelp CenterCompanyWhat We ValueWho We AreCareersNewsroomContactGitHubInstall FreeMenuWhy Expanso?Why Choose Expanso?Security and GovernanceProductBacalhauFeaturesSolutionsUse CasesDistributed Data WarehouseLog ProcessingEdge Machine LearningDistributed Fleet ManagementResourcesDocumentationGitHubBacalhau BlogEventsFAQsHelp CenterCompanyWhat We ValueWho We AreCareersNewsroomContactGitHubInstall FreeInstall FreeNewsroomHighlightedVentureBeat: The end of centralized data? Samsung teams with Expanso on distributed processingMay 17, 2024Read the Article on VentureBeatRead MoreWhy we invested in Expanso, a distributed compute platform that reduces latency and enhances data governance capabilitiesMay 17, 2024Read the article on the Samsung Next blog.Read MoreAnnouncing Bacalhau 1.2December 12, 2023We are thrilled to announce the release of Bacalhau 1.2! Following the Bacalhau 1.1 release in September 2023, we’ve explored a variety of innovative and groundbreaking useRead MorePress releases.Expanso and Motherduck Join Forces To Deliver Distributed Data AnalyticsJune 29, 2023Motherduck and Expanso announced a partnership that will unlock the future of data analytics. The partnership combines the strengths of Bacalhau, the open source project for efficient and secure distributed computation, with Motherduck, a serverless analytics solution powered by DuckDB.Read More<Page1Page2>Headlines and features.Expanso Nets $7.5M to Pioneer Distributed Data Processing for EnterprisesNovember 21, 2023Data is the lifeblood of modern businesses but mobilizing it is far from easy. Companies have to go through a lot of steps just to make sure they are gettingRead MoreAT&T, Comcast, Expanso and more Join 5G Open Innovation Lab’s Innovation EcosystemSeptember 13, 2023The Lab also welcomes its largest cohort to date with 17 multi-stage, global startups joining Batch #8 Fall Program September 13, 2023 08:00 AM Eastern Daylight Time BELLEVUE, Wash.–(BUSINESS WIRE)–5GRead MoreTech Moves: Open-source software company Expanso names CEO; Highspot adds exec; and moreJune 27, 2023Aronchick said his primary goal as Expanso CEO is to augment Bacalhau’s impact within the AI community, “to expedite the project’s development and make AI tools more accessible to aRead More<Page1Page2>Get AssetsFor permissions related to the use of Expanso (and in extension, Bacalhau) materials, please reach out to us at press@expanso.io with the details below:Your name and title.Company name and location.Description of request.ContactFor PR inquiries contact:press@expanso.ioSTAY CONNECTEDFollow us on our social media and read our blog.SlackInstagramXStay up to date and sign up to our blog:Visit BlogThe Compute Over Data PlatformCompanyHomeWhat We ValueWho We AreNewsroomContact UsCareersResourcesDocumentationFAQBlogSupportSocialLinkedInYouTubeSlackX ExpansoX BacalhauGitHub© Expanso Inc. All Rights Reserved 2023Privacy PolicyTrademarksTerms & ConditionsPrivacy PolicyTrademarksTerms & Conditions
+Skip to content
+Why Expanso?
+Why Choose Expanso?
+Security and Governance
+Product
+Bacalhau
+Features
+Solutions
+Use Cases
+Distributed Data Warehouse
+Log Processing
+Edge Machine Learning
+Distributed Fleet Management
+Resources
+Documentation
+GitHub
+Bacalhau Blog
+Events
+FAQs
+Help Center
+Company
+What We Value
+Who We Are
+Careers
+Newsroom
+Contact
+GitHub
+Install Free
+Menu
+Why Expanso?
+Why Choose Expanso?
+Security and Governance
+Product
+Bacalhau
+Features
+Solutions
+Use Cases
+Distributed Data Warehouse
+Log Processing
+Edge Machine Learning
+Distributed Fleet Management
+Resources
+Documentation
+GitHub
+Bacalhau Blog
+Events
+FAQs
+Help Center
+Company
+What We Value
+Who We Are
+Careers
+Newsroom
+Contact
+GitHub
+Install Free
+Install Free
+Get In Touch With Us
+Fill in the form below and we’ll contact you shortly.
+Meanwhile, you can also check out our FAQs and Help Center.

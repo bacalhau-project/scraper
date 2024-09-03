@@ -1,35 +1,123 @@
-URL: https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/ObserverNameNode.html
+Source: apache_hadoop
+URL: http://hadoop.apache.org/docs/r3.3.5/hadoop-project-dist/hadoop-common/UnixShellGuide.html
 
-Wiki|git|Apache Hadoop| Last Published: 2024-03-04
-               | Version: 3.4.0GeneralOverviewSingle Node SetupCluster SetupCommands ReferenceFileSystem ShellCompatibility SpecificationDownstream Developer's GuideAdmin Compatibility GuideInterface ClassificationFileSystem SpecificationCommonCLI Mini ClusterFair Call QueueNative LibrariesProxy UserRack AwarenessSecure ModeService Level AuthorizationHTTP AuthenticationCredential Provider APIHadoop KMSTracingUnix Shell GuideRegistryAsync ProfilerHDFSArchitectureUser GuideCommands ReferenceNameNode HA With QJMNameNode HA With NFSObserver NameNodeFederationViewFsViewFsOverloadSchemeSnapshotsEdits ViewerImage ViewerPermissions and HDFSQuotas and HDFSlibhdfs (C API)WebHDFS (REST API)HttpFSShort Circuit Local ReadsCentralized Cache ManagementNFS GatewayRolling UpgradeExtended AttributesTransparent EncryptionMultihomingStorage PoliciesMemory Storage SupportSynthetic Load GeneratorErasure CodingDisk BalancerUpgrade DomainDataNode AdminRouter FederationProvided StorageMapReduceTutorialCommands ReferenceCompatibility with 1.xEncrypted ShufflePluggable Shuffle/SortDistributed Cache DeploySupport for YARN Shared CacheMapReduce REST APIsMR Application MasterMR History ServerYARNArchitectureCommands ReferenceCapacity SchedulerFair SchedulerResourceManager RestartResourceManager HAResource ModelNode LabelsNode AttributesWeb Application ProxyTimeline ServerTimeline Service V.2Writing YARN ApplicationsYARN Application SecurityNodeManagerRunning Applications in Docker ContainersRunning Applications in runC ContainersUsing CGroupsSecure ContainersReservation SystemGraceful DecommissionOpportunistic ContainersYARN FederationShared CacheUsing GPUUsing FPGAPlacement ConstraintsYARN UI2YARN REST APIsIntroductionResource ManagerNode ManagerTimeline ServerTimeline Service V.2YARN ServiceOverviewQuickStartConceptsYarn Service APIService DiscoverySystem ServicesHadoop Compatible File SystemsAliyun OSSAmazon S3Azure Blob StorageAzure Data Lake StorageTencent COSHuaweicloud OBSAuthOverviewExamplesConfigurationBuildingToolsHadoop StreamingHadoop ArchivesHadoop Archive LogsDistCpHDFS Federation BalanceGridMixRumenResource Estimator ServiceScheduler Load SimulatorHadoop BenchmarkingDynamometerReferenceChangelog and Release NotesJava API docsUnix Shell APIMetricsConfigurationcore-default.xmlhdfs-default.xmlhdfs-rbf-default.xmlmapred-default.xmlyarn-default.xmlkms-default.xmlhttpfs-default.xmlDeprecated PropertiesConsistent Reads from HDFS Observer NameNodePurposeBackgroundArchitectureMaintaining Client ConsistencyDeploymentConfigurationsNew administrative commandDeployment detailsClient configurationPurposeThis guide provides an overview of the HDFS Observer NameNode feature and how to configure/install it in a typical HA-enabled cluster. For a detailed technical design overview, please check the doc attached toHDFS-12943.BackgroundIn a HA-enabled HDFS cluster (for more information, checkHDFSHighAvailabilityWithQJM), there is a single Active NameNode and one or more Standby NameNode(s). The Active NameNode is responsible for serving all client requests, while Standby NameNode just keep the up-to-date information regarding the namespace, by tailing edit logs from JournalNodes, as well as block location information, by receiving block reports from all the DataNodes. One drawback of this architecture is that the Active NameNode could be a single bottle-neck and be overloaded with client requests, especially in a busy cluster.The Consistent Reads from HDFS Observer NameNode feature addresses the above by introducing a new type of NameNode calledObserver NameNode. Similar to Standby NameNode, Observer NameNode keeps itself up-to-date regarding the namespace and block location information. In addition, it also has the ability to serve consistent reads, like Active NameNode. Since read requests are the majority in a typical environment, this can help to load balancing the NameNode traffic and improve overall throughput.ArchitectureIn the new architecture, a HA cluster could consists of namenodes in 3 different states: active, standby and observer. State transition can happen between active and standby, standby and observer, but not directly between active and observer.To ensure read-after-write consistency within a single client, a state ID, which is implemented using transaction ID within NameNode, is introduced in RPC headers. When a client performs write through Active NameNode, it updates its state ID using the latest transaction ID from the NameNode. When performing a subsequent read, the client passes this state ID to Observer NameNode, which will then check against its own transaction ID, and will ensure its own transaction ID has caught up with the request’s state ID, before serving the read request. This ensures “read your own writes” semantics from a single client. Maintaining consistency between multiple clients in the face of out-of-band communication is discussed in the “Maintaining Client Consistency” section below.Edit log tailing is critical for Observer NameNode as it directly affects the latency between when a transaction is applied in Active NameNode and when it is applied in the Observer NameNode. A new edit log tailing mechanism, named “Edit Tailing Fast-Path”, is introduced to significantly reduce this latency. This is built on top of the existing in-progress edit log tailing feature, with further improvements such as RPC-based tailing instead of HTTP, a in-memory cache on the JournalNode, etc. For more details, please see the design doc attached to HDFS-13150.New client-side proxy providers are also introduced. ObserverReadProxyProvider, which inherits the existing ConfiguredFailoverProxyProvider, should be used to replace the latter to enable reads from Observer NameNode. When submitting a client read request, the proxy provider will first try each Observer NameNode available in the cluster, and only fall back to Active NameNode if all of the former failed. Similarly, ObserverReadProxyProviderWithIPFailover is introduced to replace IPFailoverProxyProvider in a IP failover setup.Maintaining Client ConsistencyAs discussed above, a client ‘foo’ will update its state ID upon every request to the Active NameNode, which includes all write operations. Any request directed to an Observer NameNode will wait until the Observer has seen this transaction ID, ensuring that the client is able to read all of its own writes. However, if ‘foo’ sends an out-of-band (i.e., non-HDFS) message to client ‘bar’ telling it that a write has been performed, a subsequent read by ‘bar’ may not see the recent write by ‘foo’. To prevent this inconsistent behavior, a newmsync(), or “metadata sync”, command has been added. Whenmsync()is called on a client, it will update its state ID against the Active NameNode – a very lightweight operation – so that subsequent reads are guaranteed to be consistent up to the point of themsync(). Thus as long as ‘bar’ callsmsync()before performing its read, it is guaranteed to see the write made by ‘foo’.To make use ofmsync(), an application does not necessarily have to make any code changes. Upon startup, a client will automatically callmsync()before performing any reads against an Observer, so that any writes performed prior to the initialization of the client will be visible. In addition, there is a configurable “auto-msync” mode supported by ObserverReadProxyProvider which will automatically perform anmsync()at some configurable interval, to prevent a client from ever seeing data that is more stale than a time bound. There is some overhead associated with this, as each refresh requires an RPC to the Active NameNode, so it is disabled by default.DeploymentConfigurationsTo enable consistent reads from Observer NameNode, you’ll need to add a few configurations to yourhdfs-site.xml:dfs.namenode.state.context.enabled- to enable NameNode to maintain and update server state and id.This will lead to NameNode creating alignment context instance, which keeps track of current server state id. Server state id will be carried back to client. It is disabled by default to optimize performance of Observer read cases. But this isrequired to be turned onfor the Observer NameNode feature.<property>
-       <name>dfs.namenode.state.context.enabled</name>
-       <value>true</value>
-    </property>dfs.ha.tail-edits.in-progress- to enable fast tailing on in-progress edit logs.This enables fast edit log tailing through in-progress edit logs and also other mechanisms such as RPC-based edit log fetching, in-memory cache in JournalNodes, and so on. It is disabled by default, but isrequired to be turned onfor the Observer NameNode feature.<property>
-      <name>dfs.ha.tail-edits.in-progress</name>
-      <value>true</value>
-    </property>dfs.ha.tail-edits.period- how often Standby/Observer NameNodes should fetch edits from JournalNodes.This determines the staleness of Observer NameNode w.r.t the Active. If too large, RPC time will increase as client requests will wait longer in the RPC queue before Observer tails edit logs and catches up the latest state of Active. The default value is 1min. It ishighly recommendto configure this to a much lower value. It is also recommended to configure backoff to be enabled when using low values; please see below.<property>
-      <name>dfs.ha.tail-edits.period</name>
-      <value>0ms</value>
-    </property>dfs.ha.tail-edits.period.backoff-max- whether the Standby/Observer NameNodes should perform backoff when tailing edits.This determines the behavior of a Standby/Observer when it attempts to tail edits from the JournalNodes and finds no edits available. This is a common situation when the edit tailing period is very low, but the cluster is not heavily loaded. Without this configuration, such a situation will cause high utilization on the Standby/Observer as it constantly attempts to read edits even though there are none available. With this configuration enabled, exponential backoff will be performed when an edit tail attempt returns 0 edits. This configuration specifies the maximum time to wait between edit tailing attempts.<property>
-      <name>dfs.ha.tail-edits.period.backoff-max</name>
-      <value>10s</value>
-    </property>dfs.journalnode.edit-cache-size.bytes- the in-memory cache size, in bytes, on the JournalNodes.This is the size, in bytes, of the in-memory cache for storing edits on the JournalNode side. The cache is used for serving edits via RPC-based tailing. This is only effective when dfs.ha.tail-edits.in-progress is turned on.<property>
-      <name>dfs.journalnode.edit-cache-size.bytes</name>
-      <value>1048576</value>
-    </property>dfs.journalnode.edit-cache-size.fraction- the fraction refers to the proportion of the maximum memory of the JVM.Used to calculate the size of the edits cache that is kept in the JournalNode’s memory. This config is an alternative to the dfs.journalnode.edit-cache-size.bytes. And it is used to serve edits for tailing via the RPC-based mechanism, and is only enabled when dfs.ha.tail-edits.in-progress is true. Transactions range in size but are around 200 bytes on average, so the default of 1MB can store around 5000 transactions. So we can configure a reasonable value based on the maximum memory. The recommended value is less than 0.9. If we set dfs.journalnode.edit-cache-size.bytes, this parameter will not take effect.<property>
-      <name>dfs.journalnode.edit-cache-size.fraction</name>
-      <value>0.5f</value>
-    </property>dfs.namenode.accesstime.precision– whether to enable access time for HDFS file.It ishighly recommendedto disable this configuration. If enabled, this will turn agetBlockLocationscall into a write call, as it needs to hold write lock to update the time for the opened file. Therefore, the request will fail on all Observer NameNodes and fall back to the active eventually. As result, RPC performance will degrade.<property>
-      <name>dfs.namenode.accesstime.precision</name>
-      <value>0</value>
-    </property>New administrative commandA new HA admin command is introduced to transition a Standby NameNode into observer state:haadmin -transitionToObserverNote this can only be executed on Standby NameNode. Exception will be thrown when invoking this on Active NameNode.Similarly, existingtransitionToStandbycan also be run on an Observer NameNode, which transition it to the standby state.NOTE: the feature for Observer NameNode to participate in failover is not implemented yet. Therefore, as described in the next section, you should only usetransitionToObserverto bring up an observer. ZKFC could be turned on the Observer NameNode, but it doesn’t do anything when the NameNode is in Observer state. ZKFC will participate in the election of Active after the NameNode is transitioned to standby state.Deployment detailsTo enable observer support, first you’ll need a HA-enabled HDFS cluster with more than 2 namenodes. Then, you need to transition Standby NameNode(s) into the observer state. An minimum setup would be running 3 namenodes in the cluster, one active, one standby and one observer. For large HDFS clusters we recommend running two or more Observers depending on the intensity of read requests and HA requirements.Note that currently Observer NameNode doesn’t integrate fully when automatic failover is enabled. If thedfs.ha.automatic-failover.enabledis turned on, the only benefit for running ZKFC on Observer NameNode is that it will automatically join election of Active after you transition the NameNode to Standby. If this is not desired, you can disable ZKFC on the Observer NameNode. In addition to that, you’ll also need to addforcemanualflag to thetransitionToObservercommand:haadmin -transitionToObserver -forcemanualIn future, this restriction will be lifted.Client configurationClients who wish to use Observer NameNode for read accesses can specify the ObserverReadProxyProvider class for proxy provider implementation, in the client-sidehdfs-site.xmlconfiguration file:<property>
-    <name>dfs.client.failover.proxy.provider.<nameservice></name>
-    <value>org.apache.hadoop.hdfs.server.namenode.ha.ObserverReadProxyProvider</value>
-</property>Clients who do not wish to use Observer NameNode can still use the existing ConfiguredFailoverProxyProvider and should not see any behavior change.Clients who wish to make use of the “auto-msync” functionality should adjust the configuration below. This will specify some time period after which, if the client’s state ID has not been updated from the Active NameNode, anmsync()will automatically be performed. If this is specified as 0, anmsync()will be performed beforeeveryread operation. If this is a positive time duration, anmsync()will be performed every time a read operation is requested and the Active has not been contacted for longer than that period. If this is negative (the default), no automaticmsync()will be performed.<property>
-    <name>dfs.client.failover.observer.auto-msync-period.<nameservice></name>
-    <value>500ms</value>
-</property>©            2008-2024
-              Apache Software Foundation
-            
-                          -Privacy Policy.
-        Apache Maven, Maven, Apache, the Apache feather logo, and the Apache Maven project logos are trademarks of The Apache Software Foundation.
+Much of Apache Hadoop’s functionality is controlled via [the shell](CommandsManual.html). There are several ways to modify the default behavior of how these commands execute.
+Apache Hadoop has many environment variables that control various aspects of the software. (See hadoop-env.sh
+and related files.) Some of these environment variables are dedicated to helping end users manage their runtime.
+HADOOP_CLIENT_OPTS
+This environment variable is used for all end-user, non-daemon operations. It can be used to set any Java options as well as any Apache Hadoop options via a system property definition. For example:
+HADOOP_CLIENT_OPTS="-Xmx1g -Dhadoop.socks.server=localhost:4000" hadoop fs -ls /tmp
+will increase the memory and send this command via a SOCKS proxy server.
+NOTE: If ‘YARN_CLIENT_OPTS’ is defined, it will replace ‘HADOOP_CLIENT_OPTS’ when commands are run with ‘yarn’.
+(command)_(subcommand)_OPTS
+It is also possible to set options on a per subcommand basis. This allows for one to create special options for particular cases. The first part of the pattern is the command being used, but all uppercase. The second part of the command is the subcommand being used. Then finally followed by the string _OPT
+.
+For example, to configure mapred distcp
+to use a 2GB heap, one would use:
+MAPRED_DISTCP_OPTS="-Xmx2g"
+These options will appear after HADOOP_CLIENT_OPTS
+during execution and will generally take precedence.
+HADOOP_CLASSPATH
+NOTE: Site-wide settings should be configured via a shellprofile entry and permanent user-wide settings should be configured via ${HOME}/.hadooprc using the hadoop_add_classpath
+function. See below for more information.
+The Apache Hadoop scripts have the capability to inject more content into the classpath of the running command by setting this environment variable. It should be a colon delimited list of directories, files, or wildcard locations.
+HADOOP_CLASSPATH=${HOME}/lib/myjars/*.jar hadoop classpath
+A user can provides hints to the location of the paths via the HADOOP_USER_CLASSPATH_FIRST
+variable. Setting this to any value will tell the system to try and push these paths near the front.
+If a user has a common set of settings, they can be put into the ${HOME}/.hadoop-env
+file. This file is always read to initialize and override any variables that the user may want to customize. It uses bash syntax, similar to the .bashrc
+file:
+For example:
+# # my custom Apache Hadoop settings! # HADOOP_CLIENT_OPTS="-Xmx1g" MAPRED_DISTCP_OPTS="-Xmx2g" HADOOP_DISTCP_OPTS="-Xmx2g"
+The .hadoop-env
+file can also be used to extend functionality and teach Apache Hadoop new tricks. For example, to run hadoop commands accessing the server referenced in the environment variable ${HADOOP_SERVER}
+, the following in the .hadoop-env
+will do just that:
+if [[ -n ${HADOOP_SERVER} ]]; then HADOOP_CONF_DIR=/etc/hadoop.${HADOOP_SERVER} fi
+One word of warning: not all of Unix Shell API routines are available or work correctly in .hadoop-env
+. See below for more information on .hadooprc
+.
+In addition to the various XML files, there are two key capabilities for administrators to configure Apache Hadoop when using the Unix Shell:
+Many environment variables that impact how the system operates. This guide will only highlight some key ones. There is generally more information in the various *-env.sh
+files.
+Supplement or do some platform-specific changes to the existing scripts. Apache Hadoop provides the capabilities to do function overrides so that the existing code base may be changed in place without all of that work. Replacing functions is covered later under the Shell API documentation.
+(command)_(subcommand)_OPTS
+By far, the most important are the series of _OPTS
+variables that control how daemons work. These variables should contain all of the relevant settings for those daemons.
+Similar to the user commands above, all daemons will honor the (command)_(subcommand)_OPTS
+pattern. It is generally recommended that these be set in hadoop-env.sh
+to guarantee that the system will know which settings it should use on restart. Unlike user-facing subcommands, daemons will NOT honor HADOOP_CLIENT_OPTS
+.
+In addition, daemons that run in an extra security mode also support (command)_(subcommand)_SECURE_EXTRA_OPTS
+. These options are supplemental to the generic *_OPTS
+and will appear after, therefore generally taking precedence.
+(command)_(subcommand)_USER
+Apache Hadoop provides a way to do a user check per-subcommand. While this method is easily circumvented and should not be considered a security-feature, it does provide a mechanism by which to prevent accidents. For example, setting HDFS_NAMENODE_USER=hdfs
+will make the hdfs namenode
+and hdfs --daemon start namenode
+commands verify that the user running the commands are the hdfs user by checking the USER
+environment variable. This also works for non-daemons. Setting HADOOP_DISTCP_USER=jane
+will verify that USER
+is set to jane
+before being allowed to execute the hadoop distcp
+command.
+If a _USER environment variable exists and commands are run with a privilege (e.g., as root; see hadoop_privilege_check in the API documentation), execution will switch to the specified user first. For commands that support user account switching for security reasons and therefore have a SECURE_USER variable (see more below), the base _USER variable needs to be the user that is expected to be used to switch to the SECURE_USER account. For example:
+HDFS_DATANODE_USER=root HDFS_DATANODE_SECURE_USER=hdfs
+will force ‘hdfs –daemon start datanode’ to be root, but will eventually switch to the hdfs user after the privileged work has been completed.
+Be aware that if the --workers flag is used, the user switch happens after ssh is invoked. The multi-daemon start and stop commands in sbin will, however, switch (if appropriate) prior and will therefore use the keys of the specified _USER.
+Apache Hadoop allows for third parties to easily add new features through a variety of pluggable interfaces. This includes a shell code subsystem that makes it easy to inject the necessary content into the base installation.
+Core to this functionality is the concept of a shell profile. Shell profiles are shell snippets that can do things such as add jars to the classpath, configure Java system properties and more.
+Shell profiles may be installed in either ${HADOOP_CONF_DIR}/shellprofile.d
+or ${HADOOP_HOME}/libexec/shellprofile.d
+. Shell profiles in the libexec
+directory are part of the base installation and cannot be overridden by the user. Shell profiles in the configuration directory may be ignored if the end user changes the configuration directory at runtime.
+An example of a shell profile is in the libexec directory.
+Apache Hadoop’s shell code has a [function library](./UnixShellAPI.html) that is open for administrators and developers to use to assist in their configuration and advanced feature management. These APIs follow the standard [Apache Hadoop Interface Classification](./InterfaceClassification.html), with one addition: Replaceable.
+The shell code allows for core functions to be overridden. However, not all functions can be or are safe to be replaced. If a function is not safe to replace, it will have an attribute of Replaceable: No. If a function is safe to replace, it will have the attribute of Replaceable: Yes.
+In order to replace a function, create a file called hadoop-user-functions.sh
+in the ${HADOOP_CONF_DIR}
+directory. Simply define the new, replacement function in this file and the system will pick it up automatically. There may be as many replacement functions as needed in this file. Examples of function replacement are in the hadoop-user-functions.sh.example
+file.
+Functions that are marked Public and Stable are safe to use in shell profiles as-is. Other functions may change in a minor release.
+In addition to .hadoop-env
+, which allows individual users to override hadoop-env.sh
+, user’s may also use .hadooprc
+. This is called after the Apache Hadoop shell environment has been configured and allows the full set of shell API function calls.
+For example:
+hadoop_add_classpath /some/path/custom.jar
+would go into .hadooprc
+Utilizing the Shell API, it is possible for third parties to add their own subcommands to the primary Hadoop shell scripts (hadoop, hdfs, mapred, yarn).
+Prior to executing a subcommand, the primary scripts will check for the existence of a (scriptname)_subcommand_(subcommand) function. This function gets executed with the parameters set to all remaining command line arguments. For example, if the following function is defined:
+function yarn_subcommand_hello { echo "$@" exit $? }
+then executing yarn --debug hello world I see you
+will activate script debugging and call the yarn_subcommand_hello
+function as:
+yarn_subcommand_hello world I see you
+which will result in the output of:
+world I see you
+It is also possible to add the new subcommands to the usage output. The hadoop_add_subcommand
+function adds text to the usage output. Utilizing the standard HADOOP_SHELL_EXECNAME variable, we can limit which command gets our new function.
+if [[ "${HADOOP_SHELL_EXECNAME}" = "yarn" ]]; then hadoop_add_subcommand "hello" client "Print some text to the screen" fi
+We set the subcommand type to be “client” as there are no special restrictions, extra capabilities, etc. This functionality may also be use to override the built-ins. For example, defining:
+function hdfs_subcommand_fetchdt { ... }
+… will replace the existing hdfs fetchdt
+subcommand with a custom one.
+Some key environment variables for Dynamic Subcommands:
+This is the name of the Java class to use when program execution continues.
+This is the name of the Java class to use when a daemon is expected to be run in a privileged mode. (See more below.)
+This is the name of the script that is being executed. It will be one of hadoop, hdfs, mapred, or yarn.
+This is the subcommand that was passed on the command line.
+This array contains the argument list after the Apache Hadoop common argument processing has taken place and is the same list that is passed to the subcommand function as arguments. For example, if hadoop --debug subcmd 1 2 3
+has been executed on the command line, then ${HADOOP_SUBCMD_ARGS[0]}
+will be 1 and hadoop_subcommand_subcmd
+will also have $1 equal to 1. This array list MAY be modified by subcommand functions to add or delete values from the argument list for further processing.
+If this subcommand runs a service that supports the secure mode, this variable should be set to the classname of the secure version.
+Setting this to true will force the subcommand to run in secure mode regardless of hadoop_detect_priv_subcmd. It is expected that HADOOP_SECURE_USER will be set to the user that will be executing the final process. See more about secure mode.
+If this command can be executed as a daemon, set this to true.
+This is the full content of the command line, prior to any parsing done. It will contain flags such as --debug
+. It MAY NOT be manipulated.
+The Apache Hadoop runtime facilities require functions exit if no further processing is required. For example, in the hello example above, Java and other facilities were not required so a simple exit $?
+was sufficient. However, if the function were to utilize HADOOP_CLASSNAME
+, then program execution must continue so that Java with the Apache Hadoop-specific parameters will be launched against the given Java class. Another example would be in the case of an unrecoverable error. It is the function’s responsibility to print an appropriate message (preferably using the hadoop_error API call) and exit appropriately.
+Some daemons, such as the DataNode and the NFS gateway, may be run in a privileged mode. This means that they are expected to be launched as root and (by default) switched to another userid via jsvc. This allows for these daemons to grab a low, privileged port and then drop superuser privileges during normal execution. Running with privilege is also possible for 3rd parties utilizing Dynamic Subcommands. If the following are true:
+then the shell scripts will attempt to run the class as a command with privilege as it would the built-ins. In general, users are expected to define the _SECURE_USER variable and developers define the _CLASSNAME in their shell script bootstrap.

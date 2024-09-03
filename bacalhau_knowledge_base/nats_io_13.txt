@@ -1,3 +1,160 @@
-URL: https://nats.io/download/#clients
+Source: nats_io
+URL: https://nats.io/blog/nats-recover-quorum/
 
-AboutDownloadDocumentationBlogCommunitySupportPrivacyDownloadHere you will find the NATS Server and officially supported & communityclientsand ourJetStream enabled clients. Ourdocumentationprovides detailed instructions on how to get started.Also available are a wide variety of community contributed clients, connectors, and utilities. We are always happy to receive contributions to review - send us a PR, or contact us atinfo@nats.ioto share what you have built using NATS!NATS ServerofficialLatest Release:v2.10.20on August 29, 2024WatchStarForkView on GitHubInstallationDownload latestOfficial Docker imageNightly BuildWant to try out what our engineers are working on? Check out the NATS Server Nightly Build. This Docker image is not an official release but contains new engineering coming to NATS Server soon.ClientsNATS clients are used to connect to and communicate with NATS Server. If you would like to contribute your own client or add one not listed here, you can submit a pull request to update the contents ofthis file.Starredclients are maintained by official NATS Authors and belong to thenats-ioGitHub organization.NATS ClientsLanguageDescriptionDevelopersDetailsArduinoNATS Arduino ClientJosh GlendenningView on GitHubStarAsio C++NATS Asio C++ ClientVlad TroinichView on GitHubStarBallerinaNATS Ballerina ClientBallerinaBallerinaView on GitHubStarView on GitHubStarCNATS C ClientNATS AuthorsView on GitHubStarClojureNATS Clojure ClientEmployee RepublicView on GitHubStarCrystalNATS Crystal ClientNATS AuthorsJoakim RepomaaView on GitHubStarView on GitHubStarDartNATS Dart ClientDavid GofmanView on GitHubStarDenoNATS Deno ClientNATS AuthorsView on GitHubStarElixirNATS Elixir ClientNATS AuthorsSarat ChandraView on GitHubStarView on GitHubStarElmNATS Elm ClientChristophe de VienneView on GitHubStarErlangNATS Erlang ClientYuce TekolView on GitHubStarGoNATS Go ClientNATS AuthorsView on GitHubStarHaskellNATS Haskell ClientOndrej PalkovskyView on GitHubStarJavaNATS Java ClientNATS AuthorsMike HeathView on GitHubStarView on GitHubStarJava AndroidNATS Java Android ClientMarek KedzierskiView on GitHubStarLabVIEWNATS LabVIEW ClientDrew HerronView on GitHubStarCommon LispNATS Common Lisp ClientccQView on GitHubStarLuaNATS Lua ClientEric PintoView on GitHubStarMicroPythonNATS MicroPython ClientM K Hari BalajiView on GitHubStar.NETNATS .NET ClientNATS AuthorsDaniel WertheimView on GitHubStarView on GitHubStarNGINXNATS NGINX ClientNATS AuthorsView on GitHubStarNimNATS Nim ClientDmitry DorofeevView on GitHubStarNode.jsNATS Node.js ClientNATS AuthorsView on GitHubStarOCamlNATS OCaml ClientRoman ChechyotkinView on GitHubStarPascalNATS Pascal ClientVahid Nasehi OskoueiView on GitHubStarPerlNATS Perl ClientCarwyn MooreView on GitHubStarPHPNATS PHP ClientDmitry KrokhinRaül PérezView on GitHubStarView on GitHubStarPure RubyNATS Pure Ruby ClientNATS AuthorsView on GitHubStarPythonNATS Python ClientNikita GrishkoView on GitHubStarPython AsyncioNATS Python Asyncio ClientNATS AuthorsView on GitHubStarPython MinimalNATS Python Minimal ClientEugene Van Den BulkeView on GitHubStarPython TornadoNATS Python Tornado ClientNATS AuthorsView on GitHubStarPython TwistedNATS Python Twisted ClientJohn LockwoodView on GitHubStarC++/Qt/QMLNATS C++/Qt/QML ClientPetro KazmirchukView on GitHubStarQt5 C++NATS Qt5 C++ ClientPetar KoretićView on GitHubStarRubyNATS Ruby ClientNATS AuthorsView on GitHubStarRustNATS Rust ClientNATS AuthorsDavid McNeilKevin HoffmanView on GitHubStarView on GitHubStarView on GitHubStarScalaNATS Scala ClientTeppei YagihashiView on GitHubStarSwiftNATS Swift ClientFirman Maulanaaus der TechnikView on GitHubStarView on GitHubStarTclNATS Tcl ClientPetro KazmirchukView on GitHubStarWebSocketNATS WebSocket ClientNATS AuthorsView on GitHubStarNATS JetStream Enabled ClientsNATS 2.2 release welcomed our newest persistence engine, JetStream. Additional JetStream enabled clients will be introduced soon.LanguageDescriptionDeveloperDetailsBallerinaNATS Ballerina ClientBallerinaView on GitHubStarCNATS C ClientNATS AuthorsView on GitHubStarDenoNATS Deno ClientNATS AuthorsView on GitHubStarGoNATS Go ClientNATS AuthorsView on GitHubStarJavaNATS Java ClientNATS AuthorsView on GitHubStar.NETNATS .NET ClientNATS AuthorsView on GitHubStarNode.jsNATS Node.js ClientNATS AuthorsView on GitHubStarPHPNATS PHP ClientDmitry KrokhinView on GitHubStarPure RubyNATS Pure Ruby ClientNATS AuthorsView on GitHubStarPython AsyncioNATS Python Asyncio ClientNATS AuthorsView on GitHubStarC++/Qt/QMLNATS C++/Qt/QML ClientPetro KazmirchukView on GitHubStarRustNATS Rust ClientNATS AuthorsView on GitHubStarTclNATS Tcl ClientPetro KazmirchukView on GitHubStarWebSocketNATS WebSocket ClientNATS AuthorsView on GitHubStarConnectors and UtilitiesTo add a new connector or utility, you can submit a pull request to update the contents ofthis file.NameDescriptionDeveloperSupportAi2 Connect StripeAllows NATS message to be spent to Stripe APIs.Scott YackoAi2 ConnectApache FlinkAllows Apache Flink to send/receive a stream of string based messages to/from NATS.Matthew RingCommunityApache Spark NATS ConnectorNATS JetStream Spark adapters - 2 adapters (balanced and partitioned) using different approaches to the integration.NATS TeamSynadiaApache SparkProvides an Apache Spark (a fast and general engine for large-scale data processing) integration with NATS.Laurent MagninCommunityAWS NATSThis repository contains tools and templates to help using NATS in the Amazon Web Services platform.Danko MiocevicCommunityElastic BeatsTrack NATS metrics and logs with dedicated modules of Metribeat and Filebeat agents.Stamatis KatsaounisMichael KatsoulisChris MarkouCommunityCaddy NATSA caddy module that allows the caddy server to interact with a NATS server. This extension supports: publish/subscribe, fan in/out, and request reply.Jeremy SaenzCommunityCoreOS ClusteringNATS clustering made easy with CoreOS, etcd2 and Docker.Paulo PiresCommunityDeepstream.io connector for NATSDeepstream message connector for NATSnxteditionCommunityDokku-NATSNATS plugin for Dokku, a PaaS PlatformJose Diaz-GonzalezCommunityElasticsearchAllows you to take data from nats subjects/groups and pump these into Elasticsearch.NetlifyCommunityFluent BitThe NATS output connector allows to flush your Fluent Bit records into a NATS Server endpointFluent BitCommunityFluentd Event CollectorNATS plugin for fluentd Event CollectorCloud Foundry CommunityCommunityA Gatling to NATS ConnectorThe NATS Gatling library provides a Gatling (an open-source load testing framework based on Scala, Akka and Netty) to NATS messaging system (a highly performant cloud native messaging system) Connector.Laurent MagninCommunityHemeraA Node.js microservices toolkit for NATS.Dustin DeusCommunityJava NATS ServerJava NATS Server for unit testing.Yuna MorgensternCommunityJava NATS Streaming ServerJava NATS Streaming Server for unit testing.Yuna MorgensternCommunityKubernetesNATS cluster on top of Kubernetes made easy.Paulo PiresCommunityLogrusNATS hook for Logrus - helpers assume you are using a TLS connection.Ryan NealCommunityLogrus-NATSA Logrus hook for sending data to NATS.Erik HowardCommunityMongoDB NATS ConnectorA connector that uses MongoDB’s change streams to capture data changes and publishes those changes to NATS JetStream.Andrea DamianiCommunityNATS UIA solution for displaying NATS Streaming data streams in a user-friendly interfaceDefacto TechnologyCommunityNATS Connector FrameworkA pluggable Java based framework to bridge the NATS messaging system and other technologies.NATS TeamSynadiaNATS Redis PubSubThe NATS Redis publish subscribe connector is provided to facilitate the bridging of NATS and Redis Publish/Subscribe.NATS TeamSynadiaNATS ElkUtility for forwarding NATS monitoring data to ELK StackVladimir SundupeyCommunityNATS Kafka BridgeThis project implements a multi-connector bridge between NATS or NATS streaming and Kafka topics.NATS TeamSynadiaNATS-MonA realtime web based NATS monitorRaül PérezCommunityNATS MQ Series BridgeThis project implements a simple, but generic, bridge between NATS or NATS streaming and MQ Series queues and topics.NATS TeamSynadiaNATS Kubernetes OperatorThis operator manages NATS clusters atop Kubernetes, automating their creation and administration.NATS TeamSynadiaNATS ReplicatorThis project implements a multi-connector bridge, copier, replicator between NATS and NATS streaming endpoints.NATS TeamSynadiaRisingWave to NATS ConnectorA RisingWave built-in connector that allows RisingWave to send messages to NATS. RisingWave is a distributed SQL streaming database that enables simple, efficient, and reliable processing of streaming data.RisingWave TeamRisingWave TeamNATS-RPC GeneratorRPC layer on top of NATS standardizing on Protocol Buffers.Department of Biomedical and Health InformaticsCommunityNATS SnifferA simple sniffer for NATS, the cloud native messaging system.Paulo PiresCommunityNATS Spring SupportA Spring Cloud Stream Binder for NATS.NATS TeamSynadiaNATS Stream ReplicatorThis project replicates streams between NATS streaming clusters. Ideal for mirroring streams across data centers.R.I. PienaarCommunityNATS Streaming Server on KubernetesThis project contains a Docker image and a Helm chart to run NATS Streaming Server in the Kubernetes cluster. The NATS Streaming Server can run in fault tolerance mode.Canh NgoCommunityNATSBoardDashboard for monitoring NATS. It provides real-time information from NATS server.Fatih CetinkayaCommunitynRPC is like gRPC, but over NATSnRPC is an RPC framework like gRPC, but for NATS. It can generate a Go or Python client and server from the same .proto file that you’d use to generate gRPC clients and servers. The server is generated as a NATS MsgHandler.nats-rpc teamCommunityNUINATS UI - Free and open source UI to easily manage and explore servers, messages, streams, buckets both from desktop or web interface.nats-nuiCommunityNvisible Inc Go ARI ProxyAn implementation of the [go-ari-library] used to connect to the Asterisk REST Interface for delivery of Events and Commands across a message bus.Leif MadsenCommunityOpenFaaS NATS Streaming ConnectorThis is a queue-worker to enable asynchronous processing of function requests.Alex EllisCommunityNATS Prometheus ExporterThe official NATS exporter for Prometheus, written in Go. It supports monitoring multiple NATS servers, is highly resilient to network outages, and can be embedded into go applications via an API. Metrics are exposed through a HTTP(S) interface for Prometheus to collect them.NATS TeamSynadiaPrometheusNATS exporter for Prometheus, written in Go. It extracts several metrics and provides them via the standard HTTP interface for Prometheus to collect them.LovooCommunityQaze - The NATS Management GUIQaze makes NATS cluster management easy. It provides an intuitive desktop client to explore & manage your NATS clusters.QazeCommunityYii3 Queue Adapter for NATSUses NATS JetStream as queue for Yii asynchronous job processingg41797CommunityRancher NATSThis is an extended version of the official Docker image for nats. It adds support to set up a cluster easily onrancher.CommunityResgateA Realtime + REST API Gateway for NATS to create web APIs with live data. It supports access control, caching, scaling, queries, and more.Samuel JiréniusCommunityREST to NATS ProxyThis library provides a translation of HTTP requests to NATS. Client side is partly inspired by Gin to process requestsRadomír SohlichCommunityNATS JetStream to RisingWave ConnectorA RisingWave built-in connector that allows RisingWave to receive messages from NATS JetStream. RisingWave is a distributed SQL streaming database that enables simple, efficient, and reliable processing of streaming data.RisingWave TeamRisingWave TeamRPC over NATSProvides an RPC and pub/sub framework with first-class support for NATS.WorkivaCommunitySocket.io-NATS ConnectorThis connector enables multiple socket.io instances to broadcast and emit events to and from each other through NATS.Edgar RibeiroCommunitySpring NATS ServerSpring NATS Server for unit testing.Yuna MorgensternCommunitySpring NATS Streaming ServerSpring NATS Streaming Server for unit testing.Yuna MorgensternCommunitySynadia NGSNGS is a global communications system built on NATS.io.SynadiaCommunitySyslog sidecar for NATSReceives, parses, filters syslog messages and publishes them to NATS JetStreamg41797CommunityTCP/Websocket Gateway with NATSAn embeddable TCP and Websocket gateway/bridge with NATS, written in golang.Bin ZhaoCommunityTelegrafThe NATS consumer plugin reads from specified NATS subjects and adds messages to InfluxDB. The plugin expects messages in the Telegraf Input Data Formats. A Queue Group is used when subscribing to subjects so multiple instances of telegraf can read from a NATS cluster in parallel.Cameron SparrCommunityTimeplus source for NATSReceives messages from NATS and NATS JetStream and publishes data to Timeplus streams. This is powered byhttps://benthos.dev/Gang TaoCommunityWebsocket GatewayA websocket gateway for NATS, usable as a backend for elm-nats and websocket-nats.Orus.ioCommunitywebsocket-natsAn in-browser websocket client for NATS, a lightweight, high-performance cloud native messaging system.Josh GlendenningCommunityCopyright © NATS Authors 2024NATS is aCloud Native Computing Foundationincubating projectThe Linux Foundation has registered trademarks and uses trademarks.For a list of trademarks of The Linux Foundation, please seeTrademark Usage page.
+[Back to Blog](/blog)
+Recovering Quorum After Renaming Servers
+John Weldon — January 20, 2024
+Occasionally, a NATS cluster can lose quorum for various reasons. Here, we’ll look at one specific case, and how to recover from it.
+Context
+How To Rename Servers in a Cluster
+The recommended way to rename NATS servers in a cluster is to rename one at a time. After each rename, the cluster will have a record of both the old name and the new name. The former will appear offline, and the latter should appear online. You should remove the record of the old name before renaming the next server, otherwise, the cluster may, sooner or later, end up with too many faux-offline servers, and will consider itself to have lost quorum.
+NATS Helm Chart Caveats - A Brief Diversion
+The
+[ values.yaml](https://github.com/nats-io/k8s/blob/main/helm/charts/nats/values.yaml)
+file for the
+[NATS Helm Chart](https://github.com/nats-io/k8s/blob/main/helm/charts/nats/README.md)has an option to set a
+[, which you might be tempted to use to rename the servers in a helm chart deployed cluster.](https://github.com/nats-io/k8s/blob/2ce9a408f17b823d51223e04e806b73cead51993/helm/charts/nats/values.yaml#L273)
+serverNamePrefix
+This setting should only be changed before the first installation.
+Once the cluster is up and running, if you change this value, and then upgrade the
+helm release, you’ll cause all of the servers in the cluster to be simultaneously renamed.
+This will double the number of recorded servers in the cluster (half with the old name, and
+half with the new name, per the changed serverNamePrefix
+).
+Consequently, there will not be enough servers active in the cluster to retain quorum.
+A Case Study
+For the sake of this article, we’ll assume a helm chart [1](#fn:1) deployed cluster of three servers. [2](#fn:2)
+We start by “breaking” this cluster, simply modifying the serverNamePrefix
+to rename the
+servers, and update the release.
+First Indication of Trouble
+Logs
+The first indication of trouble is when you see this WRN
+warning and INF
+message in the logs:
+[WRN] Healthcheck failed: "JetStream has not established contact with a meta leader"
+[INF] JetStream cluster no metadata leader
+Events
+Another indication is that the NATS pods fail to progress to a ready state; the NATS container specifically shows that it’s running, but the readiness is false.
+The events will show a warning with the message
+Readiness probe failed: HTTP probe failed with statuscode: 503
+NATS CLI
+Using the NATS CLI, running the nats server report jetstream
+will also show an error;
+depending on the cluster state it could be any one of the following:
+Before Quorum is Lost
+At first, you’ll just see half the servers (with the old name) as being offline:
+$ nats server report jetstream
+╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ JetStream Summary │
+├─────────────────────┬────────────────┬─────────┬───────────┬──────────┬───────┬────────┬──────┬─────────┬─────────┤
+│ Server │ Cluster │ Streams │ Consumers │ Messages │ Bytes │ Memory │ File │ API Req │ API Err │
+├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
+│ x-nats-helm-kind-0 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+│ x-nats-helm-kind-1 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+│ x-nats-helm-kind-2* │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
+│ │ │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+╰─────────────────────┴────────────────┴─────────┴───────────┴──────────┴───────┴────────┴──────┴─────────┴─────────╯
+╭───────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ RAFT Meta Group Information │
+├─────────────────────────────────────────────────────┬──────────┬────────┬─────────┬────────┬────────┬─────┤
+│ Name │ ID │ Leader │ Current │ Online │ Active │ Lag │
+├─────────────────────────────────────────────────────┼──────────┼────────┼─────────┼────────┼────────┼─────┤
+│ Server name unknown at this time (peerID: Wp0X92Zu) │ Wp0X92Zu │ │ false │ false │ 0s │ 0 │
+│ nats-helm-kind-0 │ YMpQSy04 │ │ false │ false │ 19.53s │ 1 │
+│ nats-helm-kind-1 │ MGRogjE4 │ │ false │ false │ 0s │ 13 │
+│ x-nats-helm-kind-0 │ svvjmHnE │ │ true │ true │ 526ms │ 0 │
+│ x-nats-helm-kind-1 │ XCzEfWSa │ │ true │ true │ 525ms │ 0 │
+│ x-nats-helm-kind-2 │ XGX0cX6V │ yes │ true │ true │ 0s │ 0 │
+╰─────────────────────────────────────────────────────┴──────────┴────────┴─────────┴────────┴────────┴─────╯
+After Quorum is Lost
+After the quorum is lost, but before the readiness probes cause the servers to stop responding, for a brief window of time you’ll see the error in the jetstream report:
+$ nats server report jetstream
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ JetStream Summary │
+├────────────────────┬────────────────┬─────────┬───────────┬──────────┬───────┬────────┬──────┬─────────┬─────────┤
+│ Server │ Cluster │ Streams │ Consumers │ Messages │ Bytes │ Memory │ File │ API Req │ API Err │
+├────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
+│ x-nats-helm-kind-0 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+│ x-nats-helm-kind-1 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+│ x-nats-helm-kind-2 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+├────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
+│ │ │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+╰────────────────────┴────────────────┴─────────┴───────────┴──────────┴───────┴────────┴──────┴─────────┴─────────╯
+WARNING: No cluster meta leader found. The cluster expects 6 nodes but only 3 responded. JetStream operation require at least 4 up nodes.
+After Servers Stop Responding
+Finally, the servers will possibly stop responding, giving you the general error:
+$ nats server report jetstream
+nats: error: nats: no servers available for connection
+command terminated with exit code 1
+How To Recover
+Regain Quorum
+To recover, the cluster must first regain quorum.
+In this case, the cluster thinks that there are six nodes [3](#fn:3) in the cluster,
+so to regain quorum there needs to be a minimum of four nodes [3](#fn:3) reachable from each other.
+The way to do this is to add one more server, which will allow quorum to be regained. You can do this by scaling the stateful set:
+$ kubectl scale --replicas=4 statefulset/nats-helm-kind
+Which, once complete, should result in quorum being regained:
+$ nats server report jetstream
+╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ JetStream Summary │
+├─────────────────────┬────────────────┬─────────┬───────────┬──────────┬───────┬────────┬──────┬─────────┬─────────┤
+│ Server │ Cluster │ Streams │ Consumers │ Messages │ Bytes │ Memory │ File │ API Req │ API Err │
+├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
+│ x-nats-helm-kind-0 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+│ x-nats-helm-kind-1 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+│ x-nats-helm-kind-2* │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+│ x-nats-helm-kind-3 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
+│ │ │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+╰─────────────────────┴────────────────┴─────────┴───────────┴──────────┴───────┴────────┴──────┴─────────┴─────────╯
+╭───────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ RAFT Meta Group Information │
+├─────────────────────────────────────────────────────┬──────────┬────────┬─────────┬────────┬────────┬─────┤
+│ Name │ ID │ Leader │ Current │ Online │ Active │ Lag │
+├─────────────────────────────────────────────────────┼──────────┼────────┼─────────┼────────┼────────┼─────┤
+│ Server name unknown at this time (peerID: Wp0X92Zu) │ Wp0X92Zu │ │ false │ false │ 0s │ 0 │
+│ nats-helm-kind-0 │ YMpQSy04 │ │ false │ false │ 47m27s │ 6 │
+│ nats-helm-kind-1 │ MGRogjE4 │ │ false │ false │ 0s │ 18 │
+│ x-nats-helm-kind-0 │ svvjmHnE │ │ true │ true │ 461ms │ 0 │
+│ x-nats-helm-kind-1 │ XCzEfWSa │ │ true │ true │ 461ms │ 0 │
+│ x-nats-helm-kind-2 │ XGX0cX6V │ yes │ true │ true │ 0s │ 0 │
+│ x-nats-helm-kind-3 │ G7oD67bf │ │ true │ true │ 461ms │ 0 │
+╰─────────────────────────────────────────────────────┴──────────┴────────┴─────────┴────────┴────────┴─────╯
+Remove Offline/Old Servers
+Now you can begin cleaning up the old server records. You can do this either with the CLI or by using NATS directly.
+CLI
+Using the CLI [4](#fn:4):
+$ nats server cluster peer-remove -f <peer ID>
+Using NATS Directly
+You can also remove a peer directly by publishing to the JetStream API subjects:
+$ nats publish '$JS.API.SERVER.REMOVE' '{"peer":"","peer_id":"YMpQSy04"}'
+Which will send a response message on the same channel that confirms the action:
+{
+"type": "io.nats.jetstream.api.v1.meta_server_remove_response",
+"success": true
+}
+Remove Temporarily Added Server
+Scale Back Down to Three Servers
+Now that the number of servers is four instead of six, it’s safe to scale back down to three servers, and then remove the record of the server we temporarily added.
+$ kubectl scale --replicas=3 statefulset/nats-helm-kind
+Remove Peer
+$ nats server cluster peer-remove -f G7oD67bf
+Success!
+Finally, the state of the cluster should be restored now, with three servers.
+About The Author
+John Weldon is a Customer Solutions Architect at
+[Synadia Communications](https://www.synadia.com/)
+.
+The name of the helm release in this article is
+nats-helm-kind
+; it could be anything, often the default is justnats
+[↩︎](#fnref:1)You can replicate the
+[kind](https://kind.sigs.k8s.io/)environment I used in this article, by referring to[this](https://github.com/johnweldon/nats-helm-kind-playground)repository.[↩︎](#fnref:2)NATS Servers are also called “nodes” - sometimes interchangeably.
+[↩︎](#fnref:3)Throughout this article I use nats-box to execute nats commands; the simple way to do it from the command line is:
+kubectl exec -it deployment/nats-helm-kind-box -- nats <command> <args>
+nats-box is deployed by default in the nats helm chart.
+For simplicity, I’ll just show the plain NATS command in the examples.
+[↩︎](#fnref:4)
+[Back to Blog](/blog)

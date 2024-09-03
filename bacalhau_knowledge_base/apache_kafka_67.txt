@@ -1,20 +1,128 @@
 Source: apache_kafka
-URL: https://kafka.apache.org/books-and-papers#academic-references-and-papers
+URL: https://kafka.apache.org/cve-list#CVE-2022-34917
 
-Apache KafkaToggle navigationGet StartedIntroductionQuickstartUse CasesBooks & PapersVideosPodcastsDocsKey ConceptsAPIsConfigurationDesignImplementationOperationsSecurityClientsKafka ConnectKafka StreamsPowered ByCommunityBlogKafka SummitProject InfoTrademarkEcosystemEventsContact usApacheLicenseDonateSponsorsSecurityPrivacyApache.orgDownload KafkaBooks and PapersBooksThe following books cover Apache Kafka and/or the subject of event
-        streaming in general.Academic References and PapersThe following academic papers and publications cover Apache Kafka and/or
-        the subject of event streaming in general.KSQL: Streaming SQL Engine for Apache Kafkaby Hojjat Jafarpour, Rohan Desai, Damian Guy; EDBT '19: Proceedings of
-          the 22nd International Conference on Extending Database Technology,
-          2019Streams and Tables: Two Sides of the Same Coinby Matthias J. Sax, Guozhang Wang, Matthias Weidlich, Johann-Christoph
-          Freytag; BIRTE '18: Proceedings of the International Workshop on
-          Real-Time Business Intelligence and Analytics, 2018Apache Kafkaby Matthias J. Sax; Encyclopedia of Big Data Technologies, Springer,
-          Cham, 2018Building a Replicated Logging System with Apache Kafkaby Guozhang Wang, Joel Koshy, Sriram Subramanian, Kartik Paramasivam,
-          Mammad Zadeh, Neha Narkhede, Jun Rao, Jay Kreps, Joe Stein; VLDB
-          Endowment '15: Proceedings of the VLDB Endowment,Vol. 8, No. 12, 2015Liquid: Unifying Nearline and Offline Big Data Integrationby Raul Castro Fernandez, Peter R. Pietzuch, Jay Kreps, Neha Narkhede,
-          Jun Rao, Joel Koshy, Dong Lin, Chris Riccomini, Guozhang Wang; CIDR
-          '15: 7th Biennial Conference on Innovative Data Systems Research, 2015Kafka, Samza and the Unix Philosophy of Distributed Databy Martin Kleppmann, Jay Kreps, Bulletin of the IEEE Computer Society
-          Technical Committee on Data Engineering, 2015The Log: What every software engineer should know about real-time
-            data's unifying abstraction, by Jay Kreps, 2013Building LinkedInâs Real-time Activity Data Pipelineby Ken Goodhope, Joel Koshy, Jay Kreps, Neha Narkhede, Richard Park,
-          Jun Rao, Victor Yang Ye; Bulletin of the IEEE Computer Society
-          Technical Committee on Data Engineering, 2012Data Infrastructure at LinkedInby Aditya Auradkar et al.; IEEE 28th International Conference on Data
-          Engineering, 2012Kafka: a Distributed Messaging System for Log Processingby Jay Kreps, Neha Narkhede, Jun Rao; NetDB workshop '11, 2011The contents of this website are © 2024Apache Software Foundationunder the terms of theApache License v2.Apache Kafka, Kafka, and the Kafka logo are either registered trademarks or trademarks of The Apache Software Foundationin the United States and other countries.Security|Donate|Thanks|Events|License|Privacy
+Apache Kafka Security Vulnerabilities
+This page lists all security vulnerabilities fixed in released versions of Apache Kafka.[CVE-2024-27309](https://nvd.nist.gov/vuln/detail/CVE-2024-27309) Potential incorrect access control during migration from ZK mode to KRaft mode
+While an Apache Kafka cluster is being migrated from ZooKeeper mode to KRaft mode, in some cases ACLs will not be correctly enforced. Two preconditions are needed to trigger the bug:
+- The administrator decides to remove an ACL
+- The resource associated with the removed ACL continues to have two or more other ACLs associated with it after the removal.
+Versions affected | 3.5.0 - 3.6.1 |
+Fixed versions | 3.6.2 |
+Impact | The impact depends on the ACLs in use. If only ALLOW ACLs were configured during the migration, the impact would be limited to availability impact. if DENY ACLs were configured, the impact could include confidentiality and integrity impact depending on the ACLs configured, as the DENY ACLs might be ignored due to this vulnerability during the migration period. |
+Advice | We advise all Kafka users using ACLs to only perform ZooKeeper to KRaft migrations when using Kafka 3.6.2 or above. |
+Issue announced | 12 Apr 2024 |
+[CVE-2023-34455](https://nvd.nist.gov/vuln/detail/CVE-2023-34455) Clients using Snappy compression may cause out of memory error on brokers
+This CVE identifies a vulnerability in snappy-java which could be used to cause an Out-of-Memory (OOM) condition, leading to Denial-of-Service(DoS) on the Kafka broker.
+The vulnerability allows any user who can producer data to the broker to exploit the vulnerability by sending a malicious payload in the record which is compressed using snappy. For more details on the vulnerability, please refer to the following
+link: [snappy-java GitHub advisory.](https://github.com/xerial/snappy-java/security/advisories/GHSA-qcwq-55hx-v3vh)
+Versions affected | 0.8.0 - 3.5.0 |
+Fixed versions | 3.5.1 |
+Impact | This vulnerability allows any user who can produce data to the broker to exploit the vulnerability, potentially causing an Out-of-Memory (OOM) condition, leading to Denial-of-Service(DoS) on the Kafka broker. It could be exploited
+by sending a malicious payload in the record which is compressed using snappy. On receiving the record, the broker will try to de-compress the record to perform record validation and
+it will
+|
+[CVE-2023-25194](https://nvd.nist.gov/vuln/detail/CVE-2023-25194) Possible RCE/Denial of service attack via SASL JAAS JndiLoginModule configuration using Apache Kafka Connect API
+A possible security vulnerability has been identified in Apache Kafka Connect API. This requires access to a Kafka Connect worker, and the ability to create/modify connectors on it with an arbitrary Kafka client SASL JAAS config and a SASL-based security protocol, which has been possible on Kafka Connect clusters since Apache Kafka 2.3.0. This will allow to perform JNDI requests that result in Denial of service/remote code execution.
+Versions affected | Apache Kafka Connect API (
+|
+[connect-api](https://mvnrepository.com/artifact/org.apache.kafka/connect-api),[connect-runtime](https://mvnrepository.com/artifact/org.apache.kafka/connect-runtime)) : 3.4.0This will allow the server to connect to the attacker's LDAP server and deserialize the LDAP response, which the attacker can use to execute java deserialization gadget chains on the Kafka connect server. Attacker can cause unrestricted deserialization of untrusted data (or) RCE vulnerability when there are gadgets in the classpath.
+Since Apache Kafka 3.4.0, we have added a system property ("-Dorg.apache.kafka.disallowed.login.modules") to disable the problematic login modules usage in SASL JAAS configuration. Also by default "com.sun.security.auth.module.JndiLoginModule" is disabled in Apache Kafka 3.4.0.
+We advise the Kafka Connect users to validate connector configurations and only allow trusted JNDI configurations. Also examine connector dependencies for vulnerable versions and either upgrade their connectors, upgrading that specific dependency, or removing the connectors as options for remediation. Finally, in addition to leveraging the "org.apache.kafka.disallowed.login.modules" system property, Kafka Connect users can also implement their own connector client config override policy, which can be used to control which Kafka client properties can be overridden directly in a connector config and which cannot.
+[CVE-2022-34917](https://nvd.nist.gov/vuln/detail/CVE-2022-34917) Unauthenticated clients may cause OutOfMemoryError on brokers
+This CVE identified a flaw where it allows the malicious unauthenticated clients to allocate large amounts of memory on brokers. This can lead to brokers hitting OutOfMemoryException and causing denial of service.
+Versions affected | 2.8.0 - 2.8.1, 3.0.0 - 3.0.1, 3.1.0 - 3.1.1, 3.2.0 - 3.2.1 |
+Fixed versions | 2.8.2, 3.0.2, 3.1.2, 3.2.3 |
+Impact | Example scenarios in which attacker can cause OutOfMemoryError on brokers - Kafka cluster without authentication: Any clients able to establish a network connection to a broker can trigger the issue. - Kafka cluster with SASL authentication: Any clients able to establish a network connection to a broker, without the need for valid SASL credentials, can trigger the issue. - Kafka cluster with TLS authentication: Only clients able to successfully authenticate via TLS can trigger the issue. |
+Issue announced | 19 Sep 2022 |
+[CVE-2022-23302](https://nvd.nist.gov/vuln/detail/CVE-2022-23302) Deserialization of Untrusted Data Flaw in JMSSink of Apache Log4j logging library in versions 1.x
+This CVE identified a flaw where it allows the attacker to provide a TopicConnectionFactoryBindingName configuration that will cause JMSSink to perform JNDI requests that result in remote code execution in a similar fashion to CVE-2021-4104.
+Versions affected | All AK versions |
+Fixed versions | In the absence of a new log4j 1.x release, one can remove JMSSink class from the log4j-1.2.17.jar artifact. |
+Impact | When the attacker has write access to the Log4j configuration or if the configuration references an LDAP service the attacker has access to. The attacker can provide a configuration causing JMSSink to perform JNDI requests that result in remote code execution. |
+Issue announced | 18 Jan 2022 |
+[CVE-2022-23305](https://nvd.nist.gov/vuln/detail/CVE-2022-23305) SQL injection Flaw in Apache Log4j logging library in versions 1.x
+This CVE identified a flaw where it allows a remote attacker to run SQL statements in the database if the deployed application is configured to use JDBCAppender with certain interpolation tokens.
+Versions affected | All AK versions |
+Fixed versions | In the absence of a new log4j 1.x release, one can remove JDBCAppender class from the log4j-1.2.17.jar artifact. |
+Impact | This issue could result in a SQL injection attack when the application is configured to use JDBCAppender. |
+Issue announced | 18 Jan 2022 |
+[CVE-2022-23307](https://nvd.nist.gov/vuln/detail/CVE-2022-23307) Deserialization of Untrusted Data Flaw in Apache Log4j logging library in versions 1.x
+This CVE identified a flaw where it allows an attacker to send a malicious request with serialized data to the component running log4j 1.x
+to be deserialized when the chainsaw component is run. Chainsaw is a standalone GUI for viewing log entries in log4j. An attacker not only needs to be able to generate malicious log entries, but also, have the necessary access and permissions to start chainsaw (or if it is already enabled by a customer / consumer of Apache Kafka).
+Versions affected | All AK versions |
+Fixed versions | In the absence of a new log4j 1.x release, one can remove Chainsaw from the log4j-1.2.17.jar artifact. |
+Impact | When an attacker has the ability to start Chainsaw and is able to generate malicious log entries it allows deserialization of untrusted data. |
+Issue announced | 18 Jan 2022 |
+[CVE-2021-45046](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-45046)
+Flaw in Apache Log4j logging library in versions from 2.0-beta9 through 2.12.1 and from 2.13.0 through 2.15.0
+Some components in Apache Kafka use Log4j-v1.2.17
+there is no dependence on Log4j v2.*
+. Check with the vendor of any connector plugin that includes a Log4J 2.x JAR file.
+Users should NOT be impacted by this vulnerability
+Versions affected | NA |
+Fixed versions | NA |
+Impact | NA |
+Issue announced | 14 Dec 2021 |
+[CVE-2021-44228](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44228)
+Flaw in Apache Log4j logging library in versions from 2.0.0 and before 2.15.0
+Some components in Apache Kafka use Log4j-v1.2.17
+there is no dependence on Log4j v2.*
+. Check with the vendor of any connector plugin that includes a Log4J 2.x JAR file.
+[Lookups feature](https://logging.apache.org/log4j/2.x/manual/lookups.html) was introduced in Log4j v2.x in order to allow specifying Log4j configuration parameters in arbitrary locations (even outside of the configuration files). Log4j v1.x does not offer the same functionality and thus is not vulnerable to [CVE-2021-44228](https://access.redhat.com/security/cve/cve-2021-44228).
+Users should NOT be impacted by this vulnerability
+Versions affected | NA |
+Fixed versions | NA |
+Impact | NA |
+Issue announced | 09 Dec 2021 |
+[CVE-2021-4104](https://access.redhat.com/security/cve/CVE-2021-4104)
+Flaw in Apache Log4j logging library in versions 1.x
+The following components in Apache Kafka use Log4j-v1.2.17
+: broker, controller, zookeeper, connect, mirrormaker and tools. Clients may also be configured to use Log4j-v1.x
+.
+Version 1.x of Log4J can be configured to use JMS Appender, which publishes log events to a JMS Topic. Log4j 1.x is vulnerable if the deployed application is configured to use JMSAppender.
+Versions affected | All versions |
+Fixed versions |
+In the absence of a new log4j 1.x release, one can remove JMSAppender
+from the log4j-1.2.17.jar artifact. Commands are listed in the
+page
+We also recommend that configuration files be protected against write access as stated in
+|
+[CVE-2021-38153](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-38153)
+Timing Attack Vulnerability for Apache Kafka Connect and Clients
+Some components in Apache Kafka use Arrays.equals
+to validate a password or key,
+which is vulnerable to timing attacks that make brute force attacks for such credentials
+more likely to be successful. Users should upgrade to 2.8.1 or higher, or 3.0.0 or higher
+where this vulnerability has been fixed.
+Versions affected | 2.0.0, 2.0.1, 2.1.0, 2.1.1, 2.2.0, 2.2.1, 2.2.2, 2.3.0, 2.3.1, 2.4.0, 2.4.1, 2.5.0, 2.5.1, 2.6.0, 2.6.1, 2.6.2, 2.7.0, 2.7.1, 2.8.0. |
+Fixed versions | 2.6.3, 2.7.2, 2.8.1, 3.0.0 and later |
+Impact | This issue could result in privilege escalation. |
+Issue announced | 21 Sep 2021 |
+[CVE-2019-12399](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-12399)
+Apache Kafka Connect REST API may expose plaintext secrets in tasks endpoint
+When Connect workers in Apache Kafka 2.0.0, 2.0.1, 2.1.0, 2.1.1, 2.2.0, 2.2.1, or 2.3.0 are configured with one or more config providers, and a connector is created/updated on that Connect cluster to use an externalized secret variable in a substring of a connector configuration property value (the externalized secret variable is not the whole configuration property value), then any client can issue a request to the same Connect cluster to obtain the connector's task configurations and the response will contain the plaintext secret rather than the externalized secrets variable. Users should upgrade to 2.2.2 or higher, or 2.3.1 or higher where this vulnerability has been fixed.
+Versions affected | 2.0.0, 2.0.1, 2.1.0, 2.1.1, 2.2.0, 2.2.1, 2.3.0 |
+Fixed versions | 2.2.2, 2.3.1 and later |
+Impact | This issue could result in exposing externalized connector secrets. |
+Issue announced | 13 Jan 2020 |
+[CVE-2018-17196](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-17196)
+Authenticated clients with Write permission may bypass transaction/idempotent ACL validation
+In Apache Kafka versions between 0.11.0.0 and 2.1.0, it is possible to manually craft a Produce request which bypasses transaction/idempotent ACL validation. Only authenticated clients with Write permission on the respective topics are able to exploit this vulnerability. Users should upgrade to 2.1.1 or later where this vulnerability has been fixed.
+Versions affected | 0.11.0.0 to 2.1.0 |
+Fixed versions | 2.1.1 and later |
+Impact | This issue could result in privilege escalation. |
+Issue announced | 10 July 2019 |
+[CVE-2018-1288](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-1288)
+Authenticated Kafka clients may interfere with data replication
+Authenticated Kafka users may perform action reserved for the Broker via a manually created fetch request interfering with data replication, resulting in data loss.
+Versions affected | 0.9.0.0 to 0.9.0.1, 0.10.0.0 to 0.10.2.1, 0.11.0.0 to 0.11.0.2, 1.0.0 |
+Fixed versions | 0.10.2.2, 0.11.0.3, 1.0.1, 1.1.0 |
+Impact | This issue could potentially lead to data loss. |
+Issue announced | 26 July 2018 |
+[CVE-2017-12610](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-12610)
+Authenticated Kafka clients may impersonate other users
+Authenticated Kafka clients may use impersonation via a manually crafted protocol message with SASL/PLAIN or SASL/SCRAM authentication when using the built-in PLAIN or SCRAM server implementations in Apache Kafka.
+Versions affected | 0.10.0.0 to 0.10.2.1, 0.11.0.0 to 0.11.0.1 |
+Fixed versions | 0.10.2.2, 0.11.0.2, 1.0.0 |
+Impact | This issue could result in privilege escalation. |
+Issue announced | 26 July 2018 |

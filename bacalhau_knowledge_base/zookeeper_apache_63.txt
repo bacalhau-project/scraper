@@ -1,8 +1,45 @@
+Source: zookeeper_apache
 URL: https://zookeeper.apache.org/doc/r3.3.2/releasenotes.html
 
-Apache>Hadoop>ZooKeeperProjectWikiZooKeeper 3.3 DocumentationOverviewWelcomeOverviewGetting StartedRelease NotesDeveloperAPI DocsProgrammer's GuideJava ExampleBarrier and Queue TutorialRecipesBookKeeperGetting startedOverviewSetup guideProgrammer's guideAdmin & OpsAdministrator's GuideQuota GuideJMXObservers GuideContributorZooKeeper InternalsMiscellaneousWikiFAQMailing ListsPDFZooKeeper 3.3.2 Release NotesChanges Since ZooKeeper 3.3.1These release notes include new developer and user facing
-incompatibilities, features, and major improvements.See3.0
-release notes and migration instructionsif you are upgrading
+ZooKeeper 3.3.2 Release Notes
+These release notes include new developer and user facing
+incompatibilities, features, and major improvements.
+See [3.0
+release notes and migration instructions](http://hadoop.apache.org/zookeeper/docs/r3.0.1/releasenotes.html#migration) if you are upgrading
 from version 2 of ZooKeeper (SourceForge) to version 3 or
-later.Changes Since ZooKeeper 3.3.1Changes Since ZooKeeper 3.3.1Changes Since ZooKeeper 3.3.1IssueNotesBugZOOKEEPER-732Improper translation of error into Python exception - Release Comment: Client that uses python binding may receive SystemError on session expiration.ZOOKEEPER-772zkpython segfaults when watcher from async get children is invoked.ZOOKEEPER-783committedLog in ZKDatabase is not properly synchronizedZOOKEEPER-785Zookeeper 3.3.1 shouldn't infinite loop if someone creates a server.0 lineZOOKEEPER-787groupId in deployed pom is wrongZOOKEEPER-790Last processed zxid set prematurely while establishing leadershipZOOKEEPER-792zkpython memory leakZOOKEEPER-794Callbacks are not invoked when the client is closedZOOKEEPER-795eventThread isn't shutdown after a connection "session expired" event comingZOOKEEPER-800zoo_add_auth returns ZOK if zookeeper handle is in ZOO_CLOSED_STATEZOOKEEPER-804c unit tests failing due to "assertion cptr failed"ZOOKEEPER-813maven install is broken due to incorrect organisationZOOKEEPER-820update c unit tests to ensure "zombie" java server processes don't cause failureZOOKEEPER-822Leader election taking a long time  to completeZOOKEEPER-844handle auth failure in java clientZOOKEEPER-846zookeeper client doesn't shut down cleanly on the close callZOOKEEPER-855clientPortBindAddress should be clientPortAddressZOOKEEPER-867ClientTest is failing on hudson - fd cleanupZOOKEEPER-881ZooKeeperServer.loadData loads database twiceZOOKEEPER-888c-client / zkpython: Double free corruption on node watcherZOOKEEPER-893ZooKeeper high cpu usage when invalid requestsZOOKEEPER-897C Client seg faults during closeZOOKEEPER-898C Client might not cleanup correctly during closeZOOKEEPER-904super digest is not actually acting as a full superuserZOOKEEPER-907Spurious "KeeperErrorCode = Session moved" messagesImprovementZOOKEEPER-789Improve FLE log messagesCopyright ©
-         2008The Apache Software Foundation.
+later.
+Changes Since ZooKeeper 3.3.1
+Changes Since ZooKeeper 3.3.1
+Changes Since ZooKeeper 3.3.1
+Issue |
+Notes |
+Bug |
+|
+[ZOOKEEPER-732](https://issues.apache.org/jira/browse/ZOOKEEPER-732) | Improper translation of error into Python exception - Release Comment: Client that uses python binding may receive SystemError on session expiration. |
+[ZOOKEEPER-772](https://issues.apache.org/jira/browse/ZOOKEEPER-772) | zkpython segfaults when watcher from async get children is invoked. |
+[ZOOKEEPER-783](https://issues.apache.org/jira/browse/ZOOKEEPER-783) | committedLog in ZKDatabase is not properly synchronized |
+[ZOOKEEPER-785](https://issues.apache.org/jira/browse/ZOOKEEPER-785) | Zookeeper 3.3.1 shouldn't infinite loop if someone creates a server.0 line |
+[ZOOKEEPER-787](https://issues.apache.org/jira/browse/ZOOKEEPER-787) | groupId in deployed pom is wrong |
+[ZOOKEEPER-790](https://issues.apache.org/jira/browse/ZOOKEEPER-790) | Last processed zxid set prematurely while establishing leadership |
+[ZOOKEEPER-792](https://issues.apache.org/jira/browse/ZOOKEEPER-792) | zkpython memory leak |
+[ZOOKEEPER-794](https://issues.apache.org/jira/browse/ZOOKEEPER-794) | Callbacks are not invoked when the client is closed |
+[ZOOKEEPER-795](https://issues.apache.org/jira/browse/ZOOKEEPER-795) | eventThread isn't shutdown after a connection "session expired" event coming |
+[ZOOKEEPER-800](https://issues.apache.org/jira/browse/ZOOKEEPER-800) | zoo_add_auth returns ZOK if zookeeper handle is in ZOO_CLOSED_STATE |
+[ZOOKEEPER-804](https://issues.apache.org/jira/browse/ZOOKEEPER-804) | c unit tests failing due to "assertion cptr failed" |
+[ZOOKEEPER-813](https://issues.apache.org/jira/browse/ZOOKEEPER-813) | maven install is broken due to incorrect organisation |
+[ZOOKEEPER-820](https://issues.apache.org/jira/browse/ZOOKEEPER-820) | update c unit tests to ensure "zombie" java server processes don't cause failure |
+[ZOOKEEPER-822](https://issues.apache.org/jira/browse/ZOOKEEPER-822) | Leader election taking a long time to complete |
+[ZOOKEEPER-844](https://issues.apache.org/jira/browse/ZOOKEEPER-844) | handle auth failure in java client |
+[ZOOKEEPER-846](https://issues.apache.org/jira/browse/ZOOKEEPER-846) | zookeeper client doesn't shut down cleanly on the close call |
+[ZOOKEEPER-855](https://issues.apache.org/jira/browse/ZOOKEEPER-855) | clientPortBindAddress should be clientPortAddress |
+[ZOOKEEPER-867](https://issues.apache.org/jira/browse/ZOOKEEPER-867) | ClientTest is failing on hudson - fd cleanup |
+[ZOOKEEPER-881](https://issues.apache.org/jira/browse/ZOOKEEPER-881) | ZooKeeperServer.loadData loads database twice |
+[ZOOKEEPER-888](https://issues.apache.org/jira/browse/ZOOKEEPER-888) | c-client / zkpython: Double free corruption on node watcher |
+[ZOOKEEPER-893](https://issues.apache.org/jira/browse/ZOOKEEPER-893) | ZooKeeper high cpu usage when invalid requests |
+[ZOOKEEPER-897](https://issues.apache.org/jira/browse/ZOOKEEPER-897) | C Client seg faults during close |
+[ZOOKEEPER-898](https://issues.apache.org/jira/browse/ZOOKEEPER-898) | C Client might not cleanup correctly during close |
+[ZOOKEEPER-904](https://issues.apache.org/jira/browse/ZOOKEEPER-904) | super digest is not actually acting as a full superuser |
+[ZOOKEEPER-907](https://issues.apache.org/jira/browse/ZOOKEEPER-907) | Spurious "KeeperErrorCode = Session moved" messages |
+Improvement |
+|
+[ZOOKEEPER-789](https://issues.apache.org/jira/browse/ZOOKEEPER-789) | Improve FLE log messages |

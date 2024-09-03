@@ -1,22 +1,254 @@
 Source: kubernetes_io
-URL: https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
+URL: https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/
 
-DocumentationKubernetes BlogTrainingPartnersCommunityCase StudiesVersionsRelease Informationv1.31v1.30v1.29v1.28v1.27English中文 (Chinese)Bahasa Indonesia (Indonesian)日本語 (Japanese)한국어 (Korean)Русский (Russian)Español (Spanish)DocumentationAvailable Documentation VersionsGetting startedLearning environmentProduction environmentContainer RuntimesInstalling Kubernetes with deployment toolsBootstrapping clusters with kubeadmInstalling kubeadmTroubleshooting kubeadmCreating a cluster with kubeadmCustomizing components with the kubeadm APIOptions for Highly Available TopologyCreating Highly Available Clusters with kubeadmSet up a High Availability etcd Cluster with kubeadmConfiguring each kubelet in your cluster using kubeadmDual-stack support with kubeadmTurnkey Cloud SolutionsBest practicesConsiderations for large clustersRunning in multiple zonesValidate node setupEnforcing Pod Security StandardsPKI certificates and requirementsConceptsOverviewKubernetes ComponentsObjects In KubernetesKubernetes Object ManagementObject Names and IDsLabels and SelectorsNamespacesAnnotationsField SelectorsFinalizersOwners and DependentsRecommended LabelsThe Kubernetes APICluster ArchitectureNodesCommunication between Nodes and the Control PlaneControllersLeasesCloud Controller ManagerAbout cgroup v2Container Runtime Interface (CRI)Garbage CollectionMixed Version ProxyContainersImagesContainer EnvironmentRuntime ClassContainer Lifecycle HooksWorkloadsPodsPod LifecycleInit ContainersSidecar ContainersEphemeral ContainersDisruptionsPod Quality of Service ClassesUser NamespacesDownward APIWorkload ManagementDeploymentsReplicaSetStatefulSetsDaemonSetJobsAutomatic Cleanup for Finished JobsCronJobReplicationControllerAutoscaling WorkloadsManaging WorkloadsServices, Load Balancing, and NetworkingServiceIngressIngress ControllersGateway APIEndpointSlicesNetwork PoliciesDNS for Services and PodsIPv4/IPv6 dual-stackTopology Aware RoutingNetworking on WindowsService ClusterIP allocationService Internal Traffic PolicyStorageVolumesPersistent VolumesProjected VolumesEphemeral VolumesStorage ClassesVolume Attributes ClassesDynamic Volume ProvisioningVolume SnapshotsVolume Snapshot ClassesCSI Volume CloningStorage CapacityNode-specific Volume LimitsVolume Health MonitoringWindows StorageConfigurationConfiguration Best PracticesConfigMapsSecretsLiveness, Readiness, and Startup ProbesResource Management for Pods and ContainersOrganizing Cluster Access Using kubeconfig FilesResource Management for Windows nodesSecurityCloud Native SecurityPod Security StandardsPod Security AdmissionService AccountsPod Security PoliciesSecurity For Windows NodesControlling Access to the Kubernetes APIRole Based Access Control Good PracticesGood practices for Kubernetes SecretsMulti-tenancyHardening Guide - Authentication MechanismsKubernetes API Server Bypass RisksLinux kernel security constraints for Pods and containersSecurity ChecklistPoliciesLimit RangesResource QuotasProcess ID Limits And ReservationsNode Resource ManagersScheduling, Preemption and EvictionKubernetes SchedulerAssigning Pods to NodesPod OverheadPod Scheduling ReadinessPod Topology Spread ConstraintsTaints and TolerationsScheduling FrameworkDynamic Resource AllocationScheduler Performance TuningResource Bin PackingPod Priority and PreemptionNode-pressure EvictionAPI-initiated EvictionCluster AdministrationNode ShutdownsCertificatesCluster NetworkingLogging ArchitectureMetrics For Kubernetes System ComponentsMetrics for Kubernetes Object StatesSystem LogsTraces For Kubernetes System ComponentsProxies in KubernetesAPI Priority and FairnessCluster AutoscalingInstalling AddonsCoordinated Leader ElectionWindows in KubernetesWindows containers in KubernetesGuide for Running Windows Containers in KubernetesExtending KubernetesCompute, Storage, and Networking ExtensionsNetwork PluginsDevice PluginsExtending the Kubernetes APICustom ResourcesKubernetes API Aggregation LayerOperator patternTasksInstall ToolsInstall and Set Up kubectl on LinuxInstall and Set Up kubectl on macOSInstall and Set Up kubectl on WindowsAdminister a ClusterAdministration with kubeadmCertificate Management with kubeadmConfiguring a cgroup driverReconfiguring a kubeadm clusterUpgrading kubeadm clustersUpgrading Linux nodesUpgrading Windows nodesChanging The Kubernetes Package RepositoryMigrating from dockershimChanging the Container Runtime on a Node from Docker Engine to containerdMigrate Docker Engine nodes from dockershim to cri-dockerdFind Out What Container Runtime is Used on a NodeTroubleshooting CNI plugin-related errorsCheck whether dockershim removal affects youMigrating telemetry and security agents from dockershimGenerate Certificates ManuallyManage Memory, CPU, and API ResourcesConfigure Default Memory Requests and Limits for a NamespaceConfigure Default CPU Requests and Limits for a NamespaceConfigure Minimum and Maximum Memory Constraints for a NamespaceConfigure Minimum and Maximum CPU Constraints for a NamespaceConfigure Memory and CPU Quotas for a NamespaceConfigure a Pod Quota for a NamespaceInstall a Network Policy ProviderUse Antrea for NetworkPolicyUse Calico for NetworkPolicyUse Cilium for NetworkPolicyUse Kube-router for NetworkPolicyRomana for NetworkPolicyWeave Net for NetworkPolicyAccess Clusters Using the Kubernetes APIAdvertise Extended Resources for a NodeAutoscale the DNS Service in a ClusterChange the Access Mode of a PersistentVolume to ReadWriteOncePodChange the default StorageClassSwitching from Polling to CRI Event-based Updates to Container StatusChange the Reclaim Policy of a PersistentVolumeCloud Controller Manager AdministrationConfigure a kubelet image credential providerConfigure Quotas for API ObjectsControl CPU Management Policies on the NodeControl Topology Management Policies on a nodeCustomizing DNS ServiceDebugging DNS ResolutionDeclare Network PolicyDeveloping Cloud Controller ManagerEnable Or Disable A Kubernetes APIEncrypting Confidential Data at RestDecrypt Confidential Data that is Already Encrypted at RestGuaranteed Scheduling For Critical Add-On PodsIP Masquerade Agent User GuideLimit Storage ConsumptionMigrate Replicated Control Plane To Use Cloud Controller ManagerNamespaces WalkthroughOperating etcd clusters for KubernetesReserve Compute Resources for System DaemonsRunning Kubernetes Node Components as a Non-root UserSafely Drain a NodeSecuring a ClusterSet Kubelet Parameters Via A Configuration FileShare a Cluster with NamespacesUpgrade A ClusterUse Cascading Deletion in a ClusterUsing a KMS provider for data encryptionUsing CoreDNS for Service DiscoveryUsing NodeLocal DNSCache in Kubernetes ClustersUsing sysctls in a Kubernetes ClusterUtilizing the NUMA-aware Memory ManagerVerify Signed Kubernetes ArtifactsConfigure Pods and ContainersAssign Memory Resources to Containers and PodsAssign CPU Resources to Containers and PodsConfigure GMSA for Windows Pods and containersResize CPU and Memory Resources assigned to ContainersConfigure RunAsUserName for Windows pods and containersCreate a Windows HostProcess PodConfigure Quality of Service for PodsAssign Extended Resources to a ContainerConfigure a Pod to Use a Volume for StorageConfigure a Pod to Use a PersistentVolume for StorageConfigure a Pod to Use a Projected Volume for StorageConfigure a Security Context for a Pod or ContainerConfigure Service Accounts for PodsPull an Image from a Private RegistryConfigure Liveness, Readiness and Startup ProbesAssign Pods to NodesAssign Pods to Nodes using Node AffinityConfigure Pod InitializationAttach Handlers to Container Lifecycle EventsConfigure a Pod to Use a ConfigMapShare Process Namespace between Containers in a PodUse a User Namespace With a PodUse an Image Volume With a PodCreate static PodsTranslate a Docker Compose File to Kubernetes ResourcesEnforce Pod Security Standards by Configuring the Built-in Admission ControllerEnforce Pod Security Standards with Namespace LabelsMigrate from PodSecurityPolicy to the Built-In PodSecurity Admission ControllerMonitoring, Logging, and DebuggingTroubleshooting ApplicationsDebug PodsDebug ServicesDebug a StatefulSetDetermine the Reason for Pod FailureDebug Init ContainersDebug Running PodsGet a Shell to a Running ContainerTroubleshooting ClustersTroubleshooting kubectlResource metrics pipelineTools for Monitoring ResourcesMonitor Node HealthDebugging Kubernetes nodes with crictlAuditingDebugging Kubernetes Nodes With KubectlDeveloping and debugging services locally using telepresenceWindows debugging tipsManage Kubernetes ObjectsDeclarative Management of Kubernetes Objects Using Configuration FilesDeclarative Management of Kubernetes Objects Using KustomizeManaging Kubernetes Objects Using Imperative CommandsImperative Management of Kubernetes Objects Using Configuration FilesUpdate API Objects in Place Using kubectl patchMigrate Kubernetes Objects Using Storage Version MigrationManaging SecretsManaging Secrets using kubectlManaging Secrets using Configuration FileManaging Secrets using KustomizeInject Data Into ApplicationsDefine a Command and Arguments for a ContainerDefine Dependent Environment VariablesDefine Environment Variables for a ContainerExpose Pod Information to Containers Through Environment VariablesExpose Pod Information to Containers Through FilesDistribute Credentials Securely Using SecretsRun ApplicationsRun a Stateless Application Using a DeploymentRun a Single-Instance Stateful ApplicationRun a Replicated Stateful ApplicationScale a StatefulSetDelete a StatefulSetForce Delete StatefulSet PodsHorizontal Pod AutoscalingHorizontalPodAutoscaler WalkthroughSpecifying a Disruption Budget for your ApplicationAccessing the Kubernetes API from a PodRun JobsRunning Automated Tasks with a CronJobCoarse Parallel Processing Using a Work QueueFine Parallel Processing Using a Work QueueIndexed Job for Parallel Processing with Static Work AssignmentJob with Pod-to-Pod CommunicationParallel Processing using ExpansionsHandling retriable and non-retriable pod failures with Pod failure policyAccess Applications in a ClusterDeploy and Access the Kubernetes DashboardAccessing ClustersConfigure Access to Multiple ClustersUse Port Forwarding to Access Applications in a ClusterUse a Service to Access an Application in a ClusterConnect a Frontend to a Backend Using ServicesCreate an External Load BalancerList All Container Images Running in a ClusterSet up Ingress on Minikube with the NGINX Ingress ControllerCommunicate Between Containers in the Same Pod Using a Shared VolumeConfigure DNS for a ClusterAccess Services Running on ClustersExtend KubernetesConfigure the Aggregation LayerUse Custom ResourcesExtend the Kubernetes API with CustomResourceDefinitionsVersions in CustomResourceDefinitionsSet up an Extension API ServerConfigure Multiple SchedulersUse an HTTP Proxy to Access the Kubernetes APIUse a SOCKS5 Proxy to Access the Kubernetes APISet up Konnectivity serviceTLSConfigure Certificate Rotation for the KubeletManage TLS Certificates in a ClusterManual Rotation of CA CertificatesManage Cluster DaemonsPerform a Rolling Update on a DaemonSetPerform a Rollback on a DaemonSetRunning Pods on Only Some NodesNetworkingAdding entries to Pod /etc/hosts with HostAliasesExtend Service IP RangesValidate IPv4/IPv6 dual-stackExtend kubectl with pluginsManage HugePagesSchedule GPUsTutorialsHello MinikubeLearn Kubernetes BasicsCreate a ClusterUsing Minikube to Create a ClusterDeploy an AppUsing kubectl to Create a DeploymentExplore Your AppViewing Pods and NodesExpose Your App PubliclyUsing a Service to Expose Your AppScale Your AppRunning Multiple Instances of Your AppUpdate Your AppPerforming a Rolling UpdateConfigurationExample: Configuring a Java MicroserviceExternalizing config using MicroProfile, ConfigMaps and SecretsUpdating Configuration via a ConfigMapConfiguring Redis using a ConfigMapAdopting Sidecar ContainersSecurityApply Pod Security Standards at the Cluster LevelApply Pod Security Standards at the Namespace LevelRestrict a Container's Access to Resources with AppArmorRestrict a Container's Syscalls with seccompStateless ApplicationsExposing an External IP Address to Access an Application in a ClusterExample: Deploying PHP Guestbook application with RedisStateful ApplicationsStatefulSet BasicsExample: Deploying WordPress and MySQL with Persistent VolumesExample: Deploying Cassandra with a StatefulSetRunning ZooKeeper, A Distributed System CoordinatorServicesConnecting Applications with ServicesUsing Source IPExplore Termination Behavior for Pods And Their EndpointsReferenceGlossaryAPI OverviewKubernetes API ConceptsServer-Side ApplyClient LibrariesCommon Expression Language in KubernetesKubernetes Deprecation PolicyDeprecated API Migration GuideKubernetes API health endpointsAPI Access ControlAuthenticatingAuthenticating with Bootstrap TokensAuthorizationUsing RBAC AuthorizationUsing Node AuthorizationWebhook ModeUsing ABAC AuthorizationAdmission ControllersDynamic Admission ControlManaging Service AccountsCertificates and Certificate Signing RequestsMapping PodSecurityPolicies to Pod Security StandardsKubelet authentication/authorizationTLS bootstrappingValidating Admission PolicyWell-Known Labels, Annotations and TaintsAudit AnnotationsKubernetes APIWorkload ResourcesPodBindingPodTemplateReplicationControllerReplicaSetDeploymentStatefulSetControllerRevisionDaemonSetJobCronJobHorizontalPodAutoscalerHorizontalPodAutoscalerPriorityClassPodSchedulingContext v1alpha3ResourceClaim v1alpha3ResourceClaimTemplate v1alpha3ResourceSlice v1alpha3Service ResourcesServiceEndpointsEndpointSliceIngressIngressClassConfig and Storage ResourcesConfigMapSecretCSIDriverCSINodeCSIStorageCapacityPersistentVolumeClaimPersistentVolumeStorageClassStorageVersionMigration v1alpha1VolumeVolumeAttachmentVolumeAttributesClass v1beta1Authentication ResourcesServiceAccountTokenRequestTokenReviewCertificateSigningRequestClusterTrustBundle v1alpha1SelfSubjectReviewAuthorization ResourcesLocalSubjectAccessReviewSelfSubjectAccessReviewSelfSubjectRulesReviewSubjectAccessReviewClusterRoleClusterRoleBindingRoleRoleBindingPolicy ResourcesFlowSchemaLimitRangeResourceQuotaNetworkPolicyPodDisruptionBudgetPriorityLevelConfigurationValidatingAdmissionPolicyValidatingAdmissionPolicyBindingExtend ResourcesCustomResourceDefinitionDeviceClass v1alpha3MutatingWebhookConfigurationValidatingWebhookConfigurationCluster ResourcesAPIServiceComponentStatusEventIPAddress v1beta1LeaseLeaseCandidate v1alpha1NamespaceNodeRuntimeClassServiceCIDR v1beta1Common DefinitionsDeleteOptionsLabelSelectorListMetaLocalObjectReferenceNodeSelectorRequirementObjectFieldSelectorObjectMetaObjectReferencePatchQuantityResourceFieldSelectorStatusTypedLocalObjectReferenceCommon ParametersInstrumentationService Level Indicator MetricsCRI Pod & Container MetricsNode metrics dataKubernetes Metrics ReferenceKubernetes Issues and SecurityKubernetes Issue TrackerKubernetes Security and Disclosure InformationCVE feedNode Reference InformationKubelet Checkpoint APILinux Kernel Version RequirementsArticles on dockershim Removal and on Using CRI-compatible RuntimesNode Labels Populated By The KubeletKubelet Configuration Directory MergingKubelet Device Manager API VersionsNode StatusNetworking ReferenceProtocols for ServicesPorts and ProtocolsVirtual IPs and Service ProxiesSetup toolsKubeadmkubeadm initkubeadm joinkubeadm upgradekubeadm configkubeadm resetkubeadm tokenkubeadm versionkubeadm alphakubeadm certskubeadm init phasekubeadm join phasekubeadm kubeconfigkubeadm reset phasekubeadm upgrade phaseImplementation detailsCommand line tool (kubectl)Introduction to kubectlkubectl Quick Referencekubectl referencekubectlkubectl annotatekubectl api-resourceskubectl api-versionskubectl applykubectl apply edit-last-appliedkubectl apply set-last-appliedkubectl apply view-last-appliedkubectl attachkubectl authkubectl auth can-ikubectl auth reconcilekubectl auth whoamikubectl autoscalekubectl certificatekubectl certificate approvekubectl certificate denykubectl cluster-infokubectl cluster-info dumpkubectl completionkubectl configkubectl config current-contextkubectl config delete-clusterkubectl config delete-contextkubectl config delete-userkubectl config get-clusterskubectl config get-contextskubectl config get-userskubectl config rename-contextkubectl config setkubectl config set-clusterkubectl config set-contextkubectl config set-credentialskubectl config unsetkubectl config use-contextkubectl config viewkubectl cordonkubectl cpkubectl createkubectl create clusterrolekubectl create clusterrolebindingkubectl create configmapkubectl create cronjobkubectl create deploymentkubectl create ingresskubectl create jobkubectl create namespacekubectl create poddisruptionbudgetkubectl create priorityclasskubectl create quotakubectl create rolekubectl create rolebindingkubectl create secretkubectl create secret docker-registrykubectl create secret generickubectl create secret tlskubectl create servicekubectl create service clusteripkubectl create service externalnamekubectl create service loadbalancerkubectl create service nodeportkubectl create serviceaccountkubectl create tokenkubectl debugkubectl deletekubectl describekubectl diffkubectl drainkubectl editkubectl eventskubectl execkubectl explainkubectl exposekubectl getkubectl kustomizekubectl labelkubectl logskubectl optionskubectl patchkubectl pluginkubectl plugin listkubectl port-forwardkubectl proxykubectl replacekubectl rolloutkubectl rollout historykubectl rollout pausekubectl rollout restartkubectl rollout resumekubectl rollout statuskubectl rollout undokubectl runkubectl scalekubectl setkubectl set envkubectl set imagekubectl set resourceskubectl set selectorkubectl set serviceaccountkubectl set subjectkubectl taintkubectl topkubectl top nodekubectl top podkubectl uncordonkubectl versionkubectl waitkubectl CommandskubectlJSONPath Supportkubectl for Docker Userskubectl Usage ConventionsComponent toolsFeature GatesFeature Gates (removed)kubeletkube-apiserverkube-controller-managerkube-proxykube-schedulerDebug clusterFlow controlConfiguration APIsClient Authentication (v1)Client Authentication (v1beta1)Event Rate Limit Configuration (v1alpha1)Image Policy API (v1alpha1)kube-apiserver Admission (v1)kube-apiserver Audit Configuration (v1)kube-apiserver Configuration (v1)kube-apiserver Configuration (v1alpha1)kube-apiserver Configuration (v1beta1)kube-controller-manager Configuration (v1alpha1)kube-proxy Configuration (v1alpha1)kube-scheduler Configuration (v1)kubeadm Configuration (v1beta3)kubeadm Configuration (v1beta4)kubeconfig (v1)Kubelet Configuration (v1)Kubelet Configuration (v1alpha1)Kubelet Configuration (v1beta1)Kubelet CredentialProvider (v1)WebhookAdmission Configuration (v1)External APIsKubernetes Custom Metrics (v1beta2)Kubernetes External Metrics (v1beta1)Kubernetes Metrics (v1beta1)SchedulingScheduler ConfigurationScheduling PoliciesOther ToolsMapping from dockercli to crictlContributeContribute to Kubernetes DocumentationSuggesting content improvementsContributing new contentOpening a pull requestDocumenting for a releaseBlogs and case studiesReviewing changesReviewing pull requestsFor approvers and reviewersLocalizing Kubernetes documentationParticipating in SIG DocsRoles and responsibilitiesIssue WranglersPR wranglersDocumentation style overviewContent guideStyle guideDiagram guideWriting a new topicPage content typesContent organizationCustom Hugo ShortcodesUpdating Reference DocumentationQuickstartContributing to the Upstream Kubernetes CodeGenerating Reference Documentation for the Kubernetes APIGenerating Reference Documentation for kubectl CommandsGenerating Reference Documentation for MetricsGenerating Reference Pages for Kubernetes Components and ToolsAdvanced contributingViewing Site AnalyticsDocs smoke test pageKubernetes DocumentationConceptsOverviewObjects In KubernetesRecommended LabelsRecommended LabelsYou can visualize and manage Kubernetes objects with more tools than kubectl and
-the dashboard. A common set of labels allows tools to work interoperably, describing
-objects in a common manner that all tools can understand.In addition to supporting tooling, the recommended labels describe applications
-in a way that can be queried.The metadata is organized around the concept of anapplication. Kubernetes is not
-a platform as a service (PaaS) and doesn't have or enforce a formal notion of an application.
-Instead, applications are informal and described with metadata. The definition of
-what an application contains is loose.Note:These are recommended labels. They make it easier to manage applications
-but aren't required for any core tooling.Shared labels and annotations share a common prefix:app.kubernetes.io. Labels
-without a prefix are private to users. The shared prefix ensures that shared labels
-do not interfere with custom user labels.LabelsIn order to take full advantage of using these labels, they should be applied
-on every resource object.KeyDescriptionExampleTypeapp.kubernetes.io/nameThe name of the applicationmysqlstringapp.kubernetes.io/instanceA unique name identifying the instance of an applicationmysql-abcxyzstringapp.kubernetes.io/versionThe current version of the application (e.g., aSemVer 1.0, revision hash, etc.)5.7.21stringapp.kubernetes.io/componentThe component within the architecturedatabasestringapp.kubernetes.io/part-ofThe name of a higher level application this one is part ofwordpressstringapp.kubernetes.io/managed-byThe tool being used to manage the operation of an applicationHelmstringTo illustrate these labels in action, consider the followingStatefulSetobject:# This is an excerptapiVersion:apps/v1kind:StatefulSetmetadata:labels:app.kubernetes.io/name:mysqlapp.kubernetes.io/instance:mysql-abcxyzapp.kubernetes.io/version:"5.7.21"app.kubernetes.io/component:databaseapp.kubernetes.io/part-of:wordpressapp.kubernetes.io/managed-by:HelmApplications And Instances Of ApplicationsAn application can be installed one or more times into a Kubernetes cluster and,
-in some cases, the same namespace. For example, WordPress can be installed more
-than once where different websites are different installations of WordPress.The name of an application and the instance name are recorded separately. For
-example, WordPress has aapp.kubernetes.io/nameofwordpresswhile it has
-an instance name, represented asapp.kubernetes.io/instancewith a value ofwordpress-abcxyz. This enables the application and instance of the application
-to be identifiable. Every instance of an application must have a unique name.ExamplesTo illustrate different ways to use these labels the following examples have varying complexity.A Simple Stateless ServiceConsider the case for a simple stateless service deployed usingDeploymentandServiceobjects. The following two snippets represent how the labels could be used in their simplest form.TheDeploymentis used to oversee the pods running the application itself.apiVersion:apps/v1kind:Deploymentmetadata:labels:app.kubernetes.io/name:myserviceapp.kubernetes.io/instance:myservice-abcxyz...TheServiceis used to expose the application.apiVersion:v1kind:Servicemetadata:labels:app.kubernetes.io/name:myserviceapp.kubernetes.io/instance:myservice-abcxyz...Web Application With A DatabaseConsider a slightly more complicated application: a web application (WordPress)
-using a database (MySQL), installed using Helm. The following snippets illustrate
-the start of objects used to deploy this application.The start to the followingDeploymentis used for WordPress:apiVersion:apps/v1kind:Deploymentmetadata:labels:app.kubernetes.io/name:wordpressapp.kubernetes.io/instance:wordpress-abcxyzapp.kubernetes.io/version:"4.9.4"app.kubernetes.io/managed-by:Helmapp.kubernetes.io/component:serverapp.kubernetes.io/part-of:wordpress...TheServiceis used to expose WordPress:apiVersion:v1kind:Servicemetadata:labels:app.kubernetes.io/name:wordpressapp.kubernetes.io/instance:wordpress-abcxyzapp.kubernetes.io/version:"4.9.4"app.kubernetes.io/managed-by:Helmapp.kubernetes.io/component:serverapp.kubernetes.io/part-of:wordpress...MySQL is exposed as aStatefulSetwith metadata for both it and the larger application it belongs to:apiVersion:apps/v1kind:StatefulSetmetadata:labels:app.kubernetes.io/name:mysqlapp.kubernetes.io/instance:mysql-abcxyzapp.kubernetes.io/version:"5.7.21"app.kubernetes.io/managed-by:Helmapp.kubernetes.io/component:databaseapp.kubernetes.io/part-of:wordpress...TheServiceis used to expose MySQL as part of WordPress:apiVersion:v1kind:Servicemetadata:labels:app.kubernetes.io/name:mysqlapp.kubernetes.io/instance:mysql-abcxyzapp.kubernetes.io/version:"5.7.21"app.kubernetes.io/managed-by:Helmapp.kubernetes.io/component:databaseapp.kubernetes.io/part-of:wordpress...With the MySQLStatefulSetandServiceyou'll notice information about both MySQL and WordPress, the broader application, are included.FeedbackWas this page helpful?YesNoThanks for the feedback. If you have a specific, answerable question about how to use Kubernetes, ask it onStack Overflow.
-Open an issue in theGitHub Repositoryif you want toreport a problemorsuggest an improvement.Last modified April 25, 2024 at 1:16 AM PST:Update common-labels.md (4e973d44ba)Edit this pageCreate child pageCreate documentation issuePrint entire sectionLabelsApplications And Instances Of ApplicationsExamplesA Simple Stateless ServiceWeb Application With A DatabaseDocumentationBlogTrainingPartnersCommunityCase Studies© 2024 The Kubernetes Authors | Documentation Distributed underCC BY 4.0Copyright © 2024 The Linux Foundation ®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see ourTrademark Usage pageICP license: 京ICP备17074266号-3
+Custom Resources
+Custom resources are extensions of the Kubernetes API. This page discusses when to add a custom resource to your Kubernetes cluster and when to use a standalone service. It describes the two methods for adding custom resources and how to choose between them.
+Custom resources
+A resource is an endpoint in the [Kubernetes API](/docs/concepts/overview/kubernetes-api/) that
+stores a collection of [API objects](/docs/concepts/overview/working-with-objects/#kubernetes-objects)
+of a certain kind; for example, the built-in pods resource contains a collection of Pod objects.
+A custom resource is an extension of the Kubernetes API that is not necessarily available in a default Kubernetes installation. It represents a customization of a particular Kubernetes installation. However, many core Kubernetes functions are now built using custom resources, making Kubernetes more modular.
+Custom resources can appear and disappear in a running cluster through dynamic registration,
+and cluster admins can update custom resources independently of the cluster itself.
+Once a custom resource is installed, users can create and access its objects using
+[kubectl](/docs/reference/kubectl/), just as they do for built-in resources
+like Pods.
+Custom controllers
+On their own, custom resources let you store and retrieve structured data. When you combine a custom resource with a custom controller, custom resources provide a true declarative API.
+The Kubernetes [declarative API](/docs/concepts/overview/kubernetes-api/)
+enforces a separation of responsibilities. You declare the desired state of
+your resource. The Kubernetes controller keeps the current state of Kubernetes
+objects in sync with your declared desired state. This is in contrast to an
+imperative API, where you instruct a server what to do.
+You can deploy and update a custom controller on a running cluster, independently
+of the cluster's lifecycle. Custom controllers can work with any kind of resource,
+but they are especially effective when combined with custom resources. The
+[Operator pattern](/docs/concepts/extend-kubernetes/operator/) combines custom
+resources and custom controllers. You can use custom controllers to encode domain knowledge
+for specific applications into an extension of the Kubernetes API.
+Should I add a custom resource to my Kubernetes cluster?
+When creating a new API, consider whether to
+[aggregate your API with the Kubernetes cluster APIs](/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/)
+or let your API stand alone.
+Consider API aggregation if: | Prefer a stand-alone API if: |
+---|---|
+Your API is
+|
+[Declarative](#declarative-apis)model.kubectl
+.kubectl
+support is not required[API Overview](/docs/concepts/overview/kubernetes-api/).)[Kubernetes API support features](#common-features).Declarative APIs
+In a Declarative API, typically:
+- Your API consists of a relatively small number of relatively small objects (resources).
+- The objects define configuration of applications or infrastructure.
+- The objects are updated relatively infrequently.
+- Humans often need to read and write the objects.
+- The main operations on the objects are CRUD-y (creating, reading, updating and deleting).
+- Transactions across objects are not required: the API represents a desired state, not an exact state.
+Imperative APIs are not declarative. Signs that your API might not be declarative include:
+- The client says "do this", and then gets a synchronous response back when it is done.
+- The client says "do this", and then gets an operation ID back, and has to check a separate Operation object to determine completion of the request.
+- You talk about Remote Procedure Calls (RPCs).
+- Directly storing large amounts of data; for example, > a few kB per object, or > 1000s of objects.
+- High bandwidth access (10s of requests per second sustained) needed.
+- Store end-user data (such as images, PII, etc.) or other large-scale data processed by applications.
+- The natural operations on the objects are not CRUD-y.
+- The API is not easily modeled as objects.
+- You chose to represent pending operations with an operation ID or an operation object.
+Should I use a ConfigMap or a custom resource?
+Use a ConfigMap if any of the following apply:
+- There is an existing, well-documented configuration file format, such as a
+mysql.cnf
+orpom.xml
+. - You want to put the entire configuration into one key of a ConfigMap.
+- The main use of the configuration file is for a program running in a Pod on your cluster to consume the file to configure itself.
+- Consumers of the file prefer to consume via file in a Pod or environment variable in a pod, rather than the Kubernetes API.
+- You want to perform rolling updates via Deployment, etc., when the file is updated.
+Note:
+Use a[Secret](/docs/concepts/configuration/secret/)for sensitive data, which is similar to a ConfigMap but more secure.
+Use a custom resource (CRD or Aggregated API) if most of the following apply:
+- You want to use Kubernetes client libraries and CLIs to create and update the new resource.
+- You want top-level support from
+kubectl
+; for example,kubectl get my-object object-name
+. - You want to build new automation that watches for updates on the new object, and then CRUD other objects, or vice versa.
+- You want to write automation that handles updates to the object.
+- You want to use Kubernetes API conventions like
+.spec
+,.status
+, and.metadata
+. - You want the object to be an abstraction over a collection of controlled resources, or a summarization of other resources.
+Adding custom resources
+Kubernetes provides two ways to add custom resources to your cluster:
+- CRDs are simple and can be created without any programming.
+[API Aggregation](/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/)requires programming, but allows more control over API behaviors like how data is stored and conversion between API versions.
+Kubernetes provides these two options to meet the needs of different users, so that neither ease of use nor flexibility is compromised.
+Aggregated APIs are subordinate API servers that sit behind the primary API server, which acts as
+a proxy. This arrangement is called [API Aggregation](/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/)(AA).
+To users, the Kubernetes API appears extended.
+CRDs allow users to create new types of resources without adding another API server. You do not need to understand API Aggregation to use CRDs.
+Regardless of how they are installed, the new resources are referred to as Custom Resources to distinguish them from built-in Kubernetes resources (like pods).
+Note:
+Avoid using a Custom Resource as data storage for application, end user, or monitoring data: architecture designs that store application data within the Kubernetes API typically represent a design that is too closely coupled.
+Architecturally, [cloud native](https://www.cncf.io/about/faq/#what-is-cloud-native) application architectures
+favor loose coupling between components. If part of your workload requires a backing service for
+its routine operation, run that backing service as a component or consume it as an external service.
+This way, your workload does not rely on the Kubernetes API for its normal operation.
+CustomResourceDefinitions
+The [CustomResourceDefinition](/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/)
+API resource allows you to define custom resources.
+Defining a CRD object creates a new custom resource with a name and schema that you specify.
+The Kubernetes API serves and handles the storage of your custom resource.
+The name of the CRD object itself must be a valid
+[DNS subdomain name](/docs/concepts/overview/working-with-objects/names/#dns-subdomain-names) derived from the defined resource name and its API group; see [how to create a CRD](/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#create-a-customresourcedefinition) for more details.
+Further, the name of an object whose kind/resource is defined by a CRD must also be a valid DNS subdomain name.
+This frees you from writing your own API server to handle the custom resource,
+but the generic nature of the implementation means you have less flexibility than with
+[API server aggregation](#api-server-aggregation).
+Refer to the [custom controller example](https://github.com/kubernetes/sample-controller)
+for an example of how to register a new custom resource, work with instances of your new resource type,
+and use a controller to handle events.
+API server aggregation
+Usually, each resource in the Kubernetes API requires code that handles REST requests and manages
+persistent storage of objects. The main Kubernetes API server handles built-in resources like
+pods and services, and can also generically handle custom resources through
+[CRDs](#customresourcedefinitions).
+The [aggregation layer](/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/)
+allows you to provide specialized implementations for your custom resources by writing and
+deploying your own API server.
+The main API server delegates requests to your API server for the custom resources that you handle,
+making them available to all of its clients.
+Choosing a method for adding custom resources
+CRDs are easier to use. Aggregated APIs are more flexible. Choose the method that best meets your needs.
+Typically, CRDs are a good fit if:
+- You have a handful of fields
+- You are using the resource within your company, or as part of a small open-source project (as opposed to a commercial product)
+Comparing ease of use
+CRDs are easier to create than Aggregated APIs.
+CRDs | Aggregated API |
+---|---|
+Do not require programming. Users can choose any language for a CRD controller. | Requires programming and building binary and image. |
+No additional service to run; CRDs are handled by API server. | An additional service to create and that could fail. |
+No ongoing support once the CRD is created. Any bug fixes are picked up as part of normal Kubernetes Master upgrades. | May need to periodically pickup bug fixes from upstream and rebuild and update the Aggregated API server. |
+No need to handle multiple versions of your API; for example, when you control the client for this resource, you can upgrade it in sync with the API. | You need to handle multiple versions of your API; for example, when developing an extension to share with the world. |
+Advanced features and flexibility
+Aggregated APIs offer more advanced API features and customization of other features; for example, the storage layer.
+Feature | Description | CRDs | Aggregated API |
+---|---|---|---|
+Validation | Help users prevent errors and allow you to evolve your API independently of your clients. These features are most useful when there are many clients who can't all update at the same time. | Yes. Most validation can be specified in the CRD using
+|
+[OpenAPI v3.0 validation](/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#defaulting)default
+keyword (GA in 1.17), or via a [Mutating Webhook](/docs/reference/access-authn-authz/admission-controllers/#mutatingadmissionwebhook)(though this will not be run when reading from etcd for old objects).[Yes](/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definition-versioning/)[Webhooks](/docs/reference/access-authn-authz/extensible-admission-controllers/#admission-webhooks).[Yes](/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#scale-subresource)[Yes](/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#status-subresource)Content-Type: application/strategic-merge-patch+json
+. Useful for updating objects that may be modified both locally, and by the server. For more information, see ["Update API Objects in Place Using kubectl patch"](/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch/)int
+in a string
+field?)[OpenAPI v3.0 validation](/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#validation)schema (GA in 1.16).Common Features
+When you create a custom resource, either via a CRD or an AA, you get many features for your API, compared to implementing it outside the Kubernetes platform:
+Feature | What it does |
+---|---|
+CRUD | The new endpoints support CRUD basic operations via HTTP and kubectl |
+Watch | The new endpoints support Kubernetes Watch operations via HTTP |
+Discovery | Clients like kubectl and dashboard automatically offer list, display, and field edit operations on your resources |
+json-patch | The new endpoints support PATCH with Content-Type: application/json-patch+json |
+merge-patch | The new endpoints support PATCH with Content-Type: application/merge-patch+json |
+HTTPS | The new endpoints uses HTTPS |
+Built-in Authentication | Access to the extension uses the core API server (aggregation layer) for authentication |
+Built-in Authorization | Access to the extension can reuse the authorization used by the core API server; for example, RBAC. |
+Finalizers | Block deletion of extension resources until external cleanup happens. |
+Admission Webhooks | Set default values and validate extension resources during any create/update/delete operation. |
+UI/CLI Display | Kubectl, dashboard can display extension resources. |
+Unset versus Empty | Clients can distinguish unset fields from zero-valued fields. |
+Client Libraries Generation | Kubernetes provides generic client libraries, as well as tools to generate type-specific client libraries. |
+Labels and annotations | Common metadata across objects that tools know how to edit for core and custom resources. |
+Preparing to install a custom resource
+There are several points to be aware of before adding a custom resource to your cluster.
+Third party code and new points of failure
+While creating a CRD does not automatically add any new points of failure (for example, by causing third party code to run on your API server), packages (for example, Charts) or other installation bundles often include CRDs as well as a Deployment of third-party code that implements the business logic for a new custom resource.
+Installing an Aggregated API server always involves running a new Deployment.
+Storage
+Custom resources consume storage space in the same way that ConfigMaps do. Creating too many custom resources may overload your API server's storage space.
+Aggregated API servers may use the same storage as the main API server, in which case the same warning applies.
+Authentication, authorization, and auditing
+CRDs always use the same authentication, authorization, and audit logging as the built-in resources of your API server.
+If you use RBAC for authorization, most RBAC roles will not grant access to the new resources (except the cluster-admin role or any role created with wildcard rules). You'll need to explicitly grant access to the new resources. CRDs and Aggregated APIs often come bundled with new role definitions for the types they add.
+Aggregated API servers may or may not use the same authentication, authorization, and auditing as the primary API server.
+Accessing a custom resource
+Kubernetes [client libraries](/docs/reference/using-api/client-libraries/) can be used to access
+custom resources. Not all client libraries support custom resources. The Go and Python client
+libraries do.
+When you add a custom resource, you can access it using:
+kubectl
+- The Kubernetes dynamic client.
+- A REST client that you write.
+- A client generated using
+[Kubernetes client generation tools](https://github.com/kubernetes/code-generator)(generating one is an advanced undertaking, but some projects may provide a client along with the CRD or AA).
+Custom resource field selectors
+[Field Selectors](/docs/concepts/overview/working-with-objects/field-selectors/)
+let clients select custom resources based on the value of one or more resource
+fields.
+All custom resources support the metadata.name
+and metadata.namespace
+field
+selectors.
+Fields declared in a [CustomResourceDefinition](/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/)
+may also be used with field selectors when included in the spec.versions[*].selectableFields
+field of the
+[CustomResourceDefinition](/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/).
+Selectable fields for custom resources
+Kubernetes v1.31 [beta]
+The spec.versions[*].selectableFields
+field of a [CustomResourceDefinition](/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/) may be used to
+declare which other fields in a custom resource may be used in field selectors
+with the feature of CustomResourceFieldSelectors
+[feature gate](/docs/reference/command-line-tools-reference/feature-gates/) (This feature gate is enabled by default since Kubernetes v1.31).
+The following example adds the .spec.color
+and .spec.size
+fields as
+selectable fields.
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+name: shirts.stable.example.com
+spec:
+group: stable.example.com
+scope: Namespaced
+names:
+plural: shirts
+singular: shirt
+kind: Shirt
+versions:
+- name: v1
+served: true
+storage: true
+schema:
+openAPIV3Schema:
+type: object
+properties:
+spec:
+type: object
+properties:
+color:
+type: string
+size:
+type: string
+selectableFields:
+- jsonPath: .spec.color
+- jsonPath: .spec.size
+additionalPrinterColumns:
+- jsonPath: .spec.color
+name: Color
+type: string
+- jsonPath: .spec.size
+name: Size
+type: string
+Field selectors can then be used to get only resources with a color
+of blue
+:
+kubectl get shirts.stable.example.com --field-selector spec.color=blue
+The output should be:
+NAME COLOR SIZE
+example1 blue S
+example2 blue M
+What's next
+- Learn how to
+[Extend the Kubernetes API with the aggregation layer](/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/). - Learn how to
+[Extend the Kubernetes API with CustomResourceDefinition](/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/).
+[KEP-4358: Custom Resource Field Selectors: Promote to Beta (#46980) (8f1e148864)](https://github.com/kubernetes/website/commit/8f1e1488642deb9905034d7ff8f0e82132b5f675)

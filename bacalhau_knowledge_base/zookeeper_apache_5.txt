@@ -1,3 +1,51 @@
+Source: zookeeper_apache
 URL: https://zookeeper.apache.org/credits.html
 
-Apache ZooKeeper™ProjectNewsReleasesWikiCreditsBylawsLicensePrivacy PolicySecurityThanksDocumentationRelease 3.9.2Release 3.8.4Release 3.7.2Release 3.6.4Older VersionsDevelopersMailing ListsIRC ChannelVersion ControlIssue TrackerEventsASFApache Software FoundationHow Apache WorksSponsoring ApacheZooKeeper CreditsPMC MembersCommittersContributorsPMC MembersZooKeeper's active PMC members areUsernameNameOrganizationTime ZonetdunningTed DunningMapR Technologies-8camilleCamille FournierRentTheRunway-5phuntPatrick HuntCloudera Inc.-8fpjFlavio JunqueiraConfluent+0ivankIvan KellyMidokura+2mahadevMahadev KonarHortonworks Inc.-8michimMichi MutsuzakiNicira-8cnaurothChris NaurothHortonworks Inc.-8breedBenjamin ReedFacebook-8henryHenry RobinsonCloudera Inc.-8rgsRaul Gutierrez SegalesPinterest-8rakeshrRakesh RadhakrishnanIntel+5:30hanmMichael HanTwitter-8andorAndor MolnarCloudera Inc.+1eolivelliEnrico OlivelliDiennea+1symatMate Szalay-BekoCloudera Inc.+1CommittersZooKeeper's active committers areUsernameNameOrganizationTime ZonecamilleCamille FournierRentTheRunway-5phuntPatrick HuntCloudera Inc.-8fpjFlavio JunqueiraConfluent+1cnaurothChris NaurothHortonworks Inc.-8mahadevMahadev KonarHortonworks Inc.-8gkesavanGiridharan KesavanHortonworks Inc.-8akornevAndrew KornevmichimMichi MutsuzakiNicira-8breedBenjamin ReedFacebook-8henryHenry RobinsonCloudera Inc.-8shralexAlex ShraerApple-8thawanThawan KooburatFacebook-8rakeshrRakesh RadhakrishnanIntel+5:30hdengHongchao DengCoreOS-8rgsRaul Gutierrez SegalesPinterest-8hanmMichael HanTwitter-8arshadMohammad ArshadHuawei+5:30afineAbraham FineIFTTT-8andorAndor MolnarCloudera Inc.+1fangminFangmin LyuFacebook-8eolivelliEnrico OlivelliDiennea+1nkalmarNorbert KalmarCloudera+1enixonBrian NixonFacebook-8symatMate Szalay-BekoCloudera Inc.+1ddiederenDamien DiederenCrosstwine Labs+1ContributorsA list of ZooKeeper contributors and their contributions is available fromJiraCopyright © 2010-2020The Apache Software Foundation, Licensed under theApache License, Version 2.0.Apache ZooKeeper, ZooKeeper, Apache, the Apache feather logo, and the Apache ZooKeeper project logo are trademarks of The Apache Software Foundation.
+ZooKeeper's active PMC members are
+Username | Name | Organization | Time Zone |
+---|---|---|---|
+tdunning | Ted Dunning | MapR Technologies | -8 |
+camille | Camille Fournier | RentTheRunway | -5 |
+phunt | Patrick Hunt | Cloudera Inc. | -8 |
+fpj | Flavio Junqueira | Confluent | +0 |
+ivank | Ivan Kelly | Midokura | +2 |
+mahadev | Mahadev Konar | Hortonworks Inc. | -8 |
+michim | Michi Mutsuzaki | Nicira | -8 |
+cnauroth | Chris Nauroth | Hortonworks Inc. | -8 |
+breed | Benjamin Reed | -8 | |
+henry | Henry Robinson | Cloudera Inc. | -8 |
+rgs | Raul Gutierrez Segales | -8 | |
+rakeshr | Rakesh Radhakrishnan | Intel | +5:30 |
+hanm | Michael Han | -8 | |
+andor | Andor Molnar | Cloudera Inc. | +1 |
+eolivelli | Enrico Olivelli | Diennea | +1 |
+symat | Mate Szalay-Beko | Cloudera Inc. | +1 |
+ZooKeeper's active committers are
+Username | Name | Organization | Time Zone |
+---|---|---|---|
+camille | Camille Fournier | RentTheRunway | -5 |
+phunt | Patrick Hunt | Cloudera Inc. | -8 |
+fpj | Flavio Junqueira | Confluent | +1 |
+cnauroth | Chris Nauroth | Hortonworks Inc. | -8 |
+mahadev | Mahadev Konar | Hortonworks Inc. | -8 |
+gkesavan | Giridharan Kesavan | Hortonworks Inc. | -8 |
+akornev | Andrew Kornev | ||
+michim | Michi Mutsuzaki | Nicira | -8 |
+breed | Benjamin Reed | -8 | |
+henry | Henry Robinson | Cloudera Inc. | -8 |
+shralex | Alex Shraer | Apple | -8 |
+thawan | Thawan Kooburat | -8 | |
+rakeshr | Rakesh Radhakrishnan | Intel | +5:30 |
+hdeng | Hongchao Deng | CoreOS | -8 |
+rgs | Raul Gutierrez Segales | -8 | |
+hanm | Michael Han | -8 | |
+arshad | Mohammad Arshad | Huawei | +5:30 |
+afine | Abraham Fine | IFTTT | -8 |
+andor | Andor Molnar | Cloudera Inc. | +1 |
+fangmin | Fangmin Lyu | -8 | |
+eolivelli | Enrico Olivelli | Diennea | +1 |
+nkalmar | Norbert Kalmar | Cloudera | +1 |
+enixon | Brian Nixon | -8 | |
+symat | Mate Szalay-Beko | Cloudera Inc. | +1 |
+ddiederen | Damien Diederen | Crosstwine Labs | +1 |
+A list of ZooKeeper contributors and their contributions is available from [Jira](https://issues.apache.org/jira/browse/ZooKeeper)

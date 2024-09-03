@@ -1,3 +1,25 @@
-URL: https://www.consul.io/use-cases/load-balancing
+Source: consul_io
+URL: https://www.consul.io/use-cases/network-infrastructure-automation
 
-HashiDaysGet certified in HashiCorp products for free at HashiDays 2024Register nowDismiss alertOverviewUse CasesEnterpriseTutorialsDocsAPICLICommunityGitHubDownloadTry HCP ConsulUse caseLoad balancing with ConsulConsul can help bypass manual processes by automating load balancer updates to reflect the latest changes to your services.ChallengeManaging load balancersIn a modern environment where multiple replicas of a service exist, load balancers play an important role in ensuring the equal distribution of traffic to backend services. However, as services scale or change over time, load balancers require updates that are typically performed via manual processes which can affect the delivery time of a solution.SolutionAutomate load balancersConsul helps load balancers automatically adapt to changes in services. Consul has a built-in load balancing feature that allows services to communicate directly with one another. Consul also integrates with many popular load balancers such as NGINX, HAProxy, and F5 to automatically provide service updates, eliminating the need for manual processes.Customer case studyWorkday's multi-cloud network fabric with Consul and Vault​​Learn how Workday built a global service mesh of multiple customer datacenters using HashiCorp Consul and Vault.Read moreTutorialsExplore allTutorialLoad balancing services in Consul service mesh with EnvoyThis tutorial will guide you through the steps needed to change the load balancing policy for a service in your mesh.TutorialLoad balancing with HAProxy service discovery integrationLearn how to use HAProxy's native integration to automatically configure the load balancer with service discovery data from Consul.TutorialLoad balancing with F5 and ConsulUse Consul to configure F5 BIG-IP nodes and server pools  based on the available service instances registered in Consul's service catalog.DocsExplore allL7 traffic managementLayer 7 traffic management allows operators to divide L7 traffic between different subsets of service instances when using Connect.Get started with HCP ConsulWe’ve built a series of step-by-step guides to help you deploy HCP Consul and try it for yourself.Try HCP Consul for freePlay videoIntroduction to HashiCorp ConsulHashiCorp Co-Founder and CTO Armon Dadgar gives a whiteboard overview of HashiCorp Consul, a service networking solution to connect, configure, and secure services in dynamic infrastructure.IntroGuidesDocsCommunityPrivacySecurityConsent ManagerManage cookiesHashiCorp uses data collected by cookies and JavaScript libraries to improve your browsing experience, analyze site traffic, and increase the overall performance of our site. By using our website, you’re agreeing to ourPrivacy PolicyandCookie Policy.The categories below outline which companies and tools we use for collecting data. To opt out of a category of data collection, set the toggle to “Off” and save your preferences.Save preferencesAccept all
+Tutorial
+Network infrastructure automation with Consul-Terraform-Sync
+In this tutorial you will learn how to install Consul-Terraform-Sync and configure it to communicate and react to your Consul datacenter.
+Use case
+Consul-Terraform-Sync allows for the automation of various networking tasks and workflows based on changes observed by Consul.
+Challenge
+New technologies have emerged in recent years to help accelerate application deployment times. However, legacy systems and old practices cannot keep up with the rate of change of modern applications. If an event occurs that auto-scales additional service instances, networking and security teams are oftentimes still dealing with manual ticket-driven processes that can slow down solution delivery and introduce a higher likelihood of misconfiguration.
+Solution
+Adopting network infrastructure automation (NIA) with Consul-Terraform-Sync ensures networking and security infrastructure safely adapts to changes. Consul-Terraform-Sync automates various networking tasks and workflows based on changes observed by Consul. The tasks can be triggered by different events, like the scaling of service instances, change of service address or port number, and updates to service tags, meta, or health. This leads to improved delivery times and greatly reduces the chances of misconfigurations.
+Tutorial
+In this tutorial you will learn how to install Consul-Terraform-Sync and configure it to communicate and react to your Consul datacenter.
+Tutorial
+Learn the different run modes available with Consul-Terraform-Sync, how to monitor the task status, and how to locate the Terraform state files.
+Tutorial
+In this tutorial you will learn how to configure Consul-Terraform-Sync to interact with Terraform Enterprise and HCP Terraform.
+Documentation
+Network infrastructure automation (NIA) enables dynamic updates to network infrastructure devices triggered by service changes.
+Documentation
+Consul-Terraform-Sync runs as a daemon and integrates the network topology to dynamically secure and connect services.
+Documentation
+Learn how to download and install Consul-Terraform-Sync.
+In this whiteboard video, HashiCorp Co-Founder and CTO Armon Dadgar shows why it's crucial — in the cloud adoption era — to use infrastructure as code not only for automating and templatizing your system's required compute and database resources, but also its networking infrastructure, such as firewalls, load balancers, routers, etc.

@@ -1,18 +1,101 @@
-URL: https://nats.io/blog/nats-supported-by-faststream/#project-documentation
+Source: nats_io
+URL: https://nats.io/blog/nats-server-2.9.16-release/
 
-AboutDownloadDocumentationBlogCommunitySupportPrivacyStreamlining Asynchronous Services with FastStreamTvrtko Sternak— October 23, 2023Back to BlogEver felt lost in the complexity of microservices and message queues? That’s precisely why FastStream was created. Initially, it was our solution to the challenges we faced with messaging queues in our own projects. But as it simplified our lives, we realized it could do the same for others. So, we decided to share it with the world.FastStream is a Python framework for building asynchronous services that interact with event streams like Apache Kafka, RabbitMQ, and NATS. It streamlines the entire process of working with message queues in microservices. Parsing messages, managing networking, and keeping documentation updated—all handled effortlessly.We are happy to announce that FastStream supports NATS by building on top of theofficial nats-io python client!FeaturesDesigned with junior developers in mind,FastStreamsimplifies your work while keeping the door open for more advanced use-cases. Here’s a look at the core features that makeFastStreama go-to framework for modern, data-centric microservices.Multiple Brokers:FastStreamprovides a unified API to work across multiple message brokers (NATS,Kafka,RabbitMQsupport)Pydantic Validation: LeveragePydantic’svalidation capabilities to serialize and validates incoming messagesAutomatic Docs: Stay ahead with automaticAsyncAPIdocumentationIntuitive: Full-typed editor support makes your development experience smooth, catching errors before they reach runtimePowerful Dependency Injection System: Manage your service dependencies efficiently withFastStream’s built-in DI systemTestable: Supports in-memory tests, making your CI/CD pipeline faster and more reliableExtendable: Use extensions for lifespans, custom serialization and middlewaresIntegrations:FastStreamis fully compatible with any HTTP framework you want (FastAPIespecially)Built for Automatic Code Generation:FastStreamis optimized for automatic code generation using advanced models like GPT and LlamaLet’s build something!Let’s get our hands a bit dirty.
-We’ll implement an example python app usingFastStreamthat consumes names from “persons” subject and outputs greetings to the “greetings” subject.Cookiecutter projectTo start our project, we will use the prepared cookiecutter FastStream project. To find out more about it, check ourdetailed guide.Install thecookiecutterpackage using the following command:pip install cookiecutterNow, run the provided cookiecutter command and fill out the relevant details to generate a new FastStream project, we will name this project “greetings_app”:cookiecutter https://github.com/airtai/cookiecutter-faststream.gitThe cookiecutter creation process should look like this:You`ve downloaded /Users/tvrtko/.cookiecutters/cookiecutter-faststream before. Is it okay to delete and re-download it?[y/n](y): y[1/4]username(github-username): sternakt[2/4]project_name(My FastStream App): Greetings App[3/4]project_slug(greetings_app): greetings_app[4/4]Select streaming_service1- kafka2- nats3- rabbit
-    Choose from[1/2/3](1):2Change the working directory to the newly created directory and install all development requirements using pip:cdgreetings_app
-pip install -e".[dev]"Now we are ready to edit our greetings_app/application.py and tests/test_application.py files to implement our application logic.Writing app codeFastStreambrokers provide convenient function decorators@broker.subscriberand@broker.publisherto allow you to delegate the actual process of:consuming and producing data to Event queues, anddecoding and encoding JSON encoded messagesThese decorators make it easy to specify the processing logic for your consumers and producers, allowing you to focus on the core business logic of your application without worrying about the underlying integration.Also,FastStreamusesPydanticto parse input JSON-encoded data into Python objects, making it easy to work with structured data in your applications, so you can serialize your input messages just using type annotations.Here is an example python app we talked about:fromfaststreamimportFastStream,Loggerfromfaststream.natsimportNatsBrokerfrompydanticimportBaseModel,Fieldversion="0.1.0"title="My FastStream service"description="Description of my FastStream service"className(BaseModel):name:str=Field(...,description="Name of the person")classGreeting(BaseModel):greeting:str=Field(...,description="Greeting message")broker=NatsBroker()app=FastStream(broker,title=title,version=version,description=description)to_greetings=broker.publisher("greetings",description="Produces a message on greetings after receiving a meesage on names",)@broker.subscriber("names",description="Consumes messages from names subject and produces messages to greetings subject")asyncdefon_names(msg:Name,logger:Logger)->None:result=f"hello {msg.name}"logger.info(result)greeting=Greeting(greeting=result)awaitto_greetings.publish(greeting)The example application will subscribe topersonsNATS subject and consume Name JSON messages from it. When the application consumes a message it will publish a Greetings JSON messagegreetingssubject.We can save the application into theapplication.pyfile and let’s take a closer look at the code.Creating a brokerTo create an application, first we need to create a broker. This is the main piece of FastStream and takes care of the defining subscribers and producers.version="0.1.0"title="My FastStream service"description="Description of my FastStream service"...broker=NatsBroker()app=FastStream(broker,title=title,version=version,description=description)Defining data structuresNext, we need to define the structure of incoming and outgoing data. FastStream is integrated with Pydantic and offers automatic encoding and decoding of JSON formatted messages into Pydantic classes.className(BaseModel):name:str=Field(...,description="Name of the person")classGreeting(BaseModel):greeting:str=Field(...,description="Greeting message")Defining a publisherNow, we define the publishing logic of our application.to_greetings=broker.publisher("greetings",description="Produces a message on greetings after receiving a message on names",)Defining a subscriberFinally, we can define the subscribing logic of our application. The app will consume data from the “names” subject and use the defined publisher to produce to the “greetings” subject whenever a message is consumed.@broker.subscriber("names",description="Consumes messages from names subject and produces messages to greetings subject")asyncdefon_names(msg:Name,logger:Logger)->None:result=f"hello {msg.name}"logger.info(result)greeting=Greeting(greeting=result)awaitto_greetings.publish(greeting)Testing the serviceThe service can be tested using theTestBrokercontext managers, which, by default, puts the Broker into “testing mode”.The Tester will redirect yoursubscriberandpublisherdecorated functions to the InMemory brokers, allowing you to quickly test your app without the need for a running broker and all its dependencies.Using pytest, the test for our service would look like this:importpytestfromfaststream.natsimportTestNatsBrokerfromgreetings_app.applicationimportGreeting,Name,broker,on_names# Subscribe to the "greetings" subject so we can monitor# messages our application is producing@broker.subscriber("greetings")asyncdefon_greetings(msg:Greeting)->None:pass@pytest.mark.asyncioasyncdeftest_on_names():asyncwithTestNatsBroker(broker):# Send John to "names" subjectawaitbroker.publish(Name(name="John"),"names")# Assert that our application has consumed "John"on_names.mock.assert_called_with(dict(Name(name="John")))# Assert that our application has greeted John in the "greetings" subjecton_greetings.mock.assert_called_with(dict(Greeting(greeting="hello John")))In the test, we send a test User JSON to theinsubject, and then we assert that the broker has responded to theoutsubject with the appropriate message.We can save the test to the test_application.py file and run the test by executing the following command in our application root file.pytestHere is how the tests execution should look like in your terminal:=====================================testsessionstarts=====================================platform darwin -- Python 3.11.5, pytest-7.4.2, pluggy-1.3.0
-rootdir: /Users/tvrtko/Documents/Airt Projects/FastStream/faststream-cookiecutter/greetings_app
-configfile: pyproject.toml
-plugins: asyncio-0.21.1, anyio-3.7.1
-asyncio:mode=Mode.STRICT
-collected1item                                                                              
-
-tests/test_application.py .[100%]======================================1passed in 0.34s======================================Running the applicationThe application can be started using built-inFastStreamCLI command.To run the service, use theFastStream CLIcommand and pass the module (in this case, the file where the app implementation is located) and the app symbol to the command.faststream run greetings_app.application:appAfter running the command, you should see the following output:2023-10-13 08:36:32,162 INFO     - FastStream app starting...
-2023-10-13 08:36:32,170 INFO     - names|-`OnNames`waitingformessages
-2023-10-13 08:36:32,177 INFO     - FastStream app started successfully! To exit, press CTRL+CAlso,FastStreamprovides you a great hot reload feature to improve your Development Experiencefaststream run greetings_app.application:app --reloadAnd multiprocessing horizontal scaling feature as well:faststream run greetings_app.application:app --workers3DocumentationFastStream provides a command to serve the AsyncAPI documentation, let’s use it to document our application.
-To generate and serve the documentation, run the following command:faststream docs serve greetings_app.application:appNow, you should see the following output:INFO:     Started server process[47151]INFO:     Waitingforapplication startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://localhost:8000(Press CTRL+C to quit)Now open your browser athttp://localhost:8000and enjoy in your automatically generated documentation!Aaaand, that’s it! Feel free to experiment further with your application and checkoutthe documentationfor more complex examples.Support us on GitHub and join our communityHead over to ourGitHub repositoryand show your support by starring it. By doing so, you’ll stay in the loop with the latest developments, updates, and enhancements as we continue to refine and expand FastStream.ConclusionFastStream is your go-to tool for efficient microservices development. It simplifies message queues, and offers Pydantic validation and auto-doc generation.We’re immensely grateful for your interest, and we look forward to your potential contributions. With FastStream in your toolkit, you’re prepared to conquer the challenges of data-centric microservices like never before. Happy coding!About the AuthorTvrtko Sternak is a developer atAIRTand one of the creators ofFastStream.Back to BlogCopyright © NATS Authors 2024NATS is aCloud Native Computing Foundationincubating projectThe Linux Foundation has registered trademarks and uses trademarks.For a list of trademarks of The Linux Foundation, please seeTrademark Usage page.
+[Back to Blog](/blog)
+NATS Server 2.9.16 Release
+Byron Ruth — April 19, 2023
+The NATS maintainers are very proud to announce the
+[2.9.16 release](https://github.com/nats-io/nats-server/releases/tag/v2.9.16)
+! 🥳
+This release brings another round of stability and performance improvements, leveraging our new quality engineering practices described in the
+[2.9.15 announcement post](/blog/nats-server-2.9.15-release/)
+, and iterating directly with users having high-scale and latency-sensitive workloads.
+Given the positive feedback on the previous announcement post focusing on the higher-level impact of the changes, going forward all releases will have an announcement post!
+In this post we will cover a few key areas:
+[False positive vulnerabilities](#-false-positive-vulnerabilities)[Nightly builds](#-nightly-builds)[Raft self-healing and cleanup](#-raft-self-healing-and-cleanup)[Minimizing restart impact](#-minimizing-restart-impact)[P99 performance](#-p99-performance)
+For the entirety of the improvements and fixes, check out the
+[release
+notes](https://github.com/nats-io/nats-server/releases/tag/v2.9.16)
+.
+🪆 False positive vulnerabilities
+A
+[report from last month](https://github.com/nats-io/nats-server/issues/3992)
+indicated that security vulnerability scanners, such as
+[Grype](https://github.com/anchore/grype)
+and
+[Trivy](https://github.com/aquasecurity/trivy)
+, would report the server had an active CVE or would not pass due to a “malformed version”.
+We eventually discovered that using go build .
+rather than go build main.go
+resulted in Go not listing the package itself as a dependency with the (devel)
+version which was tripping up the vulnerability scanners.
+Although a subtle change, after updating this, there are no more false positives. Given the increasing sensitivity of vulnerable dependencies and supply chain attacks, we take reports like these very seriously and want to ensure even false positives are remediated.
+Relevant PRs
+🏗️ Nightly builds
+As part of this development cycle, a new nightly build based off of the main
+branch was introduced, which follows the current minor release series, such as 2.9.x
+. This was driven by user demand to be able to try and test out recently-landed server PRs as they are merged throughout the development cycle in preparation for the next patch release.
+Making this available has been invaluable for the NATS team since it shortens the feedback loop for users actively engaged and testing changes in their own environments.
+The build is available as a
+[Docker image](https://hub.docker.com/r/synadia/nats-server/tags?page=1&name=nightly-main)
+under the synadia
+Docker Hub organization with the nightly-main
+tag:
+$ docker run -p 4222:4222 synadia/nats-server:nightly-main -js
+For those that were not aware, there is an
+[existing Docker image](https://hub.docker.com/r/synadia/nats-server/tags?page=1&name=nightly)
+having the nightly
+tag based on the dev
+branch which tracks the next minor version, in this case 2.10.0
+.
+$ docker run -p 4222:4222 synadia/nats-server:nightly -js
+Relevant PRs
+🪵 Raft self-healing and cleanup
+One of the NATS core pillars is for the server to be self-healing. Specifically, the ability to preserve itself against slow or rogue clients, and recover in the face of partial failure.
+The JetStream subsystem, managing streams and consumers, relies on a
+[custom Raft implementation](https://github.com/nats-io/nats-server/blob/main/server/raft.go)
+built on top of Core NATS itself enhanced by two distinctive features:
+- Optimized hand-offs using cooperative step-down on leader transfers to minimize interruption
+- Detection of storage faults and corruption using checksums on read and writes
+This release brings additional fixes and improvements making this self-healing attribute more robust.
+One fix addressed a memory leak that could occur if the JetStream subsystem shut down on a server, making it inactive from the cluster’s standpoint, but the server itself was still holding on to resources.
+A second improvement detects servers in
+[lame duck mode](https://docs.nats.io/running-a-nats-service/nats_admin/lame_duck_mode)
+and omits them as possible leaders for Raft groups. Although the previous behavior would eventually correct itself once the server finally shut down, this optimizes the leader election so that a server that is about to shut down will not be selected, reducing impact to active JetStream assets.
+Finally, an uncommon split-brain failure mode, resulting in two separate leaders trying to run for the same asset leadership term, has been addressed. Previously, manual intervention was required to force step-down
+one of the leaders, but this is now performed automatically when detected.
+Relevant PRs
+⏳ Minimizing restart impact
+For NATS deployments that have hundreds or thousands (or more) streams and consumers with high loads, a server restart (or failure) can be potentially disruptive in production.
+When a clustered server goes offline whilst running as replica leaders, although leader election is handled transparently, all of the load will ultimately shift to other servers, increasing their load further. When the offline server comes back online (or is replaced), it will need to be deemed healthy before it is possible to shift leaders and load back to this server.
+The single entrypoint for determining server health is the /healthz
+monitoring endpoint. For Kubernetes-based deployments, this is the endpoint used for the readiness and liveness probes (using different parameters). For servers having many assigned assets, becoming healthy for all assets could take a significant amount of time, delaying the server from being an active participant for the assets that were asserted to be healthy.
+A key improvement in this release is to provide more granular, per asset checking to prevent blocking healthy assets from participating in their Raft group.
+As noted above, for high throughput workloads, the amount of data the server needs to churn through may not be small, so optimizing this path can be critical for reducing startup times and aiding cluster recovery.
+A second improvement is to better handle the case that recovering the local state for a JetStream asset had stalled (usually resulting in Catching up for server X stalled
+warnings), instead resetting the log and recovering with the assistance of other healthy servers in the cluster.
+Previous manual intervention required scaling down a stream to R1, effectively wiping local replica state, followed by scaling back up, causing a fresh copy to sync from the leader.
+This stall detection will reduce the time for a server to become healthy (via /healthz
+), thus minimizing the impact on planned or unplanned restarts.
+Relevant PRs
+⚡ P99 performance
+[Synadia](https://synadia.com)
+was fortunate to work with a customer in the financial services industry measuring JetStream publish latency. They cared deeply about 99th percentile (P99) publish latencies, keeping the variance (even at peak load) as low as possible.
+Their setup consisted of ~200 R3 streams spread out across a private network tying together all three major public clouds. Their workload had peak publish throughput of ~180-200k messages/second.
+After their own evaluation, they discovered their P99 metric had some publish latencies reaching several seconds. To level-set, in this context, P99 refers to the 1% worst publish latencies that were measured. The other 99% of measured publish latencies were in range of their needs.
+The quality engineering team modeled the workload with a similar topology, number streams, etc. and added it as part of the load testing suite. Throughout the development cycle, this workload was run repeatedly to ensure proposed changes were in fact improving performance.
+After a day’s worth of changes were incorporated, the customer was able to pull a nightly build and re-test within their own environment, resulting in a productive daily feedback loop. 🙌
+The range of improvements and optimizations varied, but by the end of this journey, the team was able to reduce the P99 publish latency to under 30ms at peak load.
+📝 As an obligatory disclaimer, performance numbers are very workload and environment-specific. The takeaway from this section should be the magnitude of improvement that was achieved as a result of this effort.
+Relevant PRs
+Conclusion
+The NATS team is incredibly proud of this release and reinforces the impact the new quality engineering process provides (and now our nightly builds) in optimizing the feedback loop for discovering, assessing, and addressing fixes and improvements.
+As always, refer to the
+[download page](https://nats.io/download/)
+for direct links to the GitHub release page and the official Docker image.
+About the Author
+[Byron Ruth](https://www.linkedin.com/in/byron-ruth/)
+is the Director of Developer Relations at
+[Synadia](https://synadia.com)
+and a long-time NATS user.
+[Back to Blog](/blog)

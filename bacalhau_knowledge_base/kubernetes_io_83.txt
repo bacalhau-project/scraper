@@ -1,53 +1,209 @@
-URL: https://kubernetes.io/docs/concepts/overview/working-with-objects/
+Source: kubernetes_io
+URL: https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/
 
-DocumentationKubernetes BlogTrainingPartnersCommunityCase StudiesVersionsRelease Informationv1.31v1.30v1.29v1.28v1.27Englishবাংলা (Bengali)中文 (Chinese)Français (French)Bahasa Indonesia (Indonesian)日本語 (Japanese)한국어 (Korean)Português (Portuguese)Русский (Russian)Español (Spanish)DocumentationAvailable Documentation VersionsGetting startedLearning environmentProduction environmentContainer RuntimesInstalling Kubernetes with deployment toolsBootstrapping clusters with kubeadmInstalling kubeadmTroubleshooting kubeadmCreating a cluster with kubeadmCustomizing components with the kubeadm APIOptions for Highly Available TopologyCreating Highly Available Clusters with kubeadmSet up a High Availability etcd Cluster with kubeadmConfiguring each kubelet in your cluster using kubeadmDual-stack support with kubeadmTurnkey Cloud SolutionsBest practicesConsiderations for large clustersRunning in multiple zonesValidate node setupEnforcing Pod Security StandardsPKI certificates and requirementsConceptsOverviewKubernetes ComponentsObjects In KubernetesKubernetes Object ManagementObject Names and IDsLabels and SelectorsNamespacesAnnotationsField SelectorsFinalizersOwners and DependentsRecommended LabelsThe Kubernetes APICluster ArchitectureNodesCommunication between Nodes and the Control PlaneControllersLeasesCloud Controller ManagerAbout cgroup v2Container Runtime Interface (CRI)Garbage CollectionMixed Version ProxyContainersImagesContainer EnvironmentRuntime ClassContainer Lifecycle HooksWorkloadsPodsPod LifecycleInit ContainersSidecar ContainersEphemeral ContainersDisruptionsPod Quality of Service ClassesUser NamespacesDownward APIWorkload ManagementDeploymentsReplicaSetStatefulSetsDaemonSetJobsAutomatic Cleanup for Finished JobsCronJobReplicationControllerAutoscaling WorkloadsManaging WorkloadsServices, Load Balancing, and NetworkingServiceIngressIngress ControllersGateway APIEndpointSlicesNetwork PoliciesDNS for Services and PodsIPv4/IPv6 dual-stackTopology Aware RoutingNetworking on WindowsService ClusterIP allocationService Internal Traffic PolicyStorageVolumesPersistent VolumesProjected VolumesEphemeral VolumesStorage ClassesVolume Attributes ClassesDynamic Volume ProvisioningVolume SnapshotsVolume Snapshot ClassesCSI Volume CloningStorage CapacityNode-specific Volume LimitsVolume Health MonitoringWindows StorageConfigurationConfiguration Best PracticesConfigMapsSecretsLiveness, Readiness, and Startup ProbesResource Management for Pods and ContainersOrganizing Cluster Access Using kubeconfig FilesResource Management for Windows nodesSecurityCloud Native SecurityPod Security StandardsPod Security AdmissionService AccountsPod Security PoliciesSecurity For Windows NodesControlling Access to the Kubernetes APIRole Based Access Control Good PracticesGood practices for Kubernetes SecretsMulti-tenancyHardening Guide - Authentication MechanismsKubernetes API Server Bypass RisksLinux kernel security constraints for Pods and containersSecurity ChecklistPoliciesLimit RangesResource QuotasProcess ID Limits And ReservationsNode Resource ManagersScheduling, Preemption and EvictionKubernetes SchedulerAssigning Pods to NodesPod OverheadPod Scheduling ReadinessPod Topology Spread ConstraintsTaints and TolerationsScheduling FrameworkDynamic Resource AllocationScheduler Performance TuningResource Bin PackingPod Priority and PreemptionNode-pressure EvictionAPI-initiated EvictionCluster AdministrationNode ShutdownsCertificatesCluster NetworkingLogging ArchitectureMetrics For Kubernetes System ComponentsMetrics for Kubernetes Object StatesSystem LogsTraces For Kubernetes System ComponentsProxies in KubernetesAPI Priority and FairnessCluster AutoscalingInstalling AddonsCoordinated Leader ElectionWindows in KubernetesWindows containers in KubernetesGuide for Running Windows Containers in KubernetesExtending KubernetesCompute, Storage, and Networking ExtensionsNetwork PluginsDevice PluginsExtending the Kubernetes APICustom ResourcesKubernetes API Aggregation LayerOperator patternTasksInstall ToolsInstall and Set Up kubectl on LinuxInstall and Set Up kubectl on macOSInstall and Set Up kubectl on WindowsAdminister a ClusterAdministration with kubeadmCertificate Management with kubeadmConfiguring a cgroup driverReconfiguring a kubeadm clusterUpgrading kubeadm clustersUpgrading Linux nodesUpgrading Windows nodesChanging The Kubernetes Package RepositoryMigrating from dockershimChanging the Container Runtime on a Node from Docker Engine to containerdMigrate Docker Engine nodes from dockershim to cri-dockerdFind Out What Container Runtime is Used on a NodeTroubleshooting CNI plugin-related errorsCheck whether dockershim removal affects youMigrating telemetry and security agents from dockershimGenerate Certificates ManuallyManage Memory, CPU, and API ResourcesConfigure Default Memory Requests and Limits for a NamespaceConfigure Default CPU Requests and Limits for a NamespaceConfigure Minimum and Maximum Memory Constraints for a NamespaceConfigure Minimum and Maximum CPU Constraints for a NamespaceConfigure Memory and CPU Quotas for a NamespaceConfigure a Pod Quota for a NamespaceInstall a Network Policy ProviderUse Antrea for NetworkPolicyUse Calico for NetworkPolicyUse Cilium for NetworkPolicyUse Kube-router for NetworkPolicyRomana for NetworkPolicyWeave Net for NetworkPolicyAccess Clusters Using the Kubernetes APIAdvertise Extended Resources for a NodeAutoscale the DNS Service in a ClusterChange the Access Mode of a PersistentVolume to ReadWriteOncePodChange the default StorageClassSwitching from Polling to CRI Event-based Updates to Container StatusChange the Reclaim Policy of a PersistentVolumeCloud Controller Manager AdministrationConfigure a kubelet image credential providerConfigure Quotas for API ObjectsControl CPU Management Policies on the NodeControl Topology Management Policies on a nodeCustomizing DNS ServiceDebugging DNS ResolutionDeclare Network PolicyDeveloping Cloud Controller ManagerEnable Or Disable A Kubernetes APIEncrypting Confidential Data at RestDecrypt Confidential Data that is Already Encrypted at RestGuaranteed Scheduling For Critical Add-On PodsIP Masquerade Agent User GuideLimit Storage ConsumptionMigrate Replicated Control Plane To Use Cloud Controller ManagerNamespaces WalkthroughOperating etcd clusters for KubernetesReserve Compute Resources for System DaemonsRunning Kubernetes Node Components as a Non-root UserSafely Drain a NodeSecuring a ClusterSet Kubelet Parameters Via A Configuration FileShare a Cluster with NamespacesUpgrade A ClusterUse Cascading Deletion in a ClusterUsing a KMS provider for data encryptionUsing CoreDNS for Service DiscoveryUsing NodeLocal DNSCache in Kubernetes ClustersUsing sysctls in a Kubernetes ClusterUtilizing the NUMA-aware Memory ManagerVerify Signed Kubernetes ArtifactsConfigure Pods and ContainersAssign Memory Resources to Containers and PodsAssign CPU Resources to Containers and PodsConfigure GMSA for Windows Pods and containersResize CPU and Memory Resources assigned to ContainersConfigure RunAsUserName for Windows pods and containersCreate a Windows HostProcess PodConfigure Quality of Service for PodsAssign Extended Resources to a ContainerConfigure a Pod to Use a Volume for StorageConfigure a Pod to Use a PersistentVolume for StorageConfigure a Pod to Use a Projected Volume for StorageConfigure a Security Context for a Pod or ContainerConfigure Service Accounts for PodsPull an Image from a Private RegistryConfigure Liveness, Readiness and Startup ProbesAssign Pods to NodesAssign Pods to Nodes using Node AffinityConfigure Pod InitializationAttach Handlers to Container Lifecycle EventsConfigure a Pod to Use a ConfigMapShare Process Namespace between Containers in a PodUse a User Namespace With a PodUse an Image Volume With a PodCreate static PodsTranslate a Docker Compose File to Kubernetes ResourcesEnforce Pod Security Standards by Configuring the Built-in Admission ControllerEnforce Pod Security Standards with Namespace LabelsMigrate from PodSecurityPolicy to the Built-In PodSecurity Admission ControllerMonitoring, Logging, and DebuggingTroubleshooting ApplicationsDebug PodsDebug ServicesDebug a StatefulSetDetermine the Reason for Pod FailureDebug Init ContainersDebug Running PodsGet a Shell to a Running ContainerTroubleshooting ClustersTroubleshooting kubectlResource metrics pipelineTools for Monitoring ResourcesMonitor Node HealthDebugging Kubernetes nodes with crictlAuditingDebugging Kubernetes Nodes With KubectlDeveloping and debugging services locally using telepresenceWindows debugging tipsManage Kubernetes ObjectsDeclarative Management of Kubernetes Objects Using Configuration FilesDeclarative Management of Kubernetes Objects Using KustomizeManaging Kubernetes Objects Using Imperative CommandsImperative Management of Kubernetes Objects Using Configuration FilesUpdate API Objects in Place Using kubectl patchMigrate Kubernetes Objects Using Storage Version MigrationManaging SecretsManaging Secrets using kubectlManaging Secrets using Configuration FileManaging Secrets using KustomizeInject Data Into ApplicationsDefine a Command and Arguments for a ContainerDefine Dependent Environment VariablesDefine Environment Variables for a ContainerExpose Pod Information to Containers Through Environment VariablesExpose Pod Information to Containers Through FilesDistribute Credentials Securely Using SecretsRun ApplicationsRun a Stateless Application Using a DeploymentRun a Single-Instance Stateful ApplicationRun a Replicated Stateful ApplicationScale a StatefulSetDelete a StatefulSetForce Delete StatefulSet PodsHorizontal Pod AutoscalingHorizontalPodAutoscaler WalkthroughSpecifying a Disruption Budget for your ApplicationAccessing the Kubernetes API from a PodRun JobsRunning Automated Tasks with a CronJobCoarse Parallel Processing Using a Work QueueFine Parallel Processing Using a Work QueueIndexed Job for Parallel Processing with Static Work AssignmentJob with Pod-to-Pod CommunicationParallel Processing using ExpansionsHandling retriable and non-retriable pod failures with Pod failure policyAccess Applications in a ClusterDeploy and Access the Kubernetes DashboardAccessing ClustersConfigure Access to Multiple ClustersUse Port Forwarding to Access Applications in a ClusterUse a Service to Access an Application in a ClusterConnect a Frontend to a Backend Using ServicesCreate an External Load BalancerList All Container Images Running in a ClusterSet up Ingress on Minikube with the NGINX Ingress ControllerCommunicate Between Containers in the Same Pod Using a Shared VolumeConfigure DNS for a ClusterAccess Services Running on ClustersExtend KubernetesConfigure the Aggregation LayerUse Custom ResourcesExtend the Kubernetes API with CustomResourceDefinitionsVersions in CustomResourceDefinitionsSet up an Extension API ServerConfigure Multiple SchedulersUse an HTTP Proxy to Access the Kubernetes APIUse a SOCKS5 Proxy to Access the Kubernetes APISet up Konnectivity serviceTLSConfigure Certificate Rotation for the KubeletManage TLS Certificates in a ClusterManual Rotation of CA CertificatesManage Cluster DaemonsPerform a Rolling Update on a DaemonSetPerform a Rollback on a DaemonSetRunning Pods on Only Some NodesNetworkingAdding entries to Pod /etc/hosts with HostAliasesExtend Service IP RangesValidate IPv4/IPv6 dual-stackExtend kubectl with pluginsManage HugePagesSchedule GPUsTutorialsHello MinikubeLearn Kubernetes BasicsCreate a ClusterUsing Minikube to Create a ClusterDeploy an AppUsing kubectl to Create a DeploymentExplore Your AppViewing Pods and NodesExpose Your App PubliclyUsing a Service to Expose Your AppScale Your AppRunning Multiple Instances of Your AppUpdate Your AppPerforming a Rolling UpdateConfigurationExample: Configuring a Java MicroserviceExternalizing config using MicroProfile, ConfigMaps and SecretsUpdating Configuration via a ConfigMapConfiguring Redis using a ConfigMapAdopting Sidecar ContainersSecurityApply Pod Security Standards at the Cluster LevelApply Pod Security Standards at the Namespace LevelRestrict a Container's Access to Resources with AppArmorRestrict a Container's Syscalls with seccompStateless ApplicationsExposing an External IP Address to Access an Application in a ClusterExample: Deploying PHP Guestbook application with RedisStateful ApplicationsStatefulSet BasicsExample: Deploying WordPress and MySQL with Persistent VolumesExample: Deploying Cassandra with a StatefulSetRunning ZooKeeper, A Distributed System CoordinatorServicesConnecting Applications with ServicesUsing Source IPExplore Termination Behavior for Pods And Their EndpointsReferenceGlossaryAPI OverviewKubernetes API ConceptsServer-Side ApplyClient LibrariesCommon Expression Language in KubernetesKubernetes Deprecation PolicyDeprecated API Migration GuideKubernetes API health endpointsAPI Access ControlAuthenticatingAuthenticating with Bootstrap TokensAuthorizationUsing RBAC AuthorizationUsing Node AuthorizationWebhook ModeUsing ABAC AuthorizationAdmission ControllersDynamic Admission ControlManaging Service AccountsCertificates and Certificate Signing RequestsMapping PodSecurityPolicies to Pod Security StandardsKubelet authentication/authorizationTLS bootstrappingValidating Admission PolicyWell-Known Labels, Annotations and TaintsAudit AnnotationsKubernetes APIWorkload ResourcesPodBindingPodTemplateReplicationControllerReplicaSetDeploymentStatefulSetControllerRevisionDaemonSetJobCronJobHorizontalPodAutoscalerHorizontalPodAutoscalerPriorityClassPodSchedulingContext v1alpha3ResourceClaim v1alpha3ResourceClaimTemplate v1alpha3ResourceSlice v1alpha3Service ResourcesServiceEndpointsEndpointSliceIngressIngressClassConfig and Storage ResourcesConfigMapSecretCSIDriverCSINodeCSIStorageCapacityPersistentVolumeClaimPersistentVolumeStorageClassStorageVersionMigration v1alpha1VolumeVolumeAttachmentVolumeAttributesClass v1beta1Authentication ResourcesServiceAccountTokenRequestTokenReviewCertificateSigningRequestClusterTrustBundle v1alpha1SelfSubjectReviewAuthorization ResourcesLocalSubjectAccessReviewSelfSubjectAccessReviewSelfSubjectRulesReviewSubjectAccessReviewClusterRoleClusterRoleBindingRoleRoleBindingPolicy ResourcesFlowSchemaLimitRangeResourceQuotaNetworkPolicyPodDisruptionBudgetPriorityLevelConfigurationValidatingAdmissionPolicyValidatingAdmissionPolicyBindingExtend ResourcesCustomResourceDefinitionDeviceClass v1alpha3MutatingWebhookConfigurationValidatingWebhookConfigurationCluster ResourcesAPIServiceComponentStatusEventIPAddress v1beta1LeaseLeaseCandidate v1alpha1NamespaceNodeRuntimeClassServiceCIDR v1beta1Common DefinitionsDeleteOptionsLabelSelectorListMetaLocalObjectReferenceNodeSelectorRequirementObjectFieldSelectorObjectMetaObjectReferencePatchQuantityResourceFieldSelectorStatusTypedLocalObjectReferenceCommon ParametersInstrumentationService Level Indicator MetricsCRI Pod & Container MetricsNode metrics dataKubernetes Metrics ReferenceKubernetes Issues and SecurityKubernetes Issue TrackerKubernetes Security and Disclosure InformationCVE feedNode Reference InformationKubelet Checkpoint APILinux Kernel Version RequirementsArticles on dockershim Removal and on Using CRI-compatible RuntimesNode Labels Populated By The KubeletKubelet Configuration Directory MergingKubelet Device Manager API VersionsNode StatusNetworking ReferenceProtocols for ServicesPorts and ProtocolsVirtual IPs and Service ProxiesSetup toolsKubeadmkubeadm initkubeadm joinkubeadm upgradekubeadm configkubeadm resetkubeadm tokenkubeadm versionkubeadm alphakubeadm certskubeadm init phasekubeadm join phasekubeadm kubeconfigkubeadm reset phasekubeadm upgrade phaseImplementation detailsCommand line tool (kubectl)Introduction to kubectlkubectl Quick Referencekubectl referencekubectlkubectl annotatekubectl api-resourceskubectl api-versionskubectl applykubectl apply edit-last-appliedkubectl apply set-last-appliedkubectl apply view-last-appliedkubectl attachkubectl authkubectl auth can-ikubectl auth reconcilekubectl auth whoamikubectl autoscalekubectl certificatekubectl certificate approvekubectl certificate denykubectl cluster-infokubectl cluster-info dumpkubectl completionkubectl configkubectl config current-contextkubectl config delete-clusterkubectl config delete-contextkubectl config delete-userkubectl config get-clusterskubectl config get-contextskubectl config get-userskubectl config rename-contextkubectl config setkubectl config set-clusterkubectl config set-contextkubectl config set-credentialskubectl config unsetkubectl config use-contextkubectl config viewkubectl cordonkubectl cpkubectl createkubectl create clusterrolekubectl create clusterrolebindingkubectl create configmapkubectl create cronjobkubectl create deploymentkubectl create ingresskubectl create jobkubectl create namespacekubectl create poddisruptionbudgetkubectl create priorityclasskubectl create quotakubectl create rolekubectl create rolebindingkubectl create secretkubectl create secret docker-registrykubectl create secret generickubectl create secret tlskubectl create servicekubectl create service clusteripkubectl create service externalnamekubectl create service loadbalancerkubectl create service nodeportkubectl create serviceaccountkubectl create tokenkubectl debugkubectl deletekubectl describekubectl diffkubectl drainkubectl editkubectl eventskubectl execkubectl explainkubectl exposekubectl getkubectl kustomizekubectl labelkubectl logskubectl optionskubectl patchkubectl pluginkubectl plugin listkubectl port-forwardkubectl proxykubectl replacekubectl rolloutkubectl rollout historykubectl rollout pausekubectl rollout restartkubectl rollout resumekubectl rollout statuskubectl rollout undokubectl runkubectl scalekubectl setkubectl set envkubectl set imagekubectl set resourceskubectl set selectorkubectl set serviceaccountkubectl set subjectkubectl taintkubectl topkubectl top nodekubectl top podkubectl uncordonkubectl versionkubectl waitkubectl CommandskubectlJSONPath Supportkubectl for Docker Userskubectl Usage ConventionsComponent toolsFeature GatesFeature Gates (removed)kubeletkube-apiserverkube-controller-managerkube-proxykube-schedulerDebug clusterFlow controlConfiguration APIsClient Authentication (v1)Client Authentication (v1beta1)Event Rate Limit Configuration (v1alpha1)Image Policy API (v1alpha1)kube-apiserver Admission (v1)kube-apiserver Audit Configuration (v1)kube-apiserver Configuration (v1)kube-apiserver Configuration (v1alpha1)kube-apiserver Configuration (v1beta1)kube-controller-manager Configuration (v1alpha1)kube-proxy Configuration (v1alpha1)kube-scheduler Configuration (v1)kubeadm Configuration (v1beta3)kubeadm Configuration (v1beta4)kubeconfig (v1)Kubelet Configuration (v1)Kubelet Configuration (v1alpha1)Kubelet Configuration (v1beta1)Kubelet CredentialProvider (v1)WebhookAdmission Configuration (v1)External APIsKubernetes Custom Metrics (v1beta2)Kubernetes External Metrics (v1beta1)Kubernetes Metrics (v1beta1)SchedulingScheduler ConfigurationScheduling PoliciesOther ToolsMapping from dockercli to crictlContributeContribute to Kubernetes DocumentationSuggesting content improvementsContributing new contentOpening a pull requestDocumenting for a releaseBlogs and case studiesReviewing changesReviewing pull requestsFor approvers and reviewersLocalizing Kubernetes documentationParticipating in SIG DocsRoles and responsibilitiesIssue WranglersPR wranglersDocumentation style overviewContent guideStyle guideDiagram guideWriting a new topicPage content typesContent organizationCustom Hugo ShortcodesUpdating Reference DocumentationQuickstartContributing to the Upstream Kubernetes CodeGenerating Reference Documentation for the Kubernetes APIGenerating Reference Documentation for kubectl CommandsGenerating Reference Documentation for MetricsGenerating Reference Pages for Kubernetes Components and ToolsAdvanced contributingViewing Site AnalyticsDocs smoke test pageKubernetes DocumentationConceptsOverviewObjects In KubernetesObjects In KubernetesKubernetes objects are persistent entities in the Kubernetes system. Kubernetes uses these entities to represent the state of your cluster. Learn about the Kubernetes object model and how to work with these objects.This page explains how Kubernetes objects are represented in the Kubernetes API, and how you can
-express them in.yamlformat.Understanding Kubernetes objectsKubernetes objectsare persistent entities in the Kubernetes system. Kubernetes uses these
-entities to represent the state of your cluster. Specifically, they can describe:What containerized applications are running (and on which nodes)The resources available to those applicationsThe policies around how those applications behave, such as restart policies, upgrades, and fault-toleranceA Kubernetes object is a "record of intent"--once you create the object, the Kubernetes system
-will constantly work to ensure that the object exists. By creating an object, you're effectively
-telling the Kubernetes system what you want your cluster's workload to look like; this is your
-cluster'sdesired state.To work with Kubernetes objects—whether to create, modify, or delete them—you'll need to use theKubernetes API. When you use thekubectlcommand-line
-interface, for example, the CLI makes the necessary Kubernetes API calls for you. You can also use
-the Kubernetes API directly in your own programs using one of theClient Libraries.Object spec and statusAlmost every Kubernetes object includes two nested object fields that govern
-the object's configuration: the objectspecand the objectstatus.
-For objects that have aspec, you have to set this when you create the object,
-providing a description of the characteristics you want the resource to have:
-itsdesired state.Thestatusdescribes thecurrent stateof the object, supplied and updated
-by the Kubernetes system and its components. The Kubernetescontrol planecontinually
-and actively manages every object's actual state to match the desired state you
-supplied.For example: in Kubernetes, a Deployment is an object that can represent an
-application running on your cluster. When you create the Deployment, you
-might set the Deploymentspecto specify that you want three replicas of
-the application to be running. The Kubernetes system reads the Deployment
-spec and starts three instances of your desired application--updating
-the status to match your spec. If any of those instances should fail
-(a status change), the Kubernetes system responds to the difference
-between spec and status by making a correction--in this case, starting
-a replacement instance.For more information on the object spec, status, and metadata, see theKubernetes API Conventions.Describing a Kubernetes objectWhen you create an object in Kubernetes, you must provide the object spec that describes its
-desired state, as well as some basic information about the object (such as a name). When you use
-the Kubernetes API to create the object (either directly or viakubectl), that API request must
-include that information as JSON in the request body.
-Most often, you provide the information tokubectlin a file known as amanifest.
-By convention, manifests are YAML (you could also use JSON format).
-Tools such askubectlconvert the information from a manifest into JSON or another supported
-serialization format when making the API request over HTTP.Here's an example manifest that shows the required fields and object spec for a Kubernetes
-Deployment:application/deployment.yamlapiVersion:apps/v1kind:Deploymentmetadata:name:nginx-deploymentspec:selector:matchLabels:app:nginxreplicas:2# tells deployment to run 2 pods matching the templatetemplate:metadata:labels:app:nginxspec:containers:-name:nginximage:nginx:1.14.2ports:-containerPort:80One way to create a Deployment using a manifest file like the one above is to use thekubectl applycommand
-in thekubectlcommand-line interface, passing the.yamlfile as an argument. Here's an example:kubectl apply -f https://k8s.io/examples/application/deployment.yamlThe output is similar to this:deployment.apps/nginx-deployment createdRequired fieldsIn the manifest (YAML or JSON file) for the Kubernetes object you want to create, you'll need to set values for
-the following fields:apiVersion- Which version of the Kubernetes API you're using to create this objectkind- What kind of object you want to createmetadata- Data that helps uniquely identify the object, including anamestring,UID, and optionalnamespacespec- What state you desire for the objectThe precise format of the objectspecis different for every Kubernetes object, and contains
-nested fields specific to that object. TheKubernetes API Referencecan help you find the spec format for all of the objects you can create using Kubernetes.For example, see thespecfieldfor the Pod API reference.
-For each Pod, the.specfield specifies the pod and its desired state (such as the container image name for
-each container within that pod).
-Another example of an object specification is thespecfieldfor the StatefulSet API. For StatefulSet, the.specfield specifies the StatefulSet and
-its desired state.
-Within the.specof a StatefulSet is atemplatefor Pod objects. That template describes Pods that the StatefulSet controller will create in order to
-satisfy the StatefulSet specification.
-Different kinds of objects can also have different.status; again, the API reference pages
-detail the structure of that.statusfield, and its content for each different type of object.Note:SeeConfiguration Best Practicesfor additional
-information on writing YAML configuration files.Server side field validationStarting with Kubernetes v1.25, the API server offers server sidefield validationthat detects unrecognized or duplicate fields in an object. It provides all the functionality
-ofkubectl --validateon the server side.Thekubectltool uses the--validateflag to set the level of field validation. It accepts the
-valuesignore,warn, andstrictwhile also accepting the valuestrue(equivalent tostrict)
-andfalse(equivalent toignore). The default validation setting forkubectlis--validate=true.StrictStrict field validation, errors on validation failureWarnField validation is performed, but errors are exposed as warnings rather than failing the requestIgnoreNo server side field validation is performedWhenkubectlcannot connect to an API server that supports field validation it will fall back
-to using client-side validation. Kubernetes 1.27 and later versions always offer field validation;
-older Kubernetes releases might not. If your cluster is older than v1.27, check the documentation
-for your version of Kubernetes.What's nextIf you're new to Kubernetes, read more about the following:Podswhich are the most important basic Kubernetes objects.Deploymentobjects.Controllersin Kubernetes.kubectlandkubectl commands.Kubernetes Object Managementexplains how to usekubectlto manage objects.
-You might need toinstall kubectlif you don't already have it available.To learn about the Kubernetes API in general, visit:Kubernetes API overviewTo learn about objects in Kubernetes in more depth, read other pages in this section:Kubernetes Object ManagementObject Names and IDsLabels and SelectorsNamespacesAnnotationsField SelectorsFinalizersOwners and DependentsRecommended LabelsFeedbackWas this page helpful?YesNoThanks for the feedback. If you have a specific, answerable question about how to use Kubernetes, ask it onStack Overflow.
-Open an issue in theGitHub Repositoryif you want toreport a problemorsuggest an improvement.Last modified August 25, 2024 at 8:24 PM PST:Reorder overview pages (42da717f16)Edit this pageCreate child pageCreate documentation issuePrint entire sectionUnderstanding Kubernetes objectsObject spec and statusDescribing a Kubernetes objectRequired fieldsServer side field validationWhat's nextDocumentationBlogTrainingPartnersCommunityCase Studies© 2024 The Kubernetes Authors | Documentation Distributed underCC BY 4.0Copyright © 2024 The Linux Foundation ®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see ourTrademark Usage pageICP license: 京ICP备17074266号-3
+ReplicationController
+A ReplicationController ensures that a specified number of pod replicas are running at any one time. In other words, a ReplicationController makes sure that a pod or a homogeneous set of pods is always up and available.
+How a ReplicationController works
+If there are too many pods, the ReplicationController terminates the extra pods. If there are too few, the ReplicationController starts more pods. Unlike manually created pods, the pods maintained by a ReplicationController are automatically replaced if they fail, are deleted, or are terminated. For example, your pods are re-created on a node after disruptive maintenance such as a kernel upgrade. For this reason, you should use a ReplicationController even if your application requires only a single pod. A ReplicationController is similar to a process supervisor, but instead of supervising individual processes on a single node, the ReplicationController supervises multiple pods across multiple nodes.
+ReplicationController is often abbreviated to "rc" in discussion, and as a shortcut in kubectl commands.
+A simple case is to create one ReplicationController object to reliably run one instance of a Pod indefinitely. A more complex use case is to run several identical replicas of a replicated service, such as web servers.
+Running an example ReplicationController
+This example ReplicationController config runs three copies of the nginx web server.
+apiVersion: v1
+kind: ReplicationController
+metadata:
+name: nginx
+spec:
+replicas: 3
+selector:
+app: nginx
+template:
+metadata:
+name: nginx
+labels:
+app: nginx
+spec:
+containers:
+- name: nginx
+image: nginx
+ports:
+- containerPort: 80
+Run the example job by downloading the example file and then running this command:
+kubectl apply -f https://k8s.io/examples/controllers/replication.yaml
+The output is similar to this:
+replicationcontroller/nginx created
+Check on the status of the ReplicationController using this command:
+kubectl describe replicationcontrollers/nginx
+The output is similar to this:
+Name: nginx
+Namespace: default
+Selector: app=nginx
+Labels: app=nginx
+Annotations: <none>
+Replicas: 3 current / 3 desired
+Pods Status: 0 Running / 3 Waiting / 0 Succeeded / 0 Failed
+Pod Template:
+Labels: app=nginx
+Containers:
+nginx:
+Image: nginx
+Port: 80/TCP
+Environment: <none>
+Mounts: <none>
+Volumes: <none>
+Events:
+FirstSeen LastSeen Count From SubobjectPath Type Reason Message
+--------- -------- ----- ---- ------------- ---- ------ -------
+20s 20s 1 {replication-controller } Normal SuccessfulCreate Created pod: nginx-qrm3m
+20s 20s 1 {replication-controller } Normal SuccessfulCreate Created pod: nginx-3ntk0
+20s 20s 1 {replication-controller } Normal SuccessfulCreate Created pod: nginx-4ok8v
+Here, three pods are created, but none is running yet, perhaps because the image is being pulled. A little later, the same command may show:
+Pods Status: 3 Running / 0 Waiting / 0 Succeeded / 0 Failed
+To list all the pods that belong to the ReplicationController in a machine readable form, you can use a command like this:
+pods=$(kubectl get pods --selector=app=nginx --output=jsonpath={.items..metadata.name})
+echo $pods
+The output is similar to this:
+nginx-3ntk0 nginx-4ok8v nginx-qrm3m
+Here, the selector is the same as the selector for the ReplicationController (seen in the
+kubectl describe
+output), and in a different form in replication.yaml
+. The --output=jsonpath
+option
+specifies an expression with the name from each pod in the returned list.
+Writing a ReplicationController Manifest
+As with all other Kubernetes config, a ReplicationController needs apiVersion
+, kind
+, and metadata
+fields.
+When the control plane creates new Pods for a ReplicationController, the .metadata.name
+of the
+ReplicationController is part of the basis for naming those Pods. The name of a ReplicationController must be a valid
+[DNS subdomain](/docs/concepts/overview/working-with-objects/names/#dns-subdomain-names)
+value, but this can produce unexpected results for the Pod hostnames. For best compatibility,
+the name should follow the more restrictive rules for a
+[DNS label](/docs/concepts/overview/working-with-objects/names/#dns-label-names).
+For general information about working with configuration files, see [object management](/docs/concepts/overview/working-with-objects/object-management/).
+A ReplicationController also needs a [ .spec section](https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status).
+Pod Template
+The .spec.template
+is the only required field of the .spec
+.
+The .spec.template
+is a [pod template](/docs/concepts/workloads/pods/#pod-templates). It has exactly the same schema as a [Pod](/docs/concepts/workloads/pods/), except it is nested and does not have an apiVersion
+or kind
+.
+In addition to required fields for a Pod, a pod template in a ReplicationController must specify appropriate
+labels and an appropriate restart policy. For labels, make sure not to overlap with other controllers. See [pod selector](#pod-selector).
+Only a [ .spec.template.spec.restartPolicy](/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy) equal to
+Always
+is allowed, which is the default if not specified.For local container restarts, ReplicationControllers delegate to an agent on the node,
+for example the [Kubelet](/docs/reference/command-line-tools-reference/kubelet/).
+Labels on the ReplicationController
+The ReplicationController can itself have labels (.metadata.labels
+). Typically, you
+would set these the same as the .spec.template.metadata.labels
+; if .metadata.labels
+is not specified
+then it defaults to .spec.template.metadata.labels
+. However, they are allowed to be
+different, and the .metadata.labels
+do not affect the behavior of the ReplicationController.
+Pod Selector
+The .spec.selector
+field is a [label selector](/docs/concepts/overview/working-with-objects/labels/#label-selectors). A ReplicationController
+manages all the pods with labels that match the selector. It does not distinguish
+between pods that it created or deleted and pods that another person or process created or
+deleted. This allows the ReplicationController to be replaced without affecting the running pods.
+If specified, the .spec.template.metadata.labels
+must be equal to the .spec.selector
+, or it will
+be rejected by the API. If .spec.selector
+is unspecified, it will be defaulted to
+.spec.template.metadata.labels
+.
+Also you should not normally create any pods whose labels match this selector, either directly, with another ReplicationController, or with another controller such as Job. If you do so, the ReplicationController thinks that it created the other pods. Kubernetes does not stop you from doing this.
+If you do end up with multiple controllers that have overlapping selectors, you
+will have to manage the deletion yourself (see [below](#working-with-replicationcontrollers)).
+Multiple Replicas
+You can specify how many pods should run concurrently by setting .spec.replicas
+to the number
+of pods you would like to have running concurrently. The number running at any time may be higher
+or lower, such as if the replicas were just increased or decreased, or if a pod is gracefully
+shutdown, and a replacement starts early.
+If you do not specify .spec.replicas
+, then it defaults to 1.
+Working with ReplicationControllers
+Deleting a ReplicationController and its Pods
+To delete a ReplicationController and all its pods, use [ kubectl delete](/docs/reference/generated/kubectl/kubectl-commands#delete). Kubectl will scale the ReplicationController to zero and wait
+for it to delete each pod before deleting the ReplicationController itself. If this kubectl
+command is interrupted, it can be restarted.
+When using the REST API or [client library](/docs/reference/using-api/client-libraries/), you need to do the steps explicitly (scale replicas to
+0, wait for pod deletions, then delete the ReplicationController).
+Deleting only a ReplicationController
+You can delete a ReplicationController without affecting any of its pods.
+Using kubectl, specify the --cascade=orphan
+option to [ kubectl delete](/docs/reference/generated/kubectl/kubectl-commands#delete).
+When using the REST API or [client library](/docs/reference/using-api/client-libraries/), you can delete the ReplicationController object.
+Once the original is deleted, you can create a new ReplicationController to replace it. As long
+as the old and new .spec.selector
+are the same, then the new one will adopt the old pods.
+However, it will not make any effort to make existing pods match a new, different pod template.
+To update pods to a new spec in a controlled way, use a [rolling update](#rolling-updates).
+Isolating pods from a ReplicationController
+Pods may be removed from a ReplicationController's target set by changing their labels. This technique may be used to remove pods from service for debugging and data recovery. Pods that are removed in this way will be replaced automatically (assuming that the number of replicas is not also changed).
+Common usage patterns
+Rescheduling
+As mentioned above, whether you have 1 pod you want to keep running, or 1000, a ReplicationController will ensure that the specified number of pods exists, even in the event of node failure or pod termination (for example, due to an action by another control agent).
+Scaling
+The ReplicationController enables scaling the number of replicas up or down, either manually or by an auto-scaling control agent, by updating the replicas
+field.
+Rolling updates
+The ReplicationController is designed to facilitate rolling updates to a service by replacing pods one-by-one.
+As explained in [#1353](https://issue.k8s.io/1353), the recommended approach is to create a new ReplicationController with 1 replica, scale the new (+1) and old (-1) controllers one by one, and then delete the old controller after it reaches 0 replicas. This predictably updates the set of pods regardless of unexpected failures.
+Ideally, the rolling update controller would take application readiness into account, and would ensure that a sufficient number of pods were productively serving at any given time.
+The two ReplicationControllers would need to create pods with at least one differentiating label, such as the image tag of the primary container of the pod, since it is typically image updates that motivate rolling updates.
+Multiple release tracks
+In addition to running multiple releases of an application while a rolling update is in progress, it's common to run multiple releases for an extended period of time, or even continuously, using multiple release tracks. The tracks would be differentiated by labels.
+For instance, a service might target all pods with tier in (frontend), environment in (prod)
+. Now say you have 10 replicated pods that make up this tier. But you want to be able to 'canary' a new version of this component. You could set up a ReplicationController with replicas
+set to 9 for the bulk of the replicas, with labels tier=frontend, environment=prod, track=stable
+, and another ReplicationController with replicas
+set to 1 for the canary, with labels tier=frontend, environment=prod, track=canary
+. Now the service is covering both the canary and non-canary pods. But you can mess with the ReplicationControllers separately to test things out, monitor the results, etc.
+Using ReplicationControllers with Services
+Multiple ReplicationControllers can sit behind a single service, so that, for example, some traffic goes to the old version, and some goes to the new version.
+A ReplicationController will never terminate on its own, but it isn't expected to be as long-lived as services. Services may be composed of pods controlled by multiple ReplicationControllers, and it is expected that many ReplicationControllers may be created and destroyed over the lifetime of a service (for instance, to perform an update of pods that run the service). Both services themselves and their clients should remain oblivious to the ReplicationControllers that maintain the pods of the services.
+Writing programs for Replication
+Pods created by a ReplicationController are intended to be fungible and semantically identical, though their configurations may become heterogeneous over time. This is an obvious fit for replicated stateless servers, but ReplicationControllers can also be used to maintain availability of master-elected, sharded, and worker-pool applications. Such applications should use dynamic work assignment mechanisms, such as the [RabbitMQ work queues](https://www.rabbitmq.com/tutorials/tutorial-two-python.html), as opposed to static/one-time customization of the configuration of each pod, which is considered an anti-pattern. Any pod customization performed, such as vertical auto-sizing of resources (for example, cpu or memory), should be performed by another online controller process, not unlike the ReplicationController itself.
+Responsibilities of the ReplicationController
+The ReplicationController ensures that the desired number of pods matches its label selector and are operational. Currently, only terminated pods are excluded from its count. In the future, [readiness](https://issue.k8s.io/620) and other information available from the system may be taken into account, we may add more controls over the replacement policy, and we plan to emit events that could be used by external clients to implement arbitrarily sophisticated replacement and/or scale-down policies.
+The ReplicationController is forever constrained to this narrow responsibility. It itself will not perform readiness nor liveness probes. Rather than performing auto-scaling, it is intended to be controlled by an external auto-scaler (as discussed in [#492](https://issue.k8s.io/492)), which would change its replicas
+field. We will not add scheduling policies (for example, [spreading](https://issue.k8s.io/367#issuecomment-48428019)) to the ReplicationController. Nor should it verify that the pods controlled match the currently specified template, as that would obstruct auto-sizing and other automated processes. Similarly, completion deadlines, ordering dependencies, configuration expansion, and other features belong elsewhere. We even plan to factor out the mechanism for bulk pod creation ([#170](https://issue.k8s.io/170)).
+The ReplicationController is intended to be a composable building-block primitive. We expect higher-level APIs and/or tools to be built on top of it and other complementary primitives for user convenience in the future. The "macro" operations currently supported by kubectl (run, scale) are proof-of-concept examples of this. For instance, we could imagine something like [Asgard](https://netflixtechblog.com/asgard-web-based-cloud-management-and-deployment-2c9fc4e4d3a1) managing ReplicationControllers, auto-scalers, services, scheduling policies, canaries, etc.
+API Object
+Replication controller is a top-level resource in the Kubernetes REST API. More details about the
+API object can be found at:
+[ReplicationController API object](/docs/reference/generated/kubernetes-api/v1.31/#replicationcontroller-v1-core).
+Alternatives to ReplicationController
+ReplicaSet
+[ ReplicaSet](/docs/concepts/workloads/controllers/replicaset/) is the next-generation ReplicationController that supports the new
+[set-based label selector](/docs/concepts/overview/working-with-objects/labels/#set-based-requirement). It's mainly used by
+[Deployment](/docs/concepts/workloads/controllers/deployment/)as a mechanism to orchestrate pod creation, deletion and updates. Note that we recommend using Deployments instead of directly using Replica Sets, unless you require custom update orchestration or don't require updates at all.
+Deployment (Recommended)
+[ Deployment](/docs/concepts/workloads/controllers/deployment/) is a higher-level API object that updates its underlying Replica Sets and their Pods. Deployments are recommended if you want the rolling update functionality, because they are declarative, server-side, and have additional features.
+Bare Pods
+Unlike in the case where a user directly created pods, a ReplicationController replaces pods that are deleted or terminated for any reason, such as in the case of node failure or disruptive node maintenance, such as a kernel upgrade. For this reason, we recommend that you use a ReplicationController even if your application requires only a single pod. Think of it similarly to a process supervisor, only it supervises multiple pods across multiple nodes instead of individual processes on a single node. A ReplicationController delegates local container restarts to some agent on the node, such as the kubelet.
+Job
+Use a [ Job](/docs/concepts/workloads/controllers/job/) instead of a ReplicationController for pods that are expected to terminate on their own
+(that is, batch jobs).
+DaemonSet
+Use a [ DaemonSet](/docs/concepts/workloads/controllers/daemonset/) instead of a ReplicationController for pods that provide a
+machine-level function, such as machine monitoring or machine logging. These pods have a lifetime that is tied
+to a machine lifetime: the pod needs to be running on the machine before other pods start, and are
+safe to terminate when the machine is otherwise ready to be rebooted/shutdown.
+What's next
+- Learn about
+[Pods](/docs/concepts/workloads/pods/). - Learn about
+[Deployment](/docs/concepts/workloads/controllers/deployment/), the replacement for ReplicationController. ReplicationController
+is part of the Kubernetes REST API. Read the[ReplicationController](/docs/reference/kubernetes-api/workload-resources/replication-controller-v1/)object definition to understand the API for replication controllers.
+[Add metadata to use mechanism for API reference links (c889d9b251)](https://github.com/kubernetes/website/commit/c889d9b2510bba78dbb527a79b8e2099b16f3d67)

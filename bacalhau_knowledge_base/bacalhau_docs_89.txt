@@ -1,3 +1,96 @@
-URL: https://docs.bacalhau.org/references/jobs/job/task
+Source: bacalhau_docs
+URL: https://docs.bacalhau.org/examples/molecular-dynamics/coresets-on-bacalhau
 
-Bacalhau Docsv.1.4.0v.1.3.0v.1.3.1v.1.3.2v.1.4.0GitHubSlackContactMoreGitHubSlackContactAsk or SearchCtrl+ KWelcomeGetting StartedHow Bacalhau WorksInstallationCreate NetworkHardware SetupContainer OnboardingDocker WorkloadsWebAssembly (Wasm) WorkloadsSetting UpRunning NodesNode OnboardingGPU InstallationJob selection policyAccess ManagementNode persistenceConnect StorageConfiguration ManagementConfiguring Transport Level SecurityLimits and TimeoutsTest Network LocallyBacalhau WebUIWorkload OnboardingContainerDocker Workload OnboardingWebAssembly (Wasm) WorkloadsBacalhau Docker ImageHow To Work With Custom Containers in BacalhauPythonBuilding and Running Custom Python ContainerRunning Pandas on BacalhauRunning a Python ScriptRunning Jupyter Notebooks on BacalhauScripting Bacalhau with PythonR (language)Building and Running your Custom R Containers on BacalhauRunning a Simple R Script on BacalhauRun CUDA programs on BacalhauRunning a Prolog ScriptReading Data from Multiple S3 Buckets using BacalhauRunning Rust programs as WebAssembly (WASM)Generate Synthetic Data using Sparkov Data Generation techniqueData IngestionCopy Data from URL to Public StoragePinning DataRunning a Job over S3 dataNetworking InstructionsAccessing the Internet from JobsUtilizing NATS.io within BacalhauGPU Workloads SetupAutomatic Update CheckingMarketplace DeploymentsGoogle Cloud MarketplaceGuidesWrite a config.yamlWrite a SpecConfigExamplesData EngineeringUsing Bacalhau with DuckDBEthereum Blockchain Analysis with Ethereum-ETL and BacalhauConvert CSV To Parquet Or AvroSimple Image ProcessingOceanography - Data ConversionVideo ProcessingModel InferenceEasyOCR (Optical Character Recognition) on BacalhauRunning Inference on Dolly 2.0 Model with Hugging FaceSpeech Recognition using WhisperStable Diffusion on a GPUStable Diffusion on a CPUObject Detection with YOLOv5 on BacalhauGenerate Realistic Images using StyleGAN3 and BacalhauStable Diffusion Checkpoint InferenceRunning Inference on a Model stored on S3Model TrainingTraining Pytorch Model with BacalhauTraining Tensorflow ModelStable Diffusion Dreambooth (Finetuning)Molecular DynamicsRunning BIDS Apps on BacalhauCoresets On BacalhauGenomics Data GenerationGromacs for AnalysisMolecular Simulation with OpenMM and BacalhauReferencesJobs GuideJob SpecificationJob TypesTask SpecificationEnginesDocker Engine SpecificationWebAssembly (WASM) Engine SpecificationPublishersIPFS Publisher SpecificationLocal Publisher SpecificationS3 Publisher SpecificationSourcesIPFS Source SpecificationLocal Source SpecificationS3 Source SpecificationURL Source SpecificationNetwork SpecificationInput Source SpecificationResources SpecificationResultPath SpecificationConstraint SpecificationLabels SpecificationMeta SpecificationJob TemplatesQueuing & TimeoutsJob QueuingTimeouts SpecificationJob ResultsStateCLI GuideSingle CLI commandsAgentAgent OverviewAgent AliveAgent NodeAgent VersionConfigConfig OverviewConfig Auto-ResourcesConfig DefaultConfig ListConfig SetJobJob OverviewJob DescribeJob ExecJob ExecutionsJob HistoryJob ListJob LogsJob RunJob StopNodeNode OverviewNode ApproveNode DeleteNode ListNode DescribeNode RejectCLI Commands OverviewCommand MigrationAPI GuideBacalhau API overviewBest PracticesAgent EndpointOrchestrator EndpointMigration APINode ManagementAuthentication & AuthorizationDatabase IntegrationDebuggingDebugging Failed JobsDebugging LocallyOpen Telemetry in BacalhauRunning locally in 'devstack'Setting up Dev EnvironmentHelp & FAQBacalhau FAQsRelease NotesGlossaryIntegrationsApache Airflow Provider for BacalhauLilypadBacalhau Python SDKObservability for WebAssembly WorkloadsCommunitySocial MediaStyle GuideWays to ContributePowered by GitBookTask SpecificationATasksignifies a distinct unit of work within the broader context of aJob. It defines the specifics of how the task should be executed, where the results should be published, what environment variables are needed, among other configurationsTaskParametersName(string : <required>): A unique identifier representing the name of the task.Engine(SpecConfig: required): Configures the execution engine for the task, such asDockerorWebAssembly.Publisher(SpecConfig: optional): Specifies where the results of the task should be published, such asS3andIPFSpublishers. Only applicable for tasks of typebatchandops.Env(map[string]string : optional): A set of environment variables for the driver.Meta(Meta: optional): Allows association of arbitrary metadata with this task.InputSources(InputSource[] : optional): Lists remote artifacts that should be downloaded before task execution and mounted within the task, such as fromS3orHTTP/HTTPs.ResultPaths(ResultPath[] : optional): Indicates volumes within the task that should be included in the published result. Only applicable for tasks of typebatchandops.Resources(Resources: optional): Details the resources that this task requires.Network(Network: optional): Configurations related to the networking aspects of the task.Timeouts(Timeouts: optional): Configurations concerning any timeouts associated with the task.PreviousJob TypesNextEnginesOn this pageWas this helpful?Edit on GitHubExport as PDFGet SupportExpansoSupportUse CasesDistributed ETLEdge MLDistributed Data WarehousingFlett ManagementAbout UsWho we areWhat we valueNews & BlogBlogNewsExpanso (2024). All Rights Reserved.
+Coresets On Bacalhau
+Introduction
+[Coreset ](https://arxiv.org/abs/2011.09384)is a data subsetting method. Since the uncompressed datasets can get very large when compressed, it becomes much harder to train them as training time increases with the dataset size. To reduce training time and cut costs, we employ the coreset method; the coreset method can also be applied to other datasets. In this case, we use the coreset method which can lead to a fast speed in solving the k-means problem among the big data with high accuracy in the meantime.
+We construct a small coreset for arbitrary shapes of numerical data with a decent time cost. The implementation was mainly based on the coreset construction algorithm that was proposed by Braverman et al. (SODA 2021).
+For a deeper understanding of the core concepts, it's recommended to explore:
+1. [Coresets for Ordered Weighted Clustering](http://proceedings.mlr.press/v97/braverman19a/braverman19a.pdf)
+2. [Efficient Implementation of Coreset-based K-Means Methods](https://aaltodoc.aalto.fi/bitstream/handle/123456789/108293/master_Wu_Xiaobo_2021.pdf?sequence=2)
+In this tutorial example, we will run compressed dataset with Bacalhau
+Prerequisite
+To get started, you need to install the Bacalhau client, see more information [here](/getting-started/installation)
+Running Locally
+Clone the repo which contains the code
+Downloading the dataset
+To download the dataset you should open Street Map, which is a public repository that aims to generate and distribute accessible geographic data for the whole world. Basically, it supplies detailed position information, including the longitude and latitude of the places around the world.
+The dataset is a osm.pbf
+(compressed format for .osm
+file), the file can be downloaded from [Geofabrik Download Server](https://download.geofabrik.de/)
+Installing Dependencies
+The following command is installing Linux dependencies:
+Ensure that the requirements.txt
+file contains the following dependencies:
+The following command is installing Python dependencies:
+Running the Script
+To run coreset locally, you need to convert from compressed pbf
+format to geojson
+format:
+The following command is to run the Python script to generate the coreset:
+coreset.py
+contains the following script [here](https://github.com/js-ts/Coreset/blob/master/Coreset/python/coreset.py)
+Containerize Script using Docker
+To build your own docker container, create a Dockerfile
+, which contains instructions on how the image will be built, and what extra requirements will be included.
+We will use the python:3.8
+image, we run the same commands for installing dependencies that we used locally.
+See more information on how to containerize your script/app [here](https://docs.docker.com/get-started/02_our_app/)
+Build the container
+We will run docker build
+command to build the container:
+Before running the command replace:
+hub-user
+with your docker hub username, If you don’t have a docker hub account [follow these instructions to create docker account](https://docs.docker.com/docker-id/), and use the username of the account you created
+repo-name
+with the name of the container, you can name it anything you want
+tag
+this is not required but you can use the latest tag
+In our case:
+Push the container
+Next, upload the image to the registry. This can be done by using the Docker hub username, repo name or tag.
+In our case:
+Running a Bacalhau Job
+After the repo image has been pushed to Docker Hub, we can now use the container for running on Bacalhau. We've already converted the monaco-latest.osm.pbf
+file from compressed pbf
+format to geojson
+format [here](https://github.com/js-ts/Coreset/blob/master/monaco-latest.geojson). To submit a job, run the following Bacalhau command:
+Structure of the command
+Let's look closely at the command above:
+bacalhau docker run
+: call to bacalhau--input https://github.com/js-ts/Coreset/blob/master/monaco-latest.geojson
+: mount themonaco-latest.geojson
+file inside the container so it can be used by the scriptjsace/coreset
+: the name of the docker image we are usingpython Coreset/python/coreset.py -f monaco-latest.geojson -o outputs
+: the script initializes cluster centers, creates a coreset using these centers, and saves the results to the specified folder.
+Additional parameters:
+-k
+: amount of initialized centers (default=5)
+-n
+: size of coreset (default=50)
+-o
+: the output folder
+When a job is submitted, Bacalhau prints out the related job_id
+. We store that in an environment variable so that we can reuse it later on.
+Declarative job description
+The same job can be presented in the [declarative](/references/jobs/job) format. In this case, the description will look like this:
+The job description should be saved in .yaml
+format, e.g. coreset.yaml
+, and then run with the command:
+Checking the State of your Jobs
+Job status: You can check the status of the job using bacalhau job list
+.
+When it says Published
+or Completed
+, that means the job is done, and we can get the results.
+Job information: You can find out more information about your job by using bacalhau job describe
+.
+Job download: You can download your job results directly by using bacalhau job get
+. Alternatively, you can choose to create a directory to store your results. In the command below, we created a directory (results
+) and downloaded our job output to be stored in that directory.
+Viewing your Job Output
+To view the file, run the following command:
+To view the output as a CSV file, run:
+Support
+If you have questions or need support or guidance, please reach out to the [Bacalhau team via Slack](https://bacalhauproject.slack.com/ssb/redirect) (#general channel).
+Last updated

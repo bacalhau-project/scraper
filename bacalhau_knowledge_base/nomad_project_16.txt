@@ -1,299 +1,39 @@
 Source: nomad_project
-URL: https://www.nomadproject.io/docs/drivers/docker
+URL: https://www.nomadproject.io/tools/autoscaling
 
-HashiDaysOne conference. Three cities.Find a city near youDismiss alertHashiCorp DeveloperHashiCorp Cloud PlatformTerraformPackerConsulVaultBoundaryNomadWaypointVagrantNomadInstallIntroTutorialsDocumentationAPIToolsPluginsIntegrationsSearchCommand or control keyK keySign inSign upThemeNomad HomeDocumentationDocumentationInstall NomadUpgradingRelease NotesIntegrationsConceptsConfigurationCommands (CLI)GlossaryJob SpecificationOther SpecificationsTask DriversOverviewDockerExec2Isolated Fork/ExecJavaPodmanQEMURaw Fork/ExecCommunityRemoteDevice PluginsSchedulersRuntimeNetworkingAutoscalingOperationsNomad vs. KubernetesNomad EcosystemNomad PartnershipsWho Uses NomadNomad EnterpriseFAQResourcesTutorial LibraryCommunity Forum(opens in new tab)Support(opens in new tab)GitHub(opens in new tab)DeveloperNomadDocumentationTask DriversDockerv1.8.x (latest)Nomadv1.7.xv1.6.xv1.5.xv1.4.xv1.3.xv1.2.xv1.1.xv1.0.xv0.12.xv0.11.xDocker DriverName:dockerThedockerdriver provides a first-class Docker workflow on Nomad. The Docker
-driver handles downloading containers, mapping ports, and starting, watching,
-and cleaning up after containers.Note:If you are using Docker Desktop for Windows or MacOS, please checkour FAQ.Task Configurationtask"webservice"{driver="docker"config{image="redis:7"labels{group="webservice-cache"}}}Thedockerdriver supports the following configuration in the job spec. Onlyimageis required.image- The Docker image to run. The image may include a tag or custom URL
-and should includehttps://if required. By default it will be fetched from
-Docker Hub. If the tag is omitted or equal tolatestthe driver will always
-try to pull the image. If the image to be pulled exists in a registry that
-requires authentication credentials must be provided to Nomad. Please see theAuthentication section.config{image="https://hub.docker.internal/redis:7"}image_pull_timeout- (Optional) A time duration that controls how long Nomad
-will wait before cancelling an in-progress pull of the Docker image as specified
-inimage. Defaults to"5m".args- (Optional) A list of arguments to the optionalcommand. If nocommandis specified, the arguments are passed directly to the container.
-References to environment variables or anyinterpretable Nomad
-variableswill be interpreted before
-launching the task. For example:config{args=["-bind","${NOMAD_PORT_http}","${nomad.datacenter}","${MY_ENV}","${meta.foo}",]}auth- (Optional) Provide authentication for a private registry (see below).auth_soft_fail(bool: false)- Don't fail the task on an auth failure.
-Attempt to continue without auth. If the Nomad client configuration has anauth.helperblock, the helper will be tried for
-all images, including public images. If you mix private and public images,
-you will need to includeauth_soft_fail=truein every job using a public
-image.command- (Optional) The command to run when starting the container.config{command="my-command"}container_exists_attempts- (Optional) A number of attempts to be made to
-purge a container if during task creation Nomad encounters an existing one in
-non-running state for the same task. Defaults to5.dns_search_domains- (Optional) A list of DNS search domains for
-the container to use. If you are using bridge networking mode with anetworkblock in the task group, you must set all DNS options in
-thenetwork.dnsblock instead.dns_options- (Optional) A list of DNS options for the container
-to use. If you are using bridge networking mode with anetworkblock in the task group, you must set all DNS options in thenetwork.dnsblock instead.dns_servers- (Optional) A list of DNS servers for the container
-to use (e.g.["8.8.8.8", "8.8.4.4"]). Requires Docker v1.10 or
-greater. If you are using bridge networking mode with anetworkblock in the task group, you must set all DNS options in thenetwork.dnsblock instead.entrypoint- (Optional) A string list overriding the image's entrypoint.extra_hosts- (Optional) A list of hosts, given as host:IP, to be added to/etc/hosts. This option may not work as expected inbridgenetwork mode
-when there is more than one task within the same group. Refer to theupgrade guidefor more information.force_pull- (Optional)trueorfalse(default). Always pull most recent image
-instead of using existing local image. Should be set totrueif repository tags
-are mutable. If image's tag islatestor omitted, the image will always be pulled
-regardless of this setting.group_add- (Optional) A list of supplementary groups to be applied
-to the container user.healthchecks- (Optional) A configuration block for controlling how the
-docker driver manages HEALTHCHECK directives built into the container. Sethealthchecks.disableto disable any built-in healthcheck.config{healthchecks{disable=true}}hostname- (Optional) The hostname to assign to the container. When
-launching more than one of a task (usingcount) with this option set, every
-container the task starts will have the same hostname.init- (Optional)trueorfalse(default). Enable init (tini) system when
-launching your container. When enabled, an init process will be used as the PID1
-in the container. Specifying an init process ensures the usual responsibilities
-of an init system, such as reaping zombie processes, are performed inside the
-created container.The default init process used is the firstdocker-initexecutable found in the
-system path of the Docker daemon process. Thisdocker-initbinary, included in
-the default installation, is backed bytini.interactive- (Optional)trueorfalse(default). Keep STDIN open on
-the container.isolation- (Optional) SpecifiesWindows isolationmode:"hyperv"or"process". Defaults to"hyperv".sysctl- (Optional) A key-value map of sysctl configurations to set to the
-containers on start.config{sysctl={"net.core.somaxconn"="16384"}}ulimit- (Optional) A key-value map of ulimit configurations to set to the
-containers on start.config{ulimit{nproc="4242"nofile="2048:4096"}}privileged- (Optional)trueorfalse(default). Privileged mode gives
-the container access to devices on the host. Note that this also requires the
-nomad agent and docker daemon to be configured to allow privileged
-containers.ipc_mode- (Optional) The IPC mode to be used for the container. The default
-isnonefor a private IPC namespace. Other values arehostfor sharing
-the host IPC namespace or the name or id of an existing container. Note that
-it is not possible to refer to Docker containers started by Nomad since their
-names are not known in advance. Note that setting this option also requires the
-Nomad agent to be configured to allow privileged containers.ipv4_address- (Optional) The IPv4 address to be used for the container when
-using user defined networks. Requires Docker 1.13 or greater.ipv6_address- (Optional) The IPv6 address to be used for the container when
-using user defined networks. Requires Docker 1.13 or greater.labels- (Optional) A key-value map of labels to set to the containers on
-start.config{labels{foo="bar"zip="zap"}}load- (Optional) Load an image from atararchive file instead of from a
-remote repository. Equivalent to thedocker load -i <filename>command. If
-you're using anartifactblock to fetch the archive file, you'll need to
-ensure that Nomad keeps the archive intact after download.artifact{source="http://path.to/redis.tar"options{archive=false}}config{load="redis.tar"image="redis"}logging- (Optional) A key-value map of Docker logging options.
-Defaults tojson-filewith log rotation (max-file=2andmax-size=2m).config{logging{type="fluentd"config{fluentd-address="localhost:24224"tag="your_tag"}}}mac_address- (Optional) The MAC address for the container to use (e.g.
-"02:68:b3:29:da:98").memory_hard_limit- (Optional) The maximum allowable amount of memory used
-(megabytes) by the container. If set, thememoryparameter of the task resource configuration becomes a soft limit passed to the
-docker driver as--memory_reservation,
-andmemory_hard_limitis passed as the--memoryhard limit. When the host is under memory pressure, the behavior of soft limit
-activation is governed by theKernel.network_aliases- (Optional) A list of network-scoped aliases, provide a way for a
-container to be discovered by an alternate name by any other container within
-the scope of a particular network. Network-scoped alias is supported only for
-containers in user defined networksconfig{network_mode="user-network"network_aliases=["${NOMAD_TASK_NAME}","${NOMAD_TASK_NAME}-${NOMAD_ALLOC_INDEX}"]}network_mode- (Optional) The network mode to be used for the container. In
-order to support userspace networking plugins in Docker 1.9 this accepts any
-value. The default isbridgefor all operating systems but Windows, which
-defaults tonat. Other networking modes may not work without additional
-configuration on the host (which is outside the scope of Nomad). Valid values
-pre-docker 1.9 aredefault,bridge,host,none, orcontainer:name.The defaultnetwork_modefor tasks that use group networking inbridgemode will becontainer:<name>, where the name is the container name of the
-parent container used to share network namespaces between tasks. If you set
-the groupnetwork.modeto"bridge"you should not set this Dockernetwork_modeconfig, otherwise the container will be unable to reach other
-containers in the task group. This will also preventConnect-enabled tasks
-from reaching the Envoy sidecar proxy. You must also set any DNS options in
-thenetwork.dnsblock and not in the task configuration.If you are in the process of migrating from the default Docker network to
-group-wide bridge networking, you may encounter issues preventing your
-containers from reaching networks outside of the bridge interface on systems with
-firewalld enabled. This behavior is often caused by the CNI plugin not registering the group
-network as trusted and can be resolved as described in thenetwork blockdocumentation.oom_score_adj- (Optional) A positive integer to indicate the likelihood of
-the task being OOM killed (valid only for Linux). Defaults to 0.pid_mode- (Optional)hostor not set (default). Set tohostto share
-the PID namespace with the host. Note that this also requires the Nomad agent
-to be configured to allow privileged containers.
-See below for more details.ports- (Optional) A list of port labels to map into the container (see below).port_map- (Optional)DeprecatedA key-value map of port labels (see below).security_opt- (Optional) A list of string flags to pass directly to--security-opt.
-For example:config{security_opt=["credentialspec=file://gmsaUser.json",]}shm_size- (Optional) The size (bytes) of /dev/shm for the container.storage_opt- (Optional) A key-value map of storage options set to the containers on start.
-This overrides thehost dockerd configuration.
-For example:config{storage_opt={size="40G"}}tty- (Optional)trueorfalse(default). Allocate a pseudo-TTY for the
-container.uts_mode- (Optional)hostor not set (default). Set tohostto share
-the UTS namespace with the host. Note that this also requires the Nomad agent
-to be configured to allow privileged containers.userns_mode- (Optional)hostor not set (default). Set tohostto use
-the host's user namespace (effectively disabling user namespacing) when user
-namespace remapping is enabled on the docker daemon. This field has no
-effect if the docker daemon does not have user namespace remapping enabled.volumes- (Optional) A list ofhost_path:container_pathstrings to bind
-host paths to container paths. Mounting host paths outside of theallocation
-working directoryis prevented by default and limits volumes to directories
-that exist inside the allocation working directory. You can allow mounting
-host paths outside of theallocation working directoryon individual clients
-by setting thedocker.volumes.enabledoption totruein theclient's configuration. We recommend usingmountif you wish to have more control over volume definitions.config{volumes=[# Use absolute paths to mount arbitrary paths on the host"/path/on/host:/path/in/container",# Use relative paths to rebind paths already in the allocation dir"relative/to/task:/also/in/container"]}volume_driver- (Optional) The name of the volume driver used to mount
-volumes. Must be used along withvolumes. Ifvolume_driveris omitted,
-then relative paths will be mounted from inside the allocation dir. If a"local"or other driver is used, then they may be named volumes instead.
-Ifdocker.volumes.enabledis false then volume drivers and paths outside the
-allocation directory are disallowed.config{volumes=[# Use named volume created outside nomad."name-of-the-volume:/path/in/container"]# Name of the Docker Volume Driver used by the containervolume_driver="pxd"}work_dir- (Optional) The working directory inside the container.mount-Since 1.0.1(Optional) Specify amountto be mounted into the container. Volume, bind, and tmpfs type mounts are supported. May be specified multiple times.config{# sample volume mountmount{type="volume"target="/path/in/container"source="name-of-volume"readonly=falsevolume_options{no_copy=falselabels{foo="bar"}driver_config{name="pxd"options{foo="bar"}}}}# sample bind mountmount{type="bind"target="/path/in/container"source="/path/in/host"readonly=falsebind_options{propagation="rshared"}}# sample tmpfs mountmount{type="tmpfs"target="/path/in/container"readonly=falsetmpfs_options{size=100000# size in bytes}}}mounts- (deprecated: Replaced bymountin 1.0.1) (Optional) A list ofmountsto be mounted into the container. Volume, bind, and tmpfs type mounts are supported.config{mounts=[# sample volume mount{type="volume"target="/path/in/container"source="name-of-volume"readonly=falsevolume_options={no_copy=falselabels={foo="bar"}driver_config={name="pxd"options={foo="bar"}}}},# sample bind mount{type="bind"target="/path/in/container"source="/path/in/host"readonly=falsebind_options={propagation="rshared"}},# sample tmpfs mount{type="tmpfs"target="/path/in/container"readonly=falsetmpfs_options={size=100000# size in bytes}}]}devices- (Optional) A list ofdevicesto be exposed the container.host_pathis the only required field. By default, the container will be able toread,writeandmknodthese devices. Use the optionalcgroup_permissionsfield to restrict permissions.config{devices=[{host_path="/dev/sda1"container_path="/dev/xvdc"cgroup_permissions="r"},{host_path="/dev/sda2"container_path="/dev/xvdd"}]}cap_add- (Optional) A list of Linux capabilities as strings to pass
-directly to--cap-add. Effective capabilities (computed fromcap_addandcap_drop) must be a subset of the allowed capabilities configured with
-theallow_capsplugin option key in the client node's
-configuration. Note that"all"is not permitted here if theallow_capsfield in the driver configuration doesn't also allow all capabilities. For
-example:config{cap_add=["net_raw","sys_time"]}cap_drop- (Optional) A list of Linux capabilities as strings to pass
-directly to--cap-drop. Effective capabilities (computed fromcap_addandcap_drop) must be a subset of the allowed capabilities configured with
-theallow_capsplugin option key in the client node's
-configuration. For example:config{cap_drop=["mknod"]}cpu_hard_limit- (Optional)trueorfalse(default). Use hard CPU
-limiting instead of soft limiting. By default this isfalsewhich means
-soft limiting is used and containers are able to burst above their CPU limit
-when there is idle capacity.cpu_cfs_period- (Optional) An integer value that specifies the duration in microseconds of the period
-during which the CPU usage quota is measured. The default is 100000 (0.1 second) and the maximum allowed
-value is 1000000 (1 second). Seeherefor more details.advertise_ipv6_address- (Optional)trueorfalse(default). Use the container's
-IPv6 address (GlobalIPv6Address in Docker) when registering services and checks.
-SeeIPv6 Docker containersfor details.readonly_rootfs- (Optional)trueorfalse(default). Mount
-the container's filesystem as read only.runtime- (Optional) A string representing a configured runtime to pass to docker.
-This is equivalent to the--runtimeargument in the docker CLI
-For example, to use gVisor:config{# gVisor runtime is runscruntime="runsc"}pids_limit- (Optional) An integer value that specifies the pid limit for
-the container. Defaults to unlimited.Additionally, the docker driver supports customization of the container's user through the task'suseroption.Container NameNomad creates a container after pulling an image. Containers are named{taskName}-{allocId}. This is necessary in order to place more than one
-container from the same task on a host (e.g. with count > 1). This also means
-that each container's name is unique across the cluster.This is not configurable.AuthenticationIf you want to pull from a private repo (for example on dockerhub or quay.io),
-you will need to specify credentials in your job via:theauthoption in the task config.by storing explicit repository credentials or by specifying DockercredHelpersin a file and setting the authconfigvalue on the client in the plugin options.by specifying an authhelperon the client in the
-plugin options.Theauthobject supports the following keys:username- (Optional) The account username.password- (Optional) The account password.email- (Optional) The account email.server_address- (Optional) The server domain/IP without the protocol.
-Docker Hub is used by default.Example task-config:task"example"{driver="docker"config{image="secret/service"auth{username="dockerhub_user"password="dockerhub_password"}}}Example docker-config, using two helper scripts in$PATH,
-"docker-credential-ecr-login" and "docker-credential-vault":{"auths":{"internal.repo":{"auth":"`echo -n '<username>:<password>' | base64 -w0`"}},"credHelpers":{"<XYZ>.dkr.ecr.<region>.amazonaws.com":"ecr-login"},"credsStore":"secretservice"}Example agent configuration, using a helper script
-"docker-credential-ecr-login" in$PATHclient{enabled=true}plugin"docker"{config{auth{# Nomad will prepend "docker-credential-" to the helper value and call# that script name.helper="ecr-login"}}}Be Careful!At this time these credentials are stored in Nomad in plain
-text. Secrets management will be added in a later release.Insecure RegistriesIn order to pull images from a registry without TLS, you must configure the
-Docker daemon'sinsecure-registriesflag. No additional Nomad client
-configuration is required. You should only allow insecure registries for
-registries running locally on the client or when the communication to the
-registry is otherwise encrypted. List theinsecure-registriesflag in thedockerdconfiguration file.{"insecure-registries":["example.local:5000"]}NetworkingDocker supports a variety of networking configurations, including using host
-interfaces, SDNs, etc. Nomad usesbridgednetworking by default, like Docker.You can specify other networking options, including custom networking plugins
-in Docker 1.9.You may need to perform additional configuration on the host
-in order to make these work.This additional configuration is outside the
-scope of Nomad.Allocating PortsYou can allocate ports to your task using the port syntax described on thenetworking page. Here is a recap:group{network{port"http"{}port"https"{}}task"example"{driver="docker"config{ports=["http","https"]}}}Forwarding and Exposing PortsA Docker container typically specifies which port a service will listen on by
-specifying theEXPOSEdirective in theDockerfile.Because dynamic ports will not match the ports exposed in your Dockerfile,
-Nomad will automatically expose any ports specified in theportsfield.These ports will be identified via environment variables. For example:group{network{port"http"{}}task"api"{driver="docker"config{ports=["http"]}}}If Nomad allocates port23332to your api task forhttp,23332will be
-automatically exposed and forwarded to your container, and the driver will set
-an environment variableNOMAD_PORT_httpwith the value23332that you can
-read inside your container.This provides an easy way to use thehostnetworking option for better
-performance.Using the Port MapIf you prefer to use the traditional port-mapping method, you can specify the
-thetofield in the port configuration. It looks like this:group"example"{network{port"redis"{ to=6379}}task"example"{driver="docker"config{image="redis"ports=["redis"]}}}If Nomad allocates port23332to your allocation, the Docker driver will
-automatically setup the port mapping from23332on the host to6379in your
-container, so it will just work.Note that by default this only works withbridgednetworking mode. It may
-also work with custom networking plugins which implement the same API for
-expose and port forwarding.Deprecatedport_mapSyntaxUp until Nomad 0.12, ports could be specified in a task's resource block and set using the dockerport_mapfield. As more features have been added to the group network resource allocation, task based
-network resources are deprecated. With it theport_mapfield is also deprecated and can only be used
-with task network resources.Users should migrate their jobs to define ports in the group network block and specified which ports
-a task maps with theportsfield.Advertising Container IPsWhen using network plugins likeweavethat assign containers a routable IP
-address, that address will automatically be used in anyserviceadvertisements for the task. You may override what address is advertised by
-using theaddress_modeparameter on aservice. Seeservicefor details.Networking ProtocolsThe Docker driver configures ports on both thetcpandudpprotocols.This is not configurable.Other Networking ModesSome networking modes likecontainerornonewill require coordination
-outside of Nomad. First-class support for these options may be improved later
-through Nomad plugins or dynamic job configuration.CapabilitiesThedockerdriver implements the followingcapabilities.FeatureImplementationnomad alloc signaltruenomad alloc exectruefilesystem isolationimagenetwork isolationhost, group, taskvolume mountingallClient RequirementsNomad requires Docker to be installed and running on the host alongside the
-Nomad agent.By default Nomad communicates with the Docker daemon using the daemon's Unix
-socket. Nomad will need to be able to read/write to this socket. If you do not
-run Nomad as root, make sure you add the Nomad user to the Docker group so
-Nomad can communicate with the Docker daemon.For example, on Ubuntu you can use theusermodcommand to add thenomaduser to thedockergroup so you can run Nomad without root:$sudo usermod -G docker -a nomadFor the best performance and security features you should use recent versions
-of the Linux Kernel and Docker daemon.If you would like to change any of the options related to thedockerdriver
-on a Nomad client, you can modify them with theplugin blocksyntax. Below is an example of a configuration (many of the values are the
-default). See the next section for more information on the options.plugin"docker"{config{endpoint="unix:///var/run/docker.sock"auth{config="/etc/docker-auth.json"helper="ecr-login"}tls{cert="/etc/nomad/nomad.pub"key="/etc/nomad/nomad.pem"ca="/etc/nomad/nomad.cert"}extra_labels=["job_name","job_id","task_group_name","task_name","namespace","node_name","node_id"]gc{image=trueimage_delay="3m"container=truedangling_containers{enabled=truedry_run=falseperiod="5m"creation_grace="5m"}}volumes{enabled=trueselinuxlabel="z"}allow_privileged=falseallow_caps=["chown","net_raw"]}}Plugin Optionsendpoint- If using a non-standard socket, HTTP or another location, or if
-TLS is being used, docker.endpoint must be set. If unset, Nomad will attempt
-to instantiate a Docker client using theDOCKER_HOSTenvironment variable and
-then fall back to the default listen address for the given operating system.
-Defaults tounix:///var/run/docker.sockon Unix platforms andnpipe:////./pipe/docker_enginefor Windows.allow_privileged- Defaults tofalse. Changing this to true will allow
-containers to use privileged mode, which gives the containers full access to
-the host's devices. Note that you must set a similar setting on the Docker
-daemon for this to work.pull_activity_timeout- Defaults to2m. If Nomad receives no communication
-from the Docker engine during an image pull within this timeframe, Nomad will
-time out the request that initiated the pull command. (Minimum of1m)pids_limit- Defaults to unlimited (0). An integer value that specifies
-the pid limit for all the Docker containers running on that Nomad client. You
-can override this limit by settingpids_limitin your task config. If
-this value is greater than0, your taskpids_limitmust be less than or
-equal to the value defined here.allow_caps- A list of allowed Linux capabilities. Defaults to["audit_write","chown","dac_override","fowner","fsetid","kill","mknod","net_bind_service","setfcap","setgid","setpcap","setuid","sys_chroot"]which is the same list of capabilities allowed bydocker by
-default(withoutNET_RAW). Allows the operator
-to control which capabilities can be obtained by tasks usingcap_addandcap_dropoptions. Supports the value"all"as a shortcut for allow-listing all capabilities supported by the
-operating system. Note that due to a limitation in Docker, tasks running as
-non-root users cannot expand the capabilities set beyond the default. They can
-only have their capabilities reduced.Warning:Allowing more capabilities beyond the default may lead to
-undesirable consequences, including untrusted tasks being able to compromise the
-host system.allow_runtimes- defaults to["runc", "nvidia"]- A list of the allowed
-docker runtimes a task may use.authblock:config- Allows an operator to specify a
-JSON file which is in the dockercfg format containing authentication
-information for a private registry, from either (in order)auths,credsStoreorcredHelpers.helper- Allows an operator to specify acredsStorelike script on$PATHto lookup authentication information from external
-sources. The script's name must begin withdocker-credential-and this
-option should include only the basename of the script, not the path.If you set an auth helper, it will be tried for all images, including
-public images. If you mix private and public images, you will need to
-includeauth_soft_fail=truein every job using a public image.tlsblock:cert- Path to the server's certificate file (.pem). Specify this
-along withkeyandcato use a TLS client to connect to the docker
-daemon.endpointmust also be specified or this setting will be ignored.key- Path to the client's private key (.pem). Specify this along withcertandcato use a TLS client to connect to the docker daemon.endpointmust also be specified or this setting will be ignored.ca- Path to the server's CA file (.pem). Specify this along withcertandkeyto use a TLS client to connect to the docker daemon.endpointmust also be specified or this setting will be ignored.disable_log_collection- Defaults tofalse. Setting this to true will
-disable Nomad logs collection of Docker tasks. If you don't rely on nomad log
-capabilities and exclusively use host based log aggregation, you may consider
-this option to disable nomad log collection overhead.extra_labels- Extra labels to add to Docker containers.
-Available options arejob_name,job_id,task_group_name,task_name,namespace,node_name,node_id. Globs are supported (e.g.task*)loggingblock:type- Defaults to"json-file". Specifies the logging driver docker
-should use for all containers Nomad starts. Note that for older versions
-of Docker, onlyjson-filefile orjournaldwill allow Nomad to read
-the driver's logs via the Docker API, and this will prevent commands such
-asnomad alloc logsfrom functioning.config- Defaults to{ max-file = "2", max-size = "2m" }. This option
-can also be used to pass furtherconfigurationto the logging driver.gcblock:image- Defaults totrue. Changing this tofalsewill prevent Nomad
-from removing images from stopped tasks.image_delay- A time duration, asdefined
-here, that defaults to3m.
-The delay controls how long Nomad will wait between an image being unused
-and deleting it. If a task is received that uses the same image within
-the delay, the image will be reused. If an image is referenced by more than
-one tag,image_delaymay not work correctly.container- Defaults totrue. This option can be used to disable Nomad
-from removing a container when the task exits. Under a name conflict,
-Nomad may still remove the dead container.dangling_containersblock for controlling dangling container detection
-and cleanup:enabled- Defaults totrue. Enables dangling container handling.dry_run- Defaults tofalse. Only log dangling containers without
-cleaning them up.period- Defaults to"5m". A time duration that controls interval
-between Nomad scans for dangling containers.creation_grace- Defaults to"5m". Grace period after a container is
-created during which the GC ignores it. Only used to prevent the GC from
-removing newly created containers before they are registered with the
-GC. Should not need adjusting higher but may be adjusted lower to GC
-more aggressively.volumesblock:enabled- Defaults tofalse. Allows tasks to bind host paths
-(volumes) inside their container and use volume drivers
-(volume_driver). Binding relative paths is always allowed and will be
-resolved relative to the allocation's directory.selinuxlabel- Allows the operator to set a SELinux label to the
-allocation and task local bind-mounts to containers. If used withdocker.volumes.enabledset to false, the labels will still be applied to
-the standard binds in the container.infra_image- This is the Docker image to use when creating the parent
-container necessary when sharing network namespaces between tasks. Defaults togcr.io/google_containers/pause-<goarch>:3.1. The image will only be pulled from
-the container registry if its tag islatestor the image doesn't yet exist locally.infra_image_pull_timeout- A time duration that controls how long Nomad will
-wait before cancelling an in-progress pull of the Docker image as specified ininfra_image. Defaults to"5m".windows_allow_insecure_container_admin- Indicates that on windows, docker
-checks thetask.userfield or, if unset, the container image manifest after
-pulling the container, to see if it's running asContainerAdmin. If so, exits
-with an error unless the task config hasprivileged=true. Defaults tofalse.Client ConfigurationNote: client configuration options will soon be deprecated. Please useplugin optionsinstead. See theplugin blockdocumentation for more information.Thedockerdriver has the followingclient configuration
-options:docker.endpoint- If using a non-standard socket, HTTP or another location,
-or if TLS is being used,docker.endpointmust be set. If unset, Nomad will
-attempt to instantiate a Docker client using theDOCKER_HOSTenvironment
-variable and then fall back to the default listen address for the given
-operating system. Defaults tounix:///var/run/docker.sockon Unix platforms
-andnpipe:////./pipe/docker_enginefor Windows.docker.auth.config- Allows an operator to specify a
-JSON file which is in the dockercfg format containing authentication
-information for a private registry, from either (in order)auths,credsStoreorcredHelpers.docker.auth.helper- Allows an operator to specify acredsStore-like script on\$PATH to lookup authentication information from external
-sources. The script's name must begin withdocker-credential-and this
-option should include only the basename of the script, not the path.docker.tls.cert- Path to the server's certificate file (.pem). Specify
-this along withdocker.tls.keyanddocker.tls.cato use a TLS client to
-connect to the docker daemon.docker.endpointmust also be specified or this
-setting will be ignored.docker.tls.key- Path to the client's private key (.pem). Specify this
-along withdocker.tls.certanddocker.tls.cato use a TLS client to
-connect to the docker daemon.docker.endpointmust also be specified or this
-setting will be ignored.docker.tls.ca- Path to the server's CA file (.pem). Specify this along
-withdocker.tls.certanddocker.tls.keyto use a TLS client to connect to
-the docker daemon.docker.endpointmust also be specified or this setting
-will be ignored.docker.cleanup.imageDefaults totrue. Changing this tofalsewill
-prevent Nomad from removing images from stopped tasks.docker.cleanup.image.delayA time duration, asdefined
-here, that defaults to3m. The
-delay controls how long Nomad will wait between an image being unused and
-deleting it. If a tasks is received that uses the same image within the delay,
-the image will be reused.docker.volumes.enabled: Defaults tofalse. Allows tasks to bind host paths
-(volumes) inside their container and use volume drivers (volume_driver).
-Binding relative paths is always allowed and will be resolved relative to the
-allocation's directory.docker.volumes.selinuxlabel: Allows the operator to set a SELinux label to
-the allocation and task local bind-mounts to containers. If used withdocker.volumes.enabledset to false, the labels will still be applied to the
-standard binds in the container.docker.privileged.enabledDefaults tofalse. Changing this totruewill
-allow containers to useprivilegedmode, which gives the containers full
-access to the host's devices. Note that you must set a similar setting on the
-Docker daemon for this to work.docker.caps.allowlist: A list of allowed Linux capabilities. Defaults to"CHOWN,DAC_OVERRIDE,FSETID,FOWNER,MKNOD,NET_RAW,SETGID,SETUID,SETFCAP, SETPCAP,NET_BIND_SERVICE,SYS_CHROOT,KILL,AUDIT_WRITE", which is the list of
-capabilities allowed by docker by default, asdefined
-here.
-Allows the operator to control which capabilities can be obtained by tasks
-usingcap_addandcap_dropoptions. Supports the value"ALL"as a
-shortcut for allowlisting all capabilities.docker.cleanup.container: Defaults totrue. This option can be used to
-disable Nomad from removing a container when the task exits. Under a name
-conflict, Nomad may still remove the dead container.docker.nvidia_runtime: Defaults tonvidia. This option allows operators to select the runtime that should be used in order to expose Nvidia GPUs to the container.Note: When testing or using the-devflag you can useDOCKER_HOST,DOCKER_TLS_VERIFY, andDOCKER_CERT_PATHto customize Nomad's behavior. Ifdocker.endpointis set Nomad willonlyread client configuration from the
-config file.An example is given below:client{options{"docker.cleanup.image"="false"}}Client AttributesThedockerdriver will set the following client attributes:driver.docker- This will be set to "1", indicating the driver is
-available.driver.docker.bridge_ip- The IP of the Docker bridge network if one
-exists.driver.docker.version- This will be set to version of the docker server.Here is an example of using these properties in a job file:job"docs"{# Require docker version higher than 1.2.constraint{attribute="${attr.driver.docker.version}"operator=">"version="1.2"}}Resource IsolationCPUNomad limits containers' CPU based on CPU shares. CPU shares allow containers
-to burst past their CPU limits. CPU limits will only be imposed when there is
-contention for resources. When the host is under load your process may be
-throttled to stabilize QoS depending on how many shares it has. You can see how
-many CPU shares are available to your process by readingNOMAD_CPU_LIMIT.
-1000 shares are approximately equal to 1 GHz.Please keep the implications of CPU shares in mind when you load test workloads
-on Nomad.If resourcescoresis set, the task is given an isolated reserved set of
-CPU cores to make use of. The total set of cores the task may run on is the private
-set combined with the variable set of unreserved cores. The private set of CPU cores
-is available to your process by readingNOMAD_CPU_CORES.MemoryNomad limits containers' memory usage based on total virtual memory. This means
-that containers scheduled by Nomad cannot use swap. This is to ensure that a
-swappy process does not degrade performance for other workloads on the same
-host.Since memory is not an elastic resource, you will need to make sure your
-container does not exceed the amount of memory allocated to it, or it will be
-terminated or crash when it tries to malloc. A process can inspect its memory
-limit by readingNOMAD_MEMORY_LIMIT, but will need to track its own memory
-usage. Memory limit is expressed in megabytes so 1024 = 1 GB.IONomad's Docker integration does not currently provide QoS around network or
-filesystem IO. These will be added in a later release.SecurityDocker provides resource isolation by way ofcgroups and namespaces.
-Containers essentially have a virtual file system all to themselves. If you
-need a higher degree of isolation between processes for security or other
-reasons, it is recommended to use full virtualization likeQEMU.CaveatsDangling ContainersNomad has a detector and a reaper for dangling Docker containers,
-containers that Nomad starts yet does not manage or track. Though rare, they
-lead to unexpectedly running services, potentially with stale versions.When Docker daemon becomes unavailable as Nomad starts a task, it is possible
-for Docker to successfully start the container but return a 500 error code from
-the API call. In such cases, Nomad retries and eventually aims to kill such
-containers. However, if the Docker Engine remains unhealthy, subsequent retries
-and stop attempts may still fail, and the started container becomes a dangling
-container that Nomad no longer manages.The newly added reaper periodically scans for such containers. It only targets
-containers with acom.hashicorp.nomad.allocation_idlabel, or match Nomad's
-conventions for naming and bind-mounts (i.e./alloc,/secrets,local).
-Containers that don't match Nomad container patterns are left untouched.Operators can run the reaper in a dry-run mode, where it only logs dangling
-container ids without killing them, or disable it by setting thegc.dangling_containersconfig block.Docker for WindowsDocker for Windows only supports running Windows containers. Because Docker for
-Windows is relatively new and rapidly evolving you may want to consult thelist of relevant issues on GitHub.Edit this page on GitHubOn this page:Docker DriverTask ConfigurationInsecure RegistriesNetworkingCapabilitiesClient RequirementsPlugin OptionsClient ConfigurationClient AttributesResource IsolationCaveatsThemeCertificationsSystem StatusCookie ManagerTerms of UseSecurityPrivacyTrademark PolicyTrade ControlsAccessibilityGive Feedback(opens in new tab)
+Nomad Autoscaler Overview
+This section details the Nomad Autoscaler, a horizontal application and cluster
+autoscaler for Nomad. The Nomad Autoscaler is built and released separately to
+Nomad. It runs as a daemon process, often referred to as the [Autoscaler Agent](/nomad/tools/autoscaling/agent).
+An Autoscaler Agent is a separate and distinct process from a Nomad Agent. The
+source code can be viewed on [GitHub](https://github.com/hashicorp/nomad-autoscaler) and releases are available
+on the [HashiCorp releases page](https://releases.hashicorp.com/nomad-autoscaler/) or via [Docker Hub](https://hub.docker.com/r/hashicorp/nomad-autoscaler).
+The Nomad Autoscaler repository includes a number of [demos](https://github.com/hashicorp/nomad-autoscaler-demos)
+which provide guided learning on running the Nomad AutoScaler. Since Autoscaler
+Agent runs as its own daemon, it requires its own configuration. Configuration
+can be passed as command line flags or parsed from a configuration file. The demos
+repository includes an example [config](https://github.com/hashicorp/nomad-autoscaler-demos/blob/1ecd9f32c749f1faaf4154b8a7e57fa68642fd33/cloud/demos/on-demand-batch/aws/jobs/autoscaler.nomad.tpl#L20) file that is useful to
+reference when configuring your Autoscaler Agent.
+Horizontal Application Autoscaling
+Horizontal application autoscaling is the process of automatically controlling the
+number of instances of an application to have sufficient work throughput to meet
+service-level agreements (SLA). In Nomad, horizontal application autoscaling can
+be achieved by modifying the number of allocations in a task group based on the
+value of a relevant metric, such as CPU and memory utilization or number of open
+connections. This is enabled by configuring [autoscaling policies](/nomad/tools/autoscaling/policy)
+on individual Nomad jobs using the [ scaling block](/nomad/docs/job-specification/scaling#scaling-block).
+Horizontal Cluster Autoscaling
+Horizontal cluster autoscaling is the process of adding or removing Nomad clients
+from a cluster to ensure there is an appropriate amount of cluster resource for
+the scheduled applications. This is achieved by interacting with remote providers
+to start or terminate new Nomad clients based on metrics such as the remaining
+free schedulable CPU or memory. Cluster scaling is enabled by configuring the
+[autoscaler agent](/nomad/tools/autoscaling/agent#dir) with policies targeting the Nomad
+cluster.
+Dynamic Application Sizing
+This functionality only exists in Nomad Autoscaler Enterprise. This is not present in the open source version of Nomad Autoscaler.
+Dynamic Application Sizing enables organizations to optimize the resource consumption of applications using sizing recommendations from Nomad. It evaluates, processes and stores historical task resource usage data, making recommendations for CPU and Memory resource parameters. The recommendations can be calculated using a number of different algorithms to ensure the recommendation best fits the application profile.
+Dynamic Application Sizing can be enabled on an individual task by configuring
+[autoscaling policies](/nomad/tools/autoscaling/policy) within the task block using the job
+specification [ scaling block](/nomad/docs/job-specification/scaling#scaling-block).
+[Edit this page on GitHub](https://github.com/hashicorp/nomad/blob/main/website/content/tools/autoscaling/index.mdx)

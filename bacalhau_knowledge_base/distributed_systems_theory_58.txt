@@ -1,4 +1,0 @@
-URL: https://www.the-paper-trail.org/%20/tags/paxos
-
-Paper TrailBlogpaxos20122012-11-03On some subtleties of Paxos20092009-02-09Consensus Protocols: A Paxos Implementation2009-02-03Consensus Protocols: Paxos©  - 2023 ·Paper Trail·
-  ThemeSimplenessPowered byHugo·

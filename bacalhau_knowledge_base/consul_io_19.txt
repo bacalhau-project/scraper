@@ -1,9 +1,91 @@
-URL: https://www.consul.io/docs/security/acl
+Source: consul_io
+URL: https://www.consul.io/docs/security/encryption
 
-HashiDaysOne conference. Three cities.Find a city near youDismiss alertHashiCorp DeveloperHashiCorp Cloud PlatformTerraformPackerConsulVaultBoundaryNomadWaypointVagrantConsulInstallTutorialsDocumentationAPICLITry Cloud(opens in new tab)SearchCommand or control keyK keySign inSign upThemeConsul HomeDocumentationDocumentationWhat is Consul?Why Choose Consul?Core ConceptsGet StartedArchitectureRelease NotesUpgradeServicesService MeshDynamic App ConfigurationSecurityOverviewAccess Control (ACLs)ACL System OverviewTokensPoliciesRolesRules ReferenceACLs in Federated DatacentersAuth MethodsEncryptionSecurity ModelsAgentIntegrationsTroubleshootKubernetesNomadAWS ECSAWS LambdaHCP Consul DedicatedConsul EnterpriseNetwork Infrastructure AutomationResourcesTutorial LibraryCertificationsCommunity Forum(opens in new tab)Support(opens in new tab)GitHub(opens in new tab)DeveloperConsulDocumentationSecurityAccess Control (ACLs)v1.19.x (latest)Consulv1.18.xv1.17.xv1.16.xv1.15.xv1.14.xv1.13.xv1.12.xv1.11.xv1.10.xv1.9.xv1.8.xAccess Control List (ACL) overviewThis topic describes core concepts associated with the optional access control list (ACL) system shipped with Consul. ACLs authenticate requests and authorize access to resources. They also control access to the Consul UI, API, and CLI, as well as secure service-to-service and agent-to-agent communication.Refer to theACL API referenceandACL CLI referencefor additional usage information.Workflow overviewImplementations may vary depending on the needs of the organization, but the following procedure describes the basic workflow for creating and implementing ACLs:The person responsible for administrating ACLs in your organization specifies one or more authentication rules to define apolicy.The ACL administrator uses the Consul API to generate and link atokento one or more policies. The following diagram illustrates the relationship between rules, policies, and tokens:The ACL administrator can create and link additional artifacts to tokens, such astemplated policies,service identities,node identities, androlesthat enable policies to accommodate more complex requirements.Tokens are distributed to end users and incorporated into their services.Agents and services present the token when making requests.Consul evaluates the token to determine if the request has permission to interact with the requested resource.TokensACL tokens are the core method of authentication in Consul. Tokens contain several attributes, but the value of theSecretIDfield (sometimes referred to as the ACL token) is the attribute that you or your service must include to identify the person or system making the request. Your ACL administrator may also use the token'sAccessorIDfor audit logging purposes.Refer to the following topics for details about tokens:TokensACL token command lineACL tokens APIPoliciesAn ACL policy is a set of rules that grant or deny access to resources in the network.
-The person responsible for administrating ACLs in your organization will assemble and create policies and link them to tokens.
-Tokens are the artifacts distributed to users so that they can be implemented.
-In addition to the rules that authenticate access to services, several attributes may be assigned policies that determine their scope.Refer to the following topics for details about policies:PoliciesACL policy command lineACL policy APIRolesA role is a collection of policies that your ACL administrator can link to a token.
-They enable you to reuse policies by decoupling the policies from the token distributed to team members.
-Instead, the token is linked to the role, which is able to hold several policies that can be updated asynchronously without distributing new tokens to users.
-As a result, roles can provide a more convenient authentication infrastructure than creating unique policies and tokens for each requester.Refer to theRolestopic for additional information.Templated policiesTemplated policies are configuration blocks that you can add to token and role configurations. Consul uses them to generate a policy. Consul links the generated policy to the role or token, which provides the required access to a particular resource.You can use them during the authorization process to automatically generate a policy for common use-cases, rather than creating multiple identical policies or digging through the permission system to understand permissions.Refer to the following topics for more details about policies:API documentation for templated policiesAPI documentation for rolesAPI documentation for tokensService identitiesService identities are configuration blocks that you can add to role configurations or specify when linking tokens to policies. You can use them during the authorization process to automatically generate a policy for specific services. The policy is linked to the role or token, allowing the services to be discovered and to discover other healthy service instances in a service mesh.Service identities enable you to quickly construct policies for services, rather than creating identical policies for each service.Refer to the following topics for additional information about service identities:Service IdentitiesAPI documentation for rolesNode identitiesNode identities are configuration blocks that you can add to role configurations or specify when linking tokens to policies. You can use them during the authorization process to automatically generate a policy for specific nodes. When you configure the agent, you can specify the token linked to the policy withacl_tokens_agent.Use node identities to quickly construct policies for multiple nodes, rather than creating identical polices for each individual node.Refer to the following topics for additional information about node identities:Node IdentitiesAPI documentation for rolesEdit this page on GitHubOn this page:Access Control List (ACL) overviewWorkflow overviewTokensPoliciesRolesTemplated policiesService identitiesNode identitiesThemeCertificationsSystem StatusCookie ManagerTerms of UseSecurityPrivacyTrademark PolicyTrade ControlsAccessibilityGive Feedback(opens in new tab)
+Encryption
+The Consul agent supports encrypting all of its network traffic. The exact
+method of encryption is described on the [encryption internals page](/consul/docs/security).
+There are two separate encryption systems, one for gossip traffic and one for RPC.
+To configure the encryption systems on a new cluster, review this following tutorials to
+[enable gossip encryption](/consul/tutorials/security/gossip-encryption-secure?utm_source=consul.io&utm_medium=docs) and
+[TLS encryption for agent communication](/consul/tutorials/security/tls-encryption-secure?utm_source=docs).
+Gossip Encryption
+Enabling gossip encryption only requires that you set an encryption key when
+starting the Consul agent. The key can be set via the encrypt
+parameter.
+WAN Joined Datacenters Note: If using multiple WAN joined datacenters, be sure to use the same encryption key in all datacenters.
+The key must be 32-bytes, Base64 encoded. As a convenience, Consul provides the
+[ consul keygen](/consul/commands/keygen) command to generate a
+cryptographically suitable key:
+$ consul keygen
+pUqJrVyVRj5jsiYEkM/tFQYfWyJIv4s3XkvDwy7Cu5s=
+With that key, you can enable encryption on the agent. If encryption is enabled,
+the output of [ consul agent](/consul/commands/agent) will include "Encrypt: true":
+$ cat encrypt.json
+{"encrypt": "pUqJrVyVRj5jsiYEkM/tFQYfWyJIv4s3XkvDwy7Cu5s="}
+$ consul agent -data-dir=/tmp/consul -config-file=encrypt.json
+==> WARNING: LAN keyring exists but -encrypt given, using keyring
+==> WARNING: WAN keyring exists but -encrypt given, using keyring
+==> Starting Consul agent...
+==> Starting Consul agent RPC...
+==> Consul agent running!
+Node name: 'Armons-MacBook-Air.local'
+Datacenter: 'dc1'
+Server: false (bootstrap: false)
+Client Addr: 127.0.0.1 (HTTP: 8500, HTTPS: -1, DNS: 8600, RPC: 8400)
+Cluster Addr: 10.1.10.12 (LAN: 8301, WAN: 8302)
+Gossip encrypt: true, RPC-TLS: false, TLS-Incoming: false
+...
+All nodes within a Consul cluster must share the same encryption key in order to send and receive cluster information.
+Configuring Gossip Encryption on an existing cluster
+As of version 0.8.4, Consul supports upshifting to encrypted gossip on a running cluster
+through the following process. Review this [step-by-step tutorial](/consul/tutorials/security/gossip-encryption-secure?utm_source=consul.io&utm_medium=docs#enable-gossip-encryption-existing-cluster)
+to encrypt gossip on an existing cluster.
+RPC Encryption with TLS
+Consul supports using TLS to verify the authenticity of servers and clients. To enable this,
+Consul requires that all clients and servers have key pairs that are generated by a single
+Certificate Authority. This can be a private CA, used only internally. The
+CA then signs keys for each of the agents, as in
+[this tutorial on generating both a CA and signing keys](/consul/tutorials/security/tls-encryption-secure?utm_source=docs).
+Certificates need to be created with x509v3 extendedKeyUsage attributes for both clientAuth and serverAuth since Consul uses a single cert/key pair for both server and client communications.
+TLS can be used to verify the authenticity of the servers or verify the authenticity of clients.
+These modes are controlled by the [ verify_outgoing](/consul/docs/agent/config/config-files#tls_internal_rpc_verify_outgoing),
+[, and](/consul/docs/agent/config/config-files#tls_internal_rpc_verify_server_hostname)
+verify_server_hostname
+[options, respectively.](/consul/docs/agent/config/config-files#tls_internal_rpc_verify_incoming)
+verify_incoming
+If [ verify_outgoing](/consul/docs/agent/config/config-files#tls_internal_rpc_verify_outgoing) is set, agents verify the
+authenticity of Consul for outgoing connections. Server nodes must present a certificate signed
+by a common certificate authority present on all agents, set via the agent's
+[and](/consul/docs/agent/config/config-files#tls_internal_rpc_ca_file)
+ca_file
+[options. All server nodes must have an appropriate key pair set using](/consul/docs/agent/config/config-files#tls_internal_rpc_ca_path)
+ca_path
+[and](/consul/docs/agent/config/config-files#tls_internal_rpc_cert_file)
+cert_file
+[.](/consul/docs/agent/config/config-files#tls_internal_rpc_key_file)
+key_file
+If [ verify_server_hostname](/consul/docs/agent/config/config-files#tls_internal_rpc_verify_server_hostname) is set, then
+outgoing connections perform hostname verification. All servers must have a certificate
+valid for
+server.<datacenter>.<domain>
+or the client will reject the handshake. This is
+a new configuration as of 0.5.1, and it is used to prevent a compromised client from being
+able to restart in server mode and perform a MITM (Man-In-The-Middle) attack. New deployments should set this
+to true, and generate the proper certificates, but this is defaulted to false to avoid breaking
+existing deployments.If [ verify_incoming](/consul/docs/agent/config/config-files#tls_internal_rpc_verify_incoming) is set, the servers verify the
+authenticity of all incoming connections. All clients must have a valid key pair set using
+[and](/consul/docs/agent/config/config-files#tls_internal_rpc_cert_file)
+cert_file
+[. Servers will also disallow any non-TLS connections. To force clients to use TLS,](/consul/docs/agent/config/config-files#tls_internal_rpc_key_file)
+key_file
+[must also be set.](/consul/docs/agent/config/config-files#tls_internal_rpc_verify_outgoing)
+verify_outgoing
+TLS is used to secure the RPC calls between agents, but gossip between nodes is done over UDP and is secured using a symmetric key. See above for enabling gossip encryption.
+Configuring TLS on an existing cluster
+As of version 0.8.4, Consul supports migrating to TLS-encrypted traffic on a running cluster
+without downtime. This process assumes a starting point with no TLS settings configured and involves
+an intermediate step in order to get to full TLS encryption. Review the
+[Securing RPC Communication with TLS Encryption tutorial](/consul/tutorials/security/tls-encryption-secure?utm_source=docs)
+for the step-by-step process to configure TLS on a new or existing cluster. Note the call outs there
+for existing cluster configuration.
+[Edit this page on GitHub](https://github.com/hashicorp/consul/blob/main/website/content/docs/security/encryption.mdx)

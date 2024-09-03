@@ -1,9 +1,74 @@
-URL: https://hadoop.apache.org/docs/stable
+Source: apache_hadoop
+URL: https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html
 
-Apache>Hadoop>
-        Apache Hadoop 3.3.6Wiki|git| Last Published: 2023-06-18
-               | Version: 3.3.6GeneralOverviewSingle Node SetupCluster SetupCommands ReferenceFileSystem ShellCompatibility SpecificationDownstream Developer's GuideAdmin Compatibility GuideInterface ClassificationFileSystem SpecificationCommonCLI Mini ClusterFair Call QueueNative LibrariesProxy UserRack AwarenessSecure ModeService Level AuthorizationHTTP AuthenticationCredential Provider APIHadoop KMSTracingUnix Shell GuideRegistryHDFSArchitectureUser GuideCommands ReferenceNameNode HA With QJMNameNode HA With NFSObserver NameNodeFederationViewFsViewFsOverloadSchemeSnapshotsEdits ViewerImage ViewerPermissions and HDFSQuotas and HDFSlibhdfs (C API)WebHDFS (REST API)HttpFSShort Circuit Local ReadsCentralized Cache ManagementNFS GatewayRolling UpgradeExtended AttributesTransparent EncryptionMultihomingStorage PoliciesMemory Storage SupportSynthetic Load GeneratorErasure CodingDisk BalancerUpgrade DomainDataNode AdminRouter FederationProvided StorageMapReduceTutorialCommands ReferenceCompatibility with 1.xEncrypted ShufflePluggable Shuffle/SortDistributed Cache DeploySupport for YARN Shared CacheMapReduce REST APIsMR Application MasterMR History ServerYARNArchitectureCommands ReferenceCapacity SchedulerFair SchedulerResourceManager RestartResourceManager HAResource ModelNode LabelsNode AttributesWeb Application ProxyTimeline ServerTimeline Service V.2Writing YARN ApplicationsYARN Application SecurityNodeManagerRunning Applications in Docker ContainersRunning Applications in runC ContainersUsing CGroupsSecure ContainersReservation SystemGraceful DecommissionOpportunistic ContainersYARN FederationShared CacheUsing GPUUsing FPGAPlacement ConstraintsYARN UI2YARN REST APIsIntroductionResource ManagerNode ManagerTimeline ServerTimeline Service V.2YARN ServiceOverviewQuickStartConceptsYarn Service APIService DiscoverySystem ServicesHadoop Compatible File SystemsAliyun OSSAmazon S3Azure Blob StorageAzure Data Lake StorageTencent COSAuthOverviewExamplesConfigurationBuildingToolsHadoop StreamingHadoop ArchivesHadoop Archive LogsDistCpGridMixRumenResource Estimator ServiceScheduler Load SimulatorHadoop BenchmarkingDynamometerReferenceChangelog and Release NotesJava API docsUnix Shell APIMetricsConfigurationcore-default.xmlhdfs-default.xmlhdfs-rbf-default.xmlmapred-default.xmlyarn-default.xmlkms-default.xmlhttpfs-default.xmlDeprecated PropertiesApache Hadoop 3.3.6Apache Hadoop 3.3.6 is an update to the Hadoop 3.3.x release branch.Overview of ChangesUsers are encouraged to read the full set of release notes. This page provides an overview of the major changes.SBOM artifactsStarting from this release, Hadoop publishes Software Bill of Materials (SBOM) using CycloneDX Maven plugin. For more information about SBOM, please go toSBOM.HDFS RBF: RDBMS based token storage supportHDFS Router-Router Based Federation now supports storing delegation tokens on MySQL,HADOOP-18535which improves token operation throughput over the original Zookeeper-based implementation.New File System APIsHADOOP-18671moved a number of HDFS-specific APIs to Hadoop Common to make it possible for certain applications that depend on HDFS semantics to run on other Hadoop compatible file systems.In particular, recoverLease() and isFileClosed() are exposed through LeaseRecoverable interface. While setSafeMode() is exposed through SafeMode interface.Azure ABFS: Critical Stream Prefetch FixThe abfs has a critical bug fixHADOOP-18546.ABFS. Disable purging list of in-progress reads in abfs stream close().All users of the abfs connector in hadoop releases 3.3.2+ MUST either upgrade or disable prefetching by settingfs.azure.readaheadqueue.depthto0Consult the parent JIRAHADOOP-18521ABFS ReadBufferManager buffer sharing across concurrent HTTP requestsfor root cause analysis, details on what is affected, and mitigations.Vectored IO APIHADOOP-18103.High performance vectored read API in HadoopThePositionedReadableinterface has now added an operation for Vectored IO (also known as Scatter/Gather IO):void readVectored(List<? extends FileRange> ranges, IntFunction<ByteBuffer> allocate)All the requested ranges will be retrieved into the supplied byte buffers -possibly asynchronously, possibly in parallel, with results potentially coming in out-of-order.The default implementation uses a series ofreadFully()calls, so delivers equivalent performance.The local filesystem uses java native IO calls for higher performance reads thanreadFully().The S3A filesystem issues parallel HTTP GET requests in different threads.Benchmarking of enhanced Apache ORC and Apache Parquet clients throughfile://ands3a://show significant improvements in query performance.Further Reading: *FsDataInputStream. *Hadoop Vectored IO: Your Data Just Got Faster!Apachecon 2022 talk.Mapreduce: Manifest Committer for Azure ABFS and google GCSThe newIntermediate Manifest Committeruses a manifest file to commit the work of successful task attempts, rather than renaming directories. Job commit is matter of reading all the manifests, creating the destination directories (parallelized) and renaming the files, again in parallel.This is both fast and correct on Azure Storage and Google GCS, and should be used there instead of the classic v1/v2 file output committers.It is also safe to use on HDFS, where it should be faster than the v1 committer. It is however optimized for cloud storage where list and rename operations are significantly slower; the benefits may be less.More details are available in themanifest committer. documentation.HDFS: Dynamic Datanode ReconfigurationHDFS-16400, HDFS-16399, HDFS-16396, HDFS-16397, HDFS-16413, HDFS-16457.A number of Datanode configuration options can be changed without having to restart the datanode. This makes it possible to tune deployment configurations without cluster-wide Datanode Restarts.SeeDataNode.javafor the list of dynamically reconfigurable attributes.Transitive CVE fixesA lot of dependencies have been upgraded to address recent CVEs. Many of the CVEs were not actually exploitable through the Hadoop so much of this work is just due diligence. However applications which have all the library is on a class path may be vulnerable, and the ugprades should also reduce the number of false positives security scanners report.We have not been able to upgrade every single dependency to the latest version there is. Some of those changes are fundamentally incompatible. If you have concerns about the state of a specific library, consult the Apache JIRA issue tracker to see if an issue has been filed, discussions have taken place about the library in question, and whether or not there is already a fix in the pipeline.Please don’t file new JIRAs about dependency-X.Y.Z having a CVE without searching for any existing issue firstAs an open-source project, contributions in this area are always welcome, especially in testing the active branches, testing applications downstream of those branches and of whether updated dependencies trigger regressions.Security AdvisoryHadoop HDFS is a distributed filesystem allowing remote callers to read and write data.Hadoop YARN is a distributed job submission/execution engine allowing remote callers to submit arbitrary work into the cluster.Unless a Hadoop cluster is deployed withcaller authentication with Kerberos, anyone with network access to the servers has unrestricted access to the data and the ability to run whatever code they want in the system.In production, there are generally three deployment patterns which can, with care, keep data and computing resources private. 1. Physical cluster:configure Hadoop security, usually bonded to the enterprise Kerberos/Active Directory systems. Good. 1. Cloud: transient or persistent single or multiple user/tenant cluster with private VLANand security. Good. ConsiderApache Knoxfor managing remote access to the cluster. 1. Cloud: transient single user/tenant cluster with private VLANand no security at all. Requires careful network configuration as this is the sole means of securing the cluster.. ConsiderApache Knoxfor managing remote access to the cluster.If you deploy a Hadoop cluster in-cloud without security, and without configuring a VLAN to restrict access to trusted users, you are implicitly sharing your data and computing resources with anyone with network accessIf you do deploy an insecure cluster this way then port scanners will inevitably find it and submit crypto-mining jobs. If this happens to you, please do not report this as a CVE or security issue: it isutterly predictable. Secureyour clusterif you want to remain exclusivelyyour cluster.Finally, if you are using Hadoop as a service deployed/managed by someone else, do determine what security their products offer and make sure it meets your requirements.Getting StartedThe Hadoop documentation includes the information you need to get started using Hadoop. Begin with theSingle Node Setupwhich shows you how to set up a single-node Hadoop installation. Then move on to theCluster Setupto learn how to set up a multi-node Hadoop installation.Before deploying Hadoop in production, readHadoop in Secure Mode, and follow its instructions to secure your cluster.©            2008-2023
-              Apache Software Foundation
-            
-                          -Privacy Policy.
-        Apache Maven, Maven, Apache, the Apache feather logo, and the Apache Maven project logos are trademarks of The Apache Software Foundation.
+This document describes how to set up and configure a single-node Hadoop installation so that you can quickly perform simple operations using Hadoop MapReduce and the Hadoop Distributed File System (HDFS).
+Important: all production Hadoop clusters use Kerberos to authenticate callers and secure access to HDFS data as well as restriction access to computation services (YARN etc.).
+These instructions do not cover integration with any Kerberos services, -everyone bringing up a production cluster should include connecting to their organisation’s Kerberos infrastructure as a key part of the deployment.
+See [Security](./SecureMode.html) for details on how to secure a cluster.
+Required software for Linux include:
+Java™ must be installed. Recommended Java versions are described at [HadoopJavaVersions](https://cwiki.apache.org/confluence/display/HADOOP/Hadoop+Java+Versions).
+ssh must be installed and sshd must be running to use the Hadoop scripts that manage remote Hadoop daemons if the optional start and stop scripts are to be used. Additionally, it is recommmended that pdsh also be installed for better ssh resource management.
+If your cluster doesn’t have the requisite software you will need to install it.
+For example on Ubuntu Linux:
+$ sudo apt-get install ssh $ sudo apt-get install pdsh
+To get a Hadoop distribution, download a recent stable release from one of the [Apache Download Mirrors](http://www.apache.org/dyn/closer.cgi/hadoop/common/).
+Unpack the downloaded Hadoop distribution. In the distribution, edit the file etc/hadoop/hadoop-env.sh
+to define some parameters as follows:
+# set to the root of your Java installation export JAVA_HOME=/usr/java/latest
+Try the following command:
+$ bin/hadoop
+This will display the usage documentation for the hadoop script.
+Now you are ready to start your Hadoop cluster in one of the three supported modes:
+By default, Hadoop is configured to run in a non-distributed mode, as a single Java process. This is useful for debugging.
+The following example copies the unpacked conf directory to use as input and then finds and displays every match of the given regular expression. Output is written to the given output directory.
+$ mkdir input $ cp etc/hadoop/*.xml input $ bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.6.jar grep input output 'dfs[a-z.]+' $ cat output/*
+Hadoop can also be run on a single-node in a pseudo-distributed mode where each Hadoop daemon runs in a separate Java process.
+Use the following:
+etc/hadoop/core-site.xml:
+<configuration> <property> <name>fs.defaultFS</name> <value>hdfs://localhost:9000</value> </property> </configuration>
+etc/hadoop/hdfs-site.xml:
+<configuration> <property> <name>dfs.replication</name> <value>1</value> </property> </configuration>
+Now check that you can ssh to the localhost without a passphrase:
+$ ssh localhost
+If you cannot ssh to localhost without a passphrase, execute the following commands:
+$ ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa $ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys $ chmod 0600 ~/.ssh/authorized_keys
+The following instructions are to run a MapReduce job locally. If you want to execute a job on YARN, see [YARN on Single Node](#YARN_on_a_Single_Node).
+Format the filesystem:
+$ bin/hdfs namenode -format
+Start NameNode daemon and DataNode daemon:
+$ sbin/start-dfs.sh
+The hadoop daemon log output is written to the $HADOOP_LOG_DIR
+directory (defaults to $HADOOP_HOME/logs
+).
+Browse the web interface for the NameNode; by default it is available at:
+http://localhost:9870/
+Make the HDFS directories required to execute MapReduce jobs:
+$ bin/hdfs dfs -mkdir -p /user/<username>
+Copy the input files into the distributed filesystem:
+$ bin/hdfs dfs -mkdir input $ bin/hdfs dfs -put etc/hadoop/*.xml input
+Run some of the examples provided:
+$ bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.6.jar grep input output 'dfs[a-z.]+'
+Examine the output files: Copy the output files from the distributed filesystem to the local filesystem and examine them:
+$ bin/hdfs dfs -get output output $ cat output/*
+or
+View the output files on the distributed filesystem:
+$ bin/hdfs dfs -cat output/*
+When you’re done, stop the daemons with:
+$ sbin/stop-dfs.sh
+You can run a MapReduce job on YARN in a pseudo-distributed mode by setting a few parameters and running ResourceManager daemon and NodeManager daemon in addition.
+The following instructions assume that 1. ~ 4. steps of [the above instructions](#Execution) are already executed.
+Configure parameters as follows:
+etc/hadoop/mapred-site.xml
+:
+<configuration> <property> <name>mapreduce.framework.name</name> <value>yarn</value> </property> <property> <name>mapreduce.application.classpath</name> <value>$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/*:$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/lib/*</value> </property> </configuration>
+etc/hadoop/yarn-site.xml
+:
+<configuration> <property> <name>yarn.nodemanager.aux-services</name> <value>mapreduce_shuffle</value> </property> <property> <name>yarn.nodemanager.env-whitelist</name> <value>JAVA_HOME,HADOOP_COMMON_HOME,HADOOP_HDFS_HOME,HADOOP_CONF_DIR,CLASSPATH_PREPEND_DISTCACHE,HADOOP_YARN_HOME,HADOOP_HOME,PATH,LANG,TZ,HADOOP_MAPRED_HOME</value> </property> </configuration>
+Start ResourceManager daemon and NodeManager daemon:
+$ sbin/start-yarn.sh
+Browse the web interface for the ResourceManager; by default it is available at:
+http://localhost:8088/
+Run a MapReduce job.
+When you’re done, stop the daemons with:
+$ sbin/stop-yarn.sh
+For information on setting up fully-distributed, non-trivial clusters see [Cluster Setup](./ClusterSetup.html).

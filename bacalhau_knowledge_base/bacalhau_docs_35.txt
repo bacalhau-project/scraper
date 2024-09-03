@@ -1,3 +1,139 @@
-URL: https://docs.bacalhau.org/setting-up/workload-onboarding/python/running-a-python-script
+Source: bacalhau_docs
+URL: https://docs.bacalhau.org/setting-up/running-node/configuration
 
-Bacalhau Docsv.1.4.0v.1.3.0v.1.3.1v.1.3.2v.1.4.0GitHubSlackContactMoreGitHubSlackContactAsk or SearchCtrl+ KWelcomeGetting StartedHow Bacalhau WorksInstallationCreate NetworkHardware SetupContainer OnboardingDocker WorkloadsWebAssembly (Wasm) WorkloadsSetting UpRunning NodesNode OnboardingGPU InstallationJob selection policyAccess ManagementNode persistenceConnect StorageConfiguration ManagementConfiguring Transport Level SecurityLimits and TimeoutsTest Network LocallyBacalhau WebUIWorkload OnboardingContainerDocker Workload OnboardingWebAssembly (Wasm) WorkloadsBacalhau Docker ImageHow To Work With Custom Containers in BacalhauPythonBuilding and Running Custom Python ContainerRunning Pandas on BacalhauRunning a Python ScriptRunning Jupyter Notebooks on BacalhauScripting Bacalhau with PythonR (language)Building and Running your Custom R Containers on BacalhauRunning a Simple R Script on BacalhauRun CUDA programs on BacalhauRunning a Prolog ScriptReading Data from Multiple S3 Buckets using BacalhauRunning Rust programs as WebAssembly (WASM)Generate Synthetic Data using Sparkov Data Generation techniqueData IngestionCopy Data from URL to Public StoragePinning DataRunning a Job over S3 dataNetworking InstructionsAccessing the Internet from JobsUtilizing NATS.io within BacalhauGPU Workloads SetupAutomatic Update CheckingMarketplace DeploymentsGoogle Cloud MarketplaceGuidesWrite a config.yamlWrite a SpecConfigExamplesData EngineeringUsing Bacalhau with DuckDBEthereum Blockchain Analysis with Ethereum-ETL and BacalhauConvert CSV To Parquet Or AvroSimple Image ProcessingOceanography - Data ConversionVideo ProcessingModel InferenceEasyOCR (Optical Character Recognition) on BacalhauRunning Inference on Dolly 2.0 Model with Hugging FaceSpeech Recognition using WhisperStable Diffusion on a GPUStable Diffusion on a CPUObject Detection with YOLOv5 on BacalhauGenerate Realistic Images using StyleGAN3 and BacalhauStable Diffusion Checkpoint InferenceRunning Inference on a Model stored on S3Model TrainingTraining Pytorch Model with BacalhauTraining Tensorflow ModelStable Diffusion Dreambooth (Finetuning)Molecular DynamicsRunning BIDS Apps on BacalhauCoresets On BacalhauGenomics Data GenerationGromacs for AnalysisMolecular Simulation with OpenMM and BacalhauReferencesJobs GuideJob SpecificationJob TypesTask SpecificationEnginesDocker Engine SpecificationWebAssembly (WASM) Engine SpecificationPublishersIPFS Publisher SpecificationLocal Publisher SpecificationS3 Publisher SpecificationSourcesIPFS Source SpecificationLocal Source SpecificationS3 Source SpecificationURL Source SpecificationNetwork SpecificationInput Source SpecificationResources SpecificationResultPath SpecificationConstraint SpecificationLabels SpecificationMeta SpecificationJob TemplatesQueuing & TimeoutsJob QueuingTimeouts SpecificationJob ResultsStateCLI GuideSingle CLI commandsAgentAgent OverviewAgent AliveAgent NodeAgent VersionConfigConfig OverviewConfig Auto-ResourcesConfig DefaultConfig ListConfig SetJobJob OverviewJob DescribeJob ExecJob ExecutionsJob HistoryJob ListJob LogsJob RunJob StopNodeNode OverviewNode ApproveNode DeleteNode ListNode DescribeNode RejectCLI Commands OverviewCommand MigrationAPI GuideBacalhau API overviewBest PracticesAgent EndpointOrchestrator EndpointMigration APINode ManagementAuthentication & AuthorizationDatabase IntegrationDebuggingDebugging Failed JobsDebugging LocallyOpen Telemetry in BacalhauRunning locally in 'devstack'Setting up Dev EnvironmentHelp & FAQBacalhau FAQsRelease NotesGlossaryIntegrationsApache Airflow Provider for BacalhauLilypadBacalhau Python SDKObservability for WebAssembly WorkloadsCommunitySocial MediaStyle GuideWays to ContributePowered by GitBookRunning a Python ScriptThis tutorial serves as an introduction to Bacalhau. In this example, you'll be executing a simple "Hello, World!" Python script hosted on a website on Bacalhau.Prerequisites​To get started, you need to install the Bacalhau client, see more informationhere1. Running Python Locally​We'll be using a very simple Python script that displays thetraditional first greeting. Create a file calledhello-world.py:Copy# hello-world.pyprint("Hello, world!")Running the script to print out the output:Copypython3 hello-world.pyAfter the script has run successfully locally we can now run it on Bacalhau.2. Running a Bacalhau Job​To submit a workload to Bacalhau you can use thebacalhau docker runcommand. This command allows passing input data into the container usingcontent identifier (CID)volumes, we will be using the--input URL:pathargumentfor simplicity. This results in Bacalhau mounting adata volumeinside the container. By default, Bacalhau mounts the input volume at the path/inputsinside the container.Bacalhau overwrites the default entrypoint, so we must run the full command after the--argument.CopyexportJOB_ID=$(bacalhaudockerrun\--id-only\--input https://raw.githubusercontent.com/bacalhau-project/examples/151eebe895151edd83468e3d8b546612bf96cd05/workload-onboarding/trivial-python/hello-world.py \python:3.10-slim\--python3/inputs/hello-world.py)Structure of the command​bacalhau docker run: call to Bacalhau--id-only: specifies that only the job identifier (job_id) will be returned after executing the container, not the entire output--input https://raw.githubusercontent.com/bacalhau-project/examples/151eebe895151edd83468e3d8b546612bf96cd05/workload-onboarding/trivial-python/hello-world.py \: indicates where to get the input data for the container. In this case, the input data is downloaded from the specified URL, which represents the Python script "hello-world.py".python:3.10-slim: the Docker image that will be used to run the container. In this case, it uses the Python 3.10 image with a minimal set of components (slim).--: This double dash is used to separate the Bacalhau command options from the command that will be executed inside the Docker container.python3 /inputs/hello-world.py: running thehello-world.pyPython script stored in/inputs.When a job is submitted, Bacalhau prints out the relatedjob_id. We store that in an environment variable so that we can reuse it later on.Declarative job description​The same job can be presented in thedeclarativeformat. In this case, the description will look like this:Copyname:Running Trivial Pythontype:batchcount:1tasks:-name:My main taskEngine:type:dockerparams:Image:python:3.10-slimEntrypoint:-/bin/bashParameters:--c-python3 /inputs/hello-world.pyInputSources:-Target:/inputsSource:Type:urlDownloadParams:URL: https://raw.githubusercontent.com/bacalhau-project/examples/151eebe895151edd83468e3d8b546612bf96cd05/workload-onboarding/trivial-python/hello-world.pyPath:/inputs/hello-world.pyThe job description should be saved in.yamlformat, e.g.helloworld.yaml, and then run with the command:Copybacalhau job run helloworld.yaml3. Checking the State of your Jobs​Job status: You can check the status of the job usingbacalhau job list.Copybacalhau job list --id-filter ${JOB_ID} --no-styleWhen it saysPublishedorCompleted, that means the job is done, and we can get the results.Job information: You can find out more information about your job by usingbacalhau job describe.Copybacalhau job describe ${JOB_ID}Job download: You can download your job results directly by usingbacalhau job get. Alternatively, you can choose to create a directory to store your results. In the command below, we created a directory (results) and downloaded our job output to be stored in that directory.Copyrm -rf results && mkdir resultsbacalhau job get ${JOB_ID} --output-dir results4. Viewing your Job Output​To view the file, run the following command:Copycat results/stdoutSupport​If you have questions or need support or guidance, please reach out to theBacalhau team via Slack(#generalchannel).PreviousRunning Pandas on BacalhauNextRunning Jupyter Notebooks on BacalhauLast updated1 month agoOn this pagePrerequisites​1. Running Python Locally​2. Running a Bacalhau Job​3. Checking the State of your Jobs​4. Viewing your Job Output​Support​Was this helpful?Edit on GitHubExport as PDFGet SupportExpansoSupportUse CasesDistributed ETLEdge MLDistributed Data WarehousingFlett ManagementAbout UsWho we areWhat we valueNews & BlogBlogNewsExpanso (2024). All Rights Reserved.
+Configuration Management
+How to configure your Bacalhau node.
+Bacalhau employs the [viper](https://github.com/spf13/viper) and [cobra](https://github.com/spf13/cobra) libraries for configuration management. Users can configure their Bacalhau node through a combination of command-line flags, environment variables, and the dedicated configuration file.
+The Bacalhau Repo
+Bacalhau manages its configuration, metadata, and internal state within a specialized repository named .bacalhau
+. Serving as the heart of the Bacalhau node, this repository holds the data and settings that determine node behavior. It's located on the filesystem, and by default, Bacalhau initializes this repository at $HOME/.bacalhau
+, where $HOME
+is the home directory of the user running the bacalhau process.
+To customize this location, users can:
+Set the
+BACALHAU_DIR
+environment variable to specify their desired path.Utilize the
+--repo
+command line flag to specify their desired path.
+Upon executing a Bacalhau command for the first time, the system will initialize the .bacalhau
+repository. If such a repository already exists, Bacalhau will seamlessly access its contents.
+Structure of a Newly Initialized .bacalhau
+Repository
+Below is the structure of a freshly initialized .bacalhau
+repository:
+.bacalhau
+repository:This repository comprises four directories and seven files:
+Files
+user_id.pem
+:This file houses the Bacalhau node user's cryptographic private key, used for signing requests sent to a Requester Node.
+Format: PEM.
+repo.version
+:Indicates the version of the Bacalhau node's repository.
+Format: JSON, e.g.,
+{"Version":1}
+.
+libp2p_private_key
+:Stores the Bacalhau node's
+[libp2p](https://libp2p.io/)private key, essential for its network identity. The NodeID of a Bacalhau node is derived from this key.Format: Base64 encoded RSA private key.
+config.yaml
+:Contains configuration settings for the Bacalhau node.
+Format: YAML.
+update.json
+:A file containing the date/time when the last version check was made.
+Format: JSON, e.g.,
+{"LastCheck":"2024-01-24T11:06:14.631816Z"}
+tokens.json
+:A file containing the tokens obtained through authenticating with bacalhau clusters.
+Directories
+QmdGUjsMHEgtAfdtw7U62yPEcAZFtA33tKMsczLToegZtv-compute
+:Contains the
+[BoltDB](https://github.com/etcd-io/bbolt)executions.db
+database, which aids the Compute node in state persistence. Additionally, thejobStats.json
+file records the Compute Node's completed jobs tally.Note: The segment
+QmdGUjsMHEgtAfdtw7U62yPEcAZFtA33tKMsczLToegZtv
+is a unique NodeID for each Bacalhau node, derived from thelibp2p_private_key
+.
+QmdGUjsMHEgtAfdtw7U62yPEcAZFtA33tKMsczLToegZtv-requester
+:Contains the
+[BoltDB](https://github.com/etcd-io/bbolt)jobs.db
+database for the Requester node's state persistence.Note: NodeID derivation is similar to the Compute directory.
+executor_storages
+:Storage for data handled by Bacalhau storage drivers.
+plugins
+:Houses binaries that allow the Compute node to execute specific tasks.
+Note: This feature is currently experimental and isn't active during standard node operations.
+Configuring a Bacalhau Node
+Within a .bacalhau
+repository, a config.yaml
+file may be present. This file serves as the configuration source for the bacalhau node and adheres to the YAML format.
+Although the config.yaml
+file is optional, its presence allows Bacalhau to load custom configurations; otherwise, Bacalhau is configured with built-in default values, environment variables and command line flags.
+Modifications to the config.yaml
+file will not be dynamically loaded by the Bacalhau node. A restart of the node is required for any changes to take effect. Bacalhau determines its configuration based on the following precedence order, with each item superseding the subsequent:
+Command-line Flag
+Environment Variable
+Config File
+Defaults
+Relationship Between config.yaml
+and Bacalhau Environment Variables
+config.yaml
+and Bacalhau Environment VariablesBacalhau establishes a direct relationship between the value-bearing keys within the config.yaml
+file and corresponding environment variables. For these keys that have no further sub-keys, the environment variable name is constructed by capitalizing each segment of the key, and then joining them with underscores, prefixed with BACALHAU_
+.
+For example, a YAML key with the path Node.IPFS.Connect
+translates to the environment variable BACALHAU_NODE_IPFS_CONNECT
+and is represented in a file like:
+There is no corresponding environment variable for either Node
+or Node.IPFS
+. Config values may also have other environment variables that set them for simplicity or to maintain backwards compatibility.
+Environments
+Bacalhau leverages the
+BACALHAU_ENVIRONMENT
+environment variable to determine the specific environment configuration when initializing a repository. Notably, if a.bacalhau
+repository has already been initialized, theBACALHAU_ENVIRONMENT
+setting will be ignored.By default, if the
+BACALHAU_ENVIRONMENT
+variable is not explicitly set by the user, Bacalhau will adopt theproduction
+environment settings.Below is a breakdown of the configurations associated with each environment:
+1. Production (public network)
+Environment Variable:
+BACALHAU_ENVIRONMENT=production
+Configurations:
+Node.ClientAPI.Host
+:"bootstrap.production.bacalhau.org"
+Node.Client.API.Host
+:1234
+...other configurations specific to this environment...
+2. Staging (staging network)
+Environment Variable:
+BACALHAU_ENVIRONMENT=staging
+Configurations:
+Node.ClientAPI.Host
+:"bootstrap.staging.bacalhau.org"
+Node.Client.API.Host
+:1234
+...other configurations specific to this environment...
+3. Development (development network)
+Environment Variable:
+BACALHAU_ENVIRONMENT=development
+Configurations:
+Node.ClientAPI.Host
+:"bootstrap.development.bacalhau.org"
+Node.Client.API.Host
+:1234
+...other configurations specific to this environment...
+4. Local (private or local networks)
+Environment Variable:
+BACALHAU_ENVIRONMENT=local
+Configurations:
+Node.ClientAPI.Host
+:"0.0.0.0"
+Node.Client.API.Host
+:1234
+...other configurations specific to this environment...
+Note: The above configurations provided for each environment are not exhaustive. Consult the specific environment documentation for a
+[comprehensive list of configurations](https://github.com/bacalhau-project/bacalhau/tree/main/pkg/config/configenv).
+Usage Examples
+How to initialize a Bacalhau Server for a local private network
+How to initialize a Bacalhau Server with a custom repo path
+Or

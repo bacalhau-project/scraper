@@ -1,4 +1,10 @@
-URL: https://grpc.io/docs/platforms/
+Source: grpc_io
+URL: https://grpc.io/docs/languages/objective-c/api/
 
-gRPCAboutMeetDocsGuidesShowcaseBlogCommunitygRPConf 2024 is happening NEXT WEEK onAug. 27th!-Register nowand get 25% off with the code GOOGLE25.DocsWhat is gRPC?IntroductionCore conceptsFAQLanguagesC# / .NETAPI (legacy)Daily builds (legacy)C++Quick startBasics tutorialAsync-API tutorialAsynchronous Callback API TutorialBest Practices for gRPC C++ API and FAQALTSAPIDartQuick startBasics tutorialAPIGoQuick startBasics tutorialALTSAPIGenerated codeJavaQuick startBasics tutorialALTSAPIGenerated codeKotlinQuick startBasics tutorialAPINodeQuick startBasics tutorialAPIObjective-CQuick startBasics tutorialOAuth2APIPHPQuick startBasics tutorialAPIDaily buildsPythonQuick startBasics tutorialALTSGenerated codeAPIDaily buildsRubyQuick startBasics tutorialAPIDaily buildsPlatformsAndroidJavaQuick startBasics tutorialAPIKotlinQuick startAPIWebQuick startBasics tutorialGuidesAuthenticationBenchmarkingCancellationCompressionCustom Backend MetricsCustom Load Balancing PoliciesCustom Name ResolutionDeadlinesDebuggingError handlingFlow ControlHealth CheckingInterceptorsKeepaliveMetadataOpenTelemetry MetricsPerformance Best PracticesReflectionRequest HedgingRetryService ConfigStatus CodesWait-for-ReadyView page sourceEdit this pageCreate child pageCreate documentation issueCreate project issueDocsPlatformsSupported platformsgRPC is supported across different software and hardware platforms.Each gRPClanguage/ platform has links to the following pages and more:
-quick start, tutorials, API reference.New sections coming soon:FlutterDocs coming soonMobile:iOS – docs coming soonSelect a development or target platform to get started:AndroidWebLast modified August 11, 2021:Replace use of short_title with linkTitle in page front matter (#821) (78a4d99)View page sourceEdit this pageCreate child pageCreate documentation issueCreate project issue© 2024 gRPC AuthorsTerms|Privacy|Trademarks|License|About
+GRPC Objective-C
+1.66.0
+|
+The gRPC protocol is an RPC protocol on top of HTTP2.
+While the most common type of RPC receives only one request message and returns only one response message, the protocol also supports RPCs that return multiple individual messages in a streaming fashion, RPCs that accept a stream of request messages, or RPCs with both streaming requests and responses.
+Conceptually, each gRPC call consists of a bidirectional stream of binary messages, with RPCs of the "non-streaming type" sending only one message in the corresponding direction (the protocol doesn't make any distinction).
+Each RPC uses a different HTTP2 stream, and thus multiple simultaneous RPCs can be multiplexed transparently on the same TCP connection.

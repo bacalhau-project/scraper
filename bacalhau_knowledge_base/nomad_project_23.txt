@@ -1,3 +1,90 @@
-URL: https://www.nomadproject.io/nomad/install
+Source: nomad_project
+URL: https://www.nomadproject.io/security#main
 
-HashiDaysGet certified in HashiCorp products for free at HashiDays 2024Register nowDismiss alertOverviewUse CasesEnterpriseTutorialsDocsAPIPluginsToolsCommunityGitHub—Stars on GitHubDownloadNot FoundWe're sorry, but we can't find the page you're looking for.Back to HomeDocsAPICommunityPrivacySecurityConsent ManagerManage cookiesHashiCorp uses data collected by cookies and JavaScript libraries to improve your browsing experience, analyze site traffic, and increase the overall performance of our site. By using our website, you’re agreeing to ourPrivacy PolicyandCookie Policy.The categories below outline which companies and tools we use for collecting data. To opt out of a category of data collection, set the toggle to “Off” and save your preferences.Save preferencesAccept all
+Security
+Security is at the core of everything we build. We’re committed to safeguarding your data and infrastructure by investing in the necessary tools, training, and support. Learn more about how we bake security into our solutions and platform.
+Security at HashiCorp
+We know our users place a high level of trust in HashiCorp and the products we make to manage mission critical infrastructure. The security of customer data, of our products, and our services are a top priority. HashiCorp’s best-in-class security starts at the foundational level and includes internal threat models, routine internal and external security assessments, and secure software development.
+Security team
+HashiCorp has a fully staffed team of security professionals dedicated to securing, protecting and improving the security posture of the company and its products. The broader security team consists of:
+Detection & Response
+Cloud Security
+Product Security
+Corporate Information Security
+Red Team, and
+Governance, Risk and Compliance (GRC).
+Compliance program
+We have a team dedicated to our compliance program and are committed to providing our customers with all relevant security documentation to build a foundation of trust in our company and products. As of December 2020, we now have a SOC 2 Type II report, and an ISO 27001 certification covering the following Products:
+Enterprise Products
+Cloud Products
+[View certificates](/trust/compliance)
+If you have any additional questions around our security program, please email [customertrust@hashicorp.com](mailto:customertrust@hashicorp.com)
+Penetration tests
+HashiCorp hires external, reputable third parties to perform regular security assessment and penetration testing of our products. Enterprise customers can email [customertrust@hashicorp.com](mailto:customertrust@hashicorp.com) to request extracts from these reports.
+Privacy
+HashiCorp respects your privacy and is committed to protecting your Personal Information (any information that relates to an identified or identifiable individual). Our belief is that any Personal Information provided to us by you is just that: personal and private.
+We do not rent, sell or trade your Personal Information.
+Our full privacy policy is available at [https://www.hashicorp.com/privacy](/trust/privacy). To submit a data subject request please visit [privacy.hashicorp.com](http://privacy.hashicorp.com/). For any privacy related questions, please email [privacy@hashicorp.com](mailto:privacy@hashicorp.com).
+Abuse
+HashiCorp takes all abuse complaints seriously and can assist in investigation of abuse associated with HashiCorp-managed services.
+Information regarding how to report abuse is available at [https://www.hashicorp.com/abuse](/abuse).
+The Acceptable Use Policy can be found at [https://www.hashicorp.com/trust/security/aup](/trust/security/aup).
+PGP public key
+HashiCorp’s current PGP public key can be fetched from Keybase or from most keyservers with the key ID 72D7468F
+and fingerprint C874 011F 0AB4 0511 0D02 1055 3436 5D94 72D7 468F
+. It is also available at [https://www.hashicorp.com/.well-known/pgp-key.txt](/.well-known/pgp-key.txt).
+Secure communications
+The current PGP public key referenced above can be used to encrypt email to [security@hashicorp.com](mailto:security@hashicorp.com).
+Release archive checksum verification
+If you would like to verify the checksum of a HashiCorp product download (specifically, an archive from [https://releases.hashicorp.com](https://releases.hashicorp.com)), please note that only the SHA256SUM file is signed by the PGP key above. The archives themselves are not signed, but rather hashed. To verify the integrity of a particular archive:
+Download the archive, SHA256SUM, and SHA256SUM.sig files (multiple .sig files may be present, named with the associated signing PGP key ID)
+Verify the SHA256SUM file is properly signed
+Verify the SHA256SUM in the file matches the archive
+For example:
+# Import the public key as referenced above.
+curl -s https://www.hashicorp.com/.well-known/pgp-key.txt | gpg --import
+# Download the archive and signature files.
+curl -Os https://releases.hashicorp.com/vault/1.15.2/vault_1.15.2_linux_amd64.zip
+curl -Os https://releases.hashicorp.com/vault/1.15.2/vault_1.15.2_SHA256SUMS
+curl -Os https://releases.hashicorp.com/vault/1.15.2/vault_1.15.2_SHA256SUMS.sig
+# Verify the signature file is untampered.
+gpg --verify vault_1.15.2_SHA256SUMS.sig vault_1.15.2_SHA256SUMS
+# Verify the SHASUM matches the archive.
+shasum -a 256 -c vault_1.15.2_SHA256SUMS --ignore-missing
+For a more detailed tutorial on how to verify a Hashicorp product download, please see [https://developer.hashicorp.com/well-architected-framework/operational-excellence/verify-hashicorp-binary.](https://developer.hashicorp.com/well-architected-framework/operational-excellence/verify-hashicorp-binary)
+Linux package checksum verification
+HashiCorp's Linux repositories and packages, as [announced in 2020](/blog/announcing-the-hashicorp-linux-repository), are signed with a separate GPG key. This is available at [https://rpm.releases.hashicorp.com/gpg](https://rpm.releases.hashicorp.com/gpg) and [https://apt.releases.hashicorp.com/gpg](https://apt.releases.hashicorp.com/gpg), and has the fingerprint 798A EC65 4E5C 1542 8C8E 42EE AA16 FCBC A621 E701
+.
+Please note that there was a previous signing key used prior to January 23, 2023, which had the fingerprint E8A0 32E0 94D8 EB4E A189 D270 DA41 8C88 A321 9F7B
+. This certificate was revoked on April 24, 2023.
+Product binary signature verification
+HashiCorp [Authenticode](https://docs.microsoft.com/en-us/windows-hardware/drivers/install/authenticode) signs Microsoft Windows executables and [code signs](https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Introduction/Introduction.html) Apple macOS executables.
+Apple macOS
+Use Apple's codesign
+utility to verify the integrity of an Apple macOS executable and pay attention to the TeamIdentifier
+field which should match the one below.
+codesign --verify -d --verbose=2 /usr/local/bin/terraform
+Executable=/usr/local/bin/terraform
+Identifier=terraform
+...
+Authority=Developer ID Application: Hashicorp, Inc. (D38WU7D763)
+Authority=Developer ID Certification Authority
+Authority=Apple Root CA
+...
+TeamIdentifier=D38WU7D763
+...
+Microsoft Windows
+Windows binaries may be signed by certificates with thumbprints matching 7868E4F55FD7B047CD8BF93FEA8C38509CFB5939
+, 6F1DCD6FE62C173708E26E25D19656E413277816
+, or 35AB9FC834D217E9E7B1778FB1B97AF7C73792F2.
+Use Microsoft's Get-AuthenticodeSignature
+cmdlet to verify the integrity of a Microsoft Windows executable. For example:
+(Get-AuthenticodeSignature -FilePath terraform.exe).SignerCertificate | Format-List
+Subject : CN="HashiCorp, Inc.", O="HashiCorp, Inc.", L=San Francisco, S=California, C=US
+Issuer : CN=DigiCert SHA2 Assured ID Code Signing CA, OU=www.digicert.com, O=DigiCert Inc, C=US
+Thumbprint : 35AB9FC834D217E9E7B1778FB1B97AF7C73792F2
+FriendlyName :
+NotBefore : 16/01/2020 00:00:00
+NotAfter : 20/01/2023 12:00:00
+Extensions : {System.Security.Cryptography.Oid, System.Security.Cryptography.Oid, System.Security.Cryptography.Oid,
+System.Security.Cryptography.Oid...}

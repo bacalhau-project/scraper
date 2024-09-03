@@ -1,58 +1,258 @@
 Source: kubernetes_io
-URL: https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+URL: https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/
 
-DocumentationKubernetes BlogTrainingPartnersCommunityCase StudiesVersionsRelease Informationv1.31v1.30v1.29v1.28v1.27English中文 (Chinese)Français (French)Bahasa Indonesia (Indonesian)日本語 (Japanese)한국어 (Korean)Português (Portuguese)DocumentationAvailable Documentation VersionsGetting startedLearning environmentProduction environmentContainer RuntimesInstalling Kubernetes with deployment toolsBootstrapping clusters with kubeadmInstalling kubeadmTroubleshooting kubeadmCreating a cluster with kubeadmCustomizing components with the kubeadm APIOptions for Highly Available TopologyCreating Highly Available Clusters with kubeadmSet up a High Availability etcd Cluster with kubeadmConfiguring each kubelet in your cluster using kubeadmDual-stack support with kubeadmTurnkey Cloud SolutionsBest practicesConsiderations for large clustersRunning in multiple zonesValidate node setupEnforcing Pod Security StandardsPKI certificates and requirementsConceptsOverviewKubernetes ComponentsObjects In KubernetesKubernetes Object ManagementObject Names and IDsLabels and SelectorsNamespacesAnnotationsField SelectorsFinalizersOwners and DependentsRecommended LabelsThe Kubernetes APICluster ArchitectureNodesCommunication between Nodes and the Control PlaneControllersLeasesCloud Controller ManagerAbout cgroup v2Container Runtime Interface (CRI)Garbage CollectionMixed Version ProxyContainersImagesContainer EnvironmentRuntime ClassContainer Lifecycle HooksWorkloadsPodsPod LifecycleInit ContainersSidecar ContainersEphemeral ContainersDisruptionsPod Quality of Service ClassesUser NamespacesDownward APIWorkload ManagementDeploymentsReplicaSetStatefulSetsDaemonSetJobsAutomatic Cleanup for Finished JobsCronJobReplicationControllerAutoscaling WorkloadsManaging WorkloadsServices, Load Balancing, and NetworkingServiceIngressIngress ControllersGateway APIEndpointSlicesNetwork PoliciesDNS for Services and PodsIPv4/IPv6 dual-stackTopology Aware RoutingNetworking on WindowsService ClusterIP allocationService Internal Traffic PolicyStorageVolumesPersistent VolumesProjected VolumesEphemeral VolumesStorage ClassesVolume Attributes ClassesDynamic Volume ProvisioningVolume SnapshotsVolume Snapshot ClassesCSI Volume CloningStorage CapacityNode-specific Volume LimitsVolume Health MonitoringWindows StorageConfigurationConfiguration Best PracticesConfigMapsSecretsLiveness, Readiness, and Startup ProbesResource Management for Pods and ContainersOrganizing Cluster Access Using kubeconfig FilesResource Management for Windows nodesSecurityCloud Native SecurityPod Security StandardsPod Security AdmissionService AccountsPod Security PoliciesSecurity For Windows NodesControlling Access to the Kubernetes APIRole Based Access Control Good PracticesGood practices for Kubernetes SecretsMulti-tenancyHardening Guide - Authentication MechanismsKubernetes API Server Bypass RisksLinux kernel security constraints for Pods and containersSecurity ChecklistPoliciesLimit RangesResource QuotasProcess ID Limits And ReservationsNode Resource ManagersScheduling, Preemption and EvictionKubernetes SchedulerAssigning Pods to NodesPod OverheadPod Scheduling ReadinessPod Topology Spread ConstraintsTaints and TolerationsScheduling FrameworkDynamic Resource AllocationScheduler Performance TuningResource Bin PackingPod Priority and PreemptionNode-pressure EvictionAPI-initiated EvictionCluster AdministrationNode ShutdownsCertificatesCluster NetworkingLogging ArchitectureMetrics For Kubernetes System ComponentsMetrics for Kubernetes Object StatesSystem LogsTraces For Kubernetes System ComponentsProxies in KubernetesAPI Priority and FairnessCluster AutoscalingInstalling AddonsCoordinated Leader ElectionWindows in KubernetesWindows containers in KubernetesGuide for Running Windows Containers in KubernetesExtending KubernetesCompute, Storage, and Networking ExtensionsNetwork PluginsDevice PluginsExtending the Kubernetes APICustom ResourcesKubernetes API Aggregation LayerOperator patternTasksInstall ToolsInstall and Set Up kubectl on LinuxInstall and Set Up kubectl on macOSInstall and Set Up kubectl on WindowsAdminister a ClusterAdministration with kubeadmCertificate Management with kubeadmConfiguring a cgroup driverReconfiguring a kubeadm clusterUpgrading kubeadm clustersUpgrading Linux nodesUpgrading Windows nodesChanging The Kubernetes Package RepositoryMigrating from dockershimChanging the Container Runtime on a Node from Docker Engine to containerdMigrate Docker Engine nodes from dockershim to cri-dockerdFind Out What Container Runtime is Used on a NodeTroubleshooting CNI plugin-related errorsCheck whether dockershim removal affects youMigrating telemetry and security agents from dockershimGenerate Certificates ManuallyManage Memory, CPU, and API ResourcesConfigure Default Memory Requests and Limits for a NamespaceConfigure Default CPU Requests and Limits for a NamespaceConfigure Minimum and Maximum Memory Constraints for a NamespaceConfigure Minimum and Maximum CPU Constraints for a NamespaceConfigure Memory and CPU Quotas for a NamespaceConfigure a Pod Quota for a NamespaceInstall a Network Policy ProviderUse Antrea for NetworkPolicyUse Calico for NetworkPolicyUse Cilium for NetworkPolicyUse Kube-router for NetworkPolicyRomana for NetworkPolicyWeave Net for NetworkPolicyAccess Clusters Using the Kubernetes APIAdvertise Extended Resources for a NodeAutoscale the DNS Service in a ClusterChange the Access Mode of a PersistentVolume to ReadWriteOncePodChange the default StorageClassSwitching from Polling to CRI Event-based Updates to Container StatusChange the Reclaim Policy of a PersistentVolumeCloud Controller Manager AdministrationConfigure a kubelet image credential providerConfigure Quotas for API ObjectsControl CPU Management Policies on the NodeControl Topology Management Policies on a nodeCustomizing DNS ServiceDebugging DNS ResolutionDeclare Network PolicyDeveloping Cloud Controller ManagerEnable Or Disable A Kubernetes APIEncrypting Confidential Data at RestDecrypt Confidential Data that is Already Encrypted at RestGuaranteed Scheduling For Critical Add-On PodsIP Masquerade Agent User GuideLimit Storage ConsumptionMigrate Replicated Control Plane To Use Cloud Controller ManagerNamespaces WalkthroughOperating etcd clusters for KubernetesReserve Compute Resources for System DaemonsRunning Kubernetes Node Components as a Non-root UserSafely Drain a NodeSecuring a ClusterSet Kubelet Parameters Via A Configuration FileShare a Cluster with NamespacesUpgrade A ClusterUse Cascading Deletion in a ClusterUsing a KMS provider for data encryptionUsing CoreDNS for Service DiscoveryUsing NodeLocal DNSCache in Kubernetes ClustersUsing sysctls in a Kubernetes ClusterUtilizing the NUMA-aware Memory ManagerVerify Signed Kubernetes ArtifactsConfigure Pods and ContainersAssign Memory Resources to Containers and PodsAssign CPU Resources to Containers and PodsConfigure GMSA for Windows Pods and containersResize CPU and Memory Resources assigned to ContainersConfigure RunAsUserName for Windows pods and containersCreate a Windows HostProcess PodConfigure Quality of Service for PodsAssign Extended Resources to a ContainerConfigure a Pod to Use a Volume for StorageConfigure a Pod to Use a PersistentVolume for StorageConfigure a Pod to Use a Projected Volume for StorageConfigure a Security Context for a Pod or ContainerConfigure Service Accounts for PodsPull an Image from a Private RegistryConfigure Liveness, Readiness and Startup ProbesAssign Pods to NodesAssign Pods to Nodes using Node AffinityConfigure Pod InitializationAttach Handlers to Container Lifecycle EventsConfigure a Pod to Use a ConfigMapShare Process Namespace between Containers in a PodUse a User Namespace With a PodUse an Image Volume With a PodCreate static PodsTranslate a Docker Compose File to Kubernetes ResourcesEnforce Pod Security Standards by Configuring the Built-in Admission ControllerEnforce Pod Security Standards with Namespace LabelsMigrate from PodSecurityPolicy to the Built-In PodSecurity Admission ControllerMonitoring, Logging, and DebuggingTroubleshooting ApplicationsDebug PodsDebug ServicesDebug a StatefulSetDetermine the Reason for Pod FailureDebug Init ContainersDebug Running PodsGet a Shell to a Running ContainerTroubleshooting ClustersTroubleshooting kubectlResource metrics pipelineTools for Monitoring ResourcesMonitor Node HealthDebugging Kubernetes nodes with crictlAuditingDebugging Kubernetes Nodes With KubectlDeveloping and debugging services locally using telepresenceWindows debugging tipsManage Kubernetes ObjectsDeclarative Management of Kubernetes Objects Using Configuration FilesDeclarative Management of Kubernetes Objects Using KustomizeManaging Kubernetes Objects Using Imperative CommandsImperative Management of Kubernetes Objects Using Configuration FilesUpdate API Objects in Place Using kubectl patchMigrate Kubernetes Objects Using Storage Version MigrationManaging SecretsManaging Secrets using kubectlManaging Secrets using Configuration FileManaging Secrets using KustomizeInject Data Into ApplicationsDefine a Command and Arguments for a ContainerDefine Dependent Environment VariablesDefine Environment Variables for a ContainerExpose Pod Information to Containers Through Environment VariablesExpose Pod Information to Containers Through FilesDistribute Credentials Securely Using SecretsRun ApplicationsRun a Stateless Application Using a DeploymentRun a Single-Instance Stateful ApplicationRun a Replicated Stateful ApplicationScale a StatefulSetDelete a StatefulSetForce Delete StatefulSet PodsHorizontal Pod AutoscalingHorizontalPodAutoscaler WalkthroughSpecifying a Disruption Budget for your ApplicationAccessing the Kubernetes API from a PodRun JobsRunning Automated Tasks with a CronJobCoarse Parallel Processing Using a Work QueueFine Parallel Processing Using a Work QueueIndexed Job for Parallel Processing with Static Work AssignmentJob with Pod-to-Pod CommunicationParallel Processing using ExpansionsHandling retriable and non-retriable pod failures with Pod failure policyAccess Applications in a ClusterDeploy and Access the Kubernetes DashboardAccessing ClustersConfigure Access to Multiple ClustersUse Port Forwarding to Access Applications in a ClusterUse a Service to Access an Application in a ClusterConnect a Frontend to a Backend Using ServicesCreate an External Load BalancerList All Container Images Running in a ClusterSet up Ingress on Minikube with the NGINX Ingress ControllerCommunicate Between Containers in the Same Pod Using a Shared VolumeConfigure DNS for a ClusterAccess Services Running on ClustersExtend KubernetesConfigure the Aggregation LayerUse Custom ResourcesExtend the Kubernetes API with CustomResourceDefinitionsVersions in CustomResourceDefinitionsSet up an Extension API ServerConfigure Multiple SchedulersUse an HTTP Proxy to Access the Kubernetes APIUse a SOCKS5 Proxy to Access the Kubernetes APISet up Konnectivity serviceTLSConfigure Certificate Rotation for the KubeletManage TLS Certificates in a ClusterManual Rotation of CA CertificatesManage Cluster DaemonsPerform a Rolling Update on a DaemonSetPerform a Rollback on a DaemonSetRunning Pods on Only Some NodesNetworkingAdding entries to Pod /etc/hosts with HostAliasesExtend Service IP RangesValidate IPv4/IPv6 dual-stackExtend kubectl with pluginsManage HugePagesSchedule GPUsTutorialsHello MinikubeLearn Kubernetes BasicsCreate a ClusterUsing Minikube to Create a ClusterDeploy an AppUsing kubectl to Create a DeploymentExplore Your AppViewing Pods and NodesExpose Your App PubliclyUsing a Service to Expose Your AppScale Your AppRunning Multiple Instances of Your AppUpdate Your AppPerforming a Rolling UpdateConfigurationExample: Configuring a Java MicroserviceExternalizing config using MicroProfile, ConfigMaps and SecretsUpdating Configuration via a ConfigMapConfiguring Redis using a ConfigMapAdopting Sidecar ContainersSecurityApply Pod Security Standards at the Cluster LevelApply Pod Security Standards at the Namespace LevelRestrict a Container's Access to Resources with AppArmorRestrict a Container's Syscalls with seccompStateless ApplicationsExposing an External IP Address to Access an Application in a ClusterExample: Deploying PHP Guestbook application with RedisStateful ApplicationsStatefulSet BasicsExample: Deploying WordPress and MySQL with Persistent VolumesExample: Deploying Cassandra with a StatefulSetRunning ZooKeeper, A Distributed System CoordinatorServicesConnecting Applications with ServicesUsing Source IPExplore Termination Behavior for Pods And Their EndpointsReferenceGlossaryAPI OverviewKubernetes API ConceptsServer-Side ApplyClient LibrariesCommon Expression Language in KubernetesKubernetes Deprecation PolicyDeprecated API Migration GuideKubernetes API health endpointsAPI Access ControlAuthenticatingAuthenticating with Bootstrap TokensAuthorizationUsing RBAC AuthorizationUsing Node AuthorizationWebhook ModeUsing ABAC AuthorizationAdmission ControllersDynamic Admission ControlManaging Service AccountsCertificates and Certificate Signing RequestsMapping PodSecurityPolicies to Pod Security StandardsKubelet authentication/authorizationTLS bootstrappingValidating Admission PolicyWell-Known Labels, Annotations and TaintsAudit AnnotationsKubernetes APIWorkload ResourcesPodBindingPodTemplateReplicationControllerReplicaSetDeploymentStatefulSetControllerRevisionDaemonSetJobCronJobHorizontalPodAutoscalerHorizontalPodAutoscalerPriorityClassPodSchedulingContext v1alpha3ResourceClaim v1alpha3ResourceClaimTemplate v1alpha3ResourceSlice v1alpha3Service ResourcesServiceEndpointsEndpointSliceIngressIngressClassConfig and Storage ResourcesConfigMapSecretCSIDriverCSINodeCSIStorageCapacityPersistentVolumeClaimPersistentVolumeStorageClassStorageVersionMigration v1alpha1VolumeVolumeAttachmentVolumeAttributesClass v1beta1Authentication ResourcesServiceAccountTokenRequestTokenReviewCertificateSigningRequestClusterTrustBundle v1alpha1SelfSubjectReviewAuthorization ResourcesLocalSubjectAccessReviewSelfSubjectAccessReviewSelfSubjectRulesReviewSubjectAccessReviewClusterRoleClusterRoleBindingRoleRoleBindingPolicy ResourcesFlowSchemaLimitRangeResourceQuotaNetworkPolicyPodDisruptionBudgetPriorityLevelConfigurationValidatingAdmissionPolicyValidatingAdmissionPolicyBindingExtend ResourcesCustomResourceDefinitionDeviceClass v1alpha3MutatingWebhookConfigurationValidatingWebhookConfigurationCluster ResourcesAPIServiceComponentStatusEventIPAddress v1beta1LeaseLeaseCandidate v1alpha1NamespaceNodeRuntimeClassServiceCIDR v1beta1Common DefinitionsDeleteOptionsLabelSelectorListMetaLocalObjectReferenceNodeSelectorRequirementObjectFieldSelectorObjectMetaObjectReferencePatchQuantityResourceFieldSelectorStatusTypedLocalObjectReferenceCommon ParametersInstrumentationService Level Indicator MetricsCRI Pod & Container MetricsNode metrics dataKubernetes Metrics ReferenceKubernetes Issues and SecurityKubernetes Issue TrackerKubernetes Security and Disclosure InformationCVE feedNode Reference InformationKubelet Checkpoint APILinux Kernel Version RequirementsArticles on dockershim Removal and on Using CRI-compatible RuntimesNode Labels Populated By The KubeletKubelet Configuration Directory MergingKubelet Device Manager API VersionsNode StatusNetworking ReferenceProtocols for ServicesPorts and ProtocolsVirtual IPs and Service ProxiesSetup toolsKubeadmkubeadm initkubeadm joinkubeadm upgradekubeadm configkubeadm resetkubeadm tokenkubeadm versionkubeadm alphakubeadm certskubeadm init phasekubeadm join phasekubeadm kubeconfigkubeadm reset phasekubeadm upgrade phaseImplementation detailsCommand line tool (kubectl)Introduction to kubectlkubectl Quick Referencekubectl referencekubectlkubectl annotatekubectl api-resourceskubectl api-versionskubectl applykubectl apply edit-last-appliedkubectl apply set-last-appliedkubectl apply view-last-appliedkubectl attachkubectl authkubectl auth can-ikubectl auth reconcilekubectl auth whoamikubectl autoscalekubectl certificatekubectl certificate approvekubectl certificate denykubectl cluster-infokubectl cluster-info dumpkubectl completionkubectl configkubectl config current-contextkubectl config delete-clusterkubectl config delete-contextkubectl config delete-userkubectl config get-clusterskubectl config get-contextskubectl config get-userskubectl config rename-contextkubectl config setkubectl config set-clusterkubectl config set-contextkubectl config set-credentialskubectl config unsetkubectl config use-contextkubectl config viewkubectl cordonkubectl cpkubectl createkubectl create clusterrolekubectl create clusterrolebindingkubectl create configmapkubectl create cronjobkubectl create deploymentkubectl create ingresskubectl create jobkubectl create namespacekubectl create poddisruptionbudgetkubectl create priorityclasskubectl create quotakubectl create rolekubectl create rolebindingkubectl create secretkubectl create secret docker-registrykubectl create secret generickubectl create secret tlskubectl create servicekubectl create service clusteripkubectl create service externalnamekubectl create service loadbalancerkubectl create service nodeportkubectl create serviceaccountkubectl create tokenkubectl debugkubectl deletekubectl describekubectl diffkubectl drainkubectl editkubectl eventskubectl execkubectl explainkubectl exposekubectl getkubectl kustomizekubectl labelkubectl logskubectl optionskubectl patchkubectl pluginkubectl plugin listkubectl port-forwardkubectl proxykubectl replacekubectl rolloutkubectl rollout historykubectl rollout pausekubectl rollout restartkubectl rollout resumekubectl rollout statuskubectl rollout undokubectl runkubectl scalekubectl setkubectl set envkubectl set imagekubectl set resourceskubectl set selectorkubectl set serviceaccountkubectl set subjectkubectl taintkubectl topkubectl top nodekubectl top podkubectl uncordonkubectl versionkubectl waitkubectl CommandskubectlJSONPath Supportkubectl for Docker Userskubectl Usage ConventionsComponent toolsFeature GatesFeature Gates (removed)kubeletkube-apiserverkube-controller-managerkube-proxykube-schedulerDebug clusterFlow controlConfiguration APIsClient Authentication (v1)Client Authentication (v1beta1)Event Rate Limit Configuration (v1alpha1)Image Policy API (v1alpha1)kube-apiserver Admission (v1)kube-apiserver Audit Configuration (v1)kube-apiserver Configuration (v1)kube-apiserver Configuration (v1alpha1)kube-apiserver Configuration (v1beta1)kube-controller-manager Configuration (v1alpha1)kube-proxy Configuration (v1alpha1)kube-scheduler Configuration (v1)kubeadm Configuration (v1beta3)kubeadm Configuration (v1beta4)kubeconfig (v1)Kubelet Configuration (v1)Kubelet Configuration (v1alpha1)Kubelet Configuration (v1beta1)Kubelet CredentialProvider (v1)WebhookAdmission Configuration (v1)External APIsKubernetes Custom Metrics (v1beta2)Kubernetes External Metrics (v1beta1)Kubernetes Metrics (v1beta1)SchedulingScheduler ConfigurationScheduling PoliciesOther ToolsMapping from dockercli to crictlContributeContribute to Kubernetes DocumentationSuggesting content improvementsContributing new contentOpening a pull requestDocumenting for a releaseBlogs and case studiesReviewing changesReviewing pull requestsFor approvers and reviewersLocalizing Kubernetes documentationParticipating in SIG DocsRoles and responsibilitiesIssue WranglersPR wranglersDocumentation style overviewContent guideStyle guideDiagram guideWriting a new topicPage content typesContent organizationCustom Hugo ShortcodesUpdating Reference DocumentationQuickstartContributing to the Upstream Kubernetes CodeGenerating Reference Documentation for the Kubernetes APIGenerating Reference Documentation for kubectl CommandsGenerating Reference Documentation for MetricsGenerating Reference Pages for Kubernetes Components and ToolsAdvanced contributingViewing Site AnalyticsDocs smoke test pageKubernetes DocumentationGetting startedProduction environmentInstalling Kubernetes with deployment toolsBootstrapping clusters with kubeadmInstalling kubeadmInstalling kubeadmThis page shows how to install thekubeadmtoolbox.
-For information on how to create a cluster with kubeadm once you have performed this installation process,
-see theCreating a cluster with kubeadmpage.This installation guide is for Kubernetes v1.31. If you want to use a different Kubernetes version, please refer to the following pages instead:Installing kubeadm (Kubernetes v1.30)Installing kubeadm (Kubernetes v1.29)Installing kubeadm (Kubernetes v1.28)Installing kubeadm (Kubernetes v1.27)Before you beginA compatible Linux host. The Kubernetes project provides generic instructions for Linux distributions
-based on Debian and Red Hat, and those distributions without a package manager.2 GB or more of RAM per machine (any less will leave little room for your apps).2 CPUs or more.Full network connectivity between all machines in the cluster (public or private network is fine).Unique hostname, MAC address, and product_uuid for every node. Seeherefor more details.Certain ports are open on your machines. Seeherefor more details.Swap configuration. The default behavior of a kubelet was to fail to start if swap memory was detected on a node.
-SeeSwap memory managementfor more details.YouMUSTdisable swap if the kubelet is not properly configured to use swap. For example,sudo swapoff -awill disable swapping temporarily. To make this change persistent across reboots, make sure swap is disabled in
-config files like/etc/fstab,systemd.swap, depending how it was configured on your system.Note:Thekubeadminstallation is done via binaries that use dynamic linking and assumes that your target system providesglibc.
-This is a reasonable assumption on many Linux distributions (including Debian, Ubuntu, Fedora, CentOS, etc.)
-but it is not always the case with custom and lightweight distributions which don't includeglibcby default, such as Alpine Linux.
-The expectation is that the distribution either includesglibcor acompatibility layerthat provides the expected symbols.Verify the MAC address and product_uuid are unique for every nodeYou can get the MAC address of the network interfaces using the commandip linkorifconfig -aThe product_uuid can be checked by using the commandsudo cat /sys/class/dmi/id/product_uuidIt is very likely that hardware devices will have unique addresses, although some virtual machines may have
-identical values. Kubernetes uses these values to uniquely identify the nodes in the cluster.
-If these values are not unique to each node, the installation process
-mayfail.Check network adaptersIf you have more than one network adapter, and your Kubernetes components are not reachable on the default
-route, we recommend you add IP route(s) so Kubernetes cluster addresses go via the appropriate adapter.Check required portsTheserequired portsneed to be open in order for Kubernetes components to communicate with each other.
-You can use tools likenetcatto check if a port is open. For example:nc 127.0.0.16443-vThe pod network plugin you use may also require certain ports to be
-open. Since this differs with each pod network plugin, please see the
-documentation for the plugins about what port(s) those need.Installing a container runtimeTo run containers in Pods, Kubernetes uses acontainer runtime.By default, Kubernetes uses theContainer Runtime Interface(CRI)
-to interface with your chosen container runtime.If you don't specify a runtime, kubeadm automatically tries to detect an installed
-container runtime by scanning through a list of known endpoints.If multiple or no container runtimes are detected kubeadm will throw an error
-and will request that you specify which one you want to use.Seecontainer runtimesfor more information.Note:Docker Engine does not implement theCRIwhich is a requirement for a container runtime to work with Kubernetes.
-For that reason, an additional servicecri-dockerdhas to be installed. cri-dockerd is a project based on the legacy built-in
-Docker Engine support that wasremovedfrom the kubelet in version 1.24.The tables below include the known endpoints for supported operating systems:LinuxWindowsLinux container runtimesRuntimePath to Unix domain socketcontainerdunix:///var/run/containerd/containerd.sockCRI-Ounix:///var/run/crio/crio.sockDocker Engine (using cri-dockerd)unix:///var/run/cri-dockerd.sockWindows container runtimesRuntimePath to Windows named pipecontainerdnpipe:////./pipe/containerd-containerdDocker Engine (using cri-dockerd)npipe:////./pipe/cri-dockerdInstalling kubeadm, kubelet and kubectlYou will install these packages on all of your machines:kubeadm: the command to bootstrap the cluster.kubelet: the component that runs on all of the machines in your cluster
-and does things like starting pods and containers.kubectl: the command line util to talk to your cluster.kubeadmwill notinstall or managekubeletorkubectlfor you, so you will
-need to ensure they match the version of the Kubernetes control plane you want
-kubeadm to install for you. If you do not, there is a risk of a version skew occurring that
-can lead to unexpected, buggy behaviour. However,oneminor version skew between the
-kubelet and the control plane is supported, but the kubelet version may never exceed the API
-server version. For example, the kubelet running 1.7.0 should be fully compatible with a 1.8.0 API server,
-but not vice versa.For information about installingkubectl, seeInstall and set up kubectl.Warning:These instructions exclude all Kubernetes packages from any system upgrades.
-This is because kubeadm and Kubernetes requirespecial attention to upgrade.For more information on version skews, see:Kubernetesversion and version-skew policyKubeadm-specificversion skew policyNote:The legacy package repositories (apt.kubernetes.ioandyum.kubernetes.io) have beendeprecated and frozen starting from September 13, 2023.Using thenew package repositories hosted atpkgs.k8s.iois strongly recommended and required in order to install Kubernetes versions released after September 13, 2023.The deprecated legacy repositories, and their contents, might be removed at any time in the future and without
-a further notice period. The new package repositories provide downloads for Kubernetes versions starting with v1.24.0.Note:There's a dedicated package repository for each Kubernetes minor version. If you want to install
-a minor version other than v1.31, please see the installation guide for
-your desired minor version.Debian-based distributionsRed Hat-based distributionsWithout a package managerThese instructions are for Kubernetes v1.31.Update theaptpackage index and install packages needed to use the Kubernetesaptrepository:sudo apt-get update# apt-transport-https may be a dummy package; if so, you can skip that packagesudo apt-get install -y apt-transport-https ca-certificates curl gpgDownload the public signing key for the Kubernetes package repositories.
-The same signing key is used for all repositories so you can disregard the version in the URL:# If the directory `/etc/apt/keyrings` does not exist, it should be created before the curl command, read the note below.# sudo mkdir -p -m 755 /etc/apt/keyringscurl -fsSL https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpgNote:In releases older than Debian 12 and Ubuntu 22.04, directory/etc/apt/keyringsdoes not exist by default, and it should be created before the curl command.Add the appropriate Kubernetesaptrepository. Please note that this repository have packages
-only for Kubernetes 1.31; for other Kubernetes minor versions, you need to
-change the Kubernetes minor version in the URL to match your desired minor version
-(you should also check that you are reading the documentation for the version of Kubernetes
-that you plan to install).# This overwrites any existing configuration in /etc/apt/sources.list.d/kubernetes.listecho'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.31/deb/ /'| sudo tee /etc/apt/sources.list.d/kubernetes.listUpdate theaptpackage index, install kubelet, kubeadm and kubectl, and pin their version:sudo apt-get updatesudo apt-get install -y kubelet kubeadm kubectlsudo apt-mark hold kubelet kubeadm kubectl(Optional) Enable the kubelet service before running kubeadm:sudo systemctlenable--now kubeletSet SELinux topermissivemode:These instructions are for Kubernetes 1.31.# Set SELinux in permissive mode (effectively disabling it)sudo setenforce0sudo sed -i's/^SELINUX=enforcing$/SELINUX=permissive/'/etc/selinux/configCaution:Setting SELinux in permissive mode by runningsetenforce 0andsed ...effectively disables it. This is required to allow containers to access the host
-filesystem; for example, some cluster network plugins require that. You have to
-do this until SELinux support is improved in the kubelet.You can leave SELinux enabled if you know how to configure it but it may require
-settings that are not supported by kubeadm.Add the Kubernetesyumrepository. Theexcludeparameter in the
-repository definition ensures that the packages related to Kubernetes are
-not upgraded upon runningyum updateas there's a special procedure that
-must be followed for upgrading Kubernetes. Please note that this repository
-have packages only for Kubernetes 1.31; for other
-Kubernetes minor versions, you need to change the Kubernetes minor version
-in the URL to match your desired minor version (you should also check that
-you are reading the documentation for the version of Kubernetes that you
-plan to install).# This overwrites any existing configuration in /etc/yum.repos.d/kubernetes.repocat<<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo[kubernetes]name=Kubernetesbaseurl=https://pkgs.k8s.io/core:/stable:/v1.31/rpm/enabled=1gpgcheck=1gpgkey=https://pkgs.k8s.io/core:/stable:/v1.31/rpm/repodata/repomd.xml.keyexclude=kubelet kubeadm kubectl cri-tools kubernetes-cniEOFInstall kubelet, kubeadm and kubectl:sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes(Optional) Enable the kubelet service before running kubeadm:sudo systemctlenable--now kubeletInstall CNI plugins (required for most pod network):CNI_PLUGINS_VERSION="v1.3.0"ARCH="amd64"DEST="/opt/cni/bin"sudo mkdir -p"$DEST"curl -L"https://github.com/containernetworking/plugins/releases/download/${CNI_PLUGINS_VERSION}/cni-plugins-linux-${ARCH}-${CNI_PLUGINS_VERSION}.tgz"| sudo tar -C"$DEST"-xzDefine the directory to download command files:Note:TheDOWNLOAD_DIRvariable must be set to a writable directory.
-If you are running Flatcar Container Linux, setDOWNLOAD_DIR="/opt/bin".DOWNLOAD_DIR="/usr/local/bin"sudo mkdir -p"$DOWNLOAD_DIR"Optionally install crictl (required for interaction with the Container Runtime Interface (CRI), optional for kubeadm):CRICTL_VERSION="v1.31.0"ARCH="amd64"curl -L"https://github.com/kubernetes-sigs/cri-tools/releases/download/${CRICTL_VERSION}/crictl-${CRICTL_VERSION}-linux-${ARCH}.tar.gz"| sudo tar -C$DOWNLOAD_DIR-xzInstallkubeadm,kubeletand add akubeletsystemd service:RELEASE="$(curl -sSL https://dl.k8s.io/release/stable.txt)"ARCH="amd64"cd$DOWNLOAD_DIRsudo curl -L --remote-name-all https://dl.k8s.io/release/${RELEASE}/bin/linux/${ARCH}/{kubeadm,kubelet}sudo chmod +x{kubeadm,kubelet}RELEASE_VERSION="v0.16.2"curl -sSL"https://raw.githubusercontent.com/kubernetes/release/${RELEASE_VERSION}/cmd/krel/templates/latest/kubelet/kubelet.service"| sed"s:/usr/bin:${DOWNLOAD_DIR}:g"| sudo tee /usr/lib/systemd/system/kubelet.servicesudo mkdir -p /usr/lib/systemd/system/kubelet.service.dcurl -sSL"https://raw.githubusercontent.com/kubernetes/release/${RELEASE_VERSION}/cmd/krel/templates/latest/kubeadm/10-kubeadm.conf"| sed"s:/usr/bin:${DOWNLOAD_DIR}:g"| sudo tee /usr/lib/systemd/system/kubelet.service.d/10-kubeadm.confNote:Please refer to the note in theBefore you beginsection for Linux distributions
-that do not includeglibcby default.Installkubectlby following the instructions onInstall Tools page.Optionally, enable the kubelet service before running kubeadm:sudo systemctlenable--now kubeletNote:The Flatcar Container Linux distribution mounts the/usrdirectory as a read-only filesystem.
-Before bootstrapping your cluster, you need to take additional steps to configure a writable directory.
-See theKubeadm Troubleshooting guideto learn how to set up a writable directory.The kubelet is now restarting every few seconds, as it waits in a crashloop for
-kubeadm to tell it what to do.Configuring a cgroup driverBoth the container runtime and the kubelet have a property called"cgroup driver", which is important
-for the management of cgroups on Linux machines.Warning:Matching the container runtime and kubelet cgroup drivers is required or otherwise the kubelet process will fail.SeeConfiguring a cgroup driverfor more details.TroubleshootingIf you are running into difficulties with kubeadm, please consult ourtroubleshooting docs.What's nextUsing kubeadm to Create a ClusterFeedbackWas this page helpful?YesNoThanks for the feedback. If you have a specific, answerable question about how to use Kubernetes, ask it onStack Overflow.
-Open an issue in theGitHub Repositoryif you want toreport a problemorsuggest an improvement.Last modified May 29, 2024 at 10:41 AM PST:Bump cri-tools version to v1.30.0 (102df83e40)Edit this pageCreate child pageCreate documentation issuePrint entire sectionBefore you beginVerify the MAC address and product_uuid are unique for every nodeCheck network adaptersCheck required portsInstalling a container runtimeInstalling kubeadm, kubelet and kubectlConfiguring a cgroup driverTroubleshootingWhat's nextDocumentationBlogTrainingPartnersCommunityCase Studies© 2024 The Kubernetes Authors | Documentation Distributed underCC BY 4.0Copyright © 2024 The Linux Foundation ®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see ourTrademark Usage pageICP license: 京ICP备17074266号-3
+Extend kubectl with plugins
+This guide demonstrates how to install and write extensions for [kubectl](/docs/reference/kubectl/kubectl/). By thinking of core kubectl
+commands as essential building blocks for interacting with a Kubernetes cluster, a cluster administrator can think
+of plugins as a means of utilizing these building blocks to create more complex behavior. Plugins extend kubectl
+with new sub-commands, allowing for new and custom features not included in the main distribution of kubectl
+.
+Before you begin
+You need to have a working kubectl
+binary installed.
+Installing kubectl plugins
+A plugin is a standalone executable file, whose name begins with kubectl-
+. To install a plugin, move its executable file to anywhere on your PATH
+.
+You can also discover and install kubectl plugins available in the open source
+using [Krew](https://krew.dev/). Krew is a plugin manager maintained by
+the Kubernetes SIG CLI community.
+Caution:
+Kubectl plugins available via the Krew[plugin index](https://krew.sigs.k8s.io/plugins/)are not audited for security. You should install and run third-party plugins at your own risk, since they are arbitrary programs running on your machine.
+Discovering plugins
+kubectl
+provides a command kubectl plugin list
+that searches your PATH
+for valid plugin executables.
+Executing this command causes a traversal of all files in your PATH
+. Any files that are executable, and begin with kubectl-
+will show up in the order in which they are present in your PATH
+in this command's output.
+A warning will be included for any files beginning with kubectl-
+that are not executable.
+A warning will also be included for any valid plugin files that overlap each other's name.
+You can use [Krew](https://krew.dev/) to discover and install kubectl
+plugins from a community-curated
+[plugin index](https://krew.sigs.k8s.io/plugins/).
+Limitations
+It is currently not possible to create plugins that overwrite existing kubectl
+commands. For example, creating a plugin kubectl-version
+will cause that plugin to never be executed, as the existing kubectl version
+command will always take precedence over it. Due to this limitation, it is also not possible to use plugins to add new subcommands to existing kubectl
+commands. For example, adding a subcommand kubectl create foo
+by naming your plugin kubectl-create-foo
+will cause that plugin to be ignored.
+kubectl plugin list
+shows warnings for any valid plugins that attempt to do this.
+Writing kubectl plugins
+You can write a plugin in any programming language or script that allows you to write command-line commands.
+There is no plugin installation or pre-loading required. Plugin executables receive
+the inherited environment from the kubectl
+binary.
+A plugin determines which command path it wishes to implement based on its name.
+For example, a plugin named kubectl-foo
+provides a command kubectl foo
+. You must
+install the plugin executable somewhere in your PATH
+.
+Example plugin
+#!/bin/bash
+# optional argument handling
+if [[ "$1" == "version" ]]
+then
+echo "1.0.0"
+exit 0
+fi
+# optional argument handling
+if [[ "$1" == "config" ]]
+then
+echo "$KUBECONFIG"
+exit 0
+fi
+echo "I am a plugin named kubectl-foo"
+Using a plugin
+To use a plugin, make the plugin executable:
+sudo chmod +x ./kubectl-foo
+and place it anywhere in your PATH
+:
+sudo mv ./kubectl-foo /usr/local/bin
+You may now invoke your plugin as a kubectl
+command:
+kubectl foo
+I am a plugin named kubectl-foo
+All args and flags are passed as-is to the executable:
+kubectl foo version
+1.0.0
+All environment variables are also passed as-is to the executable:
+export KUBECONFIG=~/.kube/config
+kubectl foo config
+/home/<user>/.kube/config
+KUBECONFIG=/etc/kube/config kubectl foo config
+/etc/kube/config
+Additionally, the first argument that is passed to a plugin will always be the full path to the location where it was invoked ($0
+would equal /usr/local/bin/kubectl-foo
+in the example above).
+Naming a plugin
+As seen in the example above, a plugin determines the command path that it will implement based on its filename. Every sub-command in the command path that a plugin targets, is separated by a dash (-
+).
+For example, a plugin that wishes to be invoked whenever the command kubectl foo bar baz
+is invoked by the user, would have the filename of kubectl-foo-bar-baz
+.
+Flags and argument handling
+Note:
+The plugin mechanism does not create any custom, plugin-specific values or environment variables for a plugin process.
+An older kubectl plugin mechanism provided environment variables such as KUBECTL_PLUGINS_CURRENT_NAMESPACE
+; that no longer happens.
+kubectl plugins must parse and validate all of the arguments passed to them.
+See [using the command line runtime package](#using-the-command-line-runtime-package) for details of a Go library aimed at plugin authors.
+Here are some additional cases where users invoke your plugin while providing additional flags and arguments. This builds upon the kubectl-foo-bar-baz
+plugin from the scenario above.
+If you run kubectl foo bar baz arg1 --flag=value arg2
+, kubectl's plugin mechanism will first try to find the plugin with the longest possible name, which in this case
+would be kubectl-foo-bar-baz-arg1
+. Upon not finding that plugin, kubectl then treats the last dash-separated value as an argument (arg1
+in this case), and attempts to find the next longest possible name, kubectl-foo-bar-baz
+.
+Upon having found a plugin with this name, kubectl then invokes that plugin, passing all args and flags after the plugin's name as arguments to the plugin process.
+Example:
+# create a plugin
+echo -e '#!/bin/bash\n\necho "My first command-line argument was $1"' > kubectl-foo-bar-baz
+sudo chmod +x ./kubectl-foo-bar-baz
+# "install" your plugin by moving it to a directory in your $PATH
+sudo mv ./kubectl-foo-bar-baz /usr/local/bin
+# check that kubectl recognizes your plugin
+kubectl plugin list
+The following kubectl-compatible plugins are available:
+/usr/local/bin/kubectl-foo-bar-baz
+# test that calling your plugin via a "kubectl" command works
+# even when additional arguments and flags are passed to your
+# plugin executable by the user.
+kubectl foo bar baz arg1 --meaningless-flag=true
+My first command-line argument was arg1
+As you can see, your plugin was found based on the kubectl
+command specified by a user, and all extra arguments and flags were passed as-is to the plugin executable once it was found.
+Names with dashes and underscores
+Although the kubectl
+plugin mechanism uses the dash (-
+) in plugin filenames to separate the sequence of sub-commands processed by the plugin, it is still possible to create a plugin
+command containing dashes in its commandline invocation by using underscores (_
+) in its filename.
+Example:
+# create a plugin containing an underscore in its filename
+echo -e '#!/bin/bash\n\necho "I am a plugin with a dash in my name"' > ./kubectl-foo_bar
+sudo chmod +x ./kubectl-foo_bar
+# move the plugin into your $PATH
+sudo mv ./kubectl-foo_bar /usr/local/bin
+# You can now invoke your plugin via kubectl:
+kubectl foo-bar
+I am a plugin with a dash in my name
+Note that the introduction of underscores to a plugin filename does not prevent you from having commands such as kubectl foo_bar
+.
+The command from the above example, can be invoked using either a dash (-
+) or an underscore (_
+):
+# You can invoke your custom command with a dash
+kubectl foo-bar
+I am a plugin with a dash in my name
+# You can also invoke your custom command with an underscore
+kubectl foo_bar
+I am a plugin with a dash in my name
+Name conflicts and overshadowing
+It is possible to have multiple plugins with the same filename in different locations throughout your PATH
+.
+For example, given a PATH
+with the following value: PATH=/usr/local/bin/plugins:/usr/local/bin/moreplugins
+, a copy of plugin kubectl-foo
+could exist in /usr/local/bin/plugins
+and /usr/local/bin/moreplugins
+,
+such that the output of the kubectl plugin list
+command is:
+PATH=/usr/local/bin/plugins:/usr/local/bin/moreplugins kubectl plugin list
+The following kubectl-compatible plugins are available:
+/usr/local/bin/plugins/kubectl-foo
+/usr/local/bin/moreplugins/kubectl-foo
+- warning: /usr/local/bin/moreplugins/kubectl-foo is overshadowed by a similarly named plugin: /usr/local/bin/plugins/kubectl-foo
+error: one plugin warning was found
+In the above scenario, the warning under /usr/local/bin/moreplugins/kubectl-foo
+tells you that this plugin will never be executed. Instead, the executable that appears first in your PATH
+, /usr/local/bin/plugins/kubectl-foo
+, will always be found and executed first by the kubectl
+plugin mechanism.
+A way to resolve this issue is to ensure that the location of the plugin that you wish to use with kubectl
+always comes first in your PATH
+. For example, if you want to always use /usr/local/bin/moreplugins/kubectl-foo
+anytime that the kubectl
+command kubectl foo
+was invoked, change the value of your PATH
+to be /usr/local/bin/moreplugins:/usr/local/bin/plugins
+.
+Invocation of the longest executable filename
+There is another kind of overshadowing that can occur with plugin filenames. Given two plugins present in a user's PATH
+: kubectl-foo-bar
+and kubectl-foo-bar-baz
+, the kubectl
+plugin mechanism will always choose the longest possible plugin name for a given user command. Some examples below, clarify this further:
+# for a given kubectl command, the plugin with the longest possible filename will always be preferred
+kubectl foo bar baz
+Plugin kubectl-foo-bar-baz is executed
+kubectl foo bar
+Plugin kubectl-foo-bar is executed
+kubectl foo bar baz buz
+Plugin kubectl-foo-bar-baz is executed, with "buz" as its first argument
+kubectl foo bar buz
+Plugin kubectl-foo-bar is executed, with "buz" as its first argument
+This design choice ensures that plugin sub-commands can be implemented across multiple files, if needed, and that these sub-commands can be nested under a "parent" plugin command:
+ls ./plugin_command_tree
+kubectl-parent
+kubectl-parent-subcommand
+kubectl-parent-subcommand-subsubcommand
+Checking for plugin warnings
+You can use the aforementioned kubectl plugin list
+command to ensure that your plugin is visible by kubectl
+, and verify that there are no warnings preventing it from being called as a kubectl
+command.
+kubectl plugin list
+The following kubectl-compatible plugins are available:
+test/fixtures/pkg/kubectl/plugins/kubectl-foo
+/usr/local/bin/kubectl-foo
+- warning: /usr/local/bin/kubectl-foo is overshadowed by a similarly named plugin: test/fixtures/pkg/kubectl/plugins/kubectl-foo
+plugins/kubectl-invalid
+- warning: plugins/kubectl-invalid identified as a kubectl plugin, but it is not executable
+error: 2 plugin warnings were found
+Using the command line runtime package
+If you're writing a plugin for kubectl and you're using Go, you can make use
+of the
+[cli-runtime](https://github.com/kubernetes/cli-runtime) utility libraries.
+These libraries provide helpers for parsing or updating a user's
+[kubeconfig](/docs/concepts/configuration/organize-cluster-access-kubeconfig/)
+file, for making REST-style requests to the API server, or to bind flags
+associated with configuration and printing.
+See the [Sample CLI Plugin](https://github.com/kubernetes/sample-cli-plugin) for
+an example usage of the tools provided in the CLI Runtime repo.
+Distributing kubectl plugins
+If you have developed a plugin for others to use, you should consider how you package it, distribute it and deliver updates to your users.
+Krew
+[Krew](https://krew.dev/) offers a cross-platform way to package and
+distribute your plugins. This way, you use a single packaging format for all
+target platforms (Linux, Windows, macOS etc) and deliver updates to your users.
+Krew also maintains a [plugin
+index](https://krew.sigs.k8s.io/plugins/) so that other people can
+discover your plugin and install it.
+Native / platform specific package management
+Alternatively, you can use traditional package managers such as, apt
+or yum
+on Linux, Chocolatey on Windows, and Homebrew on macOS. Any package
+manager will be suitable if it can place new executables placed somewhere
+in the user's PATH
+.
+As a plugin author, if you pick this option then you also have the burden
+of updating your kubectl plugin's distribution package across multiple
+platforms for each release.
+Source code
+You can publish the source code; for example, as a Git repository. If you choose this option, someone who wants to use that plugin must fetch the code, set up a build environment (if it needs compiling), and deploy the plugin. If you also make compiled packages available, or use Krew, that will make installs easier.
+What's next
+- Check the Sample CLI Plugin repository for a
+[detailed example](https://github.com/kubernetes/sample-cli-plugin)of a plugin written in Go. In case of any questions, feel free to reach out to the[SIG CLI team](https://github.com/kubernetes/community/tree/master/sig-cli). - Read about
+[Krew](https://krew.dev/), a package manager for kubectl plugins.
+[clean up use of word: simply (3fd65482e8)](https://github.com/kubernetes/website/commit/3fd65482e8aa5d908330b7b4ed015818ed2fdc12)

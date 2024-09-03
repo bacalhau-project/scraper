@@ -1,4 +1,0 @@
-URL: https://www.the-paper-trail.org/%20/tags/byzantine-fault-tolerance
-
-Paper TrailBlogbyzantine fault tolerance20092009-03-30Barbara Liskov's Turing Award, and Byzantine Fault Tolerance©  - 2023 ·Paper Trail·
-  ThemeSimplenessPowered byHugo·

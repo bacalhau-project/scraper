@@ -1,4 +1,96 @@
-URL: https://docs.bacalhau.org/examples/molecular-dynamics/coresets-on-bacalhau
+Source: bacalhau_docs
+URL: https://docs.bacalhau.org/examples/model-inference/generate-realistic-images-using-stylegan3-and-bacalhau
 
-Bacalhau Docsv.1.4.0v.1.3.0v.1.3.1v.1.3.2v.1.4.0GitHubSlackContactMoreGitHubSlackContactAsk or SearchCtrl+ KWelcomeGetting StartedHow Bacalhau WorksInstallationCreate NetworkHardware SetupContainer OnboardingDocker WorkloadsWebAssembly (Wasm) WorkloadsSetting UpRunning NodesNode OnboardingGPU InstallationJob selection policyAccess ManagementNode persistenceConnect StorageConfiguration ManagementConfiguring Transport Level SecurityLimits and TimeoutsTest Network LocallyBacalhau WebUIWorkload OnboardingContainerDocker Workload OnboardingWebAssembly (Wasm) WorkloadsBacalhau Docker ImageHow To Work With Custom Containers in BacalhauPythonBuilding and Running Custom Python ContainerRunning Pandas on BacalhauRunning a Python ScriptRunning Jupyter Notebooks on BacalhauScripting Bacalhau with PythonR (language)Building and Running your Custom R Containers on BacalhauRunning a Simple R Script on BacalhauRun CUDA programs on BacalhauRunning a Prolog ScriptReading Data from Multiple S3 Buckets using BacalhauRunning Rust programs as WebAssembly (WASM)Generate Synthetic Data using Sparkov Data Generation techniqueData IngestionCopy Data from URL to Public StoragePinning DataRunning a Job over S3 dataNetworking InstructionsAccessing the Internet from JobsUtilizing NATS.io within BacalhauGPU Workloads SetupAutomatic Update CheckingMarketplace DeploymentsGoogle Cloud MarketplaceGuidesWrite a config.yamlWrite a SpecConfigExamplesData EngineeringUsing Bacalhau with DuckDBEthereum Blockchain Analysis with Ethereum-ETL and BacalhauConvert CSV To Parquet Or AvroSimple Image ProcessingOceanography - Data ConversionVideo ProcessingModel InferenceEasyOCR (Optical Character Recognition) on BacalhauRunning Inference on Dolly 2.0 Model with Hugging FaceSpeech Recognition using WhisperStable Diffusion on a GPUStable Diffusion on a CPUObject Detection with YOLOv5 on BacalhauGenerate Realistic Images using StyleGAN3 and BacalhauStable Diffusion Checkpoint InferenceRunning Inference on a Model stored on S3Model TrainingTraining Pytorch Model with BacalhauTraining Tensorflow ModelStable Diffusion Dreambooth (Finetuning)Molecular DynamicsRunning BIDS Apps on BacalhauCoresets On BacalhauGenomics Data GenerationGromacs for AnalysisMolecular Simulation with OpenMM and BacalhauReferencesJobs GuideJob SpecificationJob TypesTask SpecificationEnginesDocker Engine SpecificationWebAssembly (WASM) Engine SpecificationPublishersIPFS Publisher SpecificationLocal Publisher SpecificationS3 Publisher SpecificationSourcesIPFS Source SpecificationLocal Source SpecificationS3 Source SpecificationURL Source SpecificationNetwork SpecificationInput Source SpecificationResources SpecificationResultPath SpecificationConstraint SpecificationLabels SpecificationMeta SpecificationJob TemplatesQueuing & TimeoutsJob QueuingTimeouts SpecificationJob ResultsStateCLI GuideSingle CLI commandsAgentAgent OverviewAgent AliveAgent NodeAgent VersionConfigConfig OverviewConfig Auto-ResourcesConfig DefaultConfig ListConfig SetJobJob OverviewJob DescribeJob ExecJob ExecutionsJob HistoryJob ListJob LogsJob RunJob StopNodeNode OverviewNode ApproveNode DeleteNode ListNode DescribeNode RejectCLI Commands OverviewCommand MigrationAPI GuideBacalhau API overviewBest PracticesAgent EndpointOrchestrator EndpointMigration APINode ManagementAuthentication & AuthorizationDatabase IntegrationDebuggingDebugging Failed JobsDebugging LocallyOpen Telemetry in BacalhauRunning locally in 'devstack'Setting up Dev EnvironmentHelp & FAQBacalhau FAQsRelease NotesGlossaryIntegrationsApache Airflow Provider for BacalhauLilypadBacalhau Python SDKObservability for WebAssembly WorkloadsCommunitySocial MediaStyle GuideWays to ContributePowered by GitBookCoresets On BacalhauIntroductionCoresetis a data subsetting method. Since the uncompressed datasets can get very large when compressed, it becomes much harder to train them as training time increases with the dataset size. To reduce training time and cut costs, we employ the coreset method; the coreset method can also be applied to other datasets. In this case, we use the coreset method which can lead to a fast speed in solving the k-means problem among the big data with high accuracy in the meantime.We construct a small coreset for arbitrary shapes of numerical data with a decent time cost. The implementation was mainly based on the coreset construction algorithm that was proposed by Braverman et al. (SODA 2021).For a deeper understanding of the core concepts, it's recommended to explore:
-1.Coresets for Ordered Weighted Clustering2.Efficient Implementation of Coreset-based K-Means MethodsIn this tutorial example, we will run compressed dataset with BacalhauPrerequisite​To get started, you need to install the Bacalhau client, see more informationhereRunning Locally​Clone the repo which contains the codeCopygitclonehttps://github.com/js-ts/CoresetDownloading the dataset​To download the dataset you should open Street Map, which is a public repository that aims to generate and distribute accessible geographic data for the whole world. Basically, it supplies detailed position information, including the longitude and latitude of the places around the world.The dataset is aosm.pbf(compressed format for.osmfile), the file can be downloaded fromGeofabrik Download ServerCopywgethttps://download.geofabrik.de/europe/monaco-latest.osm.pbfInstalling Dependencies​The following command is installing Linux dependencies:Copysudoapt-get-yupdate\sudoapt-get-yinstallosmium-tool\sudoapt-get-yinstalllibpq-devgdal-binlibgdal-devlibxml2-devlibxslt-devEnsure that therequirements.txtfile contains the following dependencies:Copy# requirements.txtcertifi==2020.12.5chardet==4.0.0cycler==0.10.0idna==2.10joblibkiwisolver==1.3.1lxml==4.6.2matplotlib==3.3.3numpy==1.19.4overpy==0.4pandas==1.1.4Pillow==8.0.1pyparsing==2.4.7python-dateutil==2.8.1pytz==2020.4requests==2.25.1scikit-learnscipysix==1.15.0threadpoolctltqdm==4.56.0urllib3==1.26.2geopandasThe following command is installing Python dependencies:Copypip3install-rCoreset/requirements.txtRunning the Script​To run coreset locally, you need to convert from compressedpbfformat togeojsonformat:Copyosmiumexportmonaco-latest.osm.pbf-omonaco-latest.geojsonThe following command is to run the Python script to generate the coreset:CopypythonCoreset/python/coreset.py-fmonaco-latest.geojsoncoreset.pycontains the following scripthereContainerize Script using Docker​To build your own docker container, create aDockerfile, which contains instructions on how the image will be built, and what extra requirements will be included.CopyFROMpython:3.8RUN apt-get -y update && apt-get -y install osmium-tool && apt update && apt-get -y install libpq-dev gdal-bin libgdal-dev libxml2-dev libxslt-devADDCoreset CoresetADDmonaco-latest.geojson .RUNcd Coreset && pip3 install -r requirements.txtWe will use thepython:3.8image, we run the same commands for installing dependencies that we used locally.See more information on how to containerize your script/apphereBuild the container​We will rundocker buildcommand to build the container:Copydocker build -t <hub-user>/<repo-name>:<tag> .Before running the command replace:hub-userwith your docker hub username, If you don’t have a docker hub accountfollow these instructions to create docker account, and use the username of the account you createdrepo-namewith the name of the container, you can name it anything you wanttagthis is not required but you can use the latest tagIn our case:Copydockerbuild-tjsace/coresetPush the container​Next, upload the image to the registry. This can be done by using the Docker hub username, repo name or tag.Copydockerpush<hub-user>/<repo-name>:<tag>In our case:Copydockerpushjsace/coresetRunning a Bacalhau Job​After the repo image has been pushed to Docker Hub, we can now use the container for running on Bacalhau. We've already converted themonaco-latest.osm.pbffile from compressedpbfformat togeojsonformathere. To submit a job, run the following Bacalhau command:Copybacalhaudockerrun\--inputhttps://github.com/js-ts/Coreset/blob/master/monaco-latest.geojson\jsace/coreset\--/bin/bash-c'python Coreset/python/coreset.py -f monaco-latest.geojson -o outputs'Structure of the command​Let's look closely at the command above:bacalhau docker run: call to bacalhau--input https://github.com/js-ts/Coreset/blob/master/monaco-latest.geojson: mount themonaco-latest.geojsonfile inside the container so it can be used by the scriptjsace/coreset: the name of the docker image we are usingpython Coreset/python/coreset.py -f monaco-latest.geojson -o outputs: the script initializes cluster centers, creates a coreset using these centers, and saves the results to the specified folder.Additional parameters:-k: amount of initialized centers (default=5)-n: size of coreset (default=50)-o: the output folderWhen a job is submitted, Bacalhau prints out the relatedjob_id. We store that in an environment variable so that we can reuse it later on.Declarative job description​The same job can be presented in thedeclarativeformat. In this case, the description will look like this:Copyname:Coresets On Bacalhautype:batchcount:1tasks:-name:My main taskEngine:type:dockerparams:Image:"jsace/coreset"Entrypoint:-/bin/bashParameters:--c- "osmium export input/liechtenstein-latest.osm.pbf -o /liechtenstein-latest.geojson;python Coreset/python/coreset.py -f /liechtenstein-latest.geojson -o /outputs"Publisher:Type:ipfsResultPaths:-Name:outputsPath:/outputsInputSources:-Source:Type:"s3"Params:Bucket:"coreset"Key:"*"Region:"us-east-1"Target:"/input"The job description should be saved in.yamlformat, e.g.coreset.yaml, and then run with the command:Copybacalhaujobruncoreset.yamlChecking the State of your Jobs​Job status: You can check the status of the job usingbacalhau job list.Copybacalhaujoblist--id-filter${JOB_ID}--wideWhen it saysPublishedorCompleted, that means the job is done, and we can get the results.Job information: You can find out more information about your job by usingbacalhau job describe.Copybacalhaujobdescribe${JOB_ID}Job download: You can download your job results directly by usingbacalhau job get. Alternatively, you can choose to create a directory to store your results. In the command below, we created a directory (results) and downloaded our job output to be stored in that directory.Copyrm-rfresults&&mkdir-presultsbacalhaujobget$JOB_ID--output-dirresultsViewing your Job Output​To view the file, run the following command:Copylsresults/outputscenters.csvcoreset-weights-monaco-latest.csvcoreset-values-monaco-latest.csvids.csvTo view the output as a CSV file, run:Copycatresults/outputs/centers.csv|head-n10lat,long7.423843975787508,43.7306211540721967.4252607,43.73991357.411026970571964,43.729376711219257.459404485446199,43.620655870267157.429551373022234,43.74042043301333Copycatresults/outputs/coreset-values-monaco-latest.csv|head-n107.418849799999999384e+00,4.372759140000000144e+017.416779063194204547e+00,4.373053835217195484e+017.422073648233502574e+00,4.374059957604499971e+017.434173206469590234e+00,4.374591689556921636e+017.417540100000000081e+00,4.372501400000000160e+017.427359010538406636e+00,4.374324133692341121e+017.427839200000001085e+00,4.374025220000000758e+017.418834173612560257e+00,4.372760402368248833e+017.416381731248183229e+00,4.373708812663696932e+017.412050699999999992e+00,4.372842109999999849e+01Copycatresults/outputs/coreset-weights-monaco-latest.csv|head-n107.704359156916230233e+012.090893934427382987e+021.560611140982714744e+022.516557569411126281e+027.714605094768158722e+012.640808776415075840e+022.326085291610944523e+027.704841021255269595e+012.089705263763523249e+021.728105655128551632e+02Support​If you have questions or need support or guidance, please reach out to theBacalhau team via Slack(#generalchannel).PreviousRunning BIDS Apps on BacalhauNextGenomics Data GenerationLast updated1 month agoOn this pageIntroductionPrerequisite​Running Locally​Downloading the dataset​Installing Dependencies​Running the Script​Containerize Script using Docker​Build the container​Push the container​Running a Bacalhau Job​Structure of the command​Checking the State of your Jobs​Viewing your Job Output​Support​Was this helpful?Edit on GitHubExport as PDFGet SupportExpansoSupportUse CasesDistributed ETLEdge MLDistributed Data WarehousingFlett ManagementAbout UsWho we areWhat we valueNews & BlogBlogNewsExpanso (2024). All Rights Reserved.
+Generate Realistic Images using StyleGAN3 and Bacalhau
+Introduction
+In this example tutorial, we will show you how to generate realistic images with [StyleGAN3](https://github.com/NVlabs/stylegan3) and Bacalhau. StyleGAN is based on Generative Adversarial Networks (GANs), which include a generator and discriminator network that has been trained to differentiate images generated by the generator from real images. However, during the training, the generator tries to fool the discriminator, which results in the generation of realistic-looking images. With StyleGAN3 we can generate realistic-looking images or videos. It can generate not only human faces but also animals, cars, and landscapes.
+TL;DR
+Prerequisite
+To get started, you need to install the Bacalhau client, see more information [here](/getting-started/installation)
+Running StyleGAN3 locally
+To run StyleGAN3 locally, you'll need to clone the repo, install dependencies and download the model weights.
+Now you can generate an image using a pre-trained AFHQv2
+model. Here is an example of the image we generated:
+Containerize Script with Docker
+To build your own docker container, create a Dockerfile
+, which contains instructions to build your image.
+See more information on how to containerize your script/app [here](https://docs.docker.com/get-started/02_our_app/)
+Build the container
+We will run docker build
+command to build the container:
+Before running the command replace:
+hub-user with your docker hub username, If you don’t have a docker hub account follow
+[these instructions](https://docs.docker.com/docker-id/)to create docker account ([https://docs.docker.com/docker-id/](https://docs.docker.com/docker-id/)), and use the username of the account you createdrepo-name with the name of the container, you can name it anything you want
+tag this is not required but you can use the latest tag
+In our case:
+Push the container
+Next, upload the image to the registry. This can be done by using the Docker hub username, repo name or tag.
+In our case:
+Running a Bacalhau Job
+Structure of the command
+Some of the jobs presented in the Examples section may require more resources than are currently available on the demo network. Consider [starting your own network](/getting-started/create-private-network) or running less resource-intensive jobs on the demo network
+To submit a job run the Bacalhau command with following structure:
+export JOB_ID=$( ... )
+exports the job ID as environment variablebacalhau docker run
+: call to BacalhauThe
+--gpu 1
+flag is set to specify hardware requirements, a GPU is needed to run such a jobThe
+--id-only
+flag is set to print only job idjsacex/stylegan3
+: the name and the tag of the docker image we are usingpython gen_images.py
+: execute the script with following parameters:--trunc=1 --seeds=2 --network=stylegan3-r-afhqv2-512x512.pkl
+: The animation length is either determined based on the--seeds
+value or explicitly specified using the--num-keyframes
+option. When num keyframes are specified with--num-keyframes
+, the output video length will benum_keyframes * w_frames
+frames.../outputs
+: path to the output
+Declarative job description
+The same job can be presented in the [declarative](/examples/model-inference/generate-realistic-images-using-stylegan3-and-bacalhau#declarative-job-description) format. In this case, the description will look like this:
+The job description should be saved in .yaml
+format, e.g. stylegan3.yaml
+, and then run with the command:
+Render a latent vector interpolation video
+You can also run variations of this command to generate videos and other things. In the following command below, we will render a latent vector interpolation video. This will render a 4x2 grid of interpolations for seeds 0 through 31.
+Structure of the command
+Let's look closely at the command below:
+export JOB_ID=$( ... )
+exports the job ID as environment variablebacalhau docker run
+: call to bacalhauThe
+--gpu 1
+flag is set to specify hardware requirements, a GPU is needed to run such a jobThe
+--id-only
+flag is set to print only job idjsacex/stylegan3
+the name and the tag of the docker image we are usingpython gen_images.py
+: execute the script with following parameters:--trunc=1 --seeds=2 --network=stylegan3-r-afhqv2-512x512.pkl
+: The animation length is either determined based on the--seeds
+value or explicitly specified using the--num-keyframes
+option. When num keyframes is specified with--num-keyframes
+, the output video length will benum_keyframes * w_frames frames
+. If--num-keyframes
+is not specified, the number of seeds given with--seeds
+must be divisible by grid size W*H (--grid
+). In this case, the output video length will be# seeds/(w*h)*w_frames
+frames.../outputs
+: path to the output
+When a job is submitted, Bacalhau prints out the related job_id
+. We store that in an environment variable so that we can reuse it later on.
+Checking the State of your Jobs
+Job status
+You can check the status of the job using bacalhau job list
+.
+When it says Completed
+, that means the job is done, and we can get the results.
+Job information
+You can find out more information about your job by using bacalhau job describe
+.
+Job download
+You can download your job results directly by using bacalhau job get
+. Alternatively, you can choose to create a directory to store your results. In the command below, we created a directory and downloaded our job output to be stored in that directory.
+After the download has finished you should see the following contents in results directory
+Viewing your Job Output
+Now you can find the file in the results/outputs
+folder.
+Support
+If you have questions or need support or guidance, please reach out to the [Bacalhau team via Slack](https://bacalhauproject.slack.com/ssb/redirect) (#general channel).
+Last updated

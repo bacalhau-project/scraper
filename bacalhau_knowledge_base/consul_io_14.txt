@@ -1,3 +1,54 @@
-URL: https://www.consul.io/docs
+Source: consul_io
+URL: https://www.consul.io/docs/nia
 
-HashiDaysOne conference. Three cities.Find a city near youDismiss alertHashiCorp DeveloperHashiCorp Cloud PlatformTerraformPackerConsulVaultBoundaryNomadWaypointVagrantConsulInstallTutorialsDocumentationAPICLITry Cloud(opens in new tab)SearchCommand or control keyK keySign inSign upThemeConsul HomeDocumentationDocumentationWhat is Consul?Why Choose Consul?Core ConceptsGet StartedArchitectureRelease NotesUpgradeServicesService MeshDynamic App ConfigurationSecurityAgentIntegrationsTroubleshootKubernetesNomadAWS ECSAWS LambdaHCP Consul DedicatedConsul EnterpriseNetwork Infrastructure AutomationResourcesTutorial LibraryCertificationsCommunity Forum(opens in new tab)Support(opens in new tab)GitHub(opens in new tab)DeveloperConsulDocumentationv1.19.x (latest)Consulv1.18.xv1.17.xv1.16.xv1.15.xv1.14.xv1.13.xv1.12.xv1.11.xv1.10.xv1.9.xv1.8.xConsul DocumentationConsul is a multi-networking tool that offers a fully-featured service mesh solution. It solves the networking and security challenges of operating microservices and cloud infrastructure in multi-cloud and hybrid cloud environments. This documentation describes Consul concepts, the problems it solves, and contains quick-start tutorials for using Consul.APICLIUse casesService meshConsul service mesh provides service-to-service connection authorization and encryption using mutual transport layer security (TLS).Register mesh servicesDefine and register services with Consul and associate them with health checks.Configure mesh behaviorThe exported services configuration entry enables you to export services from a single file.Manage mesh trafficGateways provide connectivity into, out of, and between Consul service meshes.Control ingress trafficDeploy a Consul API gateway to manage north-south network traffic .KubernetesConsul has many integrations with Kubernetes. You can deploy Consul to Kubernetes using the Helm chart or Consul K8s CLI, sync services between Consul and Kubernetes, run Consul service mesh, and more.Install Consul on KubernetesConsul runs directly on Kubernetes to support pure K8s workloads. You can also join workloads to Consul servers outside of Kubernetes to support mixed environments.Simplify service mesh on Kubernetes with Consul DataplaneConsul Dataplane manages proxies but leaves responsibility for other functions to the orchestrator, removing the need to run client agents on every node.Connect services deployed to multiple Kubernetes clustersInstall and federate Consul on multiple Kubernetes clusters.Sync Kubernetes and Consul servicesAutomatically sync your Kubernetes and Consul services to seamlessly secure communications between your Kubernetes and Consul services.Network infrastructure automationConsul-Terraform-Sync (CTS) enables dynamic updates to network infrastructure devices triggered by service changes.Install and configure the CTSInstall the CTS binary.Define dynamic updatesConfigure CTS Tasks to automatically update network infrastructure when your Consul services change.Create a Terraform moduleAutomatically execute Terraform modules for network infrastructure automation with CTS.PlatformsConsul integrates with several platforms and products. Learn more about Consul integrations and how to enable them.NomadUse Consul service mesh with Nomad to provide secure service to service communication between Nomad jobs.VaultUse Consul with Vault to manage and sign certificates. The Vault CA provider uses the Vault PKI secrets engine to generate and sign certificates.AWS ECSDeploy Consul service mesh on AWS ECS (Elastic Container Service).AWS LambdaIntegrate AWS Lambda with Consul services by registering Lambda functions as Consul services and invoking them from your service mesh.DevelopersEnvoy integrationHTTP API structureDownload Consul toolsGitHub samplesOn this page:Consul DocumentationUse casesDevelopersThemeCertificationsSystem StatusCookie ManagerTerms of UseSecurityPrivacyTrademark PolicyTrade ControlsAccessibilityGive Feedback(opens in new tab)
+Network Infrastructure Automation
+Network Infrastructure Automation (NIA) enables dynamic updates to network infrastructure devices triggered by service changes. Consul-Terraform-Sync (CTS) utilizes Consul as a data source that contains networking information about services and monitors those services. Terraform is used as the underlying automation tool and leverages the Terraform provider ecosystem to drive relevant changes to the network infrastructure.
+CTS executes one or more automation tasks with the most recent service variable values from the Consul service catalog. Each task consists of a runbook automation written as a CTS compatible Terraform module using resources and data sources for the underlying network infrastructure. The consul-terraform-sync
+daemon runs on the same node as a Consul agent.
+CTS is available as an open source and enterprise distribution. Follow the [Automate your network configuration with Consul-Terraform-Sync tutorial](/consul/tutorials/network-infrastructure-automation/consul-terraform-sync-intro?utm_source=docs) to get started with CTS OSS or read more about [CTS Enterprise](/consul/docs/nia/enterprise).
+Use Cases
+Application teams must wait for manual changes in the network to release, scale up/down and re-deploy their applications. This creates a bottleneck, especially in frequent workflows related to scaling up/down the application, breaking the DevOps goal of self-service enablement. CTS automates this process, thus decreasing the possibility of human error in manually editing configuration files, as well as decreasing the overall time taken to push out configuration changes.
+Networking and security teams cannot scale processes to the speed and changes needed. Manual approaches don't scale well, causing backlogs in network and security teams. Even in organizations that have some amount of automation (such as scripting), there is a need for an accurate, real-time source of data to trigger and drive their network automation workflows. CTS runs in near real-time to keep up with the rate of change.
+Glossary
+- A task-level defined environmental requirement. When a task's condition is met, CTS executes that task to update network infrastructure. Depending on the condition type, the condition definition may also define and enable the module input that the task provides to the configured Terraform Module.Condition
+- Consul objects are the response request objects returned from the Consul API that CTS monitor for changes. Examples of Consul objects can be service instance information, Consul key-value pairs, and service registration. The Consul objects are used to inform a task's condition and/or module input.Consul objects
+-Consul-Terraform-Sync (CTS)
+[GitHub repo](https://github.com/hashicorp/consul-terraform-sync)and binary/CLI name for the project that is used to perform Network Infrastructure Automation.- A dynamic task is a type of task that is dynamically triggered on a change to any relevant Consul catalog values e.g. service instances, Consul KV, catalog-services. See scheduled tasks for a type of non-dynamic task.Dynamic Tasks
+Note: The terminology "tasks" used throughout the documentation refers to all types of tasks except when specifically stated otherwise.
+- CTS usesNetwork Drivers
+[network drivers](/consul/docs/nia/network-drivers)to execute and update network infrastructure. Drivers transform Consul service-level information into downstream changes by processing and abstracting API and resource details tied to specific network infrastructure.- Enables dynamic updates to network infrastructure devices triggered when specific conditions, such as service changes and registration, are met.Network Infrastructure Automation (NIA)
+- A scheduled task is a type of task that is triggered only on a schedule. It is configured with aScheduled Tasks
+[schedule condition](/consul/docs/nia/configuration#schedule-condition).- A service in CTS represents a service that is registered with Consul for service discovery. Services are grouped by their service names. There may be more than one instance of a particular service, each with its own unique ID. CTS monitors services based on service names and can provide service instance details to a Terraform module for network automation.Services
+- A module input defines objects that provide values or metadata to the Terraform module. SeeModule Input
+[module input](/consul/docs/nia/terraform-modules#module-input)for the supported metadata and values. For example, a user can configure a Consul KV module input to provide KV pairs as variables to their respective Terraform Module.The module input can be configured in a couple of ways:
+- Setting the
+condition
+block'suse_as_module_input
+field to true- Field was previously named
+source_includes_var
+(deprecated)
+- Field was previously named
+- Configuring
+module_input
+block(s)- Block was previously named
+source_input
+(deprecated)
+- Block was previously named
+"Module input" was renamed from "source input" in CTS 0.5.0 due to updates to the configuration names seen above.
+Note: The terminology "tasks" used throughout the documentation refers to all types of tasks except when specifically stated otherwise.
+- Setting the
+- A task is the translation of dynamic service information from the Consul Catalog into network infrastructure changes downstream.Tasks
+- Per theHCP Terraform
+[Terraform documentation](/terraform/cloud-docs), "HCP Terraform" describes both HCP Terraform and Terraform Enterprise, which are different distributions of the same application. Documentation will apply to both distributions unless specifically stated otherwise.- ATerraform Module
+[Terraform module](/terraform/language/modules)is a container for multiple Terraform resources that are used together.- ATerraform Provider
+[Terraform provider](/terraform/language/providers)is responsible for understanding API interactions and exposing resources for an infrastructure type.
+Getting Started With Network Infrastructure Automation
+The [Network Infrastructure Automation (NIA)](/consul/tutorials/network-infrastructure-automation?utm_source=docs)
+collection contains examples on how to configure CTS to
+perform Network Infrastructure Automation. The collection contains also a
+tutorial to secure your CTS configuration for a production
+environment and one to help you build you own CTS compatible
+module.
+Community
+[Contribute](https://github.com/hashicorp/consul-terraform-sync)to the open source project[Report](https://github.com/hashicorp/consul-terraform-sync/issues)bugs or request enhancements[Discuss](https://discuss.hashicorp.com/tags/c/consul/29/consul-terraform-sync)with the community or ask questions[Build integrations](/consul/docs/nia/terraform-modules)for CTS
+[Edit this page on GitHub](https://github.com/hashicorp/consul/blob/main/website/content/docs/nia/index.mdx)

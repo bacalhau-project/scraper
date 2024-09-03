@@ -1,8 +1,33 @@
-URL: https://kubernetes.io/case-studies/
+Source: kubernetes_io
+URL: https://kubernetes.io/releases
 
-DocumentationKubernetes BlogTrainingPartnersCommunityCase StudiesVersionsRelease Informationv1.31v1.30v1.29v1.28v1.27Englishবাংলা (Bengali)中文 (Chinese)Français (French)Deutsch (German)हिन्दी (Hindi)Bahasa Indonesia (Indonesian)Italiano (Italian)日本語 (Japanese)한국어 (Korean)Português (Portuguese)Русский (Russian)Español (Spanish)Українська (Ukrainian)Tiếng Việt (Vietnamese)Kubernetes User Case Studies"Kubernetes is a great platform for machine learning because it comes with all the scheduling and scalability that you need.
-"Read about Babylon"Kubernetes is a great solution for us. It allows us to rapidly iterate on our clients' demands.
-"Read about Booz Allen Hamilton"We realized that we needed to learn Kubernetes better in order to fully use the potential of it. At that point, we made the shift to build our own Kubernetes platform.
-"Read about Booking.com"We made the right decisions at the right time. Kubernetes and the cloud native technologies are now seen as the de facto ecosystem.
-"Read about AppDirect"Kubernetes has the opportunity to be the new cloud platform. The amount of innovation that's going to come from being able to standardize on Kubernetes as a platform is incredibly exciting - more exciting than anything I've seen in the last 10 years of working on the cloud.
-"Kubernetes at BoxCase StudiesDocumentationBlogTrainingPartnersCommunityCase Studies© 2024 The Kubernetes Authors | Documentation Distributed underCC BY 4.0Copyright © 2024 The Linux Foundation ®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see ourTrademark Usage pageICP license: 京ICP备17074266号-3
+The Kubernetes project maintains release branches for the most recent three minor releases
+(1.31, 1.30, 1.29).
+Kubernetes 1.19 and newer receive
+[approximately 1 year of patch support](/releases/patch-releases/#support-period).
+Kubernetes 1.18 and older received approximately 9 months of patch support.
+Kubernetes versions are expressed as x.y.z,
+where x is the major version, y is the minor version, and z is the patch version,
+following [Semantic Versioning](https://semver.org/) terminology.
+More information in the [version skew policy](/releases/version-skew-policy/) document.
+Release History
+1.31
+Latest Release:1.31.0 (released: )
+End of Life:
+Patch Releases: n/a
+1.30
+Latest Release:1.30.4 (released: )
+End of Life:
+1.29
+Latest Release:1.29.8 (released: )
+End of Life:
+1.28
+Latest Release:1.28.13 (released: )
+End of Life:
+Upcoming Release
+Check out the [schedule](https://github.com/kubernetes/sig-release/tree/master/releases/release-1.32)
+for the upcoming 1.32 Kubernetes release!
+Helpful Resources
+Refer to the [Kubernetes Release Team](https://github.com/kubernetes/sig-release/tree/master/release-team) resources
+for key information on roles and the release process.
+Last modified February 06, 2024 at 4:35 PM PST:

@@ -1,3 +1,160 @@
-URL: https://nats.io/blog/mongodb-nats-connector/
+Source: nats_io
+URL: https://nats.io/blog/nats-recover-quorum/#fn:1
 
-AboutDownloadDocumentationBlogCommunitySupportPrivacyMongoDB NATS ConnectorAndrea Damiani— May 16, 2023Back to BlogData Synchronization Between MicroservicesWith microservice architectures becoming the standard nowadays, it is a common need to extract data from your database to synchronize other downstream services.Consider a social network where you have a service that stores new posts in aMongoDBcollection. You may want to notify other services when a post is created, perhaps so that you can save it onRedisfor fast retrieval, or add it toElasticfor full text search queries.The first approach that might come to mind is to sequentially:Persist the post in a MongoDB collectionSave the post in RedisAdd the post to ElasticHowever this approach presents a problem, creating a new post would involve three different systems. The more systems are involved, the higher the chances that one of them will be unavailable, therefore increasing the overall chances of errors.Moreover, what if we want to add more systems to the mix? The speed of the service, which was initially designed to simply insert a new post, would be negatively impacted as it now performs multiple commands.NATS to the RescueTo address this problem, you could useNATS, a lightweight and high-performance messaging system that supports pub-sub, request-reply, and message storing and replaying.For example, you could:Persist the post on a MongoDB collectionPublish a message onNATS JetStreamLet other services consume the stream and react to it (e.g., save the post on Redis, add it to Elastic, etc.)This approach improves the design, but there’s still a concern. What if NATS becomes unavailable after persisting the post on MongoDB? In such cases, data inconsistencies arise. The post is added to MongoDB, but no message is published, leaving other services unaware of the new post.To mitigate this, you can consider using MongoDB transactions: insert the post in MongoDB, publish the message on NATS, and if the latter fails, rollback; otherwise commit. However, if the commit fails, the other services would be notified about the new post, but it would not be present in MongoDB.Change Data CaptureOne solution to this problem isChange Data Capture(CDC). Whenever there is a data change event in MongoDB (such as an insertion, an update or a deletion), we can capture it and write it to NATS JetStream. From there, any number of consumers can subscribe to the stream, process the change events, and react accordingly. Each consumer processes the data and sends anacknowledged(ACK) signal to NATS, to confirm the correct handling. In case of retryable errors, consumers can send anot-acknowledged(NAK) signal, prompting NATS to redeliver the message. Although this introduces eventual consistency, as the post may be found on MongoDB but not yet on Redis and Elastic, it eventually reaches all systems.Now the question is, how do we capture data changes on MongoDB and publish them on NATS JetStream? A vital piece of the puzzle is still missing.MongoDB Change StreamsMongoDB has a built-in feature calledChange Streams, which provides a real-time stream of database changes, precisely what we need for CDC. Your next thought might be:Leverage any of the official MongoDB client libraries to make your services subscribe to change streamsReact to the change events and publish them on NATS JetStreamLet other services consume the stream and react to it (e.g., save the post on Redis, add it to Elastic, etc.)This decouples the insertion of a new post from the other systems. Any service interested in it, can subscribe to the change stream and react accordingly. Adding new services to the mix becomes more manageable as well. However, this approach still has its challenges. What if the service subscribing to a change stream fails to publish a message on NATS? In such cases, the responsibility to handle errors and retries falls on the service itself.Moreover, what if the service crashes while consuming change events? While many modern architectures can handle that scenario by automatically restarting containers, the service still needs to address the issue of determining the last processed change event before the crash. Improper handling could lead to missed change events or the publication of undesired duplicate messages by reading the same events multiple times.Another consideration is the horizontal scaling of the service. If multiple instances of the service consume the same change stream, duplicate messages would be published.Enter MongoDB-NATS ConnectorTo address these challenges I decided to buildMongoDB-NATS Connector, a tool that utilizes MongoDB’s change streams to capture data changes and publish them to NATS JetStream.The connector efficiently synchronizes these two technologies, relieving the services from the burden of managing errors, retries and duplicate messages. It achieves this by utilizing MongoDBresume tokens. Each change event has an _idfield that serves as a resume token. When watching a collection, you can set aresumeAfterparameter with a resume token value, MongoDB will use it toresume the change streamafter the specific event that is identified with the resume token. After reading a change event, the connector persists that token in a collection, and upon restart, it queries that collection to fetch the last inserted record. This enables the connector to resume after the last processed change event.However, the connector still faces a few challenges:What if the connector crashes before publishing the message to NATS and persisting the resume token?What if it fails to publish the message to NATS, perhaps due to unavailability?What if it successfully publishes the message to NATS, but fails to persist the resume token?In all three cases, the connector simply retries, restarting from the previous resume token. While the first two cases do not pose significant issues, the third case could result in a duplicate message being published on NATS, since the message was already published before the failure. To address this, the connector uses the current resume token as theNats-Msg-Idheader. This way, service consumers do not have to worry about duplicate messages, as NATS JetStream automaticallydiscards them.ConclusionSo there you have it! MongoDB-Connector is a powerful tool that simplifies data extraction from MongoDB and synchronization with other services through NATS JetStream. By handling the complexity of errors, retries, and duplicate messages, the connector allows you to focus on the business logic of your services while ensuring efficient and reliable data synchronization.About the AuthorAndrea Damiani is a passionate software engineer at Spindox, and a big fan of MongoDB & NATS.Back to BlogCopyright © NATS Authors 2024NATS is aCloud Native Computing Foundationincubating projectThe Linux Foundation has registered trademarks and uses trademarks.For a list of trademarks of The Linux Foundation, please seeTrademark Usage page.
+[Back to Blog](/blog)
+Recovering Quorum After Renaming Servers
+John Weldon — January 20, 2024
+Occasionally, a NATS cluster can lose quorum for various reasons. Here, we’ll look at one specific case, and how to recover from it.
+Context
+How To Rename Servers in a Cluster
+The recommended way to rename NATS servers in a cluster is to rename one at a time. After each rename, the cluster will have a record of both the old name and the new name. The former will appear offline, and the latter should appear online. You should remove the record of the old name before renaming the next server, otherwise, the cluster may, sooner or later, end up with too many faux-offline servers, and will consider itself to have lost quorum.
+NATS Helm Chart Caveats - A Brief Diversion
+The
+[ values.yaml](https://github.com/nats-io/k8s/blob/main/helm/charts/nats/values.yaml)
+file for the
+[NATS Helm Chart](https://github.com/nats-io/k8s/blob/main/helm/charts/nats/README.md)has an option to set a
+[, which you might be tempted to use to rename the servers in a helm chart deployed cluster.](https://github.com/nats-io/k8s/blob/2ce9a408f17b823d51223e04e806b73cead51993/helm/charts/nats/values.yaml#L273)
+serverNamePrefix
+This setting should only be changed before the first installation.
+Once the cluster is up and running, if you change this value, and then upgrade the
+helm release, you’ll cause all of the servers in the cluster to be simultaneously renamed.
+This will double the number of recorded servers in the cluster (half with the old name, and
+half with the new name, per the changed serverNamePrefix
+).
+Consequently, there will not be enough servers active in the cluster to retain quorum.
+A Case Study
+For the sake of this article, we’ll assume a helm chart [1](#fn:1) deployed cluster of three servers. [2](#fn:2)
+We start by “breaking” this cluster, simply modifying the serverNamePrefix
+to rename the
+servers, and update the release.
+First Indication of Trouble
+Logs
+The first indication of trouble is when you see this WRN
+warning and INF
+message in the logs:
+[WRN] Healthcheck failed: "JetStream has not established contact with a meta leader"
+[INF] JetStream cluster no metadata leader
+Events
+Another indication is that the NATS pods fail to progress to a ready state; the NATS container specifically shows that it’s running, but the readiness is false.
+The events will show a warning with the message
+Readiness probe failed: HTTP probe failed with statuscode: 503
+NATS CLI
+Using the NATS CLI, running the nats server report jetstream
+will also show an error;
+depending on the cluster state it could be any one of the following:
+Before Quorum is Lost
+At first, you’ll just see half the servers (with the old name) as being offline:
+$ nats server report jetstream
+╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ JetStream Summary │
+├─────────────────────┬────────────────┬─────────┬───────────┬──────────┬───────┬────────┬──────┬─────────┬─────────┤
+│ Server │ Cluster │ Streams │ Consumers │ Messages │ Bytes │ Memory │ File │ API Req │ API Err │
+├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
+│ x-nats-helm-kind-0 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+│ x-nats-helm-kind-1 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+│ x-nats-helm-kind-2* │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
+│ │ │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+╰─────────────────────┴────────────────┴─────────┴───────────┴──────────┴───────┴────────┴──────┴─────────┴─────────╯
+╭───────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ RAFT Meta Group Information │
+├─────────────────────────────────────────────────────┬──────────┬────────┬─────────┬────────┬────────┬─────┤
+│ Name │ ID │ Leader │ Current │ Online │ Active │ Lag │
+├─────────────────────────────────────────────────────┼──────────┼────────┼─────────┼────────┼────────┼─────┤
+│ Server name unknown at this time (peerID: Wp0X92Zu) │ Wp0X92Zu │ │ false │ false │ 0s │ 0 │
+│ nats-helm-kind-0 │ YMpQSy04 │ │ false │ false │ 19.53s │ 1 │
+│ nats-helm-kind-1 │ MGRogjE4 │ │ false │ false │ 0s │ 13 │
+│ x-nats-helm-kind-0 │ svvjmHnE │ │ true │ true │ 526ms │ 0 │
+│ x-nats-helm-kind-1 │ XCzEfWSa │ │ true │ true │ 525ms │ 0 │
+│ x-nats-helm-kind-2 │ XGX0cX6V │ yes │ true │ true │ 0s │ 0 │
+╰─────────────────────────────────────────────────────┴──────────┴────────┴─────────┴────────┴────────┴─────╯
+After Quorum is Lost
+After the quorum is lost, but before the readiness probes cause the servers to stop responding, for a brief window of time you’ll see the error in the jetstream report:
+$ nats server report jetstream
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ JetStream Summary │
+├────────────────────┬────────────────┬─────────┬───────────┬──────────┬───────┬────────┬──────┬─────────┬─────────┤
+│ Server │ Cluster │ Streams │ Consumers │ Messages │ Bytes │ Memory │ File │ API Req │ API Err │
+├────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
+│ x-nats-helm-kind-0 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+│ x-nats-helm-kind-1 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+│ x-nats-helm-kind-2 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+├────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
+│ │ │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+╰────────────────────┴────────────────┴─────────┴───────────┴──────────┴───────┴────────┴──────┴─────────┴─────────╯
+WARNING: No cluster meta leader found. The cluster expects 6 nodes but only 3 responded. JetStream operation require at least 4 up nodes.
+After Servers Stop Responding
+Finally, the servers will possibly stop responding, giving you the general error:
+$ nats server report jetstream
+nats: error: nats: no servers available for connection
+command terminated with exit code 1
+How To Recover
+Regain Quorum
+To recover, the cluster must first regain quorum.
+In this case, the cluster thinks that there are six nodes [3](#fn:3) in the cluster,
+so to regain quorum there needs to be a minimum of four nodes [3](#fn:3) reachable from each other.
+The way to do this is to add one more server, which will allow quorum to be regained. You can do this by scaling the stateful set:
+$ kubectl scale --replicas=4 statefulset/nats-helm-kind
+Which, once complete, should result in quorum being regained:
+$ nats server report jetstream
+╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ JetStream Summary │
+├─────────────────────┬────────────────┬─────────┬───────────┬──────────┬───────┬────────┬──────┬─────────┬─────────┤
+│ Server │ Cluster │ Streams │ Consumers │ Messages │ Bytes │ Memory │ File │ API Req │ API Err │
+├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
+│ x-nats-helm-kind-0 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+│ x-nats-helm-kind-1 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+│ x-nats-helm-kind-2* │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+│ x-nats-helm-kind-3 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
+│ │ │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+╰─────────────────────┴────────────────┴─────────┴───────────┴──────────┴───────┴────────┴──────┴─────────┴─────────╯
+╭───────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ RAFT Meta Group Information │
+├─────────────────────────────────────────────────────┬──────────┬────────┬─────────┬────────┬────────┬─────┤
+│ Name │ ID │ Leader │ Current │ Online │ Active │ Lag │
+├─────────────────────────────────────────────────────┼──────────┼────────┼─────────┼────────┼────────┼─────┤
+│ Server name unknown at this time (peerID: Wp0X92Zu) │ Wp0X92Zu │ │ false │ false │ 0s │ 0 │
+│ nats-helm-kind-0 │ YMpQSy04 │ │ false │ false │ 47m27s │ 6 │
+│ nats-helm-kind-1 │ MGRogjE4 │ │ false │ false │ 0s │ 18 │
+│ x-nats-helm-kind-0 │ svvjmHnE │ │ true │ true │ 461ms │ 0 │
+│ x-nats-helm-kind-1 │ XCzEfWSa │ │ true │ true │ 461ms │ 0 │
+│ x-nats-helm-kind-2 │ XGX0cX6V │ yes │ true │ true │ 0s │ 0 │
+│ x-nats-helm-kind-3 │ G7oD67bf │ │ true │ true │ 461ms │ 0 │
+╰─────────────────────────────────────────────────────┴──────────┴────────┴─────────┴────────┴────────┴─────╯
+Remove Offline/Old Servers
+Now you can begin cleaning up the old server records. You can do this either with the CLI or by using NATS directly.
+CLI
+Using the CLI [4](#fn:4):
+$ nats server cluster peer-remove -f <peer ID>
+Using NATS Directly
+You can also remove a peer directly by publishing to the JetStream API subjects:
+$ nats publish '$JS.API.SERVER.REMOVE' '{"peer":"","peer_id":"YMpQSy04"}'
+Which will send a response message on the same channel that confirms the action:
+{
+"type": "io.nats.jetstream.api.v1.meta_server_remove_response",
+"success": true
+}
+Remove Temporarily Added Server
+Scale Back Down to Three Servers
+Now that the number of servers is four instead of six, it’s safe to scale back down to three servers, and then remove the record of the server we temporarily added.
+$ kubectl scale --replicas=3 statefulset/nats-helm-kind
+Remove Peer
+$ nats server cluster peer-remove -f G7oD67bf
+Success!
+Finally, the state of the cluster should be restored now, with three servers.
+About The Author
+John Weldon is a Customer Solutions Architect at
+[Synadia Communications](https://www.synadia.com/)
+.
+The name of the helm release in this article is
+nats-helm-kind
+; it could be anything, often the default is justnats
+[↩︎](#fnref:1)You can replicate the
+[kind](https://kind.sigs.k8s.io/)environment I used in this article, by referring to[this](https://github.com/johnweldon/nats-helm-kind-playground)repository.[↩︎](#fnref:2)NATS Servers are also called “nodes” - sometimes interchangeably.
+[↩︎](#fnref:3)Throughout this article I use nats-box to execute nats commands; the simple way to do it from the command line is:
+kubectl exec -it deployment/nats-helm-kind-box -- nats <command> <args>
+nats-box is deployed by default in the nats helm chart.
+For simplicity, I’ll just show the plain NATS command in the examples.
+[↩︎](#fnref:4)
+[Back to Blog](/blog)

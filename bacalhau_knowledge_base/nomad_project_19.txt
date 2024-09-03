@@ -1,3 +1,50 @@
-URL: https://www.nomadproject.io/vagrant
+Source: nomad_project
+URL: https://www.nomadproject.io/docs/internals/plugins/devices
 
-HashiDaysGet certified in HashiCorp products for free at HashiDays 2024Register nowDismiss alertOverviewUse CasesEnterpriseTutorialsDocsAPIPluginsToolsCommunityGitHub—Stars on GitHubDownloadNot FoundWe're sorry, but we can't find the page you're looking for.Back to HomeDocsAPICommunityPrivacySecurityConsent ManagerManage cookiesHashiCorp uses data collected by cookies and JavaScript libraries to improve your browsing experience, analyze site traffic, and increase the overall performance of our site. By using our website, you’re agreeing to ourPrivacy PolicyandCookie Policy.The categories below outline which companies and tools we use for collecting data. To opt out of a category of data collection, set the toggle to “Off” and save your preferences.Save preferencesAccept all
+Devices
+Nomad has built-in support for scheduling compute resources such as CPU, memory, and networking. Nomad device plugins are used to support scheduling tasks with other devices, such as GPUs. They are responsible for fingerprinting these devices and working with the Nomad client to make them available to assigned tasks.
+For a real world example of a Nomad device plugin implementation, see the [Nvidia
+GPU plugin](https://github.com/hashicorp/nomad-device-nvidia).
+Authoring Device Plugins
+Authoring a device plugin in Nomad consists of implementing the
+[DevicePlugin](https://github.com/hashicorp/nomad/blob/v0.9.0/plugins/device/device.go#L20-L33) interface alongside
+a main package to launch the plugin.
+The [device plugin skeleton project](https://github.com/hashicorp/nomad-skeleton-device-plugin) exists to help bootstrap
+the development of new device plugins. It provides most of the boilerplate
+necessary for a device plugin, along with detailed comments.
+Lifecycle and State
+A device plugin is long-lived. Nomad will ensure that one instance of the plugin is running. If the plugin crashes or otherwise terminates, Nomad will launch another instance of it.
+However, unlike [task drivers](/nomad/docs/concepts/plugins/task-drivers), device plugins do not currently
+have an interface for persisting state to the Nomad client. Instead, the device
+plugin API emphasizes fingerprinting devices and reporting their status. After
+helping to provision a task with a scheduled device, a device plugin does not
+have any responsibility (or ability) to monitor the task.
+Device Plugin API
+The [base plugin](/nomad/docs/concepts/plugins/base) must be implemented in addition to the following
+functions.
+Fingerprint(context.Context) (<-chan *FingerprintResponse, error)
+The Fingerprint
+[function](https://github.com/hashicorp/nomad-skeleton-device-plugin/blob/v0.1.0/device/device.go#L159-L165) is called by the client when the plugin is started.
+It allows the plugin to provide Nomad with a list of discovered devices, along with their
+attributes, for the purpose of scheduling workloads using devices.
+The channel returned should immediately send an initial
+[ FingerprintResponse](https://github.com/hashicorp/nomad/blob/v0.9.0/plugins/device/device.go#L37-L43), then send periodic updates at
+an appropriate interval until the context is canceled.
+Each fingerprint response consists of either an error or a list of device groups. A device group is a list of detected devices that are identical for the purpose of scheduling; that is, they will have identical attributes.
+Stats(context.Context, time.Duration) (<-chan *StatsResponse, error)
+The Stats
+[function](https://github.com/hashicorp/nomad-skeleton-device-plugin/blob/v0.1.0/device/device.go#L169-L176) returns a channel on which the plugin should
+emit device statistics, at the specified interval, until either an error is
+encountered or the specified context is cancelled. The StatsReponse
+object
+allows [dimensioned](https://github.com/hashicorp/nomad/blob/v0.9.0/plugins/shared/structs/stats.go#L33-L34) statistics to be returned for each device in a device group.
+Reserve(deviceIDs []string) (*ContainerReservation, error)
+The Reserve
+[function](https://github.com/hashicorp/nomad-skeleton-device-plugin/blob/v0.1.0/device/device.go#L189-L245) accepts a list of device IDs and returns the information
+necessary for the client to make those devices available to a task. Currently,
+the ContainerReservation
+object allows the plugin to specify environment
+variables for the task, as well as a list of host devices and files to be mounted
+into the task's filesystem. Any orchestration required to prepare the device for
+use should also be performed in this function.
+[Edit this page on GitHub](https://github.com/hashicorp/nomad/blob/main/website/content/docs/concepts/plugins/devices.mdx)

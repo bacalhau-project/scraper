@@ -1,4 +1,0 @@
-Source: apache_cassandra
-URL: https://cassandra.apache.org/blog/Inside-Cassandra-an-interview-with-Marcel-Birkner-at-Instana.html
-
-Not FoundThe requested URL was not found on this server.

@@ -1,4 +1,152 @@
 Source: grpc_io
-URL: https://grpc.io/docs/what-is-grpc/faq/
+URL: https://grpc.io/docs/languages/java/quickstart/
 
-gRPCAboutMeetDocsGuidesShowcaseBlogCommunitygRPConf 2024 is happening NEXT WEEK onAug. 27th!-Register nowand get 25% off with the code GOOGLE25.DocsWhat is gRPC?IntroductionCore conceptsFAQLanguagesC# / .NETAPI (legacy)Daily builds (legacy)C++Quick startBasics tutorialAsync-API tutorialAsynchronous Callback API TutorialBest Practices for gRPC C++ API and FAQALTSAPIDartQuick startBasics tutorialAPIGoQuick startBasics tutorialALTSAPIGenerated codeJavaQuick startBasics tutorialALTSAPIGenerated codeKotlinQuick startBasics tutorialAPINodeQuick startBasics tutorialAPIObjective-CQuick startBasics tutorialOAuth2APIPHPQuick startBasics tutorialAPIDaily buildsPythonQuick startBasics tutorialALTSGenerated codeAPIDaily buildsRubyQuick startBasics tutorialAPIDaily buildsPlatformsAndroidJavaQuick startBasics tutorialAPIKotlinQuick startAPIWebQuick startBasics tutorialGuidesAuthenticationBenchmarkingCancellationCompressionCustom Backend MetricsCustom Load Balancing PoliciesCustom Name ResolutionDeadlinesDebuggingError handlingFlow ControlHealth CheckingInterceptorsKeepaliveMetadataOpenTelemetry MetricsPerformance Best PracticesReflectionRequest HedgingRetryService ConfigStatus CodesWait-for-ReadyView page sourceEdit this pageCreate child pageCreate documentation issueCreate project issueWhat is gRPC?What does gRPC stand for?Why would I want to use gRPC?Who’s using this and why?Which programming languages are supported?How do I get started using gRPC?Which license is gRPC under?How can I contribute?Where is the documentation?What is the road map?How long are gRPC releases supported for?What is the gRPC versioning policy?What is the latest gRPC Version?When do gRPC releases happen?How can I report a security vulnerability in gRPC?Can I use it in the browser?Can I use gRPC with my favorite data format (JSON, Protobuf, Thrift, XML) ?Can I use gRPC in a service mesh?How does gRPC help in mobile application development?Why is gRPC better than any binary blob over HTTP/2?Why is gRPC better/worse than REST?How do you pronounce gRPC?DocsWhat is gRPC?FAQFAQContentsWhat is gRPC?What does gRPC stand for?Why would I want to use gRPC?Who’s using this and why?Which programming languages are supported?How do I get started using gRPC?Which license is gRPC under?How can I contribute?Where is the documentation?What is the road map?How long are gRPC releases supported for?What is the gRPC versioning policy?What is the latest gRPC Version?When do gRPC releases happen?How can I report a security vulnerability in gRPC?Can I use it in the browser?Can I use gRPC with my favorite data format (JSON, Protobuf, Thrift, XML) ?Can I use gRPC in a service mesh?How does gRPC help in mobile application development?Why is gRPC better than any binary blob over HTTP/2?Why is gRPC better/worse than REST?How do you pronounce gRPC?FAQHere are some frequently asked questions. Hope you find your answer here :-)What is gRPC?gRPC is a modern, open source remote procedure call (RPC) framework that can run anywhere. It enables client and server applications to communicate transparently, and makes it easier to build connected systems.Read the longerMotivation & Design Principlespost for background on why we created gRPC.What does gRPC stand for?gRPCRemoteProcedureCalls, of course!Why would I want to use gRPC?The main usage scenarios:Low latency, highly scalable, distributed systems.Developing mobile clients which are communicating to a cloud server.Designing a new protocol that needs to be accurate, efficient and language independent.Layered design to enable extension eg. authentication, load balancing, logging and monitoring etc.Who’s using this and why?gRPC is aCloud Native Computing Foundation(CNCF) project.Google has been using a lot of the underlying technologies and concepts in gRPC for a long time. The current implementation is being used in several of Google’s cloud products and Google externally facing APIs. It is also being used bySquare,Netflix,CoreOS,Docker,CockroachDB,Cisco,Juniper Networksand many other organizations and individuals.Which programming languages are supported?For officially supported languages and platforms, seeOfficial support.How do I get started using gRPC?You can start with installation of gRPC by following instructionshere. Or head over to thegRPC GitHub org page, pick the runtime or language you are interested in, and follow the README instructions.Which license is gRPC under?All implementations are licensed underApache 2.0.How can I contribute?Contributorsare highly welcome and the repositories are hosted on GitHub. We look forward to community feedback, additions and bugs. Both individual contributors and corporate contributors need to sign our CLA. If you have ideas for a project around gRPC, read guidelines and submithere. We have a growing list of projects under thegRPC Ecosystemorganization on GitHub.Where is the documentation?Check out thedocumentationright here on grpc.io.What is the road map?The gRPC project has an RFC process, through which new features are designed and approved for implementation. They are tracked inthis repository.How long are gRPC releases supported for?The gRPC project does not do LTS releases. Given the rolling release model above, we support the current, latest release and the release prior to that. Support here means bug fixes and security fixes.What is the gRPC versioning policy?See the gRPC versioning policyhere.What is the latest gRPC Version?The latest release tag is v1.66.0.When do gRPC releases happen?The gRPC project works in a model where the tip of the master branch is stable at all times. The project (across the various runtimes) targets to ship checkpoint releases every 6 weeks on a best effort basis. See the release schedulehere.How can I report a security vulnerability in gRPC?To report a security vulnerability in gRPC, please follow the process documentedhere.Can I use it in the browser?ThegRPC-Webproject is Generally Available.Can I use gRPC with my favorite data format (JSON, Protobuf, Thrift, XML) ?Yes. gRPC is designed to be extensible to support multiple content types. The initial release contains support for Protobuf and with external support for other content types such as FlatBuffers and Thrift, at varying levels of maturity.Can I use gRPC in a service mesh?Yes. gRPC applications can be deployed in a service mesh like any other application. gRPC also supportsxDS APIswhich enables deploying gRPC applications in a service mesh without sidecar proxies. The proxyless service mesh features supported in gRPC are listedhere.How does gRPC help in mobile application development?gRPC and Protobuf provide an easy way to precisely define a service and auto generate reliable client libraries for iOS, Android and the servers providing the back end. The clients can take advantage of advanced streaming and connection features which help save bandwidth, do more over fewer TCP connections and save CPU usage and battery life.Why is gRPC better than any binary blob over HTTP/2?This is largely what gRPC is on the wire. However gRPC is also a set of libraries that will provide higher-level features consistently across platforms that common HTTP libraries typically do not. Examples of such features include:interaction with flow-control at the application layercascading call-cancellationload balancing & failoverWhy is gRPC better/worse than REST?gRPC largely follows HTTP semantics over HTTP/2 but we explicitly allow for full-duplex streaming. We diverge from typical REST conventions as we use static paths for performance reasons during call dispatch as parsing call parameters from paths, query parameters and payload body adds latency and complexity. We have also formalized a set of errors that we believe are more directly applicable to API use cases than the HTTP status codes.How do you pronounce gRPC?Jee-Arr-Pee-See.Last modified September 13, 2023:Fix link to "Officially supported languages and platforms" (#1072) (a0d39db)View page sourceEdit this pageCreate child pageCreate documentation issueCreate project issue© 2024 gRPC AuthorsTerms|Privacy|Trademarks|License|About
+Quick start
+This guide gets you started with gRPC in Java with a simple working example.
+Quick start
+Prerequisites
+[JDK](https://jdk.java.net)version 7 or higher
+Get the example code
+The example code is part of the [grpc-java](https://github.com/grpc/grpc-java) repo.
+[Download the repo as a zip file](https://github.com/grpc/grpc-java/archive/v1.66.0.zip)and unzip it, or clone the repo:$ git clone -b v1.66.0 --depth 1 https://github.com/grpc/grpc-java
+Change to the examples directory:
+$ cd grpc-java/examples
+Run the example
+From the examples
+directory:
+Compile the client and server
+$ ./gradlew installDist
+Run the server:
+$ ./build/install/examples/bin/hello-world-server INFO: Server started, listening on 50051
+From another terminal, run the client:
+$ ./build/install/examples/bin/hello-world-client INFO: Will try to greet world ... INFO: Greeting: Hello world
+Congratulations! You’ve just run a client-server application with gRPC.
+Note
+We’ve omitted timestamps from the client and server trace output shown in this page.Update the gRPC service
+In this section you’ll update the application by adding an extra server method.
+The gRPC service is defined using [protocol buffers](https://developers.google.com/protocol-buffers). To learn more about
+how to define a service in a .proto
+file see [Basics tutorial](../basics/). For now, all
+you need to know is that both the server and the client stub have a SayHello()
+RPC method that takes a HelloRequest
+parameter from the client and returns a
+HelloReply
+from the server, and that the method is defined like this:
+// The greeting service definition.
+service Greeter {
+// Sends a greeting
+rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+// The request message containing the user's name.
+message HelloRequest {
+string name = 1;
+}
+// The response message containing the greetings
+message HelloReply {
+string message = 1;
+}
+Open src/main/proto/helloworld.proto
+and add a new SayHelloAgain()
+method
+with the same request and response types as SayHello()
+:
+// The greeting service definition.
+service Greeter {
+// Sends a greeting. Original method.
+rpc SayHello (HelloRequest) returns (HelloReply) {}
+// Sends another greeting. New method.
+rpc SayHelloAgain (HelloRequest) returns (HelloReply) {}
+}
+// The request message containing the user's name.
+message HelloRequest {
+// The name of the user.
+string name = 1;
+}
+// The response message containing the greetings
+message HelloReply {
+// The greeting message.
+string message = 1;
+}
+Remember to save the file!
+Update the app
+When you build the example, the build process regenerates GreeterGrpc.java
+,
+which contains the generated gRPC client and server classes. This also
+regenerates classes for populating, serializing, and retrieving our request and
+response types.
+However, you still need to implement and call the new method in the hand-written parts of the example app.
+Update the server
+In the same directory, open
+src/main/java/io/grpc/examples/helloworld/HelloWorldServer.java
+. Implement the
+new method like this:
+// Implementation of the gRPC service on the server-side.
+private class GreeterImpl extends GreeterGrpc.GreeterImplBase {
+@Override
+public void sayHello(HelloRequest req, StreamObserver<HelloReply> responseObserver) {
+// Generate a greeting message for the original method
+HelloReply reply = HelloReply.newBuilder().setMessage("Hello " + req.getName()).build();
+// Send the reply back to the client.
+responseObserver.onNext(reply);
+// Indicate that no further messages will be sent to the client.
+responseObserver.onCompleted();
+}
+@Override
+public void sayHelloAgain(HelloRequest req, StreamObserver<HelloReply> responseObserver) {
+// Generate another greeting message for the new method.
+HelloReply reply = HelloReply.newBuilder().setMessage("Hello again " + req.getName()).build();
+// Send the reply back to the client.
+responseObserver.onNext(reply);
+// Indicate that no further messages will be sent to the client.
+responseObserver.onCompleted();
+}
+}
+Update the client
+In the same directory, open
+src/main/java/io/grpc/examples/helloworld/HelloWorldClient.java
+. Call the new
+method like this:
+// Client-side logic for interacting with the gRPC service.
+public void greet(String name) {
+// Log a message indicating the intention to greet a user.
+logger.info("Will try to greet " + name + " ...");
+// Creating a request with the user's name.
+HelloRequest request = HelloRequest.newBuilder().setName(name).build();
+HelloReply response;
+try {
+// Call the original method on the server.
+response = blockingStub.sayHello(request);
+} catch (StatusRuntimeException e) {
+// Log a warning if the RPC fails.
+logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
+return;
+}
+// Log the response from the original method.
+logger.info("Greeting: " + response.getMessage());
+try {
+// Call the new method on the server.
+response = blockingStub.sayHelloAgain(request);
+} catch (StatusRuntimeException e) {
+// Log a warning if the RPC fails.
+logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
+return;
+}
+// Log the response from the new method.
+logger.info("Greeting: " + response.getMessage());
+}
+Run the updated app
+Run the client and server like you did before. Execute the following commands
+from the examples
+directory:
+Compile the client and server:
+$ ./gradlew installDist
+Run the server:
+$ ./build/install/examples/bin/hello-world-server INFO: Server started, listening on 50051
+From another terminal, run the client:
+$ ./build/install/examples/bin/hello-world-client INFO: Will try to greet world ... INFO: Greeting: Hello world INFO: Greeting: Hello again world
+What’s next
+- Learn how gRPC works in
+[Introduction to gRPC](/docs/what-is-grpc/introduction/)and[Core concepts](/docs/what-is-grpc/core-concepts/). - Work through the
+[Basics tutorial](../basics/). - Explore the
+[API reference](../api).
+[Added comments on quickstart, java: To enhancing user comprehension a… (#1250) (4f7949c)](https://github.com/grpc/grpc.io/commit/4f7949c36f6f269a7111e5cfec9aa63c7fc8b922)

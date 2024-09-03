@@ -1,4 +1,0 @@
-URL: https://www.the-paper-trail.org/%20/tags/distributed-systems
-
-Paper TrailBlogDistributed systems20092009-08-12GFS Retrospective in ACM Queue2009-03-30Barbara Liskov's Turing Award, and Byzantine Fault Tolerance2009-03-03OSDI '08: FlightPath: Obedience vs. Choice in Cooperative Services2009-02-09Consensus Protocols: A Paxos Implementation2009-02-03Consensus Protocols: Paxos2009-01-12Consensus with lossy links: Establishing a TCP connection20082008-11-29Consensus Protocols: Three-phase Commit2008-11-27Consensus Protocols: Two-Phase Commit2008-10-29BigTable: Google's Distributed Data Store2008-10-12Yahoo's PNUTS2008-10-01The Google File System2008-08-26Consistency and availability in Amazon's Dynamo2008-08-25Good survey of the important papers in distributed consensus©  - 2023 ·Paper Trail·
-  ThemeSimplenessPowered byHugo·

@@ -1,4 +1,0 @@
-URL: https://www.the-paper-trail.org/post/2012-04-15-eurosys-2012-blog-notes/
-
-Paper TrailBlogEuroSys 2012 blog notesApril 15, 2012EuroSys 2012 was last week - one of the premier European systems conferences. Over at the Cambridge System Research Group’sblog, various people from the group have written notes on the papers presented. They’re very well-written summaries, and worth checking out for an overview of the research presented.Day 1Day 2Day 3©  - 2023 ·Paper Trail·
-  ThemeSimplenessPowered byHugo·

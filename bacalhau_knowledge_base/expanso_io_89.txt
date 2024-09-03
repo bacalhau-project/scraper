@@ -1,3 +1,8 @@
-URL: http://expanso.io/install
+Source: expanso_io
+URL: https://expanso.io/events/2024-09-01/
 
-Skip to contentWhy Expanso?Why Choose Expanso?Security and GovernanceProductBacalhauFeaturesSolutionsUse CasesDistributed Data WarehouseLog ProcessingEdge Machine LearningDistributed Fleet ManagementResourcesDocumentationGitHubBacalhau BlogEventsFAQsHelp CenterCompanyWhat We ValueWho We AreCareersNewsroomContactGitHubInstall FreeMenuWhy Expanso?Why Choose Expanso?Security and GovernanceProductBacalhauFeaturesSolutionsUse CasesDistributed Data WarehouseLog ProcessingEdge Machine LearningDistributed Fleet ManagementResourcesDocumentationGitHubBacalhau BlogEventsFAQsHelp CenterCompanyWhat We ValueWho We AreCareersNewsroomContactGitHubInstall FreeInstall FreeSign UpDon’t miss out on the opportunity to supercharge your data infrastructure.  With Bacalhau, you can seamlessly manage and analyze your data, no matter how large or complex. Take control of your data and make informed decisions with ease.Provide a name and email to access Bacalhau installers, downloads, tutorials and documentation.Provide your E-mail to InstallStay up to date and sign up to our blog:Visit BlogThe Compute Over Data PlatformCompanyHomeWhat We ValueWho We AreNewsroomContact UsCareersResourcesDocumentationFAQBlogSupportSocialLinkedInYouTubeSlackX ExpansoX BacalhauGitHub© Expanso Inc. All Rights Reserved 2023Privacy PolicyTrademarksTerms & ConditionsPrivacy PolicyTrademarksTerms & Conditions
+![](https://expanso.io/wp-content/uploads/2023/11/Linkedin-Office-Hours-LINK-preview-1000-×-627px-6-300x188.avif)
+[
+Bacalhau Office Hour ](https://expanso.io/event/bacalhau-office-hour-expanso-2/)
+Join us for a Bacalhau Office Hour! This is a unique opportunity to engage with our team, gain insights into what’s brewing, and discuss innovative solutions that are shaping the future. Whether you’re a tech enthusiast, a professional in the industry, or just curious about the future of technology, this
+[Read More](https://expanso.io/event/bacalhau-office-hour-expanso-2/)

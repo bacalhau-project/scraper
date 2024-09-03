@@ -1,6 +1,7 @@
-URL: https://hadoop.apache.org/issue_tracking.html
+Source: apache_hadoop
+URL: https://hadoop.apache.org/version_control.html
 
-Toggle navigationApache HadoopDownloadDocumentationCurrent (trunk)LatestStable3.4.03.3.62.10.2WikiCommunityBylawsCriteria for CommittershipMailing listsPublished CVEsWho We areDevelopmentHow to ContributeIssue TrackingVersion ControlVersioningHelpBuy StuffSponsorshipThanksApache Software FoundationHadoop Issue TrackingHadoop tracks both bugs and enhancement requests using JIRA.We welcome input, however,before filing a request,please make sure
-you do the following:Search the Apache JIRA database.Check the usersmailing lists, both by searching the archives and by asking questions.Jira subprojects:Hadoop Common issues are tracked in theHADOOPJira instance.HDFS issues are tracked in theHDFSJira instance.YARN issues are tracked in theYARNJira instance.MapReduce issues are tracked in theMAPREDUCEJira instance.Apache Hadoop, Hadoop, Apache, the Apache feather logo,
-    and the Apache Hadoop project logo are either registered trademarks or trademarks of the Apache Software Foundation
-     in the United States and other countriesCopyright Â© 2006-2024 The Apache Software FoundationPrivacy policy
+The Hadoop source code resides in the Apache git repository, and available from here:
+[https://gitbox.apache.org/repos/asf?p=hadoop.git](https://gitbox.apache.org/repos/asf?p=hadoop.git)
+The changes are also mirrored to the github repository [https://github.com/apache/hadoop](https://github.com/apache/hadoop)
+Hdfs, Yarn, Mapreduce and other components all are parts of this one repository.

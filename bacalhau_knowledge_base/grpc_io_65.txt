@@ -1,17 +1,24 @@
-URL: https://grpc.io/docs/languages/php/quickstart/
+Source: grpc_io
+URL: https://grpc.io/docs/languages/dart/api/
 
-gRPCAboutMeetDocsGuidesShowcaseBlogCommunitygRPConf 2024 is happening NEXT WEEK onAug. 27th!-Register nowand get 25% off with the code GOOGLE25.DocsWhat is gRPC?IntroductionCore conceptsFAQLanguagesC# / .NETAPI (legacy)Daily builds (legacy)C++Quick startBasics tutorialAsync-API tutorialAsynchronous Callback API TutorialBest Practices for gRPC C++ API and FAQALTSAPIDartQuick startBasics tutorialAPIGoQuick startBasics tutorialALTSAPIGenerated codeJavaQuick startBasics tutorialALTSAPIGenerated codeKotlinQuick startBasics tutorialAPINodeQuick startBasics tutorialAPIObjective-CQuick startBasics tutorialOAuth2APIPHPQuick startBasics tutorialAPIDaily buildsPythonQuick startBasics tutorialALTSGenerated codeAPIDaily buildsRubyQuick startBasics tutorialAPIDaily buildsPlatformsAndroidJavaQuick startBasics tutorialAPIKotlinQuick startAPIWebQuick startBasics tutorialGuidesAuthenticationBenchmarkingCancellationCompressionCustom Backend MetricsCustom Load Balancing PoliciesCustom Name ResolutionDeadlinesDebuggingError handlingFlow ControlHealth CheckingInterceptorsKeepaliveMetadataOpenTelemetry MetricsPerformance Best PracticesReflectionRequest HedgingRetryService ConfigStatus CodesWait-for-ReadyView page sourceEdit this pageCreate child pageCreate documentation issueCreate project issuePrerequisitesGet the example codeRun the exampleUpdate the gRPC serviceRegenerate gRPC codeUpdate and run the applicationUpdate the serverUpdate the clientRun!What’s nextDocsLanguagesPHPQuick startQuick startThis guide gets you started with gRPC in PHP with a simple working example.ContentsPrerequisitesGet the example codeRun the exampleUpdate the gRPC serviceRegenerate gRPC codeUpdate and run the applicationUpdate the serverUpdate the clientRun!What’s nextQuick startThis guide gets you started with gRPC in PHP with a simple working example.PrerequisitesPHP 7.0 or higher, PECL, Composergrpc extension, protocol buffers compiler: for installation instructions, see
-thegRPC PHP readme.Get the example codeThe example code is part of thegrpcrepo.NoteYou can only create gRPC clients in PHP. Useanother
-languageto create a gRPC server.Clone thegrpcrepo and its submodules:$ git clone --recurse-submodules -b v1.66.0 --depth1--shallow-submodules https://github.com/grpc/grpcChange to the quick start example directory:$cdgrpc/examples/phpInstall thegrpccomposer package:$ ./greeter_proto_gen.sh$ composer installRun the exampleLaunch the quick start server: for example, follow the instructions given
-in theQuick start for Node.From theexamples/phpdirectory, run the PHP client:$ ./run_greeter_client.shCongratulations! You’ve just run a client-server application with gRPC.Update the gRPC serviceNow let’s look at how to update the application with an extra method on the
-server for the client to call. Our gRPC service is defined using protocol
-buffers; you can find out lots more about how to define a service in a.protofile inBasics tutorial. For now all you need to know is that both the
-server and the client “stub” have aSayHelloRPC method that takes aHelloRequestparameter from the client and returns aHelloResponsefrom
-the server, and that this method is defined like this:// The greeting service definition.serviceGreeter {// Sends a greetingrpcSayHello (HelloRequest)returns(HelloReply) {}}// The request message containing the user's name.messageHelloRequest{stringname=1;}// The response message containing the greetingsmessageHelloReply{stringmessage=1;}Let’s update this so that theGreeterservice has two methods. Editexamples/protos/helloworld.protoand update it with a newSayHelloAgainmethod, with the same request and response types:// The greeting service definition.serviceGreeter {// Sends a greetingrpcSayHello (HelloRequest)returns(HelloReply) {}// Sends another greetingrpcSayHelloAgain (HelloRequest)returns(HelloReply) {}}// The request message containing the user's name.messageHelloRequest{stringname=1;}// The response message containing the greetingsmessageHelloReply{stringmessage=1;}Remember to save the file!Regenerate gRPC codeNext we need to update the gRPC code used by our application to use the new
-service definition. From thegrpcroot directory:$ protoc --proto_path=examples/protos\--php_out=examples/php\--grpc_out=examples/php\--plugin=protoc-gen-grpc=bins/opt/grpc_php_plugin\./examples/protos/helloworld.protoor running the helper script under thegrpc/example/phpdirectory if you build
-grpc-php-plugin by source:$ ./greeter_proto_gen.shThis regenerates the protobuf files, which contain our generated client classes,
-as well as classes for populating, serializing, and retrieving our request and
-response types.Update and run the applicationWe now have new generated client code, but we still need to implement and call
-the new method in the human-written parts of our example application.Update the serverIn the same directory, opengreeter_server.js. Implement the new method like
-this:functionsayHello(call, callback) {callback(null, {message:'Hello '+call.request.name});}functionsayHelloAgain(call, callback) {callback(null, {message:'Hello again, '+call.request.name});}functionmain() {varserver=newgrpc.Server();server.addProtoService(hello_proto.Greeter.service,{sayHello:sayHello, sayHelloAgain:sayHelloAgain});server.bind('0.0.0.0:50051', grpc.ServerCredentials.createInsecure());server.start();}...Update the clientIn the same directory, opengreeter_client.php. Call the new method like this:$request=newHelloworld\HelloRequest();$request->setName($name);list($reply,$status)=$client->SayHello($request)->wait();$message=$reply->getMessage();list($reply,$status)=$client->SayHelloAgain($request)->wait();$message=$reply->getMessage();Run!Just like we did before, from thegrpc-node/examples/helloworld/dynamic_codegendirectory:Run the server:$ node greeter_server.jsFrom another terminal, from theexamples/phpdirectory,
-run the client:$ ./run_greeter_client.shWhat’s nextLearn how gRPC works inIntroduction to gRPCandCore concepts.Work through theBasics tutorial.Explore theAPI reference.Last modified August 1, 2023:Update Node example documentation for example migration to grpc-node repository (#1154) (de75d84)View page sourceEdit this pageCreate child pageCreate documentation issueCreate project issue© 2024 gRPC AuthorsTerms|Privacy|Trademarks|License|About
+The [Dart](https://www.dart.dev/) implementation of
+[gRPC](https://grpc.io/): A high performance, open source, general RPC framework that puts mobile and HTTP/2 first.
+Learn more
+[Quick Start](https://grpc.io/docs/languages/dart/quickstart)- get an app running in minutes[Examples](example)[API reference](https://grpc.io/docs/languages/dart/api)
+For complete documentation, see [Dart gRPC](https://grpc.io/docs/languages/dart).
+Supported platforms
+Note:
+[grpc-web]is supported bypackage:grpc/grpc_web.dart
+. UDS-unix domain socket is supported with sdk version >= 2.8.0.
+Contributing
+If you experience problems or have feature requests, [open an issue](https://github.com/dart-lang/grpc-dart/issues/new).
+Note that we have limited bandwidth to accept PRs, and that all PRs require signing the [EasyCLA](https://lfcla.com).
+Libraries
+-
+[grpc](grpc/grpc-library.html) - Status detail types and error codes
+-
+[grpc_connection_interface](grpc_connection_interface/grpc_connection_interface-library.html) - Exports an interface suitable for defining an alternate implementation of
+[ClientChannel](grpc/ClientChannel-class.html). -
+[grpc_or_grpcweb](grpc_or_grpcweb/grpc_or_grpcweb-library.html) -
+[grpc_web](grpc_web/grpc_web-library.html) -
+[service_api](service_api/service_api-library.html) - Exports the minimum api to define server and client stubs.

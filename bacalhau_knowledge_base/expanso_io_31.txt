@@ -1,4 +1,96 @@
 Source: expanso_io
-URL: https://expanso.io/why-expanso/#main
+URL: https://expanso.io/newsroom/bacalhau1-2/
 
-Skip to contentWhy Expanso?Why Choose Expanso?Security and GovernanceProductBacalhauFeaturesSolutionsUse CasesDistributed Data WarehouseLog ProcessingEdge Machine LearningDistributed Fleet ManagementResourcesDocumentationGitHubBacalhau BlogEventsFAQsHelp CenterCompanyWhat We ValueWho We AreCareersNewsroomContactGitHubInstall FreeMenuWhy Expanso?Why Choose Expanso?Security and GovernanceProductBacalhauFeaturesSolutionsUse CasesDistributed Data WarehouseLog ProcessingEdge Machine LearningDistributed Fleet ManagementResourcesDocumentationGitHubBacalhau BlogEventsFAQsHelp CenterCompanyWhat We ValueWho We AreCareersNewsroomContactGitHubInstall FreeInstall FreeWhy Choose Expanso?TRUSTED PLATFORMExpanso helps leading organizations innovate quickly by helping them architect, implement, and maintain enterprise-grade distributed compute platforms. In fact, Expanso is the same team that created and currently maintains the industry-leadingopen-source software Bacalhau, built to improve cost and efficiency of processing large-scale datasets in distributed environments.The next step in your data management journey.Volume of data/information created, captured, copied, and consumed worldwide from 2010 to 2020, with forecasts from 2021 to 2025 (in zettabytes) (Source: Statista 2023)You’ll want to work with Expanso to help you implement your Bacalhau deployment, because we provide:VERIFIED BUILDSSigned, reliable, and ready for enterprise deployment.FASTEST UPDATESAlways be at the cutting edge with immediate access to the latest features.EARLY ACCESS TO ROADMAP FEATURESGet insights, test on your applications, and provide feedback into the newest features.SECURITY ALERTSStay informed with notifications on system vulnerabilities.AUTO-UPDATESSeamless, automatic upgrades ensure you’re always at the forefront.ENTERPRISE MONITORINGComprehensive, real-time system insights for proactive management.HOSTED DASHBOARDA streamlined interface for effortless oversight and control.ENTERPRISE-GRADE 24/7 SUPPORTWe stand behind our software no matter where or when.Create a more robust business todayReady to get started?Ready to get started?Contact UsExecutive team.A collective of industry experts, has a long history in container orchestration, distributed compute platforms, and enterprise operations.With Expanso, you’re not just choosing a tool; you’re partnering  with a team that’s committed to top-tier performance, reliability, and scalability. We bring over 30 years of experience in building platforms used by leading companies like Google, Amazon, Microsoft and Kubernetes.View Entire TeamDAVID ARONCHICKCEO and Co-FounderLead PM on Kubernetes and GKE at GoogleCo-founder of KubeflowFormer Head of Open-Source Machine Learning at MicrosoftFour-time founderWALID BARUNICTOFormer lead architect for AWS vended logs and AWS Kinesis12+ years of experience in software development and architecture5+ years of experience in Open-Source projectsLAURA HOHMANNCMOManaged Microsoft field GTM initiatives; e.g. organized high impact roadshow across multiple citiesLed LinkedIn Social Selling initiatives for Microsoft Dynamics 365 & Power Platform8+ years of experience in Social Media MarketingDAVID ARONCHICKCEO and Co-FounderLead PM on Kubernetes and GKE at GoogleCo-founder of KubeflowFormer Head of Open-Source Machine Learning at MicrosoftFour-time founderWALID BARUNICTOFormer lead architect for AWS vended logs and AWS Kinesis12+ years of experience in software development and architecture5+ years of experience in Open-Source projectsTONY EVANSBusiness Manager20 years of multi-sector experience including roles at McKinsey and Microsoft; focusing on asset management, technology and management consultingThree-time founderSean M. TraceyHead of Developer RelationsLed AWS DevRel strategy for UKI regionFounded an IBM meetup.com community, grew it to over 5000 members in < 2yrsInitiated AWS’s first student support program, now widely recognized as AWS Cloud ClubsLAURA HOHMANNCMOManaged Microsoft field GTM initiatives; e.g. organized high impact roadshow across multiple citiesLed LinkedIn Social Selling initiatives for Microsoft Dynamics 365 & Power Platform8+ years of experience in Social Media MarketingSean M. TraceyHead of Developer RelationsLed AWS DevRel strategy for UKI regionFounded an IBM meetup.com community, grew it to over 5000 members in < 2yrsInitiated AWS’s first student support program, now widely recognized as AWS Cloud ClubsTONY EVANSBusiness Manager20 years of multi-sector experience including roles at McKinsey and Microsoft; focusing on asset management, technology and management consultingThree-time founderTrusted byBACKED BY LEADING VENTURE FIRMSGoogle Cloud Partnership.We’re an official Google Cloud Build partner in the Google Cloud Partner Advantage program, enhancing our ability to deliver premier solutions on the Google Cloud platform.Looking for something else?Check out ourHelp Center.Stay up to date and sign up to our blog:Visit BlogThe Compute Over Data PlatformCompanyHomeWhat We ValueWho We AreNewsroomContact UsCareersResourcesDocumentationFAQBlogSupportSocialLinkedInYouTubeSlackX ExpansoX BacalhauGitHub© Expanso Inc. All Rights Reserved 2023Privacy PolicyTrademarksTerms & ConditionsPrivacy PolicyTrademarksTerms & Conditions
+We are thrilled to announce the release of Bacalhau 1.2! Following the [Bacalhau 1.1](https://blog.bacalhau.org/p/distributed-compute-platform-bacalhau?r=2ejbhv&utm_campaign=post&utm_medium=web) release in September 2023, we’ve explored a variety of innovative and groundbreaking use cases, such as:
+[Saving $2.5M Per Year by Managing Logs the AWS Way](https://d2gqcp04.na1.hs-sales-engage.com/Ctc/UC+23284/d2Gqcp04/Jl22-6qcW7lCdLW6lZ3lnW5mBY3N79nkjkW3hp2bh12TttGN6b-xcq_JYtKW56kYZp80Ch_fW2R6YSN675-msW9bWfsM8sbzH8W7pq7tk6HKt4zW7_5vRJ2wns_RVNLBpM3ySL-xW4XwC1G2PQJDgW23kYQ_6hmZnxW3PgPwJ5n1ZZcW7WZPJN9gsvbDW3T-kPs7kn644N1d4whsNhm4pW3C08rw9cd-TjW7XnLSq6B5_c6VMg03P51gpCYW2q_b3652fXsSW3zSZSQ2L-ZQRN3_ZxRQw7qR4W8RMc-L5PcrY8N6l2sN1h1JmNW1r1Ltg3nqxw2f7kgnKR04)[Edge-based Machine Learning Inference](https://d2gqcp04.na1.hs-sales-engage.com/Ctc/UC+23284/d2Gqcp04/Jl22-6qcW7lCdLW6lZ3kPW8CVHHG5Q1GTGW4jLFp096fsNRW7QZ-lY3mdy9LVCY8F46VcSzhN39hsC8FgzL7W6RjZ1W5jcRYCW4jxry81NkFzMW6FbNH8593FX1W6dqGqz5pjlPkW7gG9jW966-1lW2ypgkS4T_SMXW5Gnk3D60XdCSW9l28CG1dbb1GVhTvtK8m3m4BW4sBJ3X4dtM7PW6xMVtH57JGFyW8lQjGL9gX1QKW4BdFH05q40gbVd0QJg7nNG58W6qzKXB6HD4wkW7SDZML4vG5dCW5_MVJC5pN7p2W8P8LjN2ZxshGVC2XBc7JYFkFf5QqKjM04)[Distributed Warehousing Made Easy With Bacalhau](https://d2gqcp04.na1.hs-sales-engage.com/Ctc/UC+23284/d2Gqcp04/Jl22-6qcW7lCdLW6lZ3kRW5Vw2pp2Rr-JDW1t4VCM4BBcWNMvlYpYf0BfhN1sqQSqSPG7bW1HcplS60cMJtMr7QHLB89xWW4jSS273GxwWsW3ppz_t4Dpc6VW7krjDV43z4bDVL0NsP9csqv_W1SR63D4zXLZ-VplbC56N0t71VhT_hs73n-zZW7pKBsq32gpn_W5DLRTX8GCQzZW19f6QV88qkDHW4z1zDR7_vqBRW2YgvkF5lyNk-W6C_32G1cQZ6TW6-cVpC21YhHGW75DLsX60jp0WW3ZbbsW3FYKKYW5tB4lZ1L2jZGW6_n6hg5nwPlcf36PB6W04)[How to Solve Edge Container Orchestration](https://d2gqcp04.na1.hs-sales-engage.com/Ctc/UC+23284/d2Gqcp04/Jll2-6qcW7Y8-PT6lZ3pdN6VHq_GZ0gR-W55PVWz2tVblgVJV4tq4jW8X9VfyX8t4vgQMgW29PV997Qr-J3W2bwGZR8h4KLBW2fCX_67d1wH7W6b-ZmC24Cl2_W96_WC45ZrbTYW3_WFpW8Q_KwyN4hD8cyYRXJsW23r7mw3SV0XzW1G4yMC1d3jD_N71_HXMnJp3gW6xKqzF75TTd7W6qP7k838z36nW3m4zYk3jjtYCVBxlSL1hm0ztVHsflq771l3lW7G9jxf3MVZQnW7P5F0b6_SkqfW77qhQl97ljXWW6hXClh7BkW-HVCx4Qk4q8J8cN2-Bxl1Km7fqN60KYqtVl4xsf5T5Bq804)
+We are also proud to announce that the [U.S. Navy chose Bacalhau to manage predictive maintenance workloads](https://d2gqcp04.na1.hs-sales-engage.com/Ctc/UC+23284/d2Gqcp04/Jll2-6qcW7Y8-PT6lZ3nkW1GfQVt5p0WrdW6qJsKp8pvGjTN3PHXz7fvvsvW7DNbgB821hy1W5QCZ8X69SYJyW1vtMb73zVvVhW2Lhg5T4yfpt0W1LSwZn7rdz0-N6jrgbHjvNDgW7qS0_c5bl5_6W1gvVSQ43p560W2sdvqT8cZFYxW29gH8M4jpS0yW13kXXk7v14Q1W4rrzK96PskCwW2g9hcK4H86T6W6Y7vRw3DcNHtVhf32h4j3n3dN59tyQjzq8nJW4z6RJH6NCSSlW95qc2w87rsRwW4_jzFV13fXdGW4Kfh_Z34HSZkW2V8_jQ9lzLN2W3LTBhX95jFLFW3RBsmp5cPVBJf97nMNb04)!
+But that’s just the start – Bacalhau 1.2 is packed with new features, enhancements, and bug fixes to improve your workflow and overall user experience.
+Read on to learn more about these exciting updates! Or install [straight away](https://www.expanso.io/sign-up/).
+Job Templates
+Users can now [create and customize job templates](https://docs.bacalhau.org/topic-guides/job-templating) to streamline their workflow by creating a large number of similar jobs more easily.
+A job template contains named placeholders:
+Name: docker job
+Type: batch
+Count: 1
+Tasks:
+- Name: main
+Engine:
+Type: docker
+Params:
+Image: ubuntu:latest
+Entrypoint:
+- /bin/bash
+Parameters:
+- -c
+- echo {{.greeting}} {{.name}}
+The placeholders will be filled in during a call to bacalhau job run
+with environment variables or command-line flags:
+export greeting=Hello
+bacalhau job run job.yaml --template-vars "name=World" --template-envs "*"
+The templating functionality is based on the Go text/template
+package. This robust library offers a wide range of features for manipulating and formatting text based on template definitions and input variables. For more information about the Go text/template
+library and its syntax, you can refer to the official documentation: [Go text/template Package](https://pkg.go.dev/text/template).
+Telemetry From Inside WASM Jobs With Dylibso Integration
+This release introduces the ability to collect telemetry data from within WebAssembly (WASM) jobs via [integration with the Dylibso Observe SDK](https://docs.bacalhau.org/integration/wasm-observe).
+Now, WebAssembly modules that have been automatically or manually instrumented will pass tracing information to any OTEL endpoints configured for Bacalhau to use. This happens automatically if OTEL is configured and the WASM is instrumented. Uninstrumented WASM continues to be run as normal with no required changes.
+This allows WASM jobs to pass telemetry into Jaeger or any other configured OTEL client:
+![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F8cd0ab73-c40b-4093-b3e8-441990610e99.heic)
+![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F8cd0ab73-c40b-4093-b3e8-441990610e99.heic)
+![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F580fdf24-604d-4030-9c5c-e6bb1f2b82ce.heic)
+![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F580fdf24-604d-4030-9c5c-e6bb1f2b82ce.heic)
+For the demonstration network, you can now visit
+[http://bootstrap.production.bacalhau.org](http://bootstrap.production.bacalhau.org/JobsDashboard)
+to see the dashboard in action.
+It is simple to add the web UI to your own private cluster – just pass --web-ui
+to your bacalhau serve
+command or set Node.WebUI: yes
+in your config file. Once set Bacalhau will serve the web UI on port 80 automatically with no further configuration required.
+Support for AMD and Intel GPUs
+Users can now take advantage of the power of [AMD and Intel GPUs](https://docs.bacalhau.org/running-node/gpu) for their computational tasks, in addition to our existing support for Nvidia GPUs.
+Now, if a compute node has the AMD utlity rocm-smi
+or Intel utility xpu-smi
+installed, Bacalhau will automatically detect their GPUs at boot and make them available for use in Docker jobs.
+Further, details on available GPUs are now available from the Nodes API. Calls to /api/v1/orchestrator/nodes
+now return extended GPU information that identifies the GPU’s vendor, available VRAM, and model name.
+Support for Multiple GPUs in Docker Jobs
+We now support the utilization of multiple GPUs in Docker jobs, enabling workload splitting and parallel processing.
+Users can take advantage of multiple GPUs by passing the --gpu=...
+flag to bacalhau docker run
+or by specifying the number of GPUs in the Resources section of the job spec. The job will wait for the requested number of GPUs to become available at which point the job will have exclusive use of the GPUs for as long as it is executing.
+Results Download From S3-Compatible Buckets
+Users can now download results directly from S3-compatible buckets using bacalhau get
+, simplifying the data retrieval process.
+The [S3 Publisher](https://docs.bacalhau.org/references/other-specifications/publishers/s3/) will now generate pre-signed URLs on-demand for use by Bacalhau clients downloading job results without needing to provide credentials to the bucket itself. This requires the requester node to have appropriate IAM permissions for reading buckets.
+Support for Google Cloud Buckets
+Users can now seamlessly integrate Google Cloud Storage (GCS) buckets into their jobs, allowing for easy storage and retrieval of data.
+To use GCS buckets, [request data from a GCS storage endpoint](https://docs.bacalhau.org/references/other-specifications/sources/s3#s3-compatible-services) or configure an S3 publisher using a [storage.googleapis.com](<http://storage.googleapis.com>)
+endpoint.
+Programmatic API for Manipulating Config
+Developers can now programmatically manipulate configuration settings using [the new ](https://docs.bacalhau.org/references/cli/config/)bacalhau config
+command, providing more flexibility and automation in managing Bacalhau nodes.
+- Use
+bacalhau config list
+to show the current state of configuration variables including defaults. - Use
+bacalhau config set <key> <value>
+to permanently set a configuration option. - Use
+bacalhau config default
+to generate a Bacalhau configuration file in YAML format without any user-specific overrides in place. - Use
+bacalhau config auto-resources
+to detect available system capacity (CPU, RAM, Disk, GPUs, etc.) and write the capacity into the config file. Users can specify a number from 0-100 to limit the capacity to that percentage of total capacity. A number over 100 can also be used to overcommit on capacity, which is useful mainly for setting queue capacities.
+Improvements and Bug Fixes
+- Sanity checking of WebAssembly resource usage: we now check that WebAssembly jobs have requested less than the maximum possible RAM size of 4GB.
+- Helpful messages when jobs fail to find nodes: improved error messaging provides users with the reason each node rejected or was not suitable for the job.
+- Improvements to long-running jobs: long-running jobs now are not subject to execution timeouts and won’t be waited for when submitted on the CLI.
+- Automatic notification of new software versions: users will now receive
+[automatic notifications when new software versions are available](https://docs.bacalhau.org/next-steps/update-checks), keeping them up to date with the latest features and improvements.
+What’s Coming Next?
+We have lots of new features coming in the next quarter. A selection of these items includes
+- Easier bootstrapping – More easily establish a full network of Bacalhau nodes running across multiple regions and clouds.
+- Native Python executor – A pluggable executor that can run raw Python against a Bacalhau network.
+- Network queues – Jobs are queued (up to indefinitely) at the network level and scheduled only when resources become available. Fully supports all current scheduling constructs including all node metadata.
+- Managed services – In a single action via our API, users can deploy a cluster to GCP, AWS, or Azure according to their zone/region criteria (new nodes, not existing ones).
+- Rich, periodic node metadata – Nodes can provide custom metadata (maybe as labels, or maybe as something more structured) that can be configured to refresh to some custom schedule or as the result of a job.
+How to Get Involved
+We’re looking for help in several areas. If you’re interested in helping, there are several [ways to contribute](https://docs.bacalhau.org/community/ways-to-contribute/). Please reach out to us at any of the following locations.
+Commercial Support
+While Bacalhau is [open-source software](https://en.wikipedia.org/wiki/Open-source_software), the Bacalhau binaries go through the security, verification, and signing build process lovingly crafted by [Expanso](https://www.expanso.io/). You can read more about the difference between open source Bacalhau and commercially supported Bacalhau [in our FAQ](https://www.expanso.io/faq/). If you would like to use our pre-built binaries and receive commercial support, please [contact us](https://www.expanso.io/contact/)!

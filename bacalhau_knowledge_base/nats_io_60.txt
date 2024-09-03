@@ -1,3 +1,160 @@
-URL: https://nats.io/blog/exploring-nats-as-a-backend-for-k3s/
+Source: nats_io
+URL: https://nats.io/blog/nats-recover-quorum/#fn:2
 
-AboutDownloadDocumentationBlogCommunitySupportPrivacyExploring NATS as a backend for k3sByron Ruth— May 9, 2023Back to Blogk3sis a lightweight Kubernetes distribution suitable for IoT and edge computing environments. One component k3s leverages isKINE, which is a shim enabling the replacement ofetcdwith alternate storage backends originally targeting relational databases.In April 2022, thev0.9.0 releaseof KINE introduced native support for NATS as a backend. In June 2022, the k3sv1.23.7+k3s1release included this KINE version making it possible for k3s deployments to connect to an existing NATS system.The KINE backend leverages theKey-Value APIbuilt on top of the NATS persistence subsystem calledJetStream.A minimal example of bootstrapping a k3s server backed by NATS can be done by starting a JetStream-enablenats-serverfollowed by startingk3s serverwith the--datastore-endpointconfigured.# Run in the background or in the foreground in a different shell.nats-server -js&# Point k3s to the default NATS address.k3s server --datastore-endpoint=jetstream://localhost:4222When thek3s serverstarts, it will create a KV bucket (if it does not exist) within NATS. If using with a NATS cluster, the bucket can be configured with multiple replicas for high-availability and fault tolerance of the data.Global, multi-tenant infrastructureWhat does using NATS give you out of the box?During RethinkConn 2022,Caleb LloydpresentedUsing NATS JetStream as a KINE backend for k3swhere he demonstrated the ability to deploy multiple k3s clusters in different regions all connected to a global, multi-cloud deployment of NATS (in this caseSynadia’s NGS).The main takeaways:Each k3s cluster can have their own isolatedaccountand KV bucket to store cluster state on a shared NATS system.Applications running in k3s can leverage the same NATS system for their workloads (within their own accounts) as what k3s does.Cross-region mirrors of the KV buckets can be created for straightforward backup/restore disaster recovery scenarios.Given this is one NATS system, an operator gets end-to-end visibility and management of all of these assets out-of-the-box. Check out thek3s-on-nats demo repoto try it out youself.Embedded NATSLast week (May 2023), thev0.10.0KINE release landed support forembeddingthe NATS server. This is possible because KINE and NATS are both written inGoand the server can beimported as a package.At the time of this writing, k3s with this new version of KINE embedded with NATS has not yet been released. What is discussed below works, but currently requires a manually building k3s.Starting k3s with this version of KINE embedded is now reduced to the following command (without needing to start an external NATS server).k3s server --datastore-endpoint=nats://See a one minute demo of how it works.The minimalnats://endpoint relies on the defaults in the NATS server, listening on all hosts (0.0.0.0) and binding to port4222. Of course, if you don’t want to embed the server, you can add the query parameternoEmbedand it will connect to a remote system.What do we gain with an embedded server?The original motivation was to further reduce the distribution and dependency footprint, resulting in the option of a single k3s binary with KINE and NATS embedded. In addition to the reduced dependency footprint, there are multiple benefits over etcd and SQLite:Thenats://endpoint supports aserverConfigquery param pointing to a local NATS config file. This gives the flexibility of configuring the instance as aLeaf Node, which enables the secure extension of an existing NATS system. Leaf nodes initiate connections to the remote servers, making them friendly for network environments with heavy use of network address translation (NAT).Building on the above example showcased in the RethinkConn talk, embedded NATS makes it possible to extend to the edge and maintain local state if remote connectivity to a NATS cluster is lost, without sacrificing visibility or management capabilities.A single binary provides all of the advantages of NATS combined with a workload scheduler. As a result, your data lives on and traverses one system, unifying design, development and operations.Having a single binary with k3s and NATS is superpower!If you are interested in reading what options are available to configure the KINE datastore endpoint, checkout theNATS examplesdocument in the KINE repo.Future effortsHaving NATS available as KINE/k3s backend was a great start and having the option for embedding NATS is a superpower for edge deployments. However, there are a few other areas the NATS team is exploring including:Native support for NATS in k3s' embedded HA/cluster mode ( join the discussion on theGitHub issue)How NATS may be able to be leveraged withinFleetWhat would it take to setup an agent-less k3smirrorof another instance, leveraging NATS mirror/sourcing capabilityIf you find any of this interesting, have use cases to share, or want to show your support, please join us onSlack!Finally, The NATS team wants to give a BIG thank you and shoutout to the k3s/KINE team for the support and guidance on making NATS available as a backend. ❤️Additional LinksNATS by Example: Key-Value IntroNATS by Example: Embedded Server with mTLSAbout the AuthorByron Ruthis the Director of Developer Relations atSynadiaand a long-time NATS user.Back to BlogCopyright © NATS Authors 2024NATS is aCloud Native Computing Foundationincubating projectThe Linux Foundation has registered trademarks and uses trademarks.For a list of trademarks of The Linux Foundation, please seeTrademark Usage page.
+[Back to Blog](/blog)
+Recovering Quorum After Renaming Servers
+John Weldon — January 20, 2024
+Occasionally, a NATS cluster can lose quorum for various reasons. Here, we’ll look at one specific case, and how to recover from it.
+Context
+How To Rename Servers in a Cluster
+The recommended way to rename NATS servers in a cluster is to rename one at a time. After each rename, the cluster will have a record of both the old name and the new name. The former will appear offline, and the latter should appear online. You should remove the record of the old name before renaming the next server, otherwise, the cluster may, sooner or later, end up with too many faux-offline servers, and will consider itself to have lost quorum.
+NATS Helm Chart Caveats - A Brief Diversion
+The
+[ values.yaml](https://github.com/nats-io/k8s/blob/main/helm/charts/nats/values.yaml)
+file for the
+[NATS Helm Chart](https://github.com/nats-io/k8s/blob/main/helm/charts/nats/README.md)has an option to set a
+[, which you might be tempted to use to rename the servers in a helm chart deployed cluster.](https://github.com/nats-io/k8s/blob/2ce9a408f17b823d51223e04e806b73cead51993/helm/charts/nats/values.yaml#L273)
+serverNamePrefix
+This setting should only be changed before the first installation.
+Once the cluster is up and running, if you change this value, and then upgrade the
+helm release, you’ll cause all of the servers in the cluster to be simultaneously renamed.
+This will double the number of recorded servers in the cluster (half with the old name, and
+half with the new name, per the changed serverNamePrefix
+).
+Consequently, there will not be enough servers active in the cluster to retain quorum.
+A Case Study
+For the sake of this article, we’ll assume a helm chart [1](#fn:1) deployed cluster of three servers. [2](#fn:2)
+We start by “breaking” this cluster, simply modifying the serverNamePrefix
+to rename the
+servers, and update the release.
+First Indication of Trouble
+Logs
+The first indication of trouble is when you see this WRN
+warning and INF
+message in the logs:
+[WRN] Healthcheck failed: "JetStream has not established contact with a meta leader"
+[INF] JetStream cluster no metadata leader
+Events
+Another indication is that the NATS pods fail to progress to a ready state; the NATS container specifically shows that it’s running, but the readiness is false.
+The events will show a warning with the message
+Readiness probe failed: HTTP probe failed with statuscode: 503
+NATS CLI
+Using the NATS CLI, running the nats server report jetstream
+will also show an error;
+depending on the cluster state it could be any one of the following:
+Before Quorum is Lost
+At first, you’ll just see half the servers (with the old name) as being offline:
+$ nats server report jetstream
+╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ JetStream Summary │
+├─────────────────────┬────────────────┬─────────┬───────────┬──────────┬───────┬────────┬──────┬─────────┬─────────┤
+│ Server │ Cluster │ Streams │ Consumers │ Messages │ Bytes │ Memory │ File │ API Req │ API Err │
+├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
+│ x-nats-helm-kind-0 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+│ x-nats-helm-kind-1 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+│ x-nats-helm-kind-2* │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
+│ │ │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+╰─────────────────────┴────────────────┴─────────┴───────────┴──────────┴───────┴────────┴──────┴─────────┴─────────╯
+╭───────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ RAFT Meta Group Information │
+├─────────────────────────────────────────────────────┬──────────┬────────┬─────────┬────────┬────────┬─────┤
+│ Name │ ID │ Leader │ Current │ Online │ Active │ Lag │
+├─────────────────────────────────────────────────────┼──────────┼────────┼─────────┼────────┼────────┼─────┤
+│ Server name unknown at this time (peerID: Wp0X92Zu) │ Wp0X92Zu │ │ false │ false │ 0s │ 0 │
+│ nats-helm-kind-0 │ YMpQSy04 │ │ false │ false │ 19.53s │ 1 │
+│ nats-helm-kind-1 │ MGRogjE4 │ │ false │ false │ 0s │ 13 │
+│ x-nats-helm-kind-0 │ svvjmHnE │ │ true │ true │ 526ms │ 0 │
+│ x-nats-helm-kind-1 │ XCzEfWSa │ │ true │ true │ 525ms │ 0 │
+│ x-nats-helm-kind-2 │ XGX0cX6V │ yes │ true │ true │ 0s │ 0 │
+╰─────────────────────────────────────────────────────┴──────────┴────────┴─────────┴────────┴────────┴─────╯
+After Quorum is Lost
+After the quorum is lost, but before the readiness probes cause the servers to stop responding, for a brief window of time you’ll see the error in the jetstream report:
+$ nats server report jetstream
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ JetStream Summary │
+├────────────────────┬────────────────┬─────────┬───────────┬──────────┬───────┬────────┬──────┬─────────┬─────────┤
+│ Server │ Cluster │ Streams │ Consumers │ Messages │ Bytes │ Memory │ File │ API Req │ API Err │
+├────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
+│ x-nats-helm-kind-0 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+│ x-nats-helm-kind-1 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+│ x-nats-helm-kind-2 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+├────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
+│ │ │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+╰────────────────────┴────────────────┴─────────┴───────────┴──────────┴───────┴────────┴──────┴─────────┴─────────╯
+WARNING: No cluster meta leader found. The cluster expects 6 nodes but only 3 responded. JetStream operation require at least 4 up nodes.
+After Servers Stop Responding
+Finally, the servers will possibly stop responding, giving you the general error:
+$ nats server report jetstream
+nats: error: nats: no servers available for connection
+command terminated with exit code 1
+How To Recover
+Regain Quorum
+To recover, the cluster must first regain quorum.
+In this case, the cluster thinks that there are six nodes [3](#fn:3) in the cluster,
+so to regain quorum there needs to be a minimum of four nodes [3](#fn:3) reachable from each other.
+The way to do this is to add one more server, which will allow quorum to be regained. You can do this by scaling the stateful set:
+$ kubectl scale --replicas=4 statefulset/nats-helm-kind
+Which, once complete, should result in quorum being regained:
+$ nats server report jetstream
+╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ JetStream Summary │
+├─────────────────────┬────────────────┬─────────┬───────────┬──────────┬───────┬────────┬──────┬─────────┬─────────┤
+│ Server │ Cluster │ Streams │ Consumers │ Messages │ Bytes │ Memory │ File │ API Req │ API Err │
+├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
+│ x-nats-helm-kind-0 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+│ x-nats-helm-kind-1 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+│ x-nats-helm-kind-2* │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+│ x-nats-helm-kind-3 │ nats-helm-kind │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
+│ │ │ 0 │ 0 │ 0 │ 0 B │ 0 B │ 0 B │ 0 │ 0 │
+╰─────────────────────┴────────────────┴─────────┴───────────┴──────────┴───────┴────────┴──────┴─────────┴─────────╯
+╭───────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ RAFT Meta Group Information │
+├─────────────────────────────────────────────────────┬──────────┬────────┬─────────┬────────┬────────┬─────┤
+│ Name │ ID │ Leader │ Current │ Online │ Active │ Lag │
+├─────────────────────────────────────────────────────┼──────────┼────────┼─────────┼────────┼────────┼─────┤
+│ Server name unknown at this time (peerID: Wp0X92Zu) │ Wp0X92Zu │ │ false │ false │ 0s │ 0 │
+│ nats-helm-kind-0 │ YMpQSy04 │ │ false │ false │ 47m27s │ 6 │
+│ nats-helm-kind-1 │ MGRogjE4 │ │ false │ false │ 0s │ 18 │
+│ x-nats-helm-kind-0 │ svvjmHnE │ │ true │ true │ 461ms │ 0 │
+│ x-nats-helm-kind-1 │ XCzEfWSa │ │ true │ true │ 461ms │ 0 │
+│ x-nats-helm-kind-2 │ XGX0cX6V │ yes │ true │ true │ 0s │ 0 │
+│ x-nats-helm-kind-3 │ G7oD67bf │ │ true │ true │ 461ms │ 0 │
+╰─────────────────────────────────────────────────────┴──────────┴────────┴─────────┴────────┴────────┴─────╯
+Remove Offline/Old Servers
+Now you can begin cleaning up the old server records. You can do this either with the CLI or by using NATS directly.
+CLI
+Using the CLI [4](#fn:4):
+$ nats server cluster peer-remove -f <peer ID>
+Using NATS Directly
+You can also remove a peer directly by publishing to the JetStream API subjects:
+$ nats publish '$JS.API.SERVER.REMOVE' '{"peer":"","peer_id":"YMpQSy04"}'
+Which will send a response message on the same channel that confirms the action:
+{
+"type": "io.nats.jetstream.api.v1.meta_server_remove_response",
+"success": true
+}
+Remove Temporarily Added Server
+Scale Back Down to Three Servers
+Now that the number of servers is four instead of six, it’s safe to scale back down to three servers, and then remove the record of the server we temporarily added.
+$ kubectl scale --replicas=3 statefulset/nats-helm-kind
+Remove Peer
+$ nats server cluster peer-remove -f G7oD67bf
+Success!
+Finally, the state of the cluster should be restored now, with three servers.
+About The Author
+John Weldon is a Customer Solutions Architect at
+[Synadia Communications](https://www.synadia.com/)
+.
+The name of the helm release in this article is
+nats-helm-kind
+; it could be anything, often the default is justnats
+[↩︎](#fnref:1)You can replicate the
+[kind](https://kind.sigs.k8s.io/)environment I used in this article, by referring to[this](https://github.com/johnweldon/nats-helm-kind-playground)repository.[↩︎](#fnref:2)NATS Servers are also called “nodes” - sometimes interchangeably.
+[↩︎](#fnref:3)Throughout this article I use nats-box to execute nats commands; the simple way to do it from the command line is:
+kubectl exec -it deployment/nats-helm-kind-box -- nats <command> <args>
+nats-box is deployed by default in the nats helm chart.
+For simplicity, I’ll just show the plain NATS command in the examples.
+[↩︎](#fnref:4)
+[Back to Blog](/blog)

@@ -1,3 +1,31 @@
-URL: https://kubernetes.io/vi/case-studies/
+Source: kubernetes_io
+URL: https://kubernetes.io/docs/concepts/containers/container-environment/
 
-Tài liệuKubernetes BlogCác đối tácCommunityCác Case StudyPhiên bảnThông Tin Phát Hànhv1.31v1.30v1.29v1.28v1.27Tiếng Việt (Vietnamese)Englishবাংলা (Bengali)中文 (Chinese)Français (French)Deutsch (German)हिन्दी (Hindi)Bahasa Indonesia (Indonesian)Italiano (Italian)日本語 (Japanese)한국어 (Korean)Português (Portuguese)Русский (Russian)Español (Spanish)Українська (Ukrainian)Các Case Study của người dùng KubernetesCác Case StudyTài liệuBlogCác đối tácCommunityCác Case Study© 2024 Tác giả Kubernetes | Tài liệu phân phối dướiCC BY 4.0Copyright © 2024 The Linux Foundation ®. Tất cả các quyền được bảo lưu. The Linux Foundation đã đăng ký thương hiệu và sử dụng thương hiệu. Để xem danh sách các thương hiệu của The Linux Foundation, vui lòng xem trangSử dụng Thương hiệu của chúng tôiICP license: 京ICP备17074266号-3
+Container Environment
+This page describes the resources available to Containers in the Container environment.
+Container environment
+The Kubernetes Container environment provides several important resources to Containers:
+- A filesystem, which is a combination of an
+[image](/docs/concepts/containers/images/)and one or more[volumes](/docs/concepts/storage/volumes/). - Information about the Container itself.
+- Information about other objects in the cluster.
+Container information
+The hostname of a Container is the name of the Pod in which the Container is running.
+It is available through the hostname
+command or the
+[ gethostname](https://man7.org/linux/man-pages/man2/gethostname.2.html)
+function call in libc.
+The Pod name and namespace are available as environment variables through the
+[downward API](/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/).
+User defined environment variables from the Pod definition are also available to the Container, as are any environment variables specified statically in the container image.
+Cluster information
+A list of all services that were running when a Container was created is available to that Container as environment variables. This list is limited to services within the same namespace as the new Container's Pod and Kubernetes control plane services.
+For a service named foo that maps to a Container named bar, the following variables are defined:
+FOO_SERVICE_HOST=<the host the service is running on>
+FOO_SERVICE_PORT=<the port the service is running on>
+Services have dedicated IP addresses and are available to the Container via DNS,
+if [DNS addon](https://releases.k8s.io/v1.31.0/cluster/addons/dns/) is enabled.
+What's next
+- Learn more about
+[Container lifecycle hooks](/docs/concepts/containers/container-lifecycle-hooks/). - Get hands-on experience
+[attaching handlers to Container lifecycle events](/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/).
+[Migrate from fullVersion param to skew shortcode (50d7e85643)](https://github.com/kubernetes/website/commit/50d7e856435ee12568b515f6382a0d3f9aa5ac0e)

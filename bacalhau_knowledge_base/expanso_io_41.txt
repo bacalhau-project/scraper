@@ -1,3 +1,95 @@
-URL: https://expanso.io/about-us/#main
+Source: expanso_io
+URL: https://expanso.io/why-expanso/#main
 
-Skip to contentWhy Expanso?Why Choose Expanso?Security and GovernanceProductBacalhauFeaturesSolutionsUse CasesDistributed Data WarehouseLog ProcessingEdge Machine LearningDistributed Fleet ManagementResourcesDocumentationGitHubBacalhau BlogEventsFAQsHelp CenterCompanyWhat We ValueWho We AreCareersNewsroomContactGitHubInstall FreeMenuWhy Expanso?Why Choose Expanso?Security and GovernanceProductBacalhauFeaturesSolutionsUse CasesDistributed Data WarehouseLog ProcessingEdge Machine LearningDistributed Fleet ManagementResourcesDocumentationGitHubBacalhau BlogEventsFAQsHelp CenterCompanyWhat We ValueWho We AreCareersNewsroomContactGitHubInstall FreeInstall FreeWho We AreMeet our global teamOur team is small but mighty. While our locations are diverse, from the tech-driven landscapes of Seattle and Los Angeles to the historic and culturally rich streets of London, Edinburgh, and Munich to the dynamic pulse of India, our mission is singular: to redefine how the world understands and leverages data.DAVID ARONCHICKCEO and Co-FounderWALID BARUNICTOTONY EVANSBusiness ManagerLAURA HOHMANNCMOSEAN M. TRACEYHead of Developer RelationsMICHAEL HÖPLERProduct ManagerFORREST WESTONSoftware EngineerUDIT SAMANISoftware EngineerBACKED BY LEADING VENTURE FIRMSStay up to date and sign up to our blog:Visit BlogThe Compute Over Data PlatformCompanyHomeWhat We ValueWho We AreNewsroomContact UsCareersResourcesDocumentationFAQBlogSupportSocialLinkedInYouTubeSlackX ExpansoX BacalhauGitHub© Expanso Inc. All Rights Reserved 2023Privacy PolicyTrademarksTerms & ConditionsPrivacy PolicyTrademarksTerms & Conditions
+![Expanso](https://expanso.io/wp-content/uploads/2023/11/Logo.jpg)
+TRUSTED PLATFORM
+Expanso helps leading organizations innovate quickly by helping them architect, implement, and maintain enterprise-grade distributed compute platforms. In fact, Expanso is the same team that created and currently maintains the industry-leading [open-source software Bacalhau](https://www.bacalhau.org/), built to improve cost and efficiency of processing large-scale datasets in distributed environments.
+The next step in your data management journey.
+![Global Data Volume](https://expanso.io/wp-content/uploads/2023/11/global-data-volume-1024x428.webp)
+You’ll want to work with Expanso to help you implement your Bacalhau deployment, because we provide:
+-
+VERIFIED BUILDS
+Signed, reliable, and ready for enterprise deployment. -
+FASTEST UPDATES
+Always be at the cutting edge with immediate access to the latest features. -
+EARLY ACCESS TO ROADMAP FEATURES
+Get insights, test on your applications, and provide feedback into the newest features. -
+SECURITY ALERTS
+Stay informed with notifications on system vulnerabilities. -
+AUTO-UPDATES
+Seamless, automatic upgrades ensure you’re always at the forefront. -
+ENTERPRISE MONITORING
+Comprehensive, real-time system insights for proactive management. -
+HOSTED DASHBOARD
+A streamlined interface for effortless oversight and control. -
+ENTERPRISE-GRADE 24/7 SUPPORT
+We stand behind our software no matter where or when.
+Executive team.
+A collective of industry experts, has a long history in container orchestration, distributed compute platforms, and enterprise operations.
+With Expanso, you’re not just choosing a tool; you’re partnering with a team that’s committed to top-tier performance, reliability, and scalability. We bring over 30 years of experience in building platforms used by leading companies like Google, Amazon, Microsoft and Kubernetes.
+![](https://expanso.io/wp-content/uploads/2023/11/our-team.avif)
+![David Aronchick](https://expanso.io/wp-content/uploads/2023/11/david_Aronchick.jpg)
+DAVID ARONCHICK CEO and Co-Founder
+Lead PM on Kubernetes and GKE at Google
+Co-founder of Kubeflow
+Former Head of Open-Source Machine Learning at Microsoft
+Four-time founder
+![Walid Baruni](https://expanso.io/wp-content/uploads/2023/11/Walid_Baruni.png)
+WALID BARUNI CTO
+Former lead architect for AWS vended logs and AWS Kinesis
+12+ years of experience in software development and architecture
+5+ years of experience in Open-Source projects
+![Laura Hohmann](https://expanso.io/wp-content/uploads/2023/11/Laura_Hohmann.png)
+LAURA HOHMANN CMO
+Managed Microsoft field GTM initiatives; e.g. organized high impact roadshow across multiple cities
+Led LinkedIn Social Selling initiatives for Microsoft Dynamics 365 & Power Platform
+8+ years of experience in Social Media Marketing
+![David Aronchick](https://expanso.io/wp-content/uploads/2023/11/david_Aronchick.jpg)
+DAVID ARONCHICK CEO and Co-Founder
+Lead PM on Kubernetes and GKE at Google
+Co-founder of Kubeflow
+Former Head of Open-Source Machine Learning at Microsoft
+Four-time founder
+![Walid Baruni](https://expanso.io/wp-content/uploads/2023/11/Walid_Baruni.png)
+WALID BARUNI CTO
+Former lead architect for AWS vended logs and AWS Kinesis
+12+ years of experience in software development and architecture
+5+ years of experience in Open-Source projects
+![Tony Evans](https://expanso.io/wp-content/uploads/2023/11/Tony_Evans.png)
+TONY EVANS Business Manager
+20 years of multi-sector experience including roles at McKinsey and Microsoft; focusing on asset management, technology and management consulting
+Three-time founder
+![](https://expanso.io/wp-content/uploads/2024/05/IMG_5230-300x300.avif)
+Sean M. Tracey
+Head of Developer Relations
+Led AWS DevRel strategy for UKI region
+Founded an IBM meetup.com community, grew it to over 5000 members in < 2yrs
+Initiated AWS’s first student support program, now widely recognized as AWS Cloud Clubs
+![Laura Hohmann](https://expanso.io/wp-content/uploads/2023/11/Laura_Hohmann.png)
+LAURA HOHMANN
+CMO
+Managed Microsoft field GTM initiatives; e.g. organized high impact roadshow across multiple cities
+Led LinkedIn Social Selling initiatives for Microsoft Dynamics 365 & Power Platform
+8+ years of experience in Social Media Marketing
+![](https://expanso.io/wp-content/uploads/2024/05/IMG_5230-300x300.avif)
+Sean M. Tracey
+Head of Developer Relations
+Led AWS DevRel strategy for UKI region
+Founded an IBM meetup.com community, grew it to over 5000 members in < 2yrs
+Initiated AWS’s first student support program, now widely recognized as AWS Cloud Clubs
+![Tony Evans](https://expanso.io/wp-content/uploads/2023/11/Tony_Evans.png)
+TONY EVANS
+Business Manager
+20 years of multi-sector experience including roles at McKinsey and Microsoft; focusing on asset management, technology and management consulting
+Three-time founder
+Trusted by
+![University of Maryland](https://expanso.io/wp-content/uploads/2023/11/logo-university-of-maryland-1-300x49.avif)
+![](https://expanso.io/wp-content/uploads/2024/04/download.avif)
+![Weather on Demand](https://expanso.io/wp-content/uploads/2023/11/logo-weather-xw-1-300x65.avif)
+![](https://expanso.io/wp-content/uploads/2024/04/Google_Cloud_Partner_outline_vertical-300x300.avif)
+![Boinc](https://expanso.io/wp-content/uploads/2023/11/logo-boinc-1.avif)
+![City of Las Vegas Nevada](https://expanso.io/wp-content/uploads/2023/11/seal-city-of-las-vegas-nevada-1.avif)
+Google Cloud Partnership.
+We’re an official Google Cloud Build partner in the Google Cloud Partner Advantage program, enhancing our ability to deliver premier solutions on the Google Cloud platform.
+![Google Cloud Partner](https://expanso.io/wp-content/uploads/2023/11/google-partner-1024x664.avif)
+Looking for something else? Check out our [Help Center](/support).

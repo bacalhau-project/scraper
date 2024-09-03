@@ -1,3 +1,92 @@
-URL: https://nats.io/blog/nats-server-2.9.18-release/
+Source: nats_io
+URL: https://nats.io/blog/exploring-nats-as-a-backend-for-k3s/
 
-AboutDownloadDocumentationBlogCommunitySupportPrivacyNATS Server 2.9.18 ReleaseByron Ruth— June 14, 2023Back to BlogThe NATS maintainers are happy to announce the2.9.18 release! We want to thank all of the people who contributed to this release through reporting issues and code contributions! Ifyouare interested in contributing, please check outall the ways you can!This release was a smaller one than the prior few, but there are still some key areas to cover, including:Process purge replay properly on startupDaisy-chained leafnodes losing interestOptimize KV get for large key spaces and small messagesRemediate potential panic scenariosFor the entirety of the improvements and fixes, check out therelease notes.🗑️ Process purge replay properly on startupPurge is an on-demand operation that can be applied to a stream to delete a subset of messages in the stream. A purge operation takes a fewopt-in optionsincluding:sequenceto purge all messages up to, but not including the message with the sequencesubjectto purge all message matching the subject (wildcards supported)keepoption indicating the number of newest messages to keep, having all previous messages deletedIf none of these options are set, all messages in the stream will be deleted.An issue was observed where a purge using one of these options, followed by immediately restarting servers in a cluster could resort to an unintentionalfullpurge of a stream.The probability of this occurring in practice is fairly low, but given the risk of data loss, it was clearly flagged as high priority and this release introduces the fix to apply thecorrectpurge. That said, if you do not perform on-demand filtered purges, there is no risk of this bug.Relevant PRs#4212#4213🔗 Daisy-chained leafnodes losing interestLeafnodesare leveraged to extend an existing NATS system (cluster/supercluster), providing isolation of NATS traffic bound to explicit accounts and bridging separate operational and security boundaries.In practice, leafnodes are typically deployed at edge locations or devices where messaging, streaming, etc. can be leveraged by co-located applications. If/when these leafnodes are connected to ahubcluster, data can synchronize in either direction.For some use cases, there may be a need todaisy-chainleafnodes from other leafnodes rather than directly to thehub. Since each leafnode can be configured with different operational and security boundaries, each daisy-chainlayercould apply different policies in terms of account binding or security bridging.For some daisy-chained setups, there was a regression introduced in 2.9.17 which causedinterest propagationof subjects to not fully traverse these layers, resulting in messages not being delivered to all interested subscribers.Relevant PRs#4207💨 Optimize KV get for large key spaces and small messagesFor those new to theKey-Valuecapability in NATS, it is a client abstraction on top of a standard stream. There are various stream configurations that are used to ultimately make the stream behave like a key-value store, such as setting theMaxMsgsPerSubjectlimit to enforce a limit on the number of messages that can be retained per subject. From a key-value standpoint, each subject corresponds to a key and the message data correspond to the key’svalue.It is a common use case to use key-value stores for caches that may have a large number of keys for high cardinality identifiers, such asuser_id. Prior to this release, there was a fairly strong degradation of key-valuegetperformance as the number of keys increased. This was particularly noticeable when the value size was small.An optimization was introduced that essentially skips an unnecessary scan operation for this workload that literally 10x’ed the operations per second. See thebeforeandaftercomparison if you are curious!Relevant PRs#4235😰 Remediate potential panic scenariosThe NATS community is fantastic and every so often we get contributions from folks who are merely perusing the source code and observing improvements that can be made. This contribution was just that.A couple of folks from InfoWatch observed a few areas in the code where panic scenarios could arise and remediated them, putting in place guards where appropriate.Relevant PRs#4214ConclusionAmong the handful of other fixes and improvements, if any of these affect you, please update your NATS system and provide us feedback! Thanks again to all the contributors of this release.As always, refer to thedownload pagefor direct links to the GitHub release page and the official Docker image.If you prefer to track nightly builds on themainbranch, which follows the stable series (currently2.9.x), images are available on Docker hub:synadia/nats-server:nightly-main.About the AuthorByron Ruthis the Director of Developer Relations atSynadiaand a long-time NATS user.Back to BlogCopyright © NATS Authors 2024NATS is aCloud Native Computing Foundationincubating projectThe Linux Foundation has registered trademarks and uses trademarks.For a list of trademarks of The Linux Foundation, please seeTrademark Usage page.
+[Back to Blog](/blog)
+Exploring NATS as a backend for k3s
+Byron Ruth — May 9, 2023
+[k3s](https://k3s.io)
+is a lightweight Kubernetes distribution suitable for IoT and edge computing environments. One component k3s leverages is
+[KINE](https://github.com/k3s-io/kine)
+, which is a shim enabling the replacement of
+[etcd](https://etcd.io)
+with alternate storage backends originally targeting relational databases.
+In April 2022, the
+[v0.9.0 release](https://github.com/k3s-io/kine/releases/tag/v0.9.0)
+of KINE introduced native support for NATS as a backend. In June 2022, the k3s
+[v1.23.7+k3s1](https://github.com/k3s-io/k3s/releases/tag/v1.23.7%2Bk3s1)
+release included this KINE version making it possible for k3s deployments to connect to an existing NATS system.
+The KINE backend leverages the
+[Key-Value API](https://docs.nats.io/nats-concepts/jetstream/key-value-store)
+built on top of the NATS persistence subsystem called
+[JetStream](https://docs.nats.io/nats-concepts/jetstream)
+.
+A minimal example of bootstrapping a k3s server backed by NATS can be done by starting a JetStream-enable nats-server
+followed by starting k3s server
+with the --datastore-endpoint
+configured.
+# Run in the background or in the foreground in a different shell.
+nats-server -js &
+# Point k3s to the default NATS address.
+k3s server --datastore-endpoint=jetstream://localhost:4222
+When the k3s server
+starts, it will create a KV bucket (if it does not exist) within NATS. If using with a NATS cluster, the bucket can be configured with multiple replicas for high-availability and fault tolerance of the data.
+Global, multi-tenant infrastructure
+What does using NATS give you out of the box?
+During RethinkConn 2022,
+[Caleb Lloyd](https://www.linkedin.com/in/calebjlloyd)
+presented
+[Using NATS JetStream as a KINE backend for k3s](https://www.youtube.com/watch?v=CetW4eGkyS0)
+where he demonstrated the ability to deploy multiple k3s clusters in different regions all connected to a global, multi-cloud deployment of NATS (in this case
+[Synadia’s NGS](https://synadia.com/ngs)
+).
+The main takeaways:
+- Each k3s cluster can have their own isolated
+[account](https://docs.nats.io/running-a-nats-service/configuration/securing_nats/accounts)and KV bucket to store cluster state on a shared NATS system. - Applications running in k3s can leverage the same NATS system for their workloads (within their own accounts) as what k3s does.
+- Cross-region mirrors of the KV buckets can be created for straightforward backup/restore disaster recovery scenarios.
+Given this is one NATS system, an operator gets end-to-end visibility and management of all of these assets out-of-the-box. Check out the
+[k3s-on-nats demo repo](https://github.com/ConnectEverything/k3s-on-nats)
+to try it out youself.
+Embedded NATS
+Last week (May 2023), the
+[v0.10.0](https://github.com/k3s-io/kine/releases/tag/v0.10.1)
+KINE release landed support for embedding the NATS server. This is possible because KINE and NATS are both written in
+[Go](https://golang.org)
+and the server can be
+[imported as a package](https://pkg.go.dev/github.com/nats-io/nats-server/v2/server)
+.
+At the time of this writing, k3s with this new version of KINE embedded with NATS has not yet been released. What is discussed below works, but currently requires a manually building k3s.
+Starting k3s with this version of KINE embedded is now reduced to the following command (without needing to start an external NATS server).
+k3s server --datastore-endpoint=nats://
+See a one minute demo of how it works.
+The minimal nats://
+endpoint relies on the defaults in the NATS server, listening on all hosts (0.0.0.0
+) and binding to port 4222
+. Of course, if you don’t want to embed the server, you can add the query parameter noEmbed
+and it will connect to a remote system.
+What do we gain with an embedded server?
+The original motivation was to further reduce the distribution and dependency footprint, resulting in the option of a single k3s binary with KINE and NATS embedded. In addition to the reduced dependency footprint, there are multiple benefits over etcd and SQLite:
+- The
+nats://
+endpoint supports aserverConfig
+query param pointing to a local NATS config file. This gives the flexibility of configuring the instance as a[Leaf Node](https://docs.nats.io/running-a-nats-service/configuration/leafnodes), which enables the secure extension of an existing NATS system. Leaf nodes initiate connections to the remote servers, making them friendly for network environments with heavy use of network address translation (NAT). - Building on the above example showcased in the RethinkConn talk, embedded NATS makes it possible to extend to the edge and maintain local state if remote connectivity to a NATS cluster is lost, without sacrificing visibility or management capabilities.
+- A single binary provides all of the advantages of NATS combined with a workload scheduler. As a result, your data lives on and traverses one system, unifying design, development and operations.
+Having a single binary with k3s and NATS is superpower!
+If you are interested in reading what options are available to configure the KINE datastore endpoint, checkout the
+[NATS examples](https://github.com/k3s-io/kine/blob/master/examples/nats.md)
+document in the KINE repo.
+Future efforts
+Having NATS available as KINE/k3s backend was a great start and having the option for embedding NATS is a superpower for edge deployments. However, there are a few other areas the NATS team is exploring including:
+- Native support for NATS in k3s' embedded HA/cluster mode ( join the discussion on the
+[GitHub issue](https://github.com/k3s-io/k3s/issues/7451)) - How NATS may be able to be leveraged within
+[Fleet](https://github.com/rancher/fleet) - What would it take to setup an agent-less k3s mirror of another instance, leveraging NATS mirror/sourcing capability
+If you find any of this interesting, have use cases to share, or want to show your support, please join us on
+[Slack](https://slack.nats.io)
+!
+Finally, The NATS team wants to give a BIG thank you and shoutout to the k3s/KINE team for the support and guidance on making NATS available as a backend. ❤️
+Additional Links
+About the Author
+[Byron Ruth](https://www.linkedin.com/in/byron-ruth-97216a1b7/)
+is the Director of Developer Relations at
+[Synadia](https://synadia.com)
+and a long-time NATS user.
+[Back to Blog](/blog)

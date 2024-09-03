@@ -1,17 +1,74 @@
 Source: apache_hadoop
-URL: https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/NativeLibraries.html
+URL: http://hadoop.apache.org/docs/r3.3.5/hadoop-project-dist/hadoop-common/SingleCluster.html
 
-Wiki|git|Apache Hadoop| Last Published: 2024-03-04
-               | Version: 3.4.0GeneralOverviewSingle Node SetupCluster SetupCommands ReferenceFileSystem ShellCompatibility SpecificationDownstream Developer's GuideAdmin Compatibility GuideInterface ClassificationFileSystem SpecificationCommonCLI Mini ClusterFair Call QueueNative LibrariesProxy UserRack AwarenessSecure ModeService Level AuthorizationHTTP AuthenticationCredential Provider APIHadoop KMSTracingUnix Shell GuideRegistryAsync ProfilerHDFSArchitectureUser GuideCommands ReferenceNameNode HA With QJMNameNode HA With NFSObserver NameNodeFederationViewFsViewFsOverloadSchemeSnapshotsEdits ViewerImage ViewerPermissions and HDFSQuotas and HDFSlibhdfs (C API)WebHDFS (REST API)HttpFSShort Circuit Local ReadsCentralized Cache ManagementNFS GatewayRolling UpgradeExtended AttributesTransparent EncryptionMultihomingStorage PoliciesMemory Storage SupportSynthetic Load GeneratorErasure CodingDisk BalancerUpgrade DomainDataNode AdminRouter FederationProvided StorageMapReduceTutorialCommands ReferenceCompatibility with 1.xEncrypted ShufflePluggable Shuffle/SortDistributed Cache DeploySupport for YARN Shared CacheMapReduce REST APIsMR Application MasterMR History ServerYARNArchitectureCommands ReferenceCapacity SchedulerFair SchedulerResourceManager RestartResourceManager HAResource ModelNode LabelsNode AttributesWeb Application ProxyTimeline ServerTimeline Service V.2Writing YARN ApplicationsYARN Application SecurityNodeManagerRunning Applications in Docker ContainersRunning Applications in runC ContainersUsing CGroupsSecure ContainersReservation SystemGraceful DecommissionOpportunistic ContainersYARN FederationShared CacheUsing GPUUsing FPGAPlacement ConstraintsYARN UI2YARN REST APIsIntroductionResource ManagerNode ManagerTimeline ServerTimeline Service V.2YARN ServiceOverviewQuickStartConceptsYarn Service APIService DiscoverySystem ServicesHadoop Compatible File SystemsAliyun OSSAmazon S3Azure Blob StorageAzure Data Lake StorageTencent COSHuaweicloud OBSAuthOverviewExamplesConfigurationBuildingToolsHadoop StreamingHadoop ArchivesHadoop Archive LogsDistCpHDFS Federation BalanceGridMixRumenResource Estimator ServiceScheduler Load SimulatorHadoop BenchmarkingDynamometerReferenceChangelog and Release NotesJava API docsUnix Shell APIMetricsConfigurationcore-default.xmlhdfs-default.xmlhdfs-rbf-default.xmlmapred-default.xmlyarn-default.xmlkms-default.xmlhttpfs-default.xmlDeprecated PropertiesNative Libraries GuideOverviewNative Hadoop LibraryUsageComponentsSupported PlatformsDownloadBuildRuntimeCheckNative Shared LibrariesOverviewThis guide describes the native hadoop library and includes a small discussion about native shared libraries.Note: Depending on your environment, the term “native libraries” could refer to all *.so’s you need to compile; and, the term “native compression” could refer to all *.so’s you need to compile that are specifically related to compression. Currently, however, this document only addresses the native hadoop library (libhadoop.so). The document for libhdfs library (libhdfs.so) ishere.Native Hadoop LibraryHadoop has native implementations of certain components for performance reasons and for non-availability of Java implementations. These components are available in a single, dynamically-linked native library called the native hadoop library. On the *nix platforms the library is namedlibhadoop.so.UsageIt is fairly easy to use the native hadoop library:Review the components.Review the supported platforms.Either download a hadoop release, which will include a pre-built version of the native hadoop library, or build your own version of the native hadoop library. Whether you download or build, the name for the library is the same: libhadoop.soInstall the compression codec development packages (>zlib-1.2, >gzip-1.2):If you download the library, install one or more development packages - whichever compression codecs you want to use with your deployment.If you build the library, it is mandatory to install both development packages.Check the runtime log files.ComponentsThe native hadoop library includes various components:Compression Codecs (bzip2, lz4, zlib)Native IO utilities forHDFS Short-Circuit Local ReadsandCentralized Cache Management in HDFSCRC32 checksum implementationSupported PlatformsThe native hadoop library is supported on *nix platforms only. The library does not to work with Cygwin or the Mac OS X platform.The native hadoop library is mainly used on the GNU/Linus platform and has been tested on these distributions:RHEL4/FedoraUbuntuGentooOn all the above distributions a 32/64 bit native hadoop library will work with a respective 32/64 bit jvm.DownloadThe pre-built 32-bit i386-Linux native hadoop library is available as part of the hadoop distribution and is located in thelib/nativedirectory. You can download the hadoop distribution from Hadoop Common Releases.Be sure to install the zlib and/or gzip development packages - whichever compression codecs you want to use with your deployment.BuildThe native hadoop library is written in ANSI C and is built using the GNU autotools-chain (autoconf, autoheader, automake, autoscan, libtool). This means it should be straight-forward to build the library on any platform with a standards-compliant C compiler and the GNU autotools-chain (see the supported platforms).The packages you need to install on the target platform are:C compiler (e.g. GNU C Compiler)GNU Autools Chain: autoconf, automake, libtoolzlib-development package (stable version >= 1.2.0)openssl-development package(e.g. libssl-dev)Once you installed the prerequisite packages use the standard hadoop pom.xml file and pass along the native flag to build the native hadoop library:$ mvn package -Pdist,native -DskipTests -DtarYou should see the newly-built library in:$ hadoop-dist/target/hadoop-3.4.0/lib/nativePlease note the following:It is mandatory to install both the zlib and gzip development packages on the target platform in order to build the native hadoop library; however, for deployment it is sufficient to install just one package if you wish to use only one codec.It is necessary to have the correct 32/64 libraries for zlib, depending on the 32/64 bit jvm for the target platform, in order to build and deploy the native hadoop library.RuntimeThe bin/hadoop script ensures that the native hadoop library is on the library path via the system property:-Djava.library.path=<path>During runtime, check the hadoop log files for your MapReduce tasks.If everything is all right, then:DEBUG util.NativeCodeLoader - Trying to load the custom-built native-hadoop library...INFO util.NativeCodeLoader - Loaded the native-hadoop libraryIf something goes wrong, then:INFO util.NativeCodeLoader - Unable to load native-hadoop library for your platform... using builtin-java classes where applicableCheckNativeLibraryChecker is a tool to check whether native libraries are loaded correctly. You can launch NativeLibraryChecker as follows:$ hadoop checknative -a
-   14/12/06 01:30:45 WARN bzip2.Bzip2Factory: Failed to load/initialize native-bzip2 library system-native, will use pure-Java version
-   14/12/06 01:30:45 INFO zlib.ZlibFactory: Successfully loaded & initialized native-zlib library
-   Native library checking:
-   hadoop: true /home/ozawa/hadoop/lib/native/libhadoop.so.1.0.0
-   zlib:   true /lib/x86_64-linux-gnu/libz.so.1
-   zstd: true /usr/lib/libzstd.so.1
-   lz4:    true revision:99
-   bzip2:  falseNative Shared LibrariesYou can load any native shared library using DistributedCache for distributing and symlinking the library files.This example shows you how to distribute a shared library in Unix-like systems, mylib.so, and load it from a MapReduce task.First copy the library to the HDFS:bin/hadoop fs -copyFromLocal libmyexample.so.1 /libraries/libmyexample.so.1The job launching program should contain the following:DistributedCache.createSymlink(conf);DistributedCache.addCacheFile("hdfs://host:port/libraries/libmyexample.so.1#libmyexample.so", conf);The MapReduce task can contain:System.loadLibrary("myexample");Note: If you downloaded or built the native hadoop library, you don’t need to use DistibutedCache to make the library available to your MapReduce tasks.©            2008-2024
-              Apache Software Foundation
-            
-                          -Privacy Policy.
-        Apache Maven, Maven, Apache, the Apache feather logo, and the Apache Maven project logos are trademarks of The Apache Software Foundation.
+This document describes how to set up and configure a single-node Hadoop installation so that you can quickly perform simple operations using Hadoop MapReduce and the Hadoop Distributed File System (HDFS).
+Important: all production Hadoop clusters use Kerberos to authenticate callers and secure access to HDFS data as well as restriction access to computation services (YARN etc.).
+These instructions do not cover integration with any Kerberos services, -everyone bringing up a production cluster should include connecting to their organisation’s Kerberos infrastructure as a key part of the deployment.
+See [Security](./SecureMode.html) for details on how to secure a cluster.
+Required software for Linux include:
+Java™ must be installed. Recommended Java versions are described at [HadoopJavaVersions](https://cwiki.apache.org/confluence/display/HADOOP/Hadoop+Java+Versions).
+ssh must be installed and sshd must be running to use the Hadoop scripts that manage remote Hadoop daemons if the optional start and stop scripts are to be used. Additionally, it is recommmended that pdsh also be installed for better ssh resource management.
+If your cluster doesn’t have the requisite software you will need to install it.
+For example on Ubuntu Linux:
+$ sudo apt-get install ssh $ sudo apt-get install pdsh
+To get a Hadoop distribution, download a recent stable release from one of the [Apache Download Mirrors](http://www.apache.org/dyn/closer.cgi/hadoop/common/).
+Unpack the downloaded Hadoop distribution. In the distribution, edit the file etc/hadoop/hadoop-env.sh
+to define some parameters as follows:
+# set to the root of your Java installation export JAVA_HOME=/usr/java/latest
+Try the following command:
+$ bin/hadoop
+This will display the usage documentation for the hadoop script.
+Now you are ready to start your Hadoop cluster in one of the three supported modes:
+By default, Hadoop is configured to run in a non-distributed mode, as a single Java process. This is useful for debugging.
+The following example copies the unpacked conf directory to use as input and then finds and displays every match of the given regular expression. Output is written to the given output directory.
+$ mkdir input $ cp etc/hadoop/*.xml input $ bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.5.jar grep input output 'dfs[a-z.]+' $ cat output/*
+Hadoop can also be run on a single-node in a pseudo-distributed mode where each Hadoop daemon runs in a separate Java process.
+Use the following:
+etc/hadoop/core-site.xml:
+<configuration> <property> <name>fs.defaultFS</name> <value>hdfs://localhost:9000</value> </property> </configuration>
+etc/hadoop/hdfs-site.xml:
+<configuration> <property> <name>dfs.replication</name> <value>1</value> </property> </configuration>
+Now check that you can ssh to the localhost without a passphrase:
+$ ssh localhost
+If you cannot ssh to localhost without a passphrase, execute the following commands:
+$ ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa $ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys $ chmod 0600 ~/.ssh/authorized_keys
+The following instructions are to run a MapReduce job locally. If you want to execute a job on YARN, see [YARN on Single Node](#YARN_on_a_Single_Node).
+Format the filesystem:
+$ bin/hdfs namenode -format
+Start NameNode daemon and DataNode daemon:
+$ sbin/start-dfs.sh
+The hadoop daemon log output is written to the $HADOOP_LOG_DIR
+directory (defaults to $HADOOP_HOME/logs
+).
+Browse the web interface for the NameNode; by default it is available at:
+http://localhost:9870/
+Make the HDFS directories required to execute MapReduce jobs:
+$ bin/hdfs dfs -mkdir /user $ bin/hdfs dfs -mkdir /user/<username>
+Copy the input files into the distributed filesystem:
+$ bin/hdfs dfs -mkdir input $ bin/hdfs dfs -put etc/hadoop/*.xml input
+Run some of the examples provided:
+$ bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.5.jar grep input output 'dfs[a-z.]+'
+Examine the output files: Copy the output files from the distributed filesystem to the local filesystem and examine them:
+$ bin/hdfs dfs -get output output $ cat output/*
+or
+View the output files on the distributed filesystem:
+$ bin/hdfs dfs -cat output/*
+When you’re done, stop the daemons with:
+$ sbin/stop-dfs.sh
+You can run a MapReduce job on YARN in a pseudo-distributed mode by setting a few parameters and running ResourceManager daemon and NodeManager daemon in addition.
+The following instructions assume that 1. ~ 4. steps of [the above instructions](#Execution) are already executed.
+Configure parameters as follows:
+etc/hadoop/mapred-site.xml
+:
+<configuration> <property> <name>mapreduce.framework.name</name> <value>yarn</value> </property> <property> <name>mapreduce.application.classpath</name> <value>$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/*:$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/lib/*</value> </property> </configuration>
+etc/hadoop/yarn-site.xml
+:
+<configuration> <property> <name>yarn.nodemanager.aux-services</name> <value>mapreduce_shuffle</value> </property> <property> <name>yarn.nodemanager.env-whitelist</name> <value>JAVA_HOME,HADOOP_COMMON_HOME,HADOOP_HDFS_HOME,HADOOP_CONF_DIR,CLASSPATH_PREPEND_DISTCACHE,HADOOP_YARN_HOME,HADOOP_HOME,PATH,LANG,TZ,HADOOP_MAPRED_HOME</value> </property> </configuration>
+Start ResourceManager daemon and NodeManager daemon:
+$ sbin/start-yarn.sh
+Browse the web interface for the ResourceManager; by default it is available at:
+http://localhost:8088/
+Run a MapReduce job.
+When you’re done, stop the daemons with:
+$ sbin/stop-yarn.sh
+For information on setting up fully-distributed, non-trivial clusters see [Cluster Setup](./ClusterSetup.html).

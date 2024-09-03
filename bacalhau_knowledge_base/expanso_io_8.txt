@@ -1,82 +1,232 @@
-URL: https://expanso.io/use-cases/distributed-data-warehouse/
+Source: expanso_io
+URL: https://expanso.io/use-cases/edge-machine-learning/
 
-Skip to contentWhy Expanso?Why Choose Expanso?Security and GovernanceProductBacalhauFeaturesSolutionsUse CasesDistributed Data WarehouseLog ProcessingEdge Machine LearningDistributed Fleet ManagementResourcesDocumentationGitHubBacalhau BlogEventsFAQsHelp CenterCompanyWhat We ValueWho We AreCareersNewsroomContactGitHubInstall FreeMenuWhy Expanso?Why Choose Expanso?Security and GovernanceProductBacalhauFeaturesSolutionsUse CasesDistributed Data WarehouseLog ProcessingEdge Machine LearningDistributed Fleet ManagementResourcesDocumentationGitHubBacalhau BlogEventsFAQsHelp CenterCompanyWhat We ValueWho We AreCareersNewsroomContactGitHubInstall FreeInstall FreeUse CasesDistributed Data WarehouseDistributed Data Warehousing with BacalhauIntroductionExpanso helps leading organizations innovate quickly by helping them architect, implement, and maintain enterprise-grade distributed compute platforms. In fact, Expanso is the same team that created and currently maintains the industry-leading open-source software Bacalhau. It is built to improve cost and efficiency of processing large-scale datasets in distributed environments.Challenges in traditional data warehousing.SCALABILITYAs data volume and user demands increase, centralized systems become costly and complex to scale.PERFORMANCEMore users and applications accessing the system can degrade performance, leading to delays in data retrieval and analysis.ENGINEERING COSTSCentralizing data, especially from diverse sources, demands substantial engineering efforts.MAINTENANCERoutine updates and upkeep are resource-intensive, requiring significant investments in hardware, software, and skilled personnel.SLOW TO ADAPTCentralized systems are often slow and complex to adapt to new data sources or schema changes.Given these issues, the emerging Data Mesh approach could offer a more effective solution.Solution: Distributed data warehousingWhen teams view data as a product and adopt a federated governance model, querying data directly at its source can eliminate the need for expensive ETL processes. It’s often more efficient to send computation to the data rather than moving the data to the computation, and this holds true even outside of a data mesh architecture.By placing compute nodes near the data sources, computational tasks or queries can be sent directly to the data. This approach allows for results to be delivered efficiently through the chosen storage solution. Typically, the resulting computations are smaller and easier to transmit than entire datasets, facilitating near real-time processing. Meanwhile, backing up essential log data continues to be handled conventionally.Implementing a distributed data warehouse offers clear benefits:Reduced Data Movement:Directly querying data at its source significantly reduces the need to move large amounts of data to a central location. This is cutting costs and easing the workload on data engineers. This setup allows users to extract concise results from their queries while continuing to archive daily data for audit trails.Easier Scaling:A distributed data warehouse can scale effectively by adding more compute nodes where data is generated. If you double the number of data sources, you don't need to more than double your central warehouse's capacity; simply enhance the infrastructure at the data collection points.Real-Time Querying:Users can immediately run queries on the most recent data without waiting for daily transfers and processing. This enables decision-making based on the latest business information.Avoid Vendor Lock-in:Relying on a single provider for a centralized data warehouse may not be the best long-term strategy. Over time, a provider's limited capabilities or changes in service can diminish effectiveness. Additionally, the sunk costs associated with one provider can make switching challenging, even when it's necessary.Bacalhau as a distributed data warehouse orchestrator.Bacalhau lets you leverage a distributed data warehouse really easily, without having to overhaul your current systems. Most companies already have the data and computing power they need for analytics, scattered across different databases, servers, and edge locations.Bacalhau makes it simple to turn your scattered resources into a dynamic data warehouse. Just install its lightweight agents right where your data lives, and you can run compute jobs on-site. This way, you avoid moving big datasets around or making big changes to your ETL processes and data models.FLEXIBLE COMPUTE NODESBacalhau’s compatibility with Docker and WebAssembly enables efficient handling of diverse workloads. Its compute nodes support a broad range of applications, from modern .NET applications to legacy IBM AS/400 systems, allowing for custom execution engines and versatile use cases.DIVERSE DATA ACCESSBacalhau cuts the high costs associated with data transfer by enabling direct access to local data, reducing the need for extensive data movement. It supports a variety of storage options including S3-compatible storage, IPFS, and direct local storage, ensuring data is readily available for computation.SMART JOB ALLOCATIONBacalhau allows you to precisely manage how jobs are assigned to compute nodes. You can target nodes for specific jobs using labels that denote their characteristics, and the latest updates to the platform enable even more nuanced selections based on these labels.Implementation exampleRetail IndustrySCENARIOConsider a retail chain with multiple stores spread across different regions. Each store has its own POS system collecting sales data. Traditionally, this data is batch-uploaded to a central data warehouse at the end of each day for processing and report generation.BACALHAU DEPLOYMENTWith Bacalhau, each store installs a compute node that processes data locally. A control plane node orchestrates tasks across the compute nodes, distributing work based on various selection criteria. Retailers can now query data in near real-time, gaining instant insights without the need for extensive data transfer or central processing infrastructure.BENEFITSReal-time Insights:Retailers can query data and generate reports in near real-time, enabling quicker decision-making.Reduced Network Bandwidth:By processing data locally, Bacalhau significantly reduces the amount of data that needs to be transferred over the network.Enhanced Security:Minimizing data transfer also reduces the risk of data incursions, ensuring better compliance with data governance regulations.Cost-Effectiveness:Bacalhau eliminates the need for expensive central processing infrastructure, making it a cost-effective solution.Code ImplementationStep 0 - PrerequisitesBefore you start, you’ll need:Storage Solution:Have a storage provider or location ready for the job results.Firewall Configuration:Adjust your firewall settings so your node can talk to the rest of the Bacalhau network.Hosting Setup:Prepare a physical server, a virtual machine, or a cloud-based instance. Note that Bacalhau compute nodes should not be run inside a Docker container.Bacalhau CLI:Install the Bacalhau CLI on your local machine, following the instructions providedStep 1 - Provisioning hardwareTo get started with setting up a distributed data warehouse, you’ll need the right infrastructure. If you’re not familiar with setting up a private node network, check out this guide. For our example, assume you’re starting from scratch. You’ll need:Control Plane Node: This is your operation’s headquarters, coordinating tasks throughout your network. Recommended Specs:Instances: 1Disk Space: 25-100GBCPU: 1-8 cores (vCPU)RAM: 4-16GBCompute Node(s): These workhorses run your code and access data that’s local or close to it. Recommended Specs:Instances: 1-N (We’ll use 4 in this example, symbolizing 4 different locations)Disk Space: 32-500GBCPU: 1-8 cores (vCPU)RAM: 4-16GBNote: It’s crucial that the Control Plane Node can communicate with the Compute Nodes. For guidance on this, you can follow this tutorial.Step 2 - Installing the compute and requestor nodeBacalhau uses a node called a requester node to orchestrate jobs in the network, communicating with the compute nodes to distribute work according to the various selection criteria. Once you have installed Bacalhau, you can run the requester node as follows.bacalhau serve \
---node-type requester \
---private-internal-ipfs=falseAfter your requester node is operational, it will generate environment variables that must be configured on your compute nodes. Here’s what to do next:Set Environment Variables:Record the environment variables from the requester node and apply them to each machine designated as a compute node.Install Compute Nodes:At each store location with data, you’ll need to install a Bacalhau compute node on a machine with data access. Use the standard Bacalhau installation instructions, but for a private network, you’ll specify a unique –peer value.Job Distribution:To distribute jobs to the compute nodes, you have two main strategies:Job Selection Policies: Implement custom logic to decide if a node should run a job. More details can be found in the job selection policy documentation.Node Labels: For a simpler approach, use node labels to target specific nodes or groups of nodes. This is the recommended method for this guide.With your infrastructure and settings ready, you can initiate the compute nodes using the command line provided in the Bacalhau quick-start guide.# We added a path to allow-listed-local-paths where we store our data, and
-# a set of labels to allow us to target specific nodes
+Edge-Based Machine Learning Inference
+![Edge Based Machine Learning](https://expanso.io/wp-content/uploads/2023/11/edge-based-machine-learning.webp)
+Introduction
+The rapid digitization of today’s world has led to an exponential increase in data generation, particularly at the edge—far from centralized data centers. This data, ranging from application logs for troubleshooting software issues to extensive CCTV footage for maintaining security, is a treasure trove of insights waiting to be unlocked through Machine Learning (ML). However, the disparity between data generation locations and where ML models are hosted for interpretation presents a unique set of challenges, especially when it comes to data transit.
+Challenges in centralized ML.
+Machine learning models present unique challenges in production environments versus typical binary deployments.
+DATA SIZE AND TRANSFER COST
+Imagine having terabytes or even petabytes of data that you need to move to another location for training or inference. Not only is this expensive, but it is also time-consuming. In the machine learning world, the time it takes to move data means that, on top of expenses, your models may be out of date before you even get to use them.
+THE COMPLIANCE LABYRINTH
+Compliance is no child’s play. Moving data for training, especially personal or sensitive information, across different regions or systems means navigating a complex web of regulatory requirements. Depending on your industry, you could be faced with tens or hundreds of different regulations. Ensuring compliance while moving data can be a daunting task – and these are often triggered the moment data is moved.
+SECURITY: THE MOVING TARGET
+Static data, or data at rest, benefits from a controlled environment, making it easier to secure. However, data in transit is like a moving target, vulnerable to interception, tampering, and unauthorized access. The challenge extends beyond securing the endpoints to ensuring the data’s safety as it travels between points.
+VOLUME VS. VALUE: THE DATA DILEMMA
+Although a vast amount of data is collected at the edge, only a small subset may be valuable. Sifting through application logs might reveal a few anomalies or a few frames of interest amid hours of video footage. Storing all this data, when only a fraction is valuable, is not just unnecessary but also costly. The goal is to segregate and retain the essential data while letting go of the rest.
+UNDER-USED COMPUTE POWER
+Historically, ML inference required heavy-duty, centralized computational resources – often involving expensive GPUs. But times are changing. Innovations like Google’s Coral Edge ML, Nvidia’s Jetson, and Intel’s Neural Compute Stick are revolutionizing the field. They’re not only driving down the costs of ML inference but also demonstrating robust performance on edge devices, making ML more accessible and decentralized.
+Traditional Setup using Centralized ML Inference.
+The diagram below offers a top level view of a typical surveillance system utilizing ML Inference to detect noteworthy events.
+![Traditional Setup using Centralized ML Inference](https://expanso.io/wp-content/uploads/2023/11/redundant-data-movement-1024x428.avif)
+Here’s how the process unfolds:
+- Video Capture:
+Each camera captures video, buffering it locally on the device. - Local Storage:
+Video data from the camera’s buffer is saved locally or to nearby storage locations. - Cloud Upload:
+The data is then uploaded to the cloud for further analysis. - Inference and Storage:
+Cloud systems perform ML inference to identify significant events. Relevant events are stored, while the rest are either discarded or moved to cold storage.
+This design, however, has several drawbacks:
+- Latency & Bandwidth: There’s a delay between recording the video and analyzing it in the cloud. This means real-time detection or immediate action might not be possible. Additionally, uploading large video files to the cloud can consume significant bandwidth, potentially slowing down other network activities.
+- Storage Costs: Even though only “interesting” events might be stored long-term, the initial storage of all video footage, even temporarily, might lead to substantial storage costs.
+- Internet Dependency: If the internet connection is lost, videos can’t be uploaded to the cloud for analysis, leading to potential blind spots in surveillance, and significant data processing backlogs.
+- Data Transfer Costs: Many cloud providers charge for the amount of data transferred into or out of their services. Frequent uploads of video data can lead to substantial costs.
+- Compliance Challenges: Surveillance footage must adhere to data protection regulations, ensuring transparent communication, secure storage, controlled retention, and upholding individual rights. Additionally, transferring data across borders may encounter regulatory challenges due to data protection standards.
+Solution: Edge based ML
+The previous section highlighted the challenges of handling large data volumes. The solution might seem simple at first glance: only move essential data. However, is it that straightforward?
+Imagine a scenario where data remains at its source. Running ML inference on the data in place can offer organizations several advantages:
+Enhanced Data Security: Static data naturally provides a more secure environment, protecting it from the vulnerabilities tied to data in transit. The less frequently data is transferred, the lower the risk of potential breaches.
+Cost and Time Efficiency: Transferring data goes beyond merely moving files from one folder to another. It involves network bandwidth, storage costs, potential egress fees, and, crucially, time. Tasks like compression, encryption, and transfers, while necessary, slow things down, especially when networking is slow or unreliable. Employing ML at the edge cultivates a more efficient and responsive network.
+Simplified Compliance Management: By reducing the volume of data transferred, we narrow down the scope of data subject to various compliance regulations. This simplifies ensuring adherence, lowering the risk of potential violations.
+Streamlined System Design: A system with fewer moving parts is often less prone to failures. Keeping data static and processing it at its source eliminates complex data transfer protocols, enhancing system reliability.
+Edge ML inference with Bacalhau.
+The essence of using Edge ML with Bacalhau is combining distributed execution, with scheduling to where the data is. At its core, you use the same binaries and architecture you always have, but, via Bacalhau, you’re able to schedule them to run where your data is – without having to move them to a centralized data lake.
+In the tide of digital transformation, data is paramount. However, the surge of data creation, especially at the edge, is pushing the traditional centralized model to its limits, leading to inefficiencies and escalating costs.
+By shifting ML inference away from central hubs, it significantly cuts costs and boosts efficiency while delivering real-time insights. This enhances system reliability and quickens response times. In the world of data, success hinges on not just gathering information but making smart, swift decisions with it exactly when and where it’s needed.
+To show you how this works, we’ll begin by illustrating how organizations might approach this problem today.
+Distributed setup with Bacalhau on the edge.
+With Bacalhau, we can revamp the initial design to conduct inference at the edge, as pictured below:
+![](https://expanso.io/wp-content/uploads/2023/11/with-bacalhau-ml-inference-1024x428.avif)
+Cost breakdown of executing ML inference over video across three platforms:
+![Cost breakdown of executing ML inference over video across three platforms](https://expanso.io/wp-content/uploads/2023/11/redundant-data-movement-1-1024x428.webp)
+Navigating the expense maze associated with cloud operations can be daunting. These operations often lack transparency regarding the final costs, especially when various services are intertwined. Take cloud storage for instance: you pay per GB, and there are additional charges for access requests. Delve into platforms like AWS Rekognition, GCP Vision, or Azure Cognitive Service, and you’ll find that you are billed for
+- Storing your data in their data center.
+- Accessing your data from their data center.
+- Utilizing their specialized AI services.
+Costs | Before | With Bacalhau | Savings |
+---|---|---|---|
+AWS | |||
+Storage (AWS) | $210,500.00 | $21,050.00 | |
+Access (AWS) | $750.00 | $500.00 | |
+AI services (AWS) | $47,200.00 | $47,200.00 | |
+Sum | $258,450.00 | $68,750.00 | |
+Savings | 73.40% | ||
+GCP | |||
+Storage (Google Cloud) | $200,000.00 | $20,000.00 | |
+Access (Google Cloud) | $750.00 | $500.00 | |
+AI services (Google Cloud) | $102,498.50 | $102,498.50 | |
+Sum | $303,248.50 | $122,998.50 | |
+Savings | 59.44% | ||
+Azure | |||
+Storage (Azure) | $160,500.00 | $16,050.00 | |
+Access (Azure) | $300.00 | $200.00 | |
+AI services (Azure) | $60,850.00 | $60,850.00 | |
+Sum | $221,650.00 | $77,100.00 | |
+Savings | 65.22% |
+This is an example from our cloud cost calculator, which you can try [here](https://docs.google.com/spreadsheets/d/1VO_wF4ow846EeE4Lmy8GhL06PEIJTMmduIQ5CGckAzU/edit?usp=sharing).
+![cloud cost](https://expanso.io/wp-content/uploads/2023/11/redundant-data-movement-2-1024x428.avif)
+To estimate the storage costs for your ML inference workloads with cloud providers, we’ll need to calculate the data generated and then compare it with each provider’s pricing structure.
+Example Data:
+- Resolution: 4K (Ultra HD)
+- Frame Rate: 60 FPS
+- Number of Cameras: 10
+- Recording Time: Continuous
+- Hourly Data: 110GB
+- Weekly Data: 18T
+- Annual Data: Approximately 1PB (Petabyte)
+![redundant data movement](https://expanso.io/wp-content/uploads/2023/11/redundant-data-movement-8-1-1024x428.avif)
+Again, let’s use the formulas above to determine the cost to perform ML Inference centrally across the data we’ve collected. Notice that AI inference costs are significantly larger than storage costs. In our guide, we used two[ e2-standard-8 (GCP)](https://cloud.google.com/compute/docs/general-purpose-machines#e2-standard) spot instances from Google Cloud, each processing at a rate of 10 frames per second using the YOLOv5 model, at an hourly cost of $0.11 per instance. Deploying Bacalhau on both instances, we processed an hour’s worth of 4K video (recorded at 60FPS) within 3 hours at a total cost of $1.
+Cost Analysis Conclusion
+Bacalhau’s on-the-edge ML inference significantly boosts cost efficiency by optimizing bandwidth and reducing storage costs through selective cloud uploads. Local nodes ensure uninterrupted data processing during network disruptions. This not only represents a technological shift but also a cost-effective, reliable approach to data management, promoting trust and privacy. Exploring supporting hardware will further advance edge-based innovations as we transition from traditional cloud-centric methods.
+BACALHAU DEPLOYMENT
+Here’s the modified workflow:
+Modified workflow
+- Bacalhau Agent Installation:
+Every local node connected to a camera now hosts a Bacalhau Agent.- The ML Inference, previously cloud-based, now operates at these local nodes.
+- Through Bacalhau’s control plane (not illustrated), each compute node is directed to oversee the video storage location. Each agent is tasked with executing the ML inference on-site.
+- Selective Cloud Upload: Only significant events pinpointed by ML Inference get uploaded.
+- Event-based Persistence: Only relevant events are sent to the cloud. Optionally, non-significant events might be stored off-site, on much cheaper storage.
+bacalhau docker run --target=all \
+--input file:///video_dir:/videos \
+docker.io/bacalhauproject/yolov5-7.0:v1.0
 bacalhau serve \
---node-type compute \
---ipfs-connect $IPFS_CONNECT \
---private-internal-ipfs=false \
---labels "storeid=1,region=EU,country=FR,city=Paris"
---allow-listed-local-paths "/node/data"
---peer envNote the addition of labels, which allow us to target specific nodes when we run our jobs. Here we add a store identifier, a region, a country and a city so that we can target queries in our warehouse to any of these labels. In reality, we may add more metadata here to provide even more flexibility in precisely targeting stores by one or more of these labels.For this example, we’ll use nodes with the following labels:Node (ID)RegionCountryCity1EUFRAustralia2NorthAmericaCAAustralia3EUDEUnited States of America4NorthAmericaUSCanadaBy strategically applying labels, you can direct jobs to:All stores, regardless of location.A single store within a specific region.All stores within a particular region.A single store within a given country.All stores across a specific country.A particular set of stores identified by their IDs.The–allow-listed-local-pathoption is used to mount a specified directory on each node, providing a way for the system’s users to feed local data directly into computations happening on that node. By using-i src=file:/storedata,dst=/inputs/storedata, any job processed on that node can access the data in/storedatathrough the path/inputs/storedata.Step 3 - Running a query across the networkBefore we can query our data, we need to know what shape it has, so we want to run a query against the transaction data on one of the compute nodes (it doesn’t matter which). As we know that each compute node has access to transaction data at/node/data/transactions.csvwe can query for that using DuckDB. If the data was made available in a form that DuckDB does not understand, we can use any other tool that works with docker, or webassembly, or even implement our own pluggable executor to support specific use-cases.We’ll need to set an environment variable to point to our Bacalhau cluster, in this case by specifyingBACALHAU_CLIENT_API_HOSTas this will remove the need to provide a command line flag to the Bacalhau program on each invocation. As each command we run will also need to access the transactions database, we’ll also store that in an environment variable to reduce the amount of typing necessary.export BACALHAU_API_HOST="34.155.152.133"
-export TRXN_DATA_INPUT="src=file:/node/data/transactions.csv,dst=/inputs/trxn.csv"To find the shape of our transaction data, we can run the following command to query the database and print the results to the terminal.bacalhau \
-docker run \
--f -i $TRXN_DATA_INPUT \
-expanso/duckdb-ddw:0.0.1 \
-"DESCRIBE TABLE '/inputs/trxn.csv';"Heredocker runis telling Bacalhau to run a docker container, -f tells it to log output to the terminal, -i sets up the input data,expanso/duckdb-ddw:0.0.1is the docker container to run, and the final section is the query we want to run against the data. In this case, after a short delay, we should see the following output.Outputcolumn_name,column_type,null,key,default,extra
-Invoice,VARCHAR,YES,,,
-StockCode,VARCHAR,YES,,,
-Description,VARCHAR,YES,,,
-Quantity,BIGINT,YES,,,
-InvoiceDate,VARCHAR,YES,,,
-Price,DOUBLE,YES,,,
-"Customer ID",BIGINT,YES,,,
-Country,VARCHAR,YES,,,Step 4 - Getting the resultsSo far, we’ve only run queries that show output to the terminal using the -f flag. In practice, we’ll be running queries with more output, and potentially across multiple nodes. In this case we’ll want to publish the results, so that anything the compute task writes to the /outputs folder is made available to you in the terminal as a file (or files). To do this, we use the -p flag to specify a publisher.As we want to store our output in S3 (or any S3-compatible storage), we have made sure that each of the compute nodes has credentials that allow it to connect to S3. Details on these credential requirements are available in the Bacalhau documentation. In our case, we want to store the output in an S3 bucket called “bacalhau-usecase-distributed-data-warehouse”. To avoid having to type this for each command, we’ll store the full publisher URL in an environment variable, showing we want to also include the job id, and the execution id in the output’s prefix.export PUBLISHER=s3://bacalhau-usecase-distributed-data-warehouse/{jobID}/{executionID}We can now use specify-p $PUBLISHERin our docker run commands to have the output written to that location.Step 5 - Working with the dataNow that we’re all set up, we can query our data. For instance, we can use the selector flags (-s) to target specific nodes. For instance, to find the total of all transactions in the Paris store, we can run:bacalhau \
-docker run \
--s city=Paris \
--f -i $TRXN_DATA_INPUT \
-expanso/duckdb-ddw:0.0.1 \
-"SELECT ROUND(SUM(Price),2) as Total FROM '/inputs/trxn.csv';"This displays the output below:Total
-1620674.31At this point, we might want to get more data, perhaps a list of all the countries who buy products from our European stores. This time, we want the output to be stored in S3, and so we also specify-p $PUBLISHERso that if we write to/outputsthen the data will be put into our bucket.We now need to write out data to a specific location, and so we will do that with the following command. Note that we need to specify–target=allas we expect it to run on more than one compute node. Without this it will pick only a single node in that region.bacalhau \
-docker run \
--s region=EU \
---target=all \
--p $PUBLISHER \
--i $TRXN_DATA_INPUT \
-expanso/duckdb-ddw:0.0.1 \
-"COPY
-(SELECT DISTINCT(Country) as Country FROM '/inputs/trxn.csv' ORDER BY(Country))
-TO '/outputs/results.csv' (HEADER, DELIMITER ',');"This time, we see different output as Bacalhau shows us a job ID (in this case, 073ab816-9b9e-4dfa-9e90-6c4498aa1de6) and then shows progress as the job is happening. Once complete it tells us how we can get the details of the job, but runningbacalhau describe 073ab816-9b9e-4dfa-9e90-6c4498aa1de6. Doing this shows lots of output, but the following cut-down snippet shows information on where the query was run, and where the outputs are stored.State:
-  CreateTime: "2023-10-17T12:28:03.88046717Z"
-  Executions:
-  - ComputeReference: e-7c942a16-420d-4736-809c-1d6676e13a1c
-    CreateTime: "2023-10-17T12:28:03.902519479Z"
-    JobID: 073ab816-9b9e-4dfa-9e90-6c4498aa1de6
-    NodeId: QmfKmkipkbAQu3ddChL4sLdjjcqifWQzURCin2QKUzovex
-    PublishedResults:
-      S3:
-Bucket: bacalhau-usecase-distributed-data-warehouse           Key:073ab816-9b9e-4dfa-9e90-6c4498aa1de6/e-7c942a16-420d-4736-809c-1d6676e13a1c/
-      StorageSource: s3
-    ...
-    State: Completed
-    UpdateTime: "2023-10-17T12:28:07.510247793Z"
-    Version: 3
-  - ComputeReference: e-7e346e49-d659-4188-ae04-cf5c28fd963b
-    CreateTime: "2023-10-17T12:28:03.907178486Z"
-    JobID: 073ab816-9b9e-4dfa-9e90-6c4498aa1de6
-    NodeId: QmeD1rESiDtdVTDgekXAmDDqgN9ZdUHGGuMAC77krBGqSv
-    PublishedResults:
-      S3:
-Bucket: bacalhau-usecase-distributed-data-warehouse
-Key:073ab816-9b9e-4dfa-9e90-6c4498aa1de6/e-7e346e49-d659-4188-ae04-cf5c28fd963b/
-      StorageSource: s3
-    ... 
-    State: Completed
-    UpdateTime: "2023-10-17T12:28:07.890888772Z"
-    Version: 3Here we can see the two executions performed on EU nodes, with the bucket and key containing the outputs from our execution. Using the standard Bacalhau structure for outputs, we know that we will find CSV files in our bucket at073ab816-9b9e-4dfa-9e90-6c4498aa1de6/e-7c942a16-420d-4736-809c-1d6676e13a1c/outputs/results.csvands3://bacalhau-usecase-distributed-data-warehouse/073ab816-9b9e-4dfa-9e90-6c4498aa1de6/e-7e346e49-d659-4188-ae04-cf5c28fd963b/outputs/results.csv. To access this data requires that the user have AWS credentials, a tool to download the data, and a way to merge all of the results into one. Rather than burden the user with this work, we can wrap our command line invocations with something less complex.Step 6 - Simplifying the interfaceThe previous sections of this tutorial have shown how to use, and specify, various Bacalhau features using the Bacalhau command line interface (CLI). While the interface is flexible and allows you to configure work in any way you wish, it does involve a lot of typing that might be overwhelming in an interactive scenario such as this.Fortunately, Bacalhau provides an API, used by the command line interface, which means anything you can do in the CLI, you can do via its API. This provides even more flexibility in presentation, making it possible to build specialized interfaces for different use-cases. As an example of how you can use the Python SDK to build a specialized interface, you can take a look at the Distributed Data Warehouse Client which allows you to store commonly keyed information in a configuration file. This program of <200 lines of code let’s us move away from querying all regional stores like this rather lengthy command.$ bacalhau \
-docker run \
--s region=EU \
---target=all \
--p $PUBLISHER \
--i $TRXN_DATA_INPUT \
-expanso/duckdb-ddw:0.0.1 \
-"COPY
-(SELECT DISTINCT(Country) as Country FROM '/inputs/trxn.csv' ORDER BY(Country))
-TO '/outputs/results.csv' (HEADER, DELIMITER ',');"We are able to move to querying like the following and get merged results written locally, ready for opening in a spreadsheet or further processing. So quite neat and way simpler.$ poetry run ddw -a -s region=EU "SELECT DISTINCT(Country) as Country FROM '/inputs/transactions.csv' ORDER
-BY(Country)"
-Submitted job: d802752f-e0b1-417a-8b98-55381ce4f7fb
-Output written to: output-d802752f.csvNote: Only the first line is the input by us, the rest is the response from the system itself.After checking you have the dependencies described in the repository you can install this client to try it out withgit clonecd examples/distributed-datawarehouse
-poetry installWhilst this vastly reduces the complexity of the interface, not to mention the amount of typing, it is really just a starting point, beyond which it is possible to imagine a more complete user interface that allows you to recall previous queries and see results in different formats.ConclusionBacalhau’s distributed computing approach enables retailers to address the limitations of centralized data processing. By adopting Bacalhau, retail chains can fully utilize their geographically dispersed data, gaining real-time insights, improving security, and achieving cost savings.We hope this tutorial has demonstrated how to leverage Bacalhau’s features effectively. We’ve seen how to use labels and selectors to target specific nodes or node groups globally. We also covered how easy it is to switch from built-in storage to S3-compatible options by changing the publisher. Lastly, by utilizing Bacalhau’s robust API and the Python SDK, we can enhance user experiences with straightforward tools where interactivity is essential.Feeling inspired to get started?For more information, read moreUse Casesor visit ourDocumentation.
-For an in-depth exploration, visit ourGetting Started Tutorial.Install FreeContact UsStay up to date and sign up to our blog:Visit BlogThe Compute Over Data PlatformCompanyHomeWhat We ValueWho We AreNewsroomContact UsCareersResourcesDocumentationFAQBlogSupportSocialLinkedInYouTubeSlackX ExpansoX BacalhauGitHub© Expanso Inc. All Rights Reserved 2023Privacy PolicyTrademarksTerms & ConditionsPrivacy PolicyTrademarksTerms & Conditions
+--node-type requester,compute \
+--job-selection-data-locality anywhere \
+--allow-listed-local-paths '/video_dir/**' \ --job-selection-accept-networked \
+Job:
+APIVersion: V1beta2
+Spec:
+EngineSpec:
+Params:
+Entrypoint: null
+EnvironmentVariables: []
+Image: docker.io/bacalhauproject/yolov5-7.0:v1.0 WorkingDirectory: ""
+Type: docker
+Inputs:
+- Name: /video_dir
+Path: /videos
+StorageSource: localDirectory
+SourcePath: /video_dir
+Outputs:
+- Name: outputs
+Path: /outputs
+Then to run this command, you can execute:
+cat job.yaml | bacalhau create
+BENEFITS
+Minimized Latency & Bandwidth Use: Local inference facilitates real-time detection. Uploading only key footage significantly reduces bandwidth use.
+Cost-Efficient Storage: Only storing 'significant' footage sidesteps the costs associated with transient cloud storage.
+Network Outage Resilience: During internet outages, local nodes can still process the data, ensuring continuous surveillance and reducing data processing backlog.
+Curbed Data Transfer Costs: You're billed only for the data that matters, making this a cost-effective approach.
+Streamlined Regulatory Compliance: Local data processing means Personal Identifiable Information (PII) can be excluded before cloud uploads, aligning with data protection mandates.
+Enhanced Consumer Trust: Keeping data local during inference ensures that only the essential data is transferred, leaving sensitive and irrelevant data untouched. This promotes trust as customers are assured that their private information remains in situ and only necessary data points are moved for further processing.
+Having explored the advantages of shifting ML inference to the edge with Bacalhau, a natural follow-up inquiry arises: what about the hardware? As we transition from cloud-based solutions, it’s crucial to understand the hardware implications and how they support this edge-based revolution.
+Implementation example: Inference on video with YOLOv5
+Having explored the fundamental concepts and strategic advantages, we now transition from theory to practice. This section will provide you with a step-by-step walkthrough of the implementation process, starting from hardware provisioning and software installation to running ML inference with Bacalhau. Whether you’re a seasoned developer or a beginner in edge computing, this practical guide is designed to help you navigate the process with ease.
+Loading Videos onto Compute Nodes for Inference
+Collect the video files earmarked for inference and distribute them across your compute nodes, placing at least 1 video into the /videos directory. For a dynamic use case, consider using distinct videos on each node. Remember, this procedure emulates real-time video capture from a camera. The choice of videos, however, remains at your discretion.
+You can find the sample videos we’ll use for this demo [here](https://orange-elderly-carp-967.mypinata.cloud/ipfs/QmSw1vJGmYZu2KeNr9nrEFCWARFq6EJHbscXFHNuEhDf4i/). There are a total of 12 videos. We will place 6 videos on one compute node and 6 videos on another. We’ll harness the power of [YOLOv5](https://github.com/ultralytics/yolov5) as our preferred inference model:
+YOLOv5, the fifth iteration of the revolutionary "You Only Look Once" object detection model, is designed to deliver high-speed, high-accuracy results in real-time.
+Source: https://docs.ultralytics.com/yolov5/
+While YOLOv5 is our model of choice for this exercise, Bacalhau’s modular architecture ensures flexibility. This means you can easily substitute another model that aligns more closely with your objectives. Bacalhau is crafted to be adaptable, positioning you with a foundational template to streamline subsequent deployments tailored to your use cases.
+💡 For this guide we will use 2 compute instances, but feel free to use as many as you’d like.
+Code implementation.
+Step 1 - Provisioning hardware
+Before we embark on our journey, let’s ensure we have the right tools:
+- Control Plane Node: Your central command center. Through this, you’ll orchestrate tasks across the Bacalhau cluster.
+- Recommended Requirements:
+- Number of Instances: 1
+- Disk: 25-100GB
+- CPU: 4-8vCPU
+- Memory: 8-16GB
+- Tip: You could even use the device you’re on right now, provided it’s not a mobile device.
+- Recommended Requirements:
+- Compute Node(s): Think of these as your workers. They’ll be doing the heavy lifting on behalf of the control plane.
+- Recommended Requirements:
+- Number of Instances: 1-N
+- For our use case it will be best to have at least 3
+- Disk: 32-500GB
+- CPU: 1-32vCPU
+- Memory: 8-64GB
+- GPU/TPU: 1 (Optional for performance of ML Inference)
+- Number of Instances: 1-N
+- Recommended Requirements:
+Note: Ensure the Control Plane can communicate with these nodes. [Tailscale](https://tailscale.com/) offers a handy solution for this.
+Hardware check done? Let’s proceed to software installation
+Step 2 - Install Bacalhau
+With the hardware set, it’s Bacalhau time. While there’s an in-depth [installation guide](https://www.notion.so/b0999175a527496b8fe4399835e85a16?pvs=21), here’s the essence:
+- Access each node (ssh, putty, caress its keyboard)
+- Issue the installation command:
+curl -sL | bash
+That’s it for installation. Simple, right?
+Step 3 - Configure control plane instance
+export BACALHAU_NODE_IPFS_SWARMADDRESSES=/ip4/127.0.0.1/tcp/55561/p2p/QmSX2UunnZ4ethswdzLjCD6VpHwrfrTSLHS3MVQKf1DUNe
+export BACALHAU_NODE_CLIENTAPI_HOST=0.0.0.0
+export BACALHAU_NODE_CLIENTAPI_PORT=1234
+export BACALHAU_NODE_LIBP2P_PEERCONNECT=/ip4/100.99.22.51/tcp/1235/p2p/QmYKJnwBJDn77RUrXw3cVj8oAtYQLuHncTybkpS94aC8i1
+To interact with this network:
+- Locally: Export the commands as provided.
+- Remotely: Adjust accordingly, e.g:
+export BACALHAU_NODE_CLIENTAPI_HOST=
+Step 4 - Configure compute instances
+bacalhau serve —node-type=compute --allow-listed-local-paths=/videos --peer=
+- —node-type=compute instructs Bacalhau to run as a compute node
+- –allow-listed-local-paths=/videos allows the node to access the contents of /videos when executing workloads
+- –peer=<multiaddress_of_requester_node> instructs the compute node to connect to the requester node we setup in the previous step. As an example, borrowing from the previous step, this would be –peer=/ip4/100.99.22.51/tcp/1235 but you will need to provide a value here specific to your deployment.
+Step 5 - Running inference on videos with YOLOv5
+bacalhau docker run --target=all \
+--input file:///video_dir:/videos \
+docker.io/bacalhauproject/yolov5-7.0:v1.0
+Diving deep into the command, here’s a comprehensive breakdown of each component:
+- bacalhau docker run –target=all: This orders Bacalhau to execute a Docker job, targeting all nodes the Control Plane has established a connection with.
+- –input file:///video_dir:/videos: This synchronizes the compute node’s URI value to the container’s /video path.
+- Refresher: We earmarked this directory in our earlier segment on “Configure Compute Instances”.
+Yolov5 Arguments:
+Inside the Dockerfile, we pass a set of default arguments to the YOLOv5 detection script, you can view the Dockerfile we are using at this [link](https://github.com/bacalhau-project/examples/blob/main/model-inference/object-detection-yolo5/Dockerfile). As an example, if you would prefer to use the XL model from YOLO you can modify the above command as shown below, overriding the default model used in the Dockerfile:
+bacalhau docker run --target=all \
+--input file:///video_dir:/videos \
+--input https://github.com/ultralytics/yolov5/releases/download/v6.2/yolov5x.pt:/model \
+docker.io/bacalhauproject/yolov5-7.0:v1.1 \
+--env=WEIGHTS_PATH=/model/yolov5x.pt \
+Once this command is executed, each compute node will start processing its local videos.
+Step 6 - Interpreting the results
+Upon issuing the above command your Bacalhau network will begin processing the ML Inference Job. You will be presented with a terminal prompt like the below (although your JobID will be different):
+Job successfully submitted. Job ID: 4b1422ff-7fc3-4518-8925-c2e5d4902a04
+Checking job status... (Enter Ctrl+C to exit at any time, your job will continue running):
+Communicating with the network ................ done ✅ 0.2s
+Creating job for submission ................ 3.2s
+Your prompt will stay active until the job finishes. The completion time varies based on the video size relative to the resources of your compute nodes.
+After your job is done, fetch the inference results using the bacalhau get command. Remember to replace it with your unique jobID. The command seamlessly fetches results from all nodes, organizing them into individual directories for each compute node that took part in the ML inference.
+$ bacalhau get --raw 4b1422ff-7fc3-4518-8925-c2e5d4902a04
+Fetching results of job '4b1422ff-7fc3-4518-8925-c2e5d4902a04'...
+19:26:06.521 | INF pkg/downloader/download.go:76 > Downloading 2 results to: /Users/bacalhau/data.
+Results for job '4b1422ff-7fc3-4518-8925-c2e5d4902a04' have been written to...
+/Users/bacalhau/data/job-4b1422ff
+Here’s a glimpse of the downloaded job’s structure:
+![](https://expanso.io/wp-content/plugins/elementor/assets/images/placeholder.png)
+Our Bacalhau deployment for this task utilized 2 compute nodes, resulting in two distinct directories for each node’s outputs. These directories are labeled with a Content Identifier (CID) – a unique hash of their content. To view the ML Inference results showcased in this example, visit this [link](https://orange-elderly-carp-967.mypinata.cloud/ipfs/QmNZozjpvKtAZmFpQD6yavVuw4nBXqknydnHwdHZJ9sHZj/).
+Step 7- Wrapping up our hands-On dive
+Congratulations on successfully navigating the intricacies of Bacalhau to execute ML Inference using YOLOv5! Here’s a snapshot of your journey:
+- Hardware Provisioning: You set the stage with the Control Plane Node and Compute Node(s), ensuring that they were suitably equipped and communicative.
+- Software Installation: You geared up the hardware with Bacalhau, bringing it to life and priming it for the tasks ahead.
+- Configuration: A meticulous orchestration saw the Control Plane and Compute Nodes being configured, intertwined, and readied for the main event.
+- Data Preparation: Through a thoughtful selection and placement of videos, you simulated real-world data scenarios, bringing a touch of realism to the exercise.
+- ML Inference: You unleashed the power of YOLOv5 on the Bacalhau network, showcasing the platform’s versatility and capability.
+Result Interpretation: Finally, you took the reins back, analyzing and understanding the outcomes of your hard work.
+Conclusion
+Data dominates today’s digital world, but the real challenge is managing the flood of data from everywhere, especially the edge. The old centralized ways just don’t cut it anymore – they’re inefficient, costly, and risky.
+We’re seeing a big shift: from cloud-based to edge-based processing. This move is about dealing with data right where it’s created. It’s faster, safer, and meets regulations more easily. Bacalhau is a game-changer in using edge computing to its full potential by spreading out machine learning tasks. This not only saves money but also speeds things up and boosts reliability.
+As we all need faster insights from our data, merging edge computing with machine learning is not just smart; it’s essential. Our goal is to clear up the confusion around this tech and help organizations move forward confidently. After all, it’s not just about gathering data—it’s about making the right decisions with it, right where it happens.
+Feeling inspired to get started?
+[Use Cases](/use-cases/)or visit our
+[Documentation](https://docs.bacalhau.org/). For an in-depth exploration, visit our
+[Getting Started Tutorial](https://docs.bacalhau.org/getting-started/installation).

@@ -1,368 +1,791 @@
-URL: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+Source: kubernetes_io
+URL: https://kubernetes.io/docs/concepts/services-networking/service/
 
-DocumentationKubernetes BlogTrainingPartnersCommunityCase StudiesVersionsRelease Informationv1.31v1.30v1.29v1.28v1.27English中文 (Chinese)Français (French)Deutsch (German)Bahasa Indonesia (Indonesian)日本語 (Japanese)한국어 (Korean)Español (Spanish)DocumentationAvailable Documentation VersionsGetting startedLearning environmentProduction environmentContainer RuntimesInstalling Kubernetes with deployment toolsBootstrapping clusters with kubeadmInstalling kubeadmTroubleshooting kubeadmCreating a cluster with kubeadmCustomizing components with the kubeadm APIOptions for Highly Available TopologyCreating Highly Available Clusters with kubeadmSet up a High Availability etcd Cluster with kubeadmConfiguring each kubelet in your cluster using kubeadmDual-stack support with kubeadmTurnkey Cloud SolutionsBest practicesConsiderations for large clustersRunning in multiple zonesValidate node setupEnforcing Pod Security StandardsPKI certificates and requirementsConceptsOverviewKubernetes ComponentsObjects In KubernetesKubernetes Object ManagementObject Names and IDsLabels and SelectorsNamespacesAnnotationsField SelectorsFinalizersOwners and DependentsRecommended LabelsThe Kubernetes APICluster ArchitectureNodesCommunication between Nodes and the Control PlaneControllersLeasesCloud Controller ManagerAbout cgroup v2Container Runtime Interface (CRI)Garbage CollectionMixed Version ProxyContainersImagesContainer EnvironmentRuntime ClassContainer Lifecycle HooksWorkloadsPodsPod LifecycleInit ContainersSidecar ContainersEphemeral ContainersDisruptionsPod Quality of Service ClassesUser NamespacesDownward APIWorkload ManagementDeploymentsReplicaSetStatefulSetsDaemonSetJobsAutomatic Cleanup for Finished JobsCronJobReplicationControllerAutoscaling WorkloadsManaging WorkloadsServices, Load Balancing, and NetworkingServiceIngressIngress ControllersGateway APIEndpointSlicesNetwork PoliciesDNS for Services and PodsIPv4/IPv6 dual-stackTopology Aware RoutingNetworking on WindowsService ClusterIP allocationService Internal Traffic PolicyStorageVolumesPersistent VolumesProjected VolumesEphemeral VolumesStorage ClassesVolume Attributes ClassesDynamic Volume ProvisioningVolume SnapshotsVolume Snapshot ClassesCSI Volume CloningStorage CapacityNode-specific Volume LimitsVolume Health MonitoringWindows StorageConfigurationConfiguration Best PracticesConfigMapsSecretsLiveness, Readiness, and Startup ProbesResource Management for Pods and ContainersOrganizing Cluster Access Using kubeconfig FilesResource Management for Windows nodesSecurityCloud Native SecurityPod Security StandardsPod Security AdmissionService AccountsPod Security PoliciesSecurity For Windows NodesControlling Access to the Kubernetes APIRole Based Access Control Good PracticesGood practices for Kubernetes SecretsMulti-tenancyHardening Guide - Authentication MechanismsKubernetes API Server Bypass RisksLinux kernel security constraints for Pods and containersSecurity ChecklistPoliciesLimit RangesResource QuotasProcess ID Limits And ReservationsNode Resource ManagersScheduling, Preemption and EvictionKubernetes SchedulerAssigning Pods to NodesPod OverheadPod Scheduling ReadinessPod Topology Spread ConstraintsTaints and TolerationsScheduling FrameworkDynamic Resource AllocationScheduler Performance TuningResource Bin PackingPod Priority and PreemptionNode-pressure EvictionAPI-initiated EvictionCluster AdministrationNode ShutdownsCertificatesCluster NetworkingLogging ArchitectureMetrics For Kubernetes System ComponentsMetrics for Kubernetes Object StatesSystem LogsTraces For Kubernetes System ComponentsProxies in KubernetesAPI Priority and FairnessCluster AutoscalingInstalling AddonsCoordinated Leader ElectionWindows in KubernetesWindows containers in KubernetesGuide for Running Windows Containers in KubernetesExtending KubernetesCompute, Storage, and Networking ExtensionsNetwork PluginsDevice PluginsExtending the Kubernetes APICustom ResourcesKubernetes API Aggregation LayerOperator patternTasksInstall ToolsInstall and Set Up kubectl on LinuxInstall and Set Up kubectl on macOSInstall and Set Up kubectl on WindowsAdminister a ClusterAdministration with kubeadmCertificate Management with kubeadmConfiguring a cgroup driverReconfiguring a kubeadm clusterUpgrading kubeadm clustersUpgrading Linux nodesUpgrading Windows nodesChanging The Kubernetes Package RepositoryMigrating from dockershimChanging the Container Runtime on a Node from Docker Engine to containerdMigrate Docker Engine nodes from dockershim to cri-dockerdFind Out What Container Runtime is Used on a NodeTroubleshooting CNI plugin-related errorsCheck whether dockershim removal affects youMigrating telemetry and security agents from dockershimGenerate Certificates ManuallyManage Memory, CPU, and API ResourcesConfigure Default Memory Requests and Limits for a NamespaceConfigure Default CPU Requests and Limits for a NamespaceConfigure Minimum and Maximum Memory Constraints for a NamespaceConfigure Minimum and Maximum CPU Constraints for a NamespaceConfigure Memory and CPU Quotas for a NamespaceConfigure a Pod Quota for a NamespaceInstall a Network Policy ProviderUse Antrea for NetworkPolicyUse Calico for NetworkPolicyUse Cilium for NetworkPolicyUse Kube-router for NetworkPolicyRomana for NetworkPolicyWeave Net for NetworkPolicyAccess Clusters Using the Kubernetes APIAdvertise Extended Resources for a NodeAutoscale the DNS Service in a ClusterChange the Access Mode of a PersistentVolume to ReadWriteOncePodChange the default StorageClassSwitching from Polling to CRI Event-based Updates to Container StatusChange the Reclaim Policy of a PersistentVolumeCloud Controller Manager AdministrationConfigure a kubelet image credential providerConfigure Quotas for API ObjectsControl CPU Management Policies on the NodeControl Topology Management Policies on a nodeCustomizing DNS ServiceDebugging DNS ResolutionDeclare Network PolicyDeveloping Cloud Controller ManagerEnable Or Disable A Kubernetes APIEncrypting Confidential Data at RestDecrypt Confidential Data that is Already Encrypted at RestGuaranteed Scheduling For Critical Add-On PodsIP Masquerade Agent User GuideLimit Storage ConsumptionMigrate Replicated Control Plane To Use Cloud Controller ManagerNamespaces WalkthroughOperating etcd clusters for KubernetesReserve Compute Resources for System DaemonsRunning Kubernetes Node Components as a Non-root UserSafely Drain a NodeSecuring a ClusterSet Kubelet Parameters Via A Configuration FileShare a Cluster with NamespacesUpgrade A ClusterUse Cascading Deletion in a ClusterUsing a KMS provider for data encryptionUsing CoreDNS for Service DiscoveryUsing NodeLocal DNSCache in Kubernetes ClustersUsing sysctls in a Kubernetes ClusterUtilizing the NUMA-aware Memory ManagerVerify Signed Kubernetes ArtifactsConfigure Pods and ContainersAssign Memory Resources to Containers and PodsAssign CPU Resources to Containers and PodsConfigure GMSA for Windows Pods and containersResize CPU and Memory Resources assigned to ContainersConfigure RunAsUserName for Windows pods and containersCreate a Windows HostProcess PodConfigure Quality of Service for PodsAssign Extended Resources to a ContainerConfigure a Pod to Use a Volume for StorageConfigure a Pod to Use a PersistentVolume for StorageConfigure a Pod to Use a Projected Volume for StorageConfigure a Security Context for a Pod or ContainerConfigure Service Accounts for PodsPull an Image from a Private RegistryConfigure Liveness, Readiness and Startup ProbesAssign Pods to NodesAssign Pods to Nodes using Node AffinityConfigure Pod InitializationAttach Handlers to Container Lifecycle EventsConfigure a Pod to Use a ConfigMapShare Process Namespace between Containers in a PodUse a User Namespace With a PodUse an Image Volume With a PodCreate static PodsTranslate a Docker Compose File to Kubernetes ResourcesEnforce Pod Security Standards by Configuring the Built-in Admission ControllerEnforce Pod Security Standards with Namespace LabelsMigrate from PodSecurityPolicy to the Built-In PodSecurity Admission ControllerMonitoring, Logging, and DebuggingTroubleshooting ApplicationsDebug PodsDebug ServicesDebug a StatefulSetDetermine the Reason for Pod FailureDebug Init ContainersDebug Running PodsGet a Shell to a Running ContainerTroubleshooting ClustersTroubleshooting kubectlResource metrics pipelineTools for Monitoring ResourcesMonitor Node HealthDebugging Kubernetes nodes with crictlAuditingDebugging Kubernetes Nodes With KubectlDeveloping and debugging services locally using telepresenceWindows debugging tipsManage Kubernetes ObjectsDeclarative Management of Kubernetes Objects Using Configuration FilesDeclarative Management of Kubernetes Objects Using KustomizeManaging Kubernetes Objects Using Imperative CommandsImperative Management of Kubernetes Objects Using Configuration FilesUpdate API Objects in Place Using kubectl patchMigrate Kubernetes Objects Using Storage Version MigrationManaging SecretsManaging Secrets using kubectlManaging Secrets using Configuration FileManaging Secrets using KustomizeInject Data Into ApplicationsDefine a Command and Arguments for a ContainerDefine Dependent Environment VariablesDefine Environment Variables for a ContainerExpose Pod Information to Containers Through Environment VariablesExpose Pod Information to Containers Through FilesDistribute Credentials Securely Using SecretsRun ApplicationsRun a Stateless Application Using a DeploymentRun a Single-Instance Stateful ApplicationRun a Replicated Stateful ApplicationScale a StatefulSetDelete a StatefulSetForce Delete StatefulSet PodsHorizontal Pod AutoscalingHorizontalPodAutoscaler WalkthroughSpecifying a Disruption Budget for your ApplicationAccessing the Kubernetes API from a PodRun JobsRunning Automated Tasks with a CronJobCoarse Parallel Processing Using a Work QueueFine Parallel Processing Using a Work QueueIndexed Job for Parallel Processing with Static Work AssignmentJob with Pod-to-Pod CommunicationParallel Processing using ExpansionsHandling retriable and non-retriable pod failures with Pod failure policyAccess Applications in a ClusterDeploy and Access the Kubernetes DashboardAccessing ClustersConfigure Access to Multiple ClustersUse Port Forwarding to Access Applications in a ClusterUse a Service to Access an Application in a ClusterConnect a Frontend to a Backend Using ServicesCreate an External Load BalancerList All Container Images Running in a ClusterSet up Ingress on Minikube with the NGINX Ingress ControllerCommunicate Between Containers in the Same Pod Using a Shared VolumeConfigure DNS for a ClusterAccess Services Running on ClustersExtend KubernetesConfigure the Aggregation LayerUse Custom ResourcesExtend the Kubernetes API with CustomResourceDefinitionsVersions in CustomResourceDefinitionsSet up an Extension API ServerConfigure Multiple SchedulersUse an HTTP Proxy to Access the Kubernetes APIUse a SOCKS5 Proxy to Access the Kubernetes APISet up Konnectivity serviceTLSConfigure Certificate Rotation for the KubeletManage TLS Certificates in a ClusterManual Rotation of CA CertificatesManage Cluster DaemonsPerform a Rolling Update on a DaemonSetPerform a Rollback on a DaemonSetRunning Pods on Only Some NodesNetworkingAdding entries to Pod /etc/hosts with HostAliasesExtend Service IP RangesValidate IPv4/IPv6 dual-stackExtend kubectl with pluginsManage HugePagesSchedule GPUsTutorialsHello MinikubeLearn Kubernetes BasicsCreate a ClusterUsing Minikube to Create a ClusterDeploy an AppUsing kubectl to Create a DeploymentExplore Your AppViewing Pods and NodesExpose Your App PubliclyUsing a Service to Expose Your AppScale Your AppRunning Multiple Instances of Your AppUpdate Your AppPerforming a Rolling UpdateConfigurationExample: Configuring a Java MicroserviceExternalizing config using MicroProfile, ConfigMaps and SecretsUpdating Configuration via a ConfigMapConfiguring Redis using a ConfigMapAdopting Sidecar ContainersSecurityApply Pod Security Standards at the Cluster LevelApply Pod Security Standards at the Namespace LevelRestrict a Container's Access to Resources with AppArmorRestrict a Container's Syscalls with seccompStateless ApplicationsExposing an External IP Address to Access an Application in a ClusterExample: Deploying PHP Guestbook application with RedisStateful ApplicationsStatefulSet BasicsExample: Deploying WordPress and MySQL with Persistent VolumesExample: Deploying Cassandra with a StatefulSetRunning ZooKeeper, A Distributed System CoordinatorServicesConnecting Applications with ServicesUsing Source IPExplore Termination Behavior for Pods And Their EndpointsReferenceGlossaryAPI OverviewKubernetes API ConceptsServer-Side ApplyClient LibrariesCommon Expression Language in KubernetesKubernetes Deprecation PolicyDeprecated API Migration GuideKubernetes API health endpointsAPI Access ControlAuthenticatingAuthenticating with Bootstrap TokensAuthorizationUsing RBAC AuthorizationUsing Node AuthorizationWebhook ModeUsing ABAC AuthorizationAdmission ControllersDynamic Admission ControlManaging Service AccountsCertificates and Certificate Signing RequestsMapping PodSecurityPolicies to Pod Security StandardsKubelet authentication/authorizationTLS bootstrappingValidating Admission PolicyWell-Known Labels, Annotations and TaintsAudit AnnotationsKubernetes APIWorkload ResourcesPodBindingPodTemplateReplicationControllerReplicaSetDeploymentStatefulSetControllerRevisionDaemonSetJobCronJobHorizontalPodAutoscalerHorizontalPodAutoscalerPriorityClassPodSchedulingContext v1alpha3ResourceClaim v1alpha3ResourceClaimTemplate v1alpha3ResourceSlice v1alpha3Service ResourcesServiceEndpointsEndpointSliceIngressIngressClassConfig and Storage ResourcesConfigMapSecretCSIDriverCSINodeCSIStorageCapacityPersistentVolumeClaimPersistentVolumeStorageClassStorageVersionMigration v1alpha1VolumeVolumeAttachmentVolumeAttributesClass v1beta1Authentication ResourcesServiceAccountTokenRequestTokenReviewCertificateSigningRequestClusterTrustBundle v1alpha1SelfSubjectReviewAuthorization ResourcesLocalSubjectAccessReviewSelfSubjectAccessReviewSelfSubjectRulesReviewSubjectAccessReviewClusterRoleClusterRoleBindingRoleRoleBindingPolicy ResourcesFlowSchemaLimitRangeResourceQuotaNetworkPolicyPodDisruptionBudgetPriorityLevelConfigurationValidatingAdmissionPolicyValidatingAdmissionPolicyBindingExtend ResourcesCustomResourceDefinitionDeviceClass v1alpha3MutatingWebhookConfigurationValidatingWebhookConfigurationCluster ResourcesAPIServiceComponentStatusEventIPAddress v1beta1LeaseLeaseCandidate v1alpha1NamespaceNodeRuntimeClassServiceCIDR v1beta1Common DefinitionsDeleteOptionsLabelSelectorListMetaLocalObjectReferenceNodeSelectorRequirementObjectFieldSelectorObjectMetaObjectReferencePatchQuantityResourceFieldSelectorStatusTypedLocalObjectReferenceCommon ParametersInstrumentationService Level Indicator MetricsCRI Pod & Container MetricsNode metrics dataKubernetes Metrics ReferenceKubernetes Issues and SecurityKubernetes Issue TrackerKubernetes Security and Disclosure InformationCVE feedNode Reference InformationKubelet Checkpoint APILinux Kernel Version RequirementsArticles on dockershim Removal and on Using CRI-compatible RuntimesNode Labels Populated By The KubeletKubelet Configuration Directory MergingKubelet Device Manager API VersionsNode StatusNetworking ReferenceProtocols for ServicesPorts and ProtocolsVirtual IPs and Service ProxiesSetup toolsKubeadmkubeadm initkubeadm joinkubeadm upgradekubeadm configkubeadm resetkubeadm tokenkubeadm versionkubeadm alphakubeadm certskubeadm init phasekubeadm join phasekubeadm kubeconfigkubeadm reset phasekubeadm upgrade phaseImplementation detailsCommand line tool (kubectl)Introduction to kubectlkubectl Quick Referencekubectl referencekubectlkubectl annotatekubectl api-resourceskubectl api-versionskubectl applykubectl apply edit-last-appliedkubectl apply set-last-appliedkubectl apply view-last-appliedkubectl attachkubectl authkubectl auth can-ikubectl auth reconcilekubectl auth whoamikubectl autoscalekubectl certificatekubectl certificate approvekubectl certificate denykubectl cluster-infokubectl cluster-info dumpkubectl completionkubectl configkubectl config current-contextkubectl config delete-clusterkubectl config delete-contextkubectl config delete-userkubectl config get-clusterskubectl config get-contextskubectl config get-userskubectl config rename-contextkubectl config setkubectl config set-clusterkubectl config set-contextkubectl config set-credentialskubectl config unsetkubectl config use-contextkubectl config viewkubectl cordonkubectl cpkubectl createkubectl create clusterrolekubectl create clusterrolebindingkubectl create configmapkubectl create cronjobkubectl create deploymentkubectl create ingresskubectl create jobkubectl create namespacekubectl create poddisruptionbudgetkubectl create priorityclasskubectl create quotakubectl create rolekubectl create rolebindingkubectl create secretkubectl create secret docker-registrykubectl create secret generickubectl create secret tlskubectl create servicekubectl create service clusteripkubectl create service externalnamekubectl create service loadbalancerkubectl create service nodeportkubectl create serviceaccountkubectl create tokenkubectl debugkubectl deletekubectl describekubectl diffkubectl drainkubectl editkubectl eventskubectl execkubectl explainkubectl exposekubectl getkubectl kustomizekubectl labelkubectl logskubectl optionskubectl patchkubectl pluginkubectl plugin listkubectl port-forwardkubectl proxykubectl replacekubectl rolloutkubectl rollout historykubectl rollout pausekubectl rollout restartkubectl rollout resumekubectl rollout statuskubectl rollout undokubectl runkubectl scalekubectl setkubectl set envkubectl set imagekubectl set resourceskubectl set selectorkubectl set serviceaccountkubectl set subjectkubectl taintkubectl topkubectl top nodekubectl top podkubectl uncordonkubectl versionkubectl waitkubectl CommandskubectlJSONPath Supportkubectl for Docker Userskubectl Usage ConventionsComponent toolsFeature GatesFeature Gates (removed)kubeletkube-apiserverkube-controller-managerkube-proxykube-schedulerDebug clusterFlow controlConfiguration APIsClient Authentication (v1)Client Authentication (v1beta1)Event Rate Limit Configuration (v1alpha1)Image Policy API (v1alpha1)kube-apiserver Admission (v1)kube-apiserver Audit Configuration (v1)kube-apiserver Configuration (v1)kube-apiserver Configuration (v1alpha1)kube-apiserver Configuration (v1beta1)kube-controller-manager Configuration (v1alpha1)kube-proxy Configuration (v1alpha1)kube-scheduler Configuration (v1)kubeadm Configuration (v1beta3)kubeadm Configuration (v1beta4)kubeconfig (v1)Kubelet Configuration (v1)Kubelet Configuration (v1alpha1)Kubelet Configuration (v1beta1)Kubelet CredentialProvider (v1)WebhookAdmission Configuration (v1)External APIsKubernetes Custom Metrics (v1beta2)Kubernetes External Metrics (v1beta1)Kubernetes Metrics (v1beta1)SchedulingScheduler ConfigurationScheduling PoliciesOther ToolsMapping from dockercli to crictlContributeContribute to Kubernetes DocumentationSuggesting content improvementsContributing new contentOpening a pull requestDocumenting for a releaseBlogs and case studiesReviewing changesReviewing pull requestsFor approvers and reviewersLocalizing Kubernetes documentationParticipating in SIG DocsRoles and responsibilitiesIssue WranglersPR wranglersDocumentation style overviewContent guideStyle guideDiagram guideWriting a new topicPage content typesContent organizationCustom Hugo ShortcodesUpdating Reference DocumentationQuickstartContributing to the Upstream Kubernetes CodeGenerating Reference Documentation for the Kubernetes APIGenerating Reference Documentation for kubectl CommandsGenerating Reference Documentation for MetricsGenerating Reference Pages for Kubernetes Components and ToolsAdvanced contributingViewing Site AnalyticsDocs smoke test pageKubernetes DocumentationConceptsWorkloadsWorkload ManagementDeploymentsDeploymentsA Deployment manages a set of Pods to run an application workload, usually one that doesn't maintain state.ADeploymentprovides declarative updates forPodsandReplicaSets.You describe adesired statein a Deployment, and the DeploymentControllerchanges the actual state to the desired state at a controlled rate. You can define Deployments to create new ReplicaSets, or to remove existing Deployments and adopt all their resources with new Deployments.Note:Do not manage ReplicaSets owned by a Deployment. Consider opening an issue in the main Kubernetes repository if your use case is not covered below.Use CaseThe following are typical use cases for Deployments:Create a Deployment to rollout a ReplicaSet. The ReplicaSet creates Pods in the background. Check the status of the rollout to see if it succeeds or not.Declare the new state of the Podsby updating the PodTemplateSpec of the Deployment. A new ReplicaSet is created and the Deployment manages moving the Pods from the old ReplicaSet to the new one at a controlled rate. Each new ReplicaSet updates the revision of the Deployment.Rollback to an earlier Deployment revisionif the current state of the Deployment is not stable. Each rollback updates the revision of the Deployment.Scale up the Deployment to facilitate more load.Pause the rollout of a Deploymentto apply multiple fixes to its PodTemplateSpec and then resume it to start a new rollout.Use the status of the Deploymentas an indicator that a rollout has stuck.Clean up older ReplicaSetsthat you don't need anymore.Creating a DeploymentThe following is an example of a Deployment. It creates a ReplicaSet to bring up threenginxPods:controllers/nginx-deployment.yamlapiVersion:apps/v1kind:Deploymentmetadata:name:nginx-deploymentlabels:app:nginxspec:replicas:3selector:matchLabels:app:nginxtemplate:metadata:labels:app:nginxspec:containers:-name:nginximage:nginx:1.14.2ports:-containerPort:80In this example:A Deployment namednginx-deploymentis created, indicated by the.metadata.namefield. This name will become the basis for the ReplicaSets
-and Pods which are created later. SeeWriting a Deployment Specfor more details.The Deployment creates a ReplicaSet that creates three replicated Pods, indicated by the.spec.replicasfield.The.spec.selectorfield defines how the created ReplicaSet finds which Pods to manage.
-In this case, you select a label that is defined in the Pod template (app: nginx).
-However, more sophisticated selection rules are possible,
-as long as the Pod template itself satisfies the rule.Note:The.spec.selector.matchLabelsfield is a map of {key,value} pairs.
-A single {key,value} in thematchLabelsmap is equivalent to an element ofmatchExpressions,
-whosekeyfield is "key", theoperatoris "In", and thevaluesarray contains only "value".
-All of the requirements, from bothmatchLabelsandmatchExpressions, must be satisfied in order to match.Thetemplatefield contains the following sub-fields:The Pods are labeledapp: nginxusing the.metadata.labelsfield.The Pod template's specification, or.template.specfield, indicates that
-the Pods run one container,nginx, which runs thenginxDocker Hubimage at version 1.14.2.Create one container and name itnginxusing the.spec.template.spec.containers[0].namefield.Before you begin, make sure your Kubernetes cluster is up and running.
-Follow the steps given below to create the above Deployment:Create the Deployment by running the following command:kubectl apply -f https://k8s.io/examples/controllers/nginx-deployment.yamlRunkubectl get deploymentsto check if the Deployment was created.If the Deployment is still being created, the output is similar to the following:NAME               READY   UP-TO-DATE   AVAILABLE   AGE
-nginx-deployment   0/3     0            0           1sWhen you inspect the Deployments in your cluster, the following fields are displayed:NAMElists the names of the Deployments in the namespace.READYdisplays how many replicas of the application are available to your users. It follows the pattern ready/desired.UP-TO-DATEdisplays the number of replicas that have been updated to achieve the desired state.AVAILABLEdisplays how many replicas of the application are available to your users.AGEdisplays the amount of time that the application has been running.Notice how the number of desired replicas is 3 according to.spec.replicasfield.To see the Deployment rollout status, runkubectl rollout status deployment/nginx-deployment.The output is similar to:Waiting for rollout to finish: 2 out of 3 new replicas have been updated...
-deployment "nginx-deployment" successfully rolled outRun thekubectl get deploymentsagain a few seconds later.
-The output is similar to this:NAME               READY   UP-TO-DATE   AVAILABLE   AGE
-nginx-deployment   3/3     3            3           18sNotice that the Deployment has created all three replicas, and all replicas are up-to-date (they contain the latest Pod template) and available.To see the ReplicaSet (rs) created by the Deployment, runkubectl get rs. The output is similar to this:NAME                          DESIRED   CURRENT   READY   AGE
-nginx-deployment-75675f5897   3         3         3       18sReplicaSet output shows the following fields:NAMElists the names of the ReplicaSets in the namespace.DESIREDdisplays the desired number ofreplicasof the application, which you define when you create the Deployment. This is thedesired state.CURRENTdisplays how many replicas are currently running.READYdisplays how many replicas of the application are available to your users.AGEdisplays the amount of time that the application has been running.Notice that the name of the ReplicaSet is always formatted as[DEPLOYMENT-NAME]-[HASH]. This name will become the basis for the Pods
-which are created.TheHASHstring is the same as thepod-template-hashlabel on the ReplicaSet.To see the labels automatically generated for each Pod, runkubectl get pods --show-labels.
-The output is similar to:NAME                                READY     STATUS    RESTARTS   AGE       LABELS
-nginx-deployment-75675f5897-7ci7o   1/1       Running   0          18s       app=nginx,pod-template-hash=75675f5897
-nginx-deployment-75675f5897-kzszj   1/1       Running   0          18s       app=nginx,pod-template-hash=75675f5897
-nginx-deployment-75675f5897-qqcnn   1/1       Running   0          18s       app=nginx,pod-template-hash=75675f5897The created ReplicaSet ensures that there are threenginxPods.Note:You must specify an appropriate selector and Pod template labels in a Deployment
-(in this case,app: nginx).Do not overlap labels or selectors with other controllers (including other Deployments and StatefulSets). Kubernetes doesn't stop you from overlapping, and if multiple controllers have overlapping selectors those controllers might conflict and behave unexpectedly.Pod-template-hash labelCaution:Do not change this label.Thepod-template-hashlabel is added by the Deployment controller to every ReplicaSet that a Deployment creates or adopts.This label ensures that child ReplicaSets of a Deployment do not overlap. It is generated by hashing thePodTemplateof the ReplicaSet and using the resulting hash as the label value that is added to the ReplicaSet selector, Pod template labels,
-and in any existing Pods that the ReplicaSet might have.Updating a DeploymentNote:A Deployment's rollout is triggered if and only if the Deployment's Pod template (that is,.spec.template)
-is changed, for example if the labels or container images of the template are updated. Other updates, such as scaling the Deployment, do not trigger a rollout.Follow the steps given below to update your Deployment:Let's update the nginx Pods to use thenginx:1.16.1image instead of thenginx:1.14.2image.kubectlsetimage deployment.v1.apps/nginx-deploymentnginx=nginx:1.16.1or use the following command:kubectlsetimage deployment/nginx-deploymentnginx=nginx:1.16.1wheredeployment/nginx-deploymentindicates the Deployment,nginxindicates the Container the update will take place andnginx:1.16.1indicates the new image and its tag.The output is similar to:deployment.apps/nginx-deployment image updatedAlternatively, you caneditthe Deployment and change.spec.template.spec.containers[0].imagefromnginx:1.14.2tonginx:1.16.1:kubectl edit deployment/nginx-deploymentThe output is similar to:deployment.apps/nginx-deployment editedTo see the rollout status, run:kubectl rollout status deployment/nginx-deploymentThe output is similar to this:Waiting for rollout to finish: 2 out of 3 new replicas have been updated...ordeployment "nginx-deployment" successfully rolled outGet more details on your updated Deployment:After the rollout succeeds, you can view the Deployment by runningkubectl get deployments.
-The output is similar to this:NAME               READY   UP-TO-DATE   AVAILABLE   AGEnginx-deployment   3/3     3            3           36sRunkubectl get rsto see that the Deployment updated the Pods by creating a new ReplicaSet and scaling it
-up to 3 replicas, as well as scaling down the old ReplicaSet to 0 replicas.kubectl get rsThe output is similar to this:NAME                          DESIRED   CURRENT   READY   AGE
-nginx-deployment-1564180365   3         3         3       6s
-nginx-deployment-2035384211   0         0         0       36sRunningget podsshould now show only the new Pods:kubectl get podsThe output is similar to this:NAME                                READY     STATUS    RESTARTS   AGE
-nginx-deployment-1564180365-khku8   1/1       Running   0          14s
-nginx-deployment-1564180365-nacti   1/1       Running   0          14s
-nginx-deployment-1564180365-z9gth   1/1       Running   0          14sNext time you want to update these Pods, you only need to update the Deployment's Pod template again.Deployment ensures that only a certain number of Pods are down while they are being updated. By default,
-it ensures that at least 75% of the desired number of Pods are up (25% max unavailable).Deployment also ensures that only a certain number of Pods are created above the desired number of Pods.
-By default, it ensures that at most 125% of the desired number of Pods are up (25% max surge).For example, if you look at the above Deployment closely, you will see that it first creates a new Pod,
-then deletes an old Pod, and creates another new one. It does not kill old Pods until a sufficient number of
-new Pods have come up, and does not create new Pods until a sufficient number of old Pods have been killed.
-It makes sure that at least 3 Pods are available and that at max 4 Pods in total are available. In case of
-a Deployment with 4 replicas, the number of Pods would be between 3 and 5.Get details of your Deployment:kubectl describe deploymentsThe output is similar to this:Name:                   nginx-deployment
-Namespace:              default
-CreationTimestamp:      Thu, 30 Nov 2017 10:56:25 +0000
-Labels:                 app=nginx
-Annotations:            deployment.kubernetes.io/revision=2
-Selector:               app=nginx
-Replicas:               3 desired | 3 updated | 3 total | 3 available | 0 unavailable
-StrategyType:           RollingUpdate
-MinReadySeconds:        0
-RollingUpdateStrategy:  25% max unavailable, 25% max surge
-Pod Template:
-  Labels:  app=nginx
-   Containers:
-    nginx:
-      Image:        nginx:1.16.1
-      Port:         80/TCP
-      Environment:  <none>
-      Mounts:       <none>
-    Volumes:        <none>
-  Conditions:
-    Type           Status  Reason
-    ----           ------  ------
-    Available      True    MinimumReplicasAvailable
-    Progressing    True    NewReplicaSetAvailable
-  OldReplicaSets:  <none>
-  NewReplicaSet:   nginx-deployment-1564180365 (3/3 replicas created)
-  Events:
-    Type    Reason             Age   From                   Message
-    ----    ------             ----  ----                   -------
-    Normal  ScalingReplicaSet  2m    deployment-controller  Scaled up replica set nginx-deployment-2035384211 to 3
-    Normal  ScalingReplicaSet  24s   deployment-controller  Scaled up replica set nginx-deployment-1564180365 to 1
-    Normal  ScalingReplicaSet  22s   deployment-controller  Scaled down replica set nginx-deployment-2035384211 to 2
-    Normal  ScalingReplicaSet  22s   deployment-controller  Scaled up replica set nginx-deployment-1564180365 to 2
-    Normal  ScalingReplicaSet  19s   deployment-controller  Scaled down replica set nginx-deployment-2035384211 to 1
-    Normal  ScalingReplicaSet  19s   deployment-controller  Scaled up replica set nginx-deployment-1564180365 to 3
-    Normal  ScalingReplicaSet  14s   deployment-controller  Scaled down replica set nginx-deployment-2035384211 to 0Here you see that when you first created the Deployment, it created a ReplicaSet (nginx-deployment-2035384211)
-and scaled it up to 3 replicas directly. When you updated the Deployment, it created a new ReplicaSet
-(nginx-deployment-1564180365) and scaled it up to 1 and waited for it to come up. Then it scaled down the old ReplicaSet
-to 2 and scaled up the new ReplicaSet to 2 so that at least 3 Pods were available and at most 4 Pods were created at all times.
-It then continued scaling up and down the new and the old ReplicaSet, with the same rolling update strategy.
-Finally, you'll have 3 available replicas in the new ReplicaSet, and the old ReplicaSet is scaled down to 0.Note:Kubernetes doesn't count terminating Pods when calculating the number ofavailableReplicas, which must be betweenreplicas - maxUnavailableandreplicas + maxSurge. As a result, you might notice that there are more Pods than
-expected during a rollout, and that the total resources consumed by the Deployment is more thanreplicas + maxSurgeuntil theterminationGracePeriodSecondsof the terminating Pods expires.Rollover (aka multiple updates in-flight)Each time a new Deployment is observed by the Deployment controller, a ReplicaSet is created to bring up
-the desired Pods. If the Deployment is updated, the existing ReplicaSet that controls Pods whose labels
-match.spec.selectorbut whose template does not match.spec.templateare scaled down. Eventually, the new
-ReplicaSet is scaled to.spec.replicasand all old ReplicaSets is scaled to 0.If you update a Deployment while an existing rollout is in progress, the Deployment creates a new ReplicaSet
-as per the update and start scaling that up, and rolls over the ReplicaSet that it was scaling up previously
--- it will add it to its list of old ReplicaSets and start scaling it down.For example, suppose you create a Deployment to create 5 replicas ofnginx:1.14.2,
-but then update the Deployment to create 5 replicas ofnginx:1.16.1, when only 3
-replicas ofnginx:1.14.2had been created. In that case, the Deployment immediately starts
-killing the 3nginx:1.14.2Pods that it had created, and starts creatingnginx:1.16.1Pods. It does not wait for the 5 replicas ofnginx:1.14.2to be created
-before changing course.Label selector updatesIt is generally discouraged to make label selector updates and it is suggested to plan your selectors up front.
-In any case, if you need to perform a label selector update, exercise great caution and make sure you have grasped
-all of the implications.Note:In API versionapps/v1, a Deployment's label selector is immutable after it gets created.Selector additions require the Pod template labels in the Deployment spec to be updated with the new label too,
-otherwise a validation error is returned. This change is a non-overlapping one, meaning that the new selector does
-not select ReplicaSets and Pods created with the old selector, resulting in orphaning all old ReplicaSets and
-creating a new ReplicaSet.Selector updates changes the existing value in a selector key -- result in the same behavior as additions.Selector removals removes an existing key from the Deployment selector -- do not require any changes in the
-Pod template labels. Existing ReplicaSets are not orphaned, and a new ReplicaSet is not created, but note that the
-removed label still exists in any existing Pods and ReplicaSets.Rolling Back a DeploymentSometimes, you may want to rollback a Deployment; for example, when the Deployment is not stable, such as crash looping.
-By default, all of the Deployment's rollout history is kept in the system so that you can rollback anytime you want
-(you can change that by modifying revision history limit).Note:A Deployment's revision is created when a Deployment's rollout is triggered. This means that the
-new revision is created if and only if the Deployment's Pod template (.spec.template) is changed,
-for example if you update the labels or container images of the template. Other updates, such as scaling the Deployment,
-do not create a Deployment revision, so that you can facilitate simultaneous manual- or auto-scaling.
-This means that when you roll back to an earlier revision, only the Deployment's Pod template part is
-rolled back.Suppose that you made a typo while updating the Deployment, by putting the image name asnginx:1.161instead ofnginx:1.16.1:kubectlsetimage deployment/nginx-deploymentnginx=nginx:1.161The output is similar to this:deployment.apps/nginx-deployment image updatedThe rollout gets stuck. You can verify it by checking the rollout status:kubectl rollout status deployment/nginx-deploymentThe output is similar to this:Waiting for rollout to finish: 1 out of 3 new replicas have been updated...Press Ctrl-C to stop the above rollout status watch. For more information on stuck rollouts,read more here.You see that the number of old replicas (adding the replica count fromnginx-deployment-1564180365andnginx-deployment-2035384211) is 3, and the number of
-new replicas (fromnginx-deployment-3066724191) is 1.kubectl get rsThe output is similar to this:NAME                          DESIRED   CURRENT   READY   AGE
-nginx-deployment-1564180365   3         3         3       25s
-nginx-deployment-2035384211   0         0         0       36s
-nginx-deployment-3066724191   1         1         0       6sLooking at the Pods created, you see that 1 Pod created by new ReplicaSet is stuck in an image pull loop.kubectl get podsThe output is similar to this:NAME                                READY     STATUS             RESTARTS   AGE
-nginx-deployment-1564180365-70iae   1/1       Running            0          25s
-nginx-deployment-1564180365-jbqqo   1/1       Running            0          25s
-nginx-deployment-1564180365-hysrc   1/1       Running            0          25s
-nginx-deployment-3066724191-08mng   0/1       ImagePullBackOff   0          6sNote:The Deployment controller stops the bad rollout automatically, and stops scaling up the new ReplicaSet. This depends on the rollingUpdate parameters (maxUnavailablespecifically) that you have specified. Kubernetes by default sets the value to 25%.Get the description of the Deployment:kubectl describe deploymentThe output is similar to this:Name:           nginx-deployment
-Namespace:      default
-CreationTimestamp:  Tue, 15 Mar 2016 14:48:04 -0700
-Labels:         app=nginx
-Selector:       app=nginx
-Replicas:       3 desired | 1 updated | 4 total | 3 available | 1 unavailable
-StrategyType:       RollingUpdate
-MinReadySeconds:    0
-RollingUpdateStrategy:  25% max unavailable, 25% max surge
-Pod Template:
-  Labels:  app=nginx
-  Containers:
-   nginx:
-    Image:        nginx:1.161
-    Port:         80/TCP
-    Host Port:    0/TCP
-    Environment:  <none>
-    Mounts:       <none>
-  Volumes:        <none>
-Conditions:
-  Type           Status  Reason
-  ----           ------  ------
-  Available      True    MinimumReplicasAvailable
-  Progressing    True    ReplicaSetUpdated
-OldReplicaSets:     nginx-deployment-1564180365 (3/3 replicas created)
-NewReplicaSet:      nginx-deployment-3066724191 (1/1 replicas created)
-Events:
-  FirstSeen LastSeen    Count   From                    SubObjectPath   Type        Reason              Message
-  --------- --------    -----   ----                    -------------   --------    ------              -------
-  1m        1m          1       {deployment-controller }                Normal      ScalingReplicaSet   Scaled up replica set nginx-deployment-2035384211 to 3
-  22s       22s         1       {deployment-controller }                Normal      ScalingReplicaSet   Scaled up replica set nginx-deployment-1564180365 to 1
-  22s       22s         1       {deployment-controller }                Normal      ScalingReplicaSet   Scaled down replica set nginx-deployment-2035384211 to 2
-  22s       22s         1       {deployment-controller }                Normal      ScalingReplicaSet   Scaled up replica set nginx-deployment-1564180365 to 2
-  21s       21s         1       {deployment-controller }                Normal      ScalingReplicaSet   Scaled down replica set nginx-deployment-2035384211 to 1
-  21s       21s         1       {deployment-controller }                Normal      ScalingReplicaSet   Scaled up replica set nginx-deployment-1564180365 to 3
-  13s       13s         1       {deployment-controller }                Normal      ScalingReplicaSet   Scaled down replica set nginx-deployment-2035384211 to 0
-  13s       13s         1       {deployment-controller }                Normal      ScalingReplicaSet   Scaled up replica set nginx-deployment-3066724191 to 1To fix this, you need to rollback to a previous revision of Deployment that is stable.Checking Rollout History of a DeploymentFollow the steps given below to check the rollout history:First, check the revisions of this Deployment:kubectl rollouthistorydeployment/nginx-deploymentThe output is similar to this:deployments "nginx-deployment"
-REVISION    CHANGE-CAUSE
-1           kubectl apply --filename=https://k8s.io/examples/controllers/nginx-deployment.yaml
-2           kubectl set image deployment/nginx-deployment nginx=nginx:1.16.1
-3           kubectl set image deployment/nginx-deployment nginx=nginx:1.161CHANGE-CAUSEis copied from the Deployment annotationkubernetes.io/change-causeto its revisions upon creation. You can specify theCHANGE-CAUSEmessage by:Annotating the Deployment withkubectl annotate deployment/nginx-deployment kubernetes.io/change-cause="image updated to 1.16.1"Manually editing the manifest of the resource.To see the details of each revision, run:kubectl rollouthistorydeployment/nginx-deployment --revision=2The output is similar to this:deployments "nginx-deployment" revision 2
-  Labels:       app=nginx
-          pod-template-hash=1159050644
-  Annotations:  kubernetes.io/change-cause=kubectl set image deployment/nginx-deployment nginx=nginx:1.16.1
-  Containers:
-   nginx:
-    Image:      nginx:1.16.1
-    Port:       80/TCP
-     QoS Tier:
-        cpu:      BestEffort
-        memory:   BestEffort
-    Environment Variables:      <none>
-  No volumes.Rolling Back to a Previous RevisionFollow the steps given below to rollback the Deployment from the current version to the previous version, which is version 2.Now you've decided to undo the current rollout and rollback to the previous revision:kubectl rollout undo deployment/nginx-deploymentThe output is similar to this:deployment.apps/nginx-deployment rolled backAlternatively, you can rollback to a specific revision by specifying it with--to-revision:kubectl rollout undo deployment/nginx-deployment --to-revision=2The output is similar to this:deployment.apps/nginx-deployment rolled backFor more details about rollout related commands, readkubectl rollout.The Deployment is now rolled back to a previous stable revision. As you can see, aDeploymentRollbackevent
-for rolling back to revision 2 is generated from Deployment controller.Check if the rollback was successful and the Deployment is running as expected, run:kubectl get deployment nginx-deploymentThe output is similar to this:NAME               READY   UP-TO-DATE   AVAILABLE   AGE
-nginx-deployment   3/3     3            3           30mGet the description of the Deployment:kubectl describe deployment nginx-deploymentThe output is similar to this:Name:                   nginx-deployment
-Namespace:              default
-CreationTimestamp:      Sun, 02 Sep 2018 18:17:55 -0500
-Labels:                 app=nginx
-Annotations:            deployment.kubernetes.io/revision=4
-                        kubernetes.io/change-cause=kubectl set image deployment/nginx-deployment nginx=nginx:1.16.1
-Selector:               app=nginx
-Replicas:               3 desired | 3 updated | 3 total | 3 available | 0 unavailable
-StrategyType:           RollingUpdate
-MinReadySeconds:        0
-RollingUpdateStrategy:  25% max unavailable, 25% max surge
-Pod Template:
-  Labels:  app=nginx
-  Containers:
-   nginx:
-    Image:        nginx:1.16.1
-    Port:         80/TCP
-    Host Port:    0/TCP
-    Environment:  <none>
-    Mounts:       <none>
-  Volumes:        <none>
-Conditions:
-  Type           Status  Reason
-  ----           ------  ------
-  Available      True    MinimumReplicasAvailable
-  Progressing    True    NewReplicaSetAvailable
-OldReplicaSets:  <none>
-NewReplicaSet:   nginx-deployment-c4747d96c (3/3 replicas created)
-Events:
-  Type    Reason              Age   From                   Message
-  ----    ------              ----  ----                   -------
-  Normal  ScalingReplicaSet   12m   deployment-controller  Scaled up replica set nginx-deployment-75675f5897 to 3
-  Normal  ScalingReplicaSet   11m   deployment-controller  Scaled up replica set nginx-deployment-c4747d96c to 1
-  Normal  ScalingReplicaSet   11m   deployment-controller  Scaled down replica set nginx-deployment-75675f5897 to 2
-  Normal  ScalingReplicaSet   11m   deployment-controller  Scaled up replica set nginx-deployment-c4747d96c to 2
-  Normal  ScalingReplicaSet   11m   deployment-controller  Scaled down replica set nginx-deployment-75675f5897 to 1
-  Normal  ScalingReplicaSet   11m   deployment-controller  Scaled up replica set nginx-deployment-c4747d96c to 3
-  Normal  ScalingReplicaSet   11m   deployment-controller  Scaled down replica set nginx-deployment-75675f5897 to 0
-  Normal  ScalingReplicaSet   11m   deployment-controller  Scaled up replica set nginx-deployment-595696685f to 1
-  Normal  DeploymentRollback  15s   deployment-controller  Rolled back deployment "nginx-deployment" to revision 2
-  Normal  ScalingReplicaSet   15s   deployment-controller  Scaled down replica set nginx-deployment-595696685f to 0Scaling a DeploymentYou can scale a Deployment by using the following command:kubectl scale deployment/nginx-deployment --replicas=10The output is similar to this:deployment.apps/nginx-deployment scaledAssuminghorizontal Pod autoscalingis enabled
-in your cluster, you can set up an autoscaler for your Deployment and choose the minimum and maximum number of
-Pods you want to run based on the CPU utilization of your existing Pods.kubectl autoscale deployment/nginx-deployment --min=10--max=15--cpu-percent=80The output is similar to this:deployment.apps/nginx-deployment scaledProportional scalingRollingUpdate Deployments support running multiple versions of an application at the same time. When you
-or an autoscaler scales a RollingUpdate Deployment that is in the middle of a rollout (either in progress
-or paused), the Deployment controller balances the additional replicas in the existing active
-ReplicaSets (ReplicaSets with Pods) in order to mitigate risk. This is calledproportional scaling.For example, you are running a Deployment with 10 replicas,maxSurge=3, andmaxUnavailable=2.Ensure that the 10 replicas in your Deployment are running.kubectl get deployThe output is similar to this:NAME                 DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-nginx-deployment     10        10        10           10          50sYou update to a new image which happens to be unresolvable from inside the cluster.kubectlsetimage deployment/nginx-deploymentnginx=nginx:sometagThe output is similar to this:deployment.apps/nginx-deployment image updatedThe image update starts a new rollout with ReplicaSet nginx-deployment-1989198191, but it's blocked due to themaxUnavailablerequirement that you mentioned above. Check out the rollout status:kubectl get rsThe output is similar to this:NAME                          DESIRED   CURRENT   READY     AGE
-nginx-deployment-1989198191   5         5         0         9s
-nginx-deployment-618515232    8         8         8         1mThen a new scaling request for the Deployment comes along. The autoscaler increments the Deployment replicas
-to 15. The Deployment controller needs to decide where to add these new 5 replicas. If you weren't using
-proportional scaling, all 5 of them would be added in the new ReplicaSet. With proportional scaling, you
-spread the additional replicas across all ReplicaSets. Bigger proportions go to the ReplicaSets with the
-most replicas and lower proportions go to ReplicaSets with less replicas. Any leftovers are added to the
-ReplicaSet with the most replicas. ReplicaSets with zero replicas are not scaled up.In our example above, 3 replicas are added to the old ReplicaSet and 2 replicas are added to the
-new ReplicaSet. The rollout process should eventually move all replicas to the new ReplicaSet, assuming
-the new replicas become healthy. To confirm this, run:kubectl get deployThe output is similar to this:NAME                 DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-nginx-deployment     15        18        7            8           7mThe rollout status confirms how the replicas were added to each ReplicaSet.kubectl get rsThe output is similar to this:NAME                          DESIRED   CURRENT   READY     AGE
-nginx-deployment-1989198191   7         7         0         7m
-nginx-deployment-618515232    11        11        11        7mPausing and Resuming a rollout of a DeploymentWhen you update a Deployment, or plan to, you can pause rollouts
-for that Deployment before you trigger one or more updates. When
-you're ready to apply those changes, you resume rollouts for the
-Deployment. This approach allows you to
-apply multiple fixes in between pausing and resuming without triggering unnecessary rollouts.For example, with a Deployment that was created:Get the Deployment details:kubectl get deployThe output is similar to this:NAME      DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-nginx     3         3         3            3           1mGet the rollout status:kubectl get rsThe output is similar to this:NAME               DESIRED   CURRENT   READY     AGE
-nginx-2142116321   3         3         3         1mPause by running the following command:kubectl rollout pause deployment/nginx-deploymentThe output is similar to this:deployment.apps/nginx-deployment pausedThen update the image of the Deployment:kubectlsetimage deployment/nginx-deploymentnginx=nginx:1.16.1The output is similar to this:deployment.apps/nginx-deployment image updatedNotice that no new rollout started:kubectl rollouthistorydeployment/nginx-deploymentThe output is similar to this:deployments "nginx"
-REVISION  CHANGE-CAUSE
-1   <none>Get the rollout status to verify that the existing ReplicaSet has not changed:kubectl get rsThe output is similar to this:NAME               DESIRED   CURRENT   READY     AGE
-nginx-2142116321   3         3         3         2mYou can make as many updates as you wish, for example, update the resources that will be used:kubectlsetresources deployment/nginx-deployment -c=nginx --limits=cpu=200m,memory=512MiThe output is similar to this:deployment.apps/nginx-deployment resource requirements updatedThe initial state of the Deployment prior to pausing its rollout will continue its function, but new updates to
-the Deployment will not have any effect as long as the Deployment rollout is paused.Eventually, resume the Deployment rollout and observe a new ReplicaSet coming up with all the new updates:kubectl rollout resume deployment/nginx-deploymentThe output is similar to this:deployment.apps/nginx-deployment resumedWatchthe status of the rollout until it's done.kubectl get rs --watchThe output is similar to this:NAME               DESIRED   CURRENT   READY     AGE
-nginx-2142116321   2         2         2         2m
-nginx-3926361531   2         2         0         6s
-nginx-3926361531   2         2         1         18s
-nginx-2142116321   1         2         2         2m
-nginx-2142116321   1         2         2         2m
-nginx-3926361531   3         2         1         18s
-nginx-3926361531   3         2         1         18s
-nginx-2142116321   1         1         1         2m
-nginx-3926361531   3         3         1         18s
-nginx-3926361531   3         3         2         19s
-nginx-2142116321   0         1         1         2m
-nginx-2142116321   0         1         1         2m
-nginx-2142116321   0         0         0         2m
-nginx-3926361531   3         3         3         20sGet the status of the latest rollout:kubectl get rsThe output is similar to this:NAME               DESIRED   CURRENT   READY     AGE
-nginx-2142116321   0         0         0         2m
-nginx-3926361531   3         3         3         28sNote:You cannot rollback a paused Deployment until you resume it.Deployment statusA Deployment enters various states during its lifecycle. It can beprogressingwhile
-rolling out a new ReplicaSet, it can becomplete, or it canfail to progress.Progressing DeploymentKubernetes marks a Deployment asprogressingwhen one of the following tasks is performed:The Deployment creates a new ReplicaSet.The Deployment is scaling up its newest ReplicaSet.The Deployment is scaling down its older ReplicaSet(s).New Pods become ready or available (ready for at leastMinReadySeconds).When the rollout becomes “progressing”, the Deployment controller adds a condition with the following
-attributes to the Deployment's.status.conditions:type: Progressingstatus: "True"reason: NewReplicaSetCreated|reason: FoundNewReplicaSet|reason: ReplicaSetUpdatedYou can monitor the progress for a Deployment by usingkubectl rollout status.Complete DeploymentKubernetes marks a Deployment ascompletewhen it has the following characteristics:All of the replicas associated with the Deployment have been updated to the latest version you've specified, meaning any
-updates you've requested have been completed.All of the replicas associated with the Deployment are available.No old replicas for the Deployment are running.When the rollout becomes “complete”, the Deployment controller sets a condition with the following
-attributes to the Deployment's.status.conditions:type: Progressingstatus: "True"reason: NewReplicaSetAvailableThisProgressingcondition will retain a status value of"True"until a new rollout
-is initiated. The condition holds even when availability of replicas changes (which
-does instead affect theAvailablecondition).You can check if a Deployment has completed by usingkubectl rollout status. If the rollout completed
-successfully,kubectl rollout statusreturns a zero exit code.kubectl rollout status deployment/nginx-deploymentThe output is similar to this:Waiting for rollout to finish: 2 of 3 updated replicas are available...
-deployment "nginx-deployment" successfully rolled outand the exit status fromkubectl rolloutis 0 (success):echo$?0Failed DeploymentYour Deployment may get stuck trying to deploy its newest ReplicaSet without ever completing. This can occur
-due to some of the following factors:Insufficient quotaReadiness probe failuresImage pull errorsInsufficient permissionsLimit rangesApplication runtime misconfigurationOne way you can detect this condition is to specify a deadline parameter in your Deployment spec:
-(.spec.progressDeadlineSeconds)..spec.progressDeadlineSecondsdenotes the
-number of seconds the Deployment controller waits before indicating (in the Deployment status) that the
-Deployment progress has stalled.The followingkubectlcommand sets the spec withprogressDeadlineSecondsto make the controller report
-lack of progress of a rollout for a Deployment after 10 minutes:kubectl patch deployment/nginx-deployment -p'{"spec":{"progressDeadlineSeconds":600}}'The output is similar to this:deployment.apps/nginx-deployment patchedOnce the deadline has been exceeded, the Deployment controller adds a DeploymentCondition with the following
-attributes to the Deployment's.status.conditions:type: Progressingstatus: "False"reason: ProgressDeadlineExceededThis condition can also fail early and is then set to status value of"False"due to reasons asReplicaSetCreateError.
-Also, the deadline is not taken into account anymore once the Deployment rollout completes.See theKubernetes API conventionsfor more information on status conditions.Note:Kubernetes takes no action on a stalled Deployment other than to report a status condition withreason: ProgressDeadlineExceeded. Higher level orchestrators can take advantage of it and act accordingly, for
-example, rollback the Deployment to its previous version.Note:If you pause a Deployment rollout, Kubernetes does not check progress against your specified deadline.
-You can safely pause a Deployment rollout in the middle of a rollout and resume without triggering
-the condition for exceeding the deadline.You may experience transient errors with your Deployments, either due to a low timeout that you have set or
-due to any other kind of error that can be treated as transient. For example, let's suppose you have
-insufficient quota. If you describe the Deployment you will notice the following section:kubectl describe deployment nginx-deploymentThe output is similar to this:<...>
-Conditions:
-  Type            Status  Reason
-  ----            ------  ------
-  Available       True    MinimumReplicasAvailable
-  Progressing     True    ReplicaSetUpdated
-  ReplicaFailure  True    FailedCreate
-<...>If you runkubectl get deployment nginx-deployment -o yaml, the Deployment status is similar to this:status:
-  availableReplicas: 2
-  conditions:
-  - lastTransitionTime: 2016-10-04T12:25:39Z
-    lastUpdateTime: 2016-10-04T12:25:39Z
-    message: Replica set "nginx-deployment-4262182780" is progressing.
-    reason: ReplicaSetUpdated
-    status: "True"
-    type: Progressing
-  - lastTransitionTime: 2016-10-04T12:25:42Z
-    lastUpdateTime: 2016-10-04T12:25:42Z
-    message: Deployment has minimum availability.
-    reason: MinimumReplicasAvailable
-    status: "True"
-    type: Available
-  - lastTransitionTime: 2016-10-04T12:25:39Z
-    lastUpdateTime: 2016-10-04T12:25:39Z
-    message: 'Error creating: pods "nginx-deployment-4262182780-" is forbidden: exceeded quota:
-      object-counts, requested: pods=1, used: pods=3, limited: pods=2'
-    reason: FailedCreate
-    status: "True"
-    type: ReplicaFailure
-  observedGeneration: 3
-  replicas: 2
-  unavailableReplicas: 2Eventually, once the Deployment progress deadline is exceeded, Kubernetes updates the status and the
-reason for the Progressing condition:Conditions:
-  Type            Status  Reason
-  ----            ------  ------
-  Available       True    MinimumReplicasAvailable
-  Progressing     False   ProgressDeadlineExceeded
-  ReplicaFailure  True    FailedCreateYou can address an issue of insufficient quota by scaling down your Deployment, by scaling down other
-controllers you may be running, or by increasing quota in your namespace. If you satisfy the quota
-conditions and the Deployment controller then completes the Deployment rollout, you'll see the
-Deployment's status update with a successful condition (status: "True"andreason: NewReplicaSetAvailable).Conditions:
-  Type          Status  Reason
-  ----          ------  ------
-  Available     True    MinimumReplicasAvailable
-  Progressing   True    NewReplicaSetAvailabletype: Availablewithstatus: "True"means that your Deployment has minimum availability. Minimum availability is dictated
-by the parameters specified in the deployment strategy.type: Progressingwithstatus: "True"means that your Deployment
-is either in the middle of a rollout and it is progressing or that it has successfully completed its progress and the minimum
-required new replicas are available (see the Reason of the condition for the particulars - in our casereason: NewReplicaSetAvailablemeans that the Deployment is complete).You can check if a Deployment has failed to progress by usingkubectl rollout status.kubectl rollout statusreturns a non-zero exit code if the Deployment has exceeded the progression deadline.kubectl rollout status deployment/nginx-deploymentThe output is similar to this:Waiting for rollout to finish: 2 out of 3 new replicas have been updated...
-error: deployment "nginx" exceeded its progress deadlineand the exit status fromkubectl rolloutis 1 (indicating an error):echo$?1Operating on a failed deploymentAll actions that apply to a complete Deployment also apply to a failed Deployment. You can scale it up/down, roll back
-to a previous revision, or even pause it if you need to apply multiple tweaks in the Deployment Pod template.Clean up PolicyYou can set.spec.revisionHistoryLimitfield in a Deployment to specify how many old ReplicaSets for
-this Deployment you want to retain. The rest will be garbage-collected in the background. By default,
-it is 10.Note:Explicitly setting this field to 0, will result in cleaning up all the history of your Deployment
-thus that Deployment will not be able to roll back.Canary DeploymentIf you want to roll out releases to a subset of users or servers using the Deployment, you
-can create multiple Deployments, one for each release, following the canary pattern described inmanaging resources.Writing a Deployment SpecAs with all other Kubernetes configs, a Deployment needs.apiVersion,.kind, and.metadatafields.
-For general information about working with config files, seedeploying applications,
-configuring containers, andusing kubectl to manage resourcesdocuments.When the control plane creates new Pods for a Deployment, the.metadata.nameof the
-Deployment is part of the basis for naming those Pods. The name of a Deployment must be a validDNS subdomainvalue, but this can produce unexpected results for the Pod hostnames. For best compatibility,
-the name should follow the more restrictive rules for aDNS label.A Deployment also needs a.specsection.Pod TemplateThe.spec.templateand.spec.selectorare the only required fields of the.spec.The.spec.templateis aPod template. It has exactly the same schema as aPod, except it is nested and does not have anapiVersionorkind.In addition to required fields for a Pod, a Pod template in a Deployment must specify appropriate
-labels and an appropriate restart policy. For labels, make sure not to overlap with other controllers. Seeselector.Only a.spec.template.spec.restartPolicyequal toAlwaysis
-allowed, which is the default if not specified.Replicas.spec.replicasis an optional field that specifies the number of desired Pods. It defaults to 1.Should you manually scale a Deployment, example viakubectl scale deployment deployment --replicas=X, and then you update that Deployment based on a manifest
-(for example: by runningkubectl apply -f deployment.yaml),
-then applying that manifest overwrites the manual scaling that you previously did.If aHorizontalPodAutoscaler(or any
-similar API for horizontal scaling) is managing scaling for a Deployment, don't set.spec.replicas.Instead, allow the Kubernetescontrol planeto manage the.spec.replicasfield automatically.Selector.spec.selectoris a required field that specifies alabel selectorfor the Pods targeted by this Deployment..spec.selectormust match.spec.template.metadata.labels, or it will be rejected by the API.In API versionapps/v1,.spec.selectorand.metadata.labelsdo not default to.spec.template.metadata.labelsif not set. So they must be set explicitly. Also note that.spec.selectoris immutable after creation of the Deployment inapps/v1.A Deployment may terminate Pods whose labels match the selector if their template is different
-from.spec.templateor if the total number of such Pods exceeds.spec.replicas. It brings up new
-Pods with.spec.templateif the number of Pods is less than the desired number.Note:You should not create other Pods whose labels match this selector, either directly, by creating
-another Deployment, or by creating another controller such as a ReplicaSet or a ReplicationController. If you
-do so, the first Deployment thinks that it created these other Pods. Kubernetes does not stop you from doing this.If you have multiple controllers that have overlapping selectors, the controllers will fight with each
-other and won't behave correctly.Strategy.spec.strategyspecifies the strategy used to replace old Pods by new ones..spec.strategy.typecan be "Recreate" or "RollingUpdate". "RollingUpdate" is
-the default value.Recreate DeploymentAll existing Pods are killed before new ones are created when.spec.strategy.type==Recreate.Note:This will only guarantee Pod termination previous to creation for upgrades. If you upgrade a Deployment, all Pods
-of the old revision will be terminated immediately. Successful removal is awaited before any Pod of the new
-revision is created. If you manually delete a Pod, the lifecycle is controlled by the ReplicaSet and the
-replacement will be created immediately (even if the old Pod is still in a Terminating state). If you need an
-"at most" guarantee for your Pods, you should consider using aStatefulSet.Rolling Update DeploymentThe Deployment updates Pods in a rolling update
-fashion when.spec.strategy.type==RollingUpdate. You can specifymaxUnavailableandmaxSurgeto control
-the rolling update process.Max Unavailable.spec.strategy.rollingUpdate.maxUnavailableis an optional field that specifies the maximum number
-of Pods that can be unavailable during the update process. The value can be an absolute number (for example, 5)
-or a percentage of desired Pods (for example, 10%). The absolute number is calculated from percentage by
-rounding down. The value cannot be 0 if.spec.strategy.rollingUpdate.maxSurgeis 0. The default value is 25%.For example, when this value is set to 30%, the old ReplicaSet can be scaled down to 70% of desired
-Pods immediately when the rolling update starts. Once new Pods are ready, old ReplicaSet can be scaled
-down further, followed by scaling up the new ReplicaSet, ensuring that the total number of Pods available
-at all times during the update is at least 70% of the desired Pods.Max Surge.spec.strategy.rollingUpdate.maxSurgeis an optional field that specifies the maximum number of Pods
-that can be created over the desired number of Pods. The value can be an absolute number (for example, 5) or a
-percentage of desired Pods (for example, 10%). The value cannot be 0 ifMaxUnavailableis 0. The absolute number
-is calculated from the percentage by rounding up. The default value is 25%.For example, when this value is set to 30%, the new ReplicaSet can be scaled up immediately when the
-rolling update starts, such that the total number of old and new Pods does not exceed 130% of desired
-Pods. Once old Pods have been killed, the new ReplicaSet can be scaled up further, ensuring that the
-total number of Pods running at any time during the update is at most 130% of desired Pods.Here are some Rolling Update Deployment examples that use themaxUnavailableandmaxSurge:Max UnavailableMax SurgeHybridapiVersion:apps/v1kind:Deploymentmetadata:name:nginx-deploymentlabels:app:nginxspec:replicas:3selector:matchLabels:app:nginxtemplate:metadata:labels:app:nginxspec:containers:-name:nginximage:nginx:1.14.2ports:-containerPort:80strategy:type:RollingUpdaterollingUpdate:maxUnavailable:1apiVersion:apps/v1kind:Deploymentmetadata:name:nginx-deploymentlabels:app:nginxspec:replicas:3selector:matchLabels:app:nginxtemplate:metadata:labels:app:nginxspec:containers:-name:nginximage:nginx:1.14.2ports:-containerPort:80strategy:type:RollingUpdaterollingUpdate:maxSurge:1apiVersion:apps/v1kind:Deploymentmetadata:name:nginx-deploymentlabels:app:nginxspec:replicas:3selector:matchLabels:app:nginxtemplate:metadata:labels:app:nginxspec:containers:-name:nginximage:nginx:1.14.2ports:-containerPort:80strategy:type:RollingUpdaterollingUpdate:maxSurge:1maxUnavailable:1Progress Deadline Seconds.spec.progressDeadlineSecondsis an optional field that specifies the number of seconds you want
-to wait for your Deployment to progress before the system reports back that the Deployment hasfailed progressing- surfaced as a condition withtype: Progressing,status: "False".
-andreason: ProgressDeadlineExceededin the status of the resource. The Deployment controller will keep
-retrying the Deployment. This defaults to 600. In the future, once automatic rollback will be implemented, the Deployment
-controller will roll back a Deployment as soon as it observes such a condition.If specified, this field needs to be greater than.spec.minReadySeconds.Min Ready Seconds.spec.minReadySecondsis an optional field that specifies the minimum number of seconds for which a newly
-created Pod should be ready without any of its containers crashing, for it to be considered available.
-This defaults to 0 (the Pod will be considered available as soon as it is ready). To learn more about when
-a Pod is considered ready, seeContainer Probes.Revision History LimitA Deployment's revision history is stored in the ReplicaSets it controls..spec.revisionHistoryLimitis an optional field that specifies the number of old ReplicaSets to retain
-to allow rollback. These old ReplicaSets consume resources inetcdand crowd the output ofkubectl get rs. The configuration of each Deployment revision is stored in its ReplicaSets; therefore, once an old ReplicaSet is deleted, you lose the ability to rollback to that revision of Deployment. By default, 10 old ReplicaSets will be kept, however its ideal value depends on the frequency and stability of new Deployments.More specifically, setting this field to zero means that all old ReplicaSets with 0 replicas will be cleaned up.
-In this case, a new Deployment rollout cannot be undone, since its revision history is cleaned up.Paused.spec.pausedis an optional boolean field for pausing and resuming a Deployment. The only difference between
-a paused Deployment and one that is not paused, is that any changes into the PodTemplateSpec of the paused
-Deployment will not trigger new rollouts as long as it is paused. A Deployment is not paused by default when
-it is created.What's nextLearn more aboutPods.Run a stateless application using a Deployment.Read theDeploymentto understand the Deployment API.Read aboutPodDisruptionBudgetand how
-you can use it to manage application availability during disruptions.Use kubectl tocreate a Deployment.FeedbackWas this page helpful?YesNoThanks for the feedback. If you have a specific, answerable question about how to use Kubernetes, ask it onStack Overflow.
-Open an issue in theGitHub Repositoryif you want toreport a problemorsuggest an improvement.Last modified July 08, 2024 at 10:46 AM PST:editing as per the reviews. (53dc63aec8)Deployment API referenceEdit this pageCreate child pageCreate documentation issuePrint entire sectionUse CaseCreating a DeploymentPod-template-hash labelUpdating a DeploymentRollover (aka multiple updates in-flight)Label selector updatesRolling Back a DeploymentChecking Rollout History of a DeploymentRolling Back to a Previous RevisionScaling a DeploymentProportional scalingPausing and Resuming a rollout of a DeploymentDeployment statusProgressing DeploymentComplete DeploymentFailed DeploymentOperating on a failed deploymentClean up PolicyCanary DeploymentWriting a Deployment SpecPod TemplateReplicasSelectorStrategyProgress Deadline SecondsMin Ready SecondsRevision History LimitPausedWhat's nextDocumentationBlogTrainingPartnersCommunityCase Studies© 2024 The Kubernetes Authors | Documentation Distributed underCC BY 4.0Copyright © 2024 The Linux Foundation ®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see ourTrademark Usage pageICP license: 京ICP备17074266号-3
+Service
+In Kubernetes, a Service is a method for exposing a network application that is running as one or more
+[Pods](/docs/concepts/workloads/pods/) in your cluster.
+A key aim of Services in Kubernetes is that you don't need to modify your existing application to use an unfamiliar service discovery mechanism. You can run code in Pods, whether this is a code designed for a cloud-native world, or an older app you've containerized. You use a Service to make that set of Pods available on the network so that clients can interact with it.
+If you use a [Deployment](/docs/concepts/workloads/controllers/deployment/) to run your app,
+that Deployment can create and destroy Pods dynamically. From one moment to the next,
+you don't know how many of those Pods are working and healthy; you might not even know
+what those healthy Pods are named.
+Kubernetes [Pods](/docs/concepts/workloads/pods/) are created and destroyed
+to match the desired state of your cluster. Pods are ephemeral resources (you should not
+expect that an individual Pod is reliable and durable).
+Each Pod gets its own IP address (Kubernetes expects network plugins to ensure this). For a given Deployment in your cluster, the set of Pods running in one moment in time could be different from the set of Pods running that application a moment later.
+This leads to a problem: if some set of Pods (call them "backends") provides functionality to other Pods (call them "frontends") inside your cluster, how do the frontends find out and keep track of which IP address to connect to, so that the frontend can use the backend part of the workload?
+Enter Services.
+Services in Kubernetes
+The Service API, part of Kubernetes, is an abstraction to help you expose groups of Pods over a network. Each Service object defines a logical set of endpoints (usually these endpoints are Pods) along with a policy about how to make those pods accessible.
+For example, consider a stateless image-processing backend which is running with 3 replicas. Those replicas are fungible—frontends do not care which backend they use. While the actual Pods that compose the backend set may change, the frontend clients should not need to be aware of that, nor should they need to keep track of the set of backends themselves.
+The Service abstraction enables this decoupling.
+The set of Pods targeted by a Service is usually determined
+by a [selector](/docs/concepts/overview/working-with-objects/labels/) that you
+define.
+To learn about other ways to define Service endpoints,
+see [Services without selectors](#services-without-selectors).
+If your workload speaks HTTP, you might choose to use an
+[Ingress](/docs/concepts/services-networking/ingress/) to control how web traffic
+reaches that workload.
+Ingress is not a Service type, but it acts as the entry point for your
+cluster. An Ingress lets you consolidate your routing rules into a single resource, so
+that you can expose multiple components of your workload, running separately in your
+cluster, behind a single listener.
+The [Gateway](https://gateway-api.sigs.k8s.io/#what-is-the-gateway-api) API for Kubernetes
+provides extra capabilities beyond Ingress and Service. You can add Gateway to your cluster -
+it is a family of extension APIs, implemented using
+[CustomResourceDefinitions](/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/) -
+and then use these to configure access to network services that are running in your cluster.
+Cloud-native service discovery
+If you're able to use Kubernetes APIs for service discovery in your application,
+you can query the [API server](/docs/concepts/architecture/#kube-apiserver)
+for matching EndpointSlices. Kubernetes updates the EndpointSlices for a Service
+whenever the set of Pods in a Service changes.
+For non-native applications, Kubernetes offers ways to place a network port or load balancer in between your application and the backend Pods.
+Either way, your workload can use these [service discovery](#discovering-services)
+mechanisms to find the target it wants to connect to.
+Defining a Service
+A Service is an [object](/docs/concepts/overview/working-with-objects/#kubernetes-objects)
+(the same way that a Pod or a ConfigMap is an object). You can create,
+view or modify Service definitions using the Kubernetes API. Usually
+you use a tool such as kubectl
+to make those API calls for you.
+For example, suppose you have a set of Pods that each listen on TCP port 9376
+and are labelled as app.kubernetes.io/name=MyApp
+. You can define a Service to
+publish that TCP listener:
+apiVersion: v1
+kind: Service
+metadata:
+name: my-service
+spec:
+selector:
+app.kubernetes.io/name: MyApp
+ports:
+- protocol: TCP
+port: 80
+targetPort: 9376
+Applying this manifest creates a new Service named "my-service" with the default
+ClusterIP [service type](#publishing-services-service-types). The Service
+targets TCP port 9376 on any Pod with the app.kubernetes.io/name: MyApp
+label.
+Kubernetes assigns this Service an IP address (the cluster IP),
+that is used by the virtual IP address mechanism. For more details on that mechanism,
+read [Virtual IPs and Service Proxies](/docs/reference/networking/virtual-ips/).
+The controller for that Service continuously scans for Pods that match its selector, and then makes any necessary updates to the set of EndpointSlices for the Service.
+The name of a Service object must be a valid
+[RFC 1035 label name](/docs/concepts/overview/working-with-objects/names/#rfc-1035-label-names).
+Note:
+A Service can map any incomingport
+to a targetPort
+. By default and
+for convenience, the targetPort
+is set to the same value as the port
+field.Port definitions
+Port definitions in Pods have names, and you can reference these names in the
+targetPort
+attribute of a Service. For example, we can bind the targetPort
+of the Service to the Pod port in the following way:
+apiVersion: v1
+kind: Pod
+metadata:
+name: nginx
+labels:
+app.kubernetes.io/name: proxy
+spec:
+containers:
+- name: nginx
+image: nginx:stable
+ports:
+- containerPort: 80
+name: http-web-svc
+---
+apiVersion: v1
+kind: Service
+metadata:
+name: nginx-service
+spec:
+selector:
+app.kubernetes.io/name: proxy
+ports:
+- name: name-of-service-port
+protocol: TCP
+port: 80
+targetPort: http-web-svc
+This works even if there is a mixture of Pods in the Service using a single configured name, with the same network protocol available via different port numbers. This offers a lot of flexibility for deploying and evolving your Services. For example, you can change the port numbers that Pods expose in the next version of your backend software, without breaking clients.
+The default protocol for Services is
+[TCP](/docs/reference/networking/service-protocols/#protocol-tcp); you can also
+use any other [supported protocol](/docs/reference/networking/service-protocols/).
+Because many Services need to expose more than one port, Kubernetes supports
+[multiple port definitions](#multi-port-services) for a single Service.
+Each port definition can have the same protocol
+, or a different one.
+Services without selectors
+Services most commonly abstract access to Kubernetes Pods thanks to the selector,
+but when used with a corresponding set of
+[EndpointSlices](/docs/concepts/services-networking/endpoint-slices/)
+objects and without a selector, the Service can abstract other kinds of backends,
+including ones that run outside the cluster.
+For example:
+- You want to have an external database cluster in production, but in your test environment you use your own databases.
+- You want to point your Service to a Service in a different
+[Namespace](/docs/concepts/overview/working-with-objects/namespaces)or on another cluster. - You are migrating a workload to Kubernetes. While evaluating the approach, you run only a portion of your backends in Kubernetes.
+In any of these scenarios you can define a Service without specifying a selector to match Pods. For example:
+apiVersion: v1
+kind: Service
+metadata:
+name: my-service
+spec:
+ports:
+- name: http
+protocol: TCP
+port: 80
+targetPort: 9376
+Because this Service has no selector, the corresponding EndpointSlice (and legacy Endpoints) objects are not created automatically. You can map the Service to the network address and port where it's running, by adding an EndpointSlice object manually. For example:
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+name: my-service-1 # by convention, use the name of the Service
+# as a prefix for the name of the EndpointSlice
+labels:
+# You should set the "kubernetes.io/service-name" label.
+# Set its value to match the name of the Service
+kubernetes.io/service-name: my-service
+addressType: IPv4
+ports:
+- name: http # should match with the name of the service port defined above
+appProtocol: http
+protocol: TCP
+port: 9376
+endpoints:
+- addresses:
+- "10.4.5.6"
+- addresses:
+- "10.1.2.3"
+Custom EndpointSlices
+When you create an [EndpointSlice](#endpointslices) object for a Service, you can
+use any name for the EndpointSlice. Each EndpointSlice in a namespace must have a
+unique name. You link an EndpointSlice to a Service by setting the
+kubernetes.io/service-name
+[label](/docs/concepts/overview/working-with-objects/labels)
+on that EndpointSlice.
+Note:
+The endpoint IPs must not be: loopback (127.0.0.0/8 for IPv4, ::1/128 for IPv6), or link-local (169.254.0.0/16 and 224.0.0.0/24 for IPv4, fe80::/64 for IPv6).
+The endpoint IP addresses cannot be the cluster IPs of other Kubernetes Services,
+because [kube-proxy](/docs/reference/command-line-tools-reference/kube-proxy/) doesn't support virtual IPs
+as a destination.
+For an EndpointSlice that you create yourself, or in your own code,
+you should also pick a value to use for the label
+[ endpointslice.kubernetes.io/managed-by](/docs/reference/labels-annotations-taints/#endpointslicekubernetesiomanaged-by).
+If you create your own controller code to manage EndpointSlices, consider using a
+value similar to
+"my-domain.example/name-of-controller"
+. If you are using a third
+party tool, use the name of the tool in all-lowercase and change spaces and other
+punctuation to dashes (-
+).
+If people are directly using a tool such as kubectl
+to manage EndpointSlices,
+use a name that describes this manual management, such as "staff"
+or
+"cluster-admins"
+. You should
+avoid using the reserved value "controller"
+, which identifies EndpointSlices
+managed by Kubernetes' own control plane.Accessing a Service without a selector
+Accessing a Service without a selector works the same as if it had a selector.
+In the [example](#services-without-selectors) for a Service without a selector,
+traffic is routed to one of the two endpoints defined in
+the EndpointSlice manifest: a TCP connection to 10.1.2.3 or 10.4.5.6, on port 9376.
+Note:
+The Kubernetes API server does not allow proxying to endpoints that are not mapped to pods. Actions such askubectl port-forward service/<service-name> forwardedPort:servicePort
+where the service has no
+selector will fail due to this constraint. This prevents the Kubernetes API server
+from being used as a proxy to endpoints the caller may not be authorized to access.An ExternalName
+Service is a special case of Service that does not have
+selectors and uses DNS names instead. For more information, see the
+[ExternalName](#externalname) section.
+EndpointSlices
+Kubernetes v1.21 [stable]
+[EndpointSlices](/docs/concepts/services-networking/endpoint-slices/) are objects that
+represent a subset (a slice) of the backing network endpoints for a Service.
+Your Kubernetes cluster tracks how many endpoints each EndpointSlice represents. If there are so many endpoints for a Service that a threshold is reached, then Kubernetes adds another empty EndpointSlice and stores new endpoint information there. By default, Kubernetes makes a new EndpointSlice once the existing EndpointSlices all contain at least 100 endpoints. Kubernetes does not make the new EndpointSlice until an extra endpoint needs to be added.
+See [EndpointSlices](/docs/concepts/services-networking/endpoint-slices/) for more
+information about this API.
+Endpoints
+In the Kubernetes API, an
+[Endpoints](/docs/reference/kubernetes-api/service-resources/endpoints-v1/)
+(the resource kind is plural) defines a list of network endpoints, typically
+referenced by a Service to define which Pods the traffic can be sent to.
+The EndpointSlice API is the recommended replacement for Endpoints.
+Over-capacity endpoints
+Kubernetes limits the number of endpoints that can fit in a single Endpoints object. When there are over 1000 backing endpoints for a Service, Kubernetes truncates the data in the Endpoints object. Because a Service can be linked with more than one EndpointSlice, the 1000 backing endpoint limit only affects the legacy Endpoints API.
+In that case, Kubernetes selects at most 1000 possible backend endpoints to store
+into the Endpoints object, and sets an
+[annotation](/docs/concepts/overview/working-with-objects/annotations) on the Endpoints:
+[ endpoints.kubernetes.io/over-capacity: truncated](/docs/reference/labels-annotations-taints/#endpoints-kubernetes-io-over-capacity).
+The control plane also removes that annotation if the number of backend Pods drops below 1000.
+Traffic is still sent to backends, but any load balancing mechanism that relies on the legacy Endpoints API only sends traffic to at most 1000 of the available backing endpoints.
+The same API limit means that you cannot manually update an Endpoints to have more than 1000 endpoints.
+Application protocol
+Kubernetes v1.20 [stable]
+The appProtocol
+field provides a way to specify an application protocol for
+each Service port. This is used as a hint for implementations to offer
+richer behavior for protocols that they understand.
+The value of this field is mirrored by the corresponding
+Endpoints and EndpointSlice objects.
+This field follows standard Kubernetes label syntax. Valid values are one of:
+Implementation-defined prefixed names such as
+mycompany.com/my-custom-protocol
+.Kubernetes-defined prefixed names:
+Protocol | Description |
+---|---|
+kubernetes.io/h2c | HTTP/2 over cleartext as described in
+|
+kubernetes.io/ws
+[RFC 6455](https://www.rfc-editor.org/rfc/rfc6455)kubernetes.io/wss
+[RFC 6455](https://www.rfc-editor.org/rfc/rfc6455)Multi-port Services
+For some Services, you need to expose more than one port. Kubernetes lets you configure multiple port definitions on a Service object. When using multiple ports for a Service, you must give all of your ports names so that these are unambiguous. For example:
+apiVersion: v1
+kind: Service
+metadata:
+name: my-service
+spec:
+selector:
+app.kubernetes.io/name: MyApp
+ports:
+- name: http
+protocol: TCP
+port: 80
+targetPort: 9376
+- name: https
+protocol: TCP
+port: 443
+targetPort: 9377
+Note:
+As with Kubernetes [names](/docs/concepts/overview/working-with-objects/names) in general, names for ports
+must only contain lowercase alphanumeric characters and -
+. Port names must
+also start and end with an alphanumeric character.
+For example, the names 123-abc
+and web
+are valid, but 123_abc
+and -web
+are not.
+Service type
+For some parts of your application (for example, frontends) you may want to expose a Service onto an external IP address, one that's accessible from outside of your cluster.
+Kubernetes Service types allow you to specify what kind of Service you want.
+The available type
+values and their behaviors are:
+ClusterIP
+- Exposes the Service on a cluster-internal IP. Choosing this value
+makes the Service only reachable from within the cluster. This is the
+default that is used if you don't explicitly specify a
+type
+for a Service. You can expose the Service to the public internet using an[Ingress](/docs/concepts/services-networking/ingress/)or a[Gateway](https://gateway-api.sigs.k8s.io/). NodePort
+- Exposes the Service on each Node's IP at a static port (the
+NodePort
+). To make the node port available, Kubernetes sets up a cluster IP address, the same as if you had requested a Service oftype: ClusterIP
+. LoadBalancer
+- Exposes the Service externally using an external load balancer. Kubernetes does not directly offer a load balancing component; you must provide one, or you can integrate your Kubernetes cluster with a cloud provider.
+ExternalName
+- Maps the Service to the contents of the
+externalName
+field (for example, to the hostnameapi.foo.bar.example
+). The mapping configures your cluster's DNS server to return aCNAME
+record with that external hostname value. No proxying of any kind is set up.
+The type
+field in the Service API is designed as nested functionality - each level
+adds to the previous. However there is an exception to this nested design. You can
+define a LoadBalancer
+Service by
+[disabling the load balancer NodePort allocation](/docs/concepts/services-networking/service/#load-balancer-nodeport-allocation).
+type: ClusterIP
+This default Service type assigns an IP address from a pool of IP addresses that your cluster has reserved for that purpose.
+Several of the other types for Service build on the ClusterIP
+type as a
+foundation.
+If you define a Service that has the .spec.clusterIP
+set to "None"
+then
+Kubernetes does not assign an IP address. See [headless Services](#headless-services)
+for more information.
+Choosing your own IP address
+You can specify your own cluster IP address as part of a Service
+creation
+request. To do this, set the .spec.clusterIP
+field. For example, if you
+already have an existing DNS entry that you wish to reuse, or legacy systems
+that are configured for a specific IP address and difficult to re-configure.
+The IP address that you choose must be a valid IPv4 or IPv6 address from within the
+service-cluster-ip-range
+CIDR range that is configured for the API server.
+If you try to create a Service with an invalid clusterIP
+address value, the API
+server will return a 422 HTTP status code to indicate that there's a problem.
+Read [avoiding collisions](/docs/reference/networking/virtual-ips/#avoiding-collisions)
+to learn how Kubernetes helps reduce the risk and impact of two different Services
+both trying to use the same IP address.
+type: NodePort
+If you set the type
+field to NodePort
+, the Kubernetes control plane
+allocates a port from a range specified by --service-node-port-range
+flag (default: 30000-32767).
+Each node proxies that port (the same port number on every Node) into your Service.
+Your Service reports the allocated port in its .spec.ports[*].nodePort
+field.
+Using a NodePort gives you the freedom to set up your own load balancing solution, to configure environments that are not fully supported by Kubernetes, or even to expose one or more nodes' IP addresses directly.
+For a node port Service, Kubernetes additionally allocates a port (TCP, UDP or
+SCTP to match the protocol of the Service). Every node in the cluster configures
+itself to listen on that assigned port and to forward traffic to one of the ready
+endpoints associated with that Service. You'll be able to contact the type: NodePort
+Service, from outside the cluster, by connecting to any node using the appropriate
+protocol (for example: TCP), and the appropriate port (as assigned to that Service).
+Choosing your own port
+If you want a specific port number, you can specify a value in the nodePort
+field. The control plane will either allocate you that port or report that
+the API transaction failed.
+This means that you need to take care of possible port collisions yourself.
+You also have to use a valid port number, one that's inside the range configured
+for NodePort use.
+Here is an example manifest for a Service of type: NodePort
+that specifies
+a NodePort value (30007, in this example):
+apiVersion: v1
+kind: Service
+metadata:
+name: my-service
+spec:
+type: NodePort
+selector:
+app.kubernetes.io/name: MyApp
+ports:
+- port: 80
+# By default and for convenience, the `targetPort` is set to
+# the same value as the `port` field.
+targetPort: 80
+# Optional field
+# By default and for convenience, the Kubernetes control plane
+# will allocate a port from a range (default: 30000-32767)
+nodePort: 30007
+Reserve Nodeport ranges to avoid collisions
+The policy for assigning ports to NodePort services applies to both the auto-assignment and the manual assignment scenarios. When a user wants to create a NodePort service that uses a specific port, the target port may conflict with another port that has already been assigned.
+To avoid this problem, the port range for NodePort services is divided into two bands. Dynamic port assignment uses the upper band by default, and it may use the lower band once the upper band has been exhausted. Users can then allocate from the lower band with a lower risk of port collision.
+Custom IP address configuration for type: NodePort
+Services
+You can set up nodes in your cluster to use a particular IP address for serving node port services. You might want to do this if each node is connected to multiple networks (for example: one network for application traffic, and another network for traffic between nodes and the control plane).
+If you want to specify particular IP address(es) to proxy the port, you can set the
+--nodeport-addresses
+flag for kube-proxy or the equivalent nodePortAddresses
+field of the [kube-proxy configuration file](/docs/reference/config-api/kube-proxy-config.v1alpha1/)
+to particular IP block(s).
+This flag takes a comma-delimited list of IP blocks (e.g. 10.0.0.0/8
+, 192.0.2.0/25
+)
+to specify IP address ranges that kube-proxy should consider as local to this node.
+For example, if you start kube-proxy with the --nodeport-addresses=127.0.0.0/8
+flag,
+kube-proxy only selects the loopback interface for NodePort Services.
+The default for --nodeport-addresses
+is an empty list.
+This means that kube-proxy should consider all available network interfaces for NodePort.
+(That's also compatible with earlier Kubernetes releases.)
+Note:
+This Service is visible as<NodeIP>:spec.ports[*].nodePort
+and .spec.clusterIP:spec.ports[*].port
+.
+If the --nodeport-addresses
+flag for kube-proxy or the equivalent field
+in the kube-proxy configuration file is set, <NodeIP>
+would be a filtered
+node IP address (or possibly IP addresses).type: LoadBalancer
+On cloud providers which support external load balancers, setting the type
+field to LoadBalancer
+provisions a load balancer for your Service.
+The actual creation of the load balancer happens asynchronously, and
+information about the provisioned balancer is published in the Service's
+.status.loadBalancer
+field.
+For example:
+apiVersion: v1
+kind: Service
+metadata:
+name: my-service
+spec:
+selector:
+app.kubernetes.io/name: MyApp
+ports:
+- protocol: TCP
+port: 80
+targetPort: 9376
+clusterIP: 10.0.171.239
+type: LoadBalancer
+status:
+loadBalancer:
+ingress:
+- ip: 192.0.2.127
+Traffic from the external load balancer is directed at the backend Pods. The cloud provider decides how it is load balanced.
+To implement a Service of type: LoadBalancer
+, Kubernetes typically starts off
+by making the changes that are equivalent to you requesting a Service of
+type: NodePort
+. The cloud-controller-manager component then configures the external
+load balancer to forward traffic to that assigned node port.
+You can configure a load balanced Service to
+[omit](#load-balancer-nodeport-allocation) assigning a node port, provided that the
+cloud provider implementation supports this.
+Some cloud providers allow you to specify the loadBalancerIP
+. In those cases, the load-balancer is created
+with the user-specified loadBalancerIP
+. If the loadBalancerIP
+field is not specified,
+the load balancer is set up with an ephemeral IP address. If you specify a loadBalancerIP
+but your cloud provider does not support the feature, the loadbalancerIP
+field that you
+set is ignored.
+Note:
+The.spec.loadBalancerIP
+field for a Service was deprecated in Kubernetes v1.24.
+This field was under-specified and its meaning varies across implementations. It also cannot support dual-stack networking. This field may be removed in a future API version.
+If you're integrating with a provider that supports specifying the load balancer IP address(es) for a Service via a (provider specific) annotation, you should switch to doing that.
+If you are writing code for a load balancer integration with Kubernetes, avoid using this field.
+You can integrate with [Gateway](https://gateway-api.sigs.k8s.io/) rather than Service, or you
+can define your own (provider specific) annotations on the Service that specify the equivalent detail.
+Node liveness impact on load balancer traffic
+Load balancer health checks are critical to modern applications. They are used to
+determine which server (virtual machine, or IP address) the load balancer should
+dispatch traffic to. The Kubernetes APIs do not define how health checks have to be
+implemented for Kubernetes managed load balancers, instead it's the cloud providers
+(and the people implementing integration code) who decide on the behavior. Load
+balancer health checks are extensively used within the context of supporting the
+externalTrafficPolicy
+field for Services.
+Load balancers with mixed protocol types
+Kubernetes v1.26 [stable]
+By default, for LoadBalancer type of Services, when there is more than one port defined, all ports must have the same protocol, and the protocol must be one which is supported by the cloud provider.
+The feature gate MixedProtocolLBService
+(enabled by default for the kube-apiserver as of v1.24) allows the use of
+different protocols for LoadBalancer type of Services, when there is more than one port defined.
+Note:
+The set of protocols that can be used for load balanced Services is defined by your cloud provider; they may impose restrictions beyond what the Kubernetes API enforces.Disabling load balancer NodePort allocation
+Kubernetes v1.24 [stable]
+You can optionally disable node port allocation for a Service of type: LoadBalancer
+, by setting
+the field spec.allocateLoadBalancerNodePorts
+to false
+. This should only be used for load balancer implementations
+that route traffic directly to pods as opposed to using node ports. By default, spec.allocateLoadBalancerNodePorts
+is true
+and type LoadBalancer Services will continue to allocate node ports. If spec.allocateLoadBalancerNodePorts
+is set to false
+on an existing Service with allocated node ports, those node ports will not be de-allocated automatically.
+You must explicitly remove the nodePorts
+entry in every Service port to de-allocate those node ports.
+Specifying class of load balancer implementation
+Kubernetes v1.24 [stable]
+For a Service with type
+set to LoadBalancer
+, the .spec.loadBalancerClass
+field
+enables you to use a load balancer implementation other than the cloud provider default.
+By default, .spec.loadBalancerClass
+is not set and a LoadBalancer
+type of Service uses the cloud provider's default load balancer implementation if the
+cluster is configured with a cloud provider using the --cloud-provider
+component
+flag.
+If you specify .spec.loadBalancerClass
+, it is assumed that a load balancer
+implementation that matches the specified class is watching for Services.
+Any default load balancer implementation (for example, the one provided by
+the cloud provider) will ignore Services that have this field set.
+spec.loadBalancerClass
+can be set on a Service of type LoadBalancer
+only.
+Once set, it cannot be changed.
+The value of spec.loadBalancerClass
+must be a label-style identifier,
+with an optional prefix such as "internal-vip
+" or "example.com/internal-vip
+".
+Unprefixed names are reserved for end-users.
+Specifying IPMode of load balancer status
+Kubernetes v1.30 [beta]
+As a Beta feature in Kubernetes 1.30,
+a [feature gate](/docs/reference/command-line-tools-reference/feature-gates/)
+named LoadBalancerIPMode
+allows you to set the .status.loadBalancer.ingress.ipMode
+for a Service with type
+set to LoadBalancer
+.
+The .status.loadBalancer.ingress.ipMode
+specifies how the load-balancer IP behaves.
+It may be specified only when the .status.loadBalancer.ingress.ip
+field is also specified.
+There are two possible values for .status.loadBalancer.ingress.ipMode
+: "VIP" and "Proxy".
+The default value is "VIP" meaning that traffic is delivered to the node
+with the destination set to the load-balancer's IP and port.
+There are two cases when setting this to "Proxy", depending on how the load-balancer
+from the cloud provider delivers the traffics:
+- If the traffic is delivered to the node then DNATed to the pod, the destination would be set to the node's IP and node port;
+- If the traffic is delivered directly to the pod, the destination would be set to the pod's IP and port.
+Service implementations may use this information to adjust traffic routing.
+Internal load balancer
+In a mixed environment it is sometimes necessary to route traffic from Services inside the same (virtual) network address block.
+In a split-horizon DNS environment you would need two Services to be able to route both external and internal traffic to your endpoints.
+To set an internal load balancer, add one of the following annotations to your Service depending on the cloud service provider you're using:
+Select one of the tabs.
+metadata:
+name: my-service
+annotations:
+networking.gke.io/load-balancer-type: "Internal"
+metadata:
+name: my-service
+annotations:
+service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+metadata:
+name: my-service
+annotations:
+service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+metadata:
+name: my-service
+annotations:
+service.kubernetes.io/ibm-load-balancer-cloud-provider-ip-type: "private"
+metadata:
+name: my-service
+annotations:
+service.beta.kubernetes.io/openstack-internal-load-balancer: "true"
+metadata:
+name: my-service
+annotations:
+service.beta.kubernetes.io/cce-load-balancer-internal-vpc: "true"
+metadata:
+annotations:
+service.kubernetes.io/qcloud-loadbalancer-internal-subnetid: subnet-xxxxx
+metadata:
+annotations:
+service.beta.kubernetes.io/alibaba-cloud-loadbalancer-address-type: "intranet"
+metadata:
+name: my-service
+annotations:
+service.beta.kubernetes.io/oci-load-balancer-internal: true
+type: ExternalName
+Services of type ExternalName map a Service to a DNS name, not to a typical selector such as
+my-service
+or cassandra
+. You specify these Services with the spec.externalName
+parameter.
+This Service definition, for example, maps
+the my-service
+Service in the prod
+namespace to my.database.example.com
+:
+apiVersion: v1
+kind: Service
+metadata:
+name: my-service
+namespace: prod
+spec:
+type: ExternalName
+externalName: my.database.example.com
+Note:
+A Service of type: ExternalName
+accepts an IPv4 address string,
+but treats that string as a DNS name comprised of digits,
+not as an IP address (the internet does not however allow such names in DNS).
+Services with external names that resemble IPv4
+addresses are not resolved by DNS servers.
+If you want to map a Service directly to a specific IP address, consider using
+[headless Services](#headless-services).
+When looking up the host my-service.prod.svc.cluster.local
+, the cluster DNS Service
+returns a CNAME
+record with the value my.database.example.com
+. Accessing
+my-service
+works in the same way as other Services but with the crucial
+difference that redirection happens at the DNS level rather than via proxying or
+forwarding. Should you later decide to move your database into your cluster, you
+can start its Pods, add appropriate selectors or endpoints, and change the
+Service's type
+.
+Caution:
+You may have trouble using ExternalName for some common protocols, including HTTP and HTTPS. If you use ExternalName then the hostname used by clients inside your cluster is different from the name that the ExternalName references.
+For protocols that use hostnames this difference may lead to errors or unexpected responses.
+HTTP requests will have a Host:
+header that the origin server does not recognize;
+TLS servers will not be able to provide a certificate matching the hostname that the client connected to.
+Headless Services
+Sometimes you don't need load-balancing and a single Service IP. In
+this case, you can create what are termed headless Services, by explicitly
+specifying "None"
+for the cluster IP address (.spec.clusterIP
+).
+You can use a headless Service to interface with other service discovery mechanisms, without being tied to Kubernetes' implementation.
+For headless Services, a cluster IP is not allocated, kube-proxy does not handle these Services, and there is no load balancing or proxying done by the platform for them.
+A headless Service allows a client to connect to whichever Pod it prefers, directly. Services that are headless don't
+configure routes and packet forwarding using
+[virtual IP addresses and proxies](/docs/reference/networking/virtual-ips/); instead, headless Services report the
+endpoint IP addresses of the individual pods via internal DNS records, served through the cluster's
+[DNS service](/docs/concepts/services-networking/dns-pod-service/).
+To define a headless Service, you make a Service with .spec.type
+set to ClusterIP (which is also the default for type
+),
+and you additionally set .spec.clusterIP
+to None.
+The string value None is a special case and is not the same as leaving the .spec.clusterIP
+field unset.
+How DNS is automatically configured depends on whether the Service has selectors defined:
+With selectors
+For headless Services that define selectors, the endpoints controller creates EndpointSlices in the Kubernetes API, and modifies the DNS configuration to return A or AAAA records (IPv4 or IPv6 addresses) that point directly to the Pods backing the Service.
+Without selectors
+For headless Services that do not define selectors, the control plane does not create EndpointSlice objects. However, the DNS system looks for and configures either:
+- DNS CNAME records for
+Services.type: ExternalName
+- DNS A / AAAA records for all IP addresses of the Service's ready endpoints,
+for all Service types other than
+ExternalName
+.- For IPv4 endpoints, the DNS system creates A records.
+- For IPv6 endpoints, the DNS system creates AAAA records.
+When you define a headless Service without a selector, the port
+must
+match the targetPort
+.
+Discovering services
+For clients running inside your cluster, Kubernetes supports two primary modes of finding a Service: environment variables and DNS.
+Environment variables
+When a Pod is run on a Node, the kubelet adds a set of environment variables
+for each active Service. It adds {SVCNAME}_SERVICE_HOST
+and {SVCNAME}_SERVICE_PORT
+variables,
+where the Service name is upper-cased and dashes are converted to underscores.
+For example, the Service redis-primary
+which exposes TCP port 6379 and has been
+allocated cluster IP address 10.0.0.11, produces the following environment
+variables:
+REDIS_PRIMARY_SERVICE_HOST=10.0.0.11
+REDIS_PRIMARY_SERVICE_PORT=6379
+REDIS_PRIMARY_PORT=tcp://10.0.0.11:6379
+REDIS_PRIMARY_PORT_6379_TCP=tcp://10.0.0.11:6379
+REDIS_PRIMARY_PORT_6379_TCP_PROTO=tcp
+REDIS_PRIMARY_PORT_6379_TCP_PORT=6379
+REDIS_PRIMARY_PORT_6379_TCP_ADDR=10.0.0.11
+Note:
+When you have a Pod that needs to access a Service, and you are using the environment variable method to publish the port and cluster IP to the client Pods, you must create the Service before the client Pods come into existence. Otherwise, those client Pods won't have their environment variables populated.
+If you only use DNS to discover the cluster IP for a Service, you don't need to worry about this ordering issue.
+Kubernetes also supports and provides variables that are compatible with Docker
+Engine's "[legacy container links](https://docs.docker.com/network/links/)" feature.
+You can read [ makeLinkVariables](https://github.com/kubernetes/kubernetes/blob/dd2d12f6dc0e654c15d5db57a5f9f6ba61192726/pkg/kubelet/envvars/envvars.go#L72)
+to see how this is implemented in Kubernetes.
+DNS
+You can (and almost always should) set up a DNS service for your Kubernetes
+cluster using an [add-on](/docs/concepts/cluster-administration/addons/).
+A cluster-aware DNS server, such as CoreDNS, watches the Kubernetes API for new Services and creates a set of DNS records for each one. If DNS has been enabled throughout your cluster then all Pods should automatically be able to resolve Services by their DNS name.
+For example, if you have a Service called my-service
+in a Kubernetes
+namespace my-ns
+, the control plane and the DNS Service acting together
+create a DNS record for my-service.my-ns
+. Pods in the my-ns
+namespace
+should be able to find the service by doing a name lookup for my-service
+(my-service.my-ns
+would also work).
+Pods in other namespaces must qualify the name as my-service.my-ns
+. These names
+will resolve to the cluster IP assigned for the Service.
+Kubernetes also supports DNS SRV (Service) records for named ports. If the
+my-service.my-ns
+Service has a port named http
+with the protocol set to
+TCP
+, you can do a DNS SRV query for _http._tcp.my-service.my-ns
+to discover
+the port number for http
+, as well as the IP address.
+The Kubernetes DNS server is the only way to access ExternalName
+Services.
+You can find more information about ExternalName
+resolution in
+[DNS for Services and Pods](/docs/concepts/services-networking/dns-pod-service/).
+[FEATURE STATE: ]
+Virtual IP addressing mechanism
+Read [Virtual IPs and Service Proxies](/docs/reference/networking/virtual-ips/) explains the
+mechanism Kubernetes provides to expose a Service with a virtual IP address.
+Traffic policies
+You can set the .spec.internalTrafficPolicy
+and .spec.externalTrafficPolicy
+fields
+to control how Kubernetes routes traffic to healthy (“ready”) backends.
+See [Traffic Policies](/docs/reference/networking/virtual-ips/#traffic-policies) for more details.
+Traffic distribution
+Kubernetes v1.31 [beta]
+The .spec.trafficDistribution
+field provides another way to influence traffic
+routing within a Kubernetes Service. While traffic policies focus on strict
+semantic guarantees, traffic distribution allows you to express preferences
+(such as routing to topologically closer endpoints). This can help optimize for
+performance, cost, or reliability. This optional field can be used if you have
+enabled the ServiceTrafficDistribution
+[feature
+gate](/docs/reference/command-line-tools-reference/feature-gates/) for your
+cluster and all of its nodes. In Kubernetes 1.31, the
+following field value is supported:
+PreferClose
+- Indicates a preference for routing traffic to endpoints that are topologically proximate to the client. The interpretation of "topologically proximate" may vary across implementations and could encompass endpoints within the same node, rack, zone, or even region. Setting this value gives implementations permission to make different tradeoffs, e.g. optimizing for proximity rather than equal distribution of load. Users should not set this value if such tradeoffs are not acceptable.
+If the field is not set, the implementation will apply its default routing strategy.
+See [Traffic
+Distribution](/docs/reference/networking/virtual-ips/#traffic-distribution) for
+more details
+Session stickiness
+If you want to make sure that connections from a particular client are passed to
+the same Pod each time, you can configure session affinity based on the client's
+IP address. Read [session affinity](/docs/reference/networking/virtual-ips/#session-affinity)
+to learn more.
+External IPs
+If there are external IPs that route to one or more cluster nodes, Kubernetes Services
+can be exposed on those externalIPs
+. When network traffic arrives into the cluster, with
+the external IP (as destination IP) and the port matching that Service, rules and routes
+that Kubernetes has configured ensure that the traffic is routed to one of the endpoints
+for that Service.
+When you define a Service, you can specify externalIPs
+for any
+[service type](#publishing-services-service-types).
+In the example below, the Service named "my-service"
+can be accessed by clients using TCP,
+on "198.51.100.32:80"
+(calculated from .spec.externalIPs[]
+and .spec.ports[].port
+).
+apiVersion: v1
+kind: Service
+metadata:
+name: my-service
+spec:
+selector:
+app.kubernetes.io/name: MyApp
+ports:
+- name: http
+protocol: TCP
+port: 80
+targetPort: 49152
+externalIPs:
+- 198.51.100.32
+Note:
+Kubernetes does not manage allocation ofexternalIPs
+; these are the responsibility
+of the cluster administrator.API Object
+Service is a top-level resource in the Kubernetes REST API. You can find more details
+about the [Service API object](/docs/reference/generated/kubernetes-api/v1.31/#service-v1-core).
+What's next
+Learn more about Services and how they fit into Kubernetes:
+- Follow the
+[Connecting Applications with Services](/docs/tutorials/services/connect-applications-service/)tutorial. - Read about
+[Ingress](/docs/concepts/services-networking/ingress/), which exposes HTTP and HTTPS routes from outside the cluster to Services within your cluster. - Read about
+[Gateway](/docs/concepts/services-networking/gateway/), an extension to Kubernetes that provides more flexibility than Ingress.
+For more context, read the following:
+[alignment annotation (6108b78fa9)](https://github.com/kubernetes/website/commit/6108b78fa983cb90584d84d2825adbb70fd01c1f)

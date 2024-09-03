@@ -1,3 +1,219 @@
-URL: https://kubernetes.io/ko/docs/home/
+Source: kubernetes_io
+URL: https://kubernetes.io/docs/concepts/overview/kubernetes-api/
 
-문서쿠버네티스 블로그교육파트너커뮤니티사례 연구버전릴리스 정보v1.31v1.30v1.29v1.28v1.27한국어 (Korean)Englishবাংলা (Bengali)中文 (Chinese)Français (French)Deutsch (German)हिन्दी (Hindi)Bahasa Indonesia (Indonesian)Italiano (Italian)日本語 (Japanese)Polski (Polish)Português (Portuguese)Русский (Russian)Español (Spanish)Українська (Ukrainian)Tiếng Việt (Vietnamese)쿠버네티스 문서문서가용 문서 버전시작하기학습 환경프로덕션 환경컨테이너 런타임배포 도구로 쿠버네티스 설치하기kubeadm으로 클러스터 구성하기kubeadm 설치하기Troubleshooting kubeadmCreating a cluster with kubeadmkubeadm API로 컴포넌트 사용자 정의하기고가용성 토폴로지 선택Creating Highly Available Clusters with kubeadmSet up a High Availability etcd Cluster with kubeadmConfiguring each kubelet in your cluster using kubeadmDual-stack support with kubeadmkOps로 쿠버네티스 설치하기Kubespray로 쿠버네티스 설치하기턴키 클라우드 솔루션모범 사례대형 클러스터에 대한 고려 사항여러 영역에서 실행노드 구성 검증하기파드 시큐리티 스탠다드 강제하기PKI 인증서 및 요구 사항개념쿠버네티스란 무엇인가?쿠버네티스 컴포넌트쿠버네티스 API쿠버네티스 오브젝트로 작업하기쿠버네티스 오브젝트 이해하기쿠버네티스 오브젝트 관리오브젝트 이름과 ID레이블과 셀렉터네임스페이스어노테이션필드 셀렉터파이널라이저Owners and Dependents권장 레이블클러스터 아키텍처노드컨트롤 플레인-노드 간 통신리스(Lease)컨트롤러클라우드 컨트롤러 매니저About cgroup v2컨테이너 런타임 인터페이스(CRI)가비지(Garbage) 수집Mixed Version Proxy컨테이너이미지컨테이너 환경 변수런타임클래스(RuntimeClass)컨테이너 라이프사이클 훅(Hook)쿠버네티스에서의 윈도우쿠버네티스에서의 윈도우 컨테이너쿠버네티스에서 윈도우 컨테이너 스케줄링을 위한 가이드워크로드파드파드 라이프사이클초기화 컨테이너Sidecar Containers중단(disruption)임시(Ephemeral) 컨테이너Pod Quality of Service Classes사용자 네임스페이스다운워드(Downward) API워크로드 리소스디플로이먼트레플리카셋스테이트풀셋데몬셋잡완료된 잡 자동 정리크론잡레플리케이션 컨트롤러Autoscaling WorkloadsManaging Workloads서비스, 로드밸런싱, 네트워킹서비스인그레스(Ingress)인그레스 컨트롤러Gateway API엔드포인트슬라이스네트워크 정책서비스 및 파드용 DNSIPv4/IPv6 이중 스택Topology Aware Routing토폴로지 인지 힌트윈도우에서의 네트워킹서비스 내부 트래픽 정책서비스 클러스터IP 할당토폴로지 키를 사용하여 토폴로지-인지 트래픽 라우팅스토리지볼륨퍼시스턴트 볼륨프로젝티드 볼륨임시 볼륨Volume Attributes Classes스토리지 클래스동적 볼륨 프로비저닝볼륨 스냅샷볼륨 스냅샷 클래스CSI 볼륨 복제하기스토리지 용량노드 별 볼륨 한도볼륨 헬스 모니터링윈도우 스토리지구성구성 모범 사례컨피그맵(ConfigMap)시크릿(Secret)Liveness, Readiness, and Startup Probes파드 및 컨테이너 리소스 관리kubeconfig 파일을 사용하여 클러스터 접근 구성하기윈도우 노드의 자원 관리보안클라우드 네이티브 보안 개요Cloud Native Security파드 시큐리티 스탠다드파드 시큐리티 어드미션Service Accounts파드 시큐리티 폴리시윈도우 노드에서의 보안쿠버네티스 API 접근 제어하기역할 기반 접근 제어 (RBAC) 모범 사례쿠버네티스 시크릿 모범 사례멀티 테넌시(multi-tenancy)Hardening Guide - Authentication MechanismsKubernetes API Server Bypass RisksLinux kernel security constraints for Pods and containersSecurity Checklist정책리밋 레인지(Limit Range)리소스 쿼터프로세스 ID 제한 및 예약노드 리소스 매니저스케줄링, 선점(Preemption), 축출(Eviction)쿠버네티스 스케줄러노드에 파드 할당하기파드 오버헤드파드 스케줄링 준비성(readiness)파드 토폴로지 분배 제약 조건테인트(Taints)와 톨러레이션(Tolerations)Scheduling FrameworkDynamic Resource Allocation스케줄러 성능 튜닝리소스 빈 패킹(bin packing)파드 우선순위(priority)와 선점(preemption)노드-압박 축출API를 이용한 축출(API-initiated Eviction)클러스터 관리Node Shutdowns인증서리소스 관리클러스터 네트워킹로깅 아키텍처쿠버네티스 시스템 컴포넌트에 대한 메트릭Metrics for Kubernetes Object States시스템 로그쿠버네티스 시스템 컴포넌트에 대한 추적(trace)쿠버네티스에서 프락시(Proxy)API Priority and FairnessCluster Autoscaling애드온 설치Coordinated Leader Election쿠버네티스 확장오퍼레이터(operator) 패턴컴퓨트, 스토리지 및 네트워킹 익스텐션네트워크 플러그인장치 플러그인쿠버네티스 API 확장하기커스텀 리소스쿠버네티스 API 애그리게이션 레이어(aggregation layer)태스크도구 설치macOS에 kubectl 설치 및 설정리눅스에 kubectl 설치 및 설정윈도우에 kubectl 설치 및 설정모니터링, 로깅, 및 디버깅애플리케이션 트러블슈팅하기파드 디버깅하기서비스 디버깅하기스테이트풀셋 디버깅하기파드 실패의 원인 검증하기초기화 컨테이너(Init Containers) 디버그하기동작 중인 파드 디버그동작중인 컨테이너의 셸에 접근하기클러스터 트러블슈팅Troubleshooting kubectl리소스 메트릭 파이프라인리소스 모니터링 도구노드 헬스 모니터링하기crictl로 쿠버네티스 노드 디버깅하기Debugging Kubernetes Nodes With Kubectl감사(auditing)로컬에서 텔레프레즌스를 이용한 서비스 개발 및 디버깅윈도우 디버깅 팁클러스터 운영kubeadm으로 관리하기kubeadm을 사용한 인증서 관리Configuring a cgroup driverkubeadm 클러스터 업그레이드Reconfiguring a kubeadm cluster윈도우 노드 업그레이드리눅스 노드 업그레이드Changing The Kubernetes Package Repository도커심으로부터 마이그레이션도커 엔진 노드를 도커심에서 cri-dockerd로 마이그레이션하기Changing the Container Runtime on a Node from Docker Engine to containerdFind Out What Container Runtime is Used on a NodeTroubleshooting CNI plugin-related errorsCheck whether dockershim removal affects youMigrating telemetry and security agents from dockershim메모리, CPU 와 API 리소스 관리네임스페이스에 대한 기본 메모리 요청량과 상한 구성네임스페이스에 대한 기본 CPU 요청량과 상한 구성네임스페이스에 대한 메모리의 최소 및 최대 제약 조건 구성네임스페이스에 대한 CPU의 최소 및 최대 제약 조건 구성네임스페이스에 대한 메모리 및 CPU 쿼터 구성네임스페이스에 대한 파드 쿼터 구성네트워크 폴리시 제공자(Network Policy Provider) 설치Use Antrea for NetworkPolicy네트워크 폴리시로 캘리코(Calico) 사용하기네트워크 폴리시로 실리움(Cilium) 사용하기네트워크 폴리시로 큐브 라우터(Kube-router) 사용하기네트워크 폴리시로 로마나(Romana)네트워크 폴리시로 위브넷(Weave Net) 사용하기인증서쿠버네티스 API를 사용하여 클러스터에 접근하기Change the Access Mode of a PersistentVolume to ReadWriteOncePodSwitching from Polling to CRI Event-based Updates to Container StatusCloud Controller Manager AdministrationConfigure Quotas for API ObjectsControl CPU Management Policies on the NodeControl Topology Management Policies on a nodeDebugging DNS ResolutionDeveloping Cloud Controller ManagerEncrypting Confidential Data at RestDecrypt Confidential Data that is Already Encrypted at RestIP Masquerade Agent User GuideMigrate Replicated Control Plane To Use Cloud Controller ManagerNamespaces WalkthroughOperating etcd clusters for KubernetesReserve Compute Resources for System DaemonsRunning Kubernetes Node Components as a Non-root UserSafely Drain a NodeSecuring a ClusterUsing a KMS provider for data encryptionUsing NodeLocal DNSCache in Kubernetes ClustersUtilizing the NUMA-aware Memory ManagerVerify Signed Kubernetes ArtifactsDNS 서비스 사용자 정의하기kubelet 이미지 자격 증명 공급자 구성하기구성 파일을 통해 Kubelet 파라미터 설정하기기본 스토리지클래스(StorageClass) 변경하기네임스페이스를 사용해 클러스터 공유하기네트워크 폴리시(Network Policy) 선언하기노드에 대한 확장 리소스 알리기서비스 디스커버리를 위해 CoreDNS 사용하기스토리지 사용량 제한중요한 애드온 파드 스케줄링 보장하기쿠버네티스 API 활성화 혹은 비활성화하기쿠버네티스 클러스터에서 sysctl 사용하기클러스터 업그레이드클러스터에서 DNS 서비스 오토스케일클러스터에서 캐스케이딩 삭제 사용퍼시스턴트볼륨 반환 정책 변경하기파드와 컨테이너 설정컨테이너 및 파드 메모리 리소스 할당윈도우 파드 및 컨테이너에서 RunAsUserName 구성윈도우 파드와 컨테이너용 GMSA 구성컨테이너 및 파드 CPU 리소스 할당Resize CPU and Memory Resources assigned to Containers파드에 대한 서비스 품질(QoS) 구성컨테이너에 확장 리소스 지정Create a Windows HostProcess Pod스토리지의 볼륨을 사용하는 파드 구성스토리지로 퍼시스턴트볼륨(PersistentVolume)을 사용하도록 파드 설정하기파드의 스토리지에 프로젝티드 볼륨(Projected Volume)을 사용하도록 구성프라이빗 레지스트리에서 이미지 받아오기Configure a Security Context for a Pod or ContainerConfigure Service Accounts for Pods노드 어피니티를 사용해 노드에 파드 할당노드에 파드 할당초기화 컨테이너에 대한 구성Configure Liveness, Readiness and Startup Probes파드에 유저 네임스페이스 사용하기스태틱(static) 파드 생성하기Attach Handlers to Container Lifecycle EventsConfigure a Pod to Use a ConfigMapShare Process Namespace between Containers in a Pod도커 컴포즈 파일을 쿠버네티스 리소스로 변환하기Use an Image Volume With a PodEnforce Pod Security Standards by Configuring the Built-in Admission ControllerEnforce Pod Security Standards with Namespace LabelsMigrate from PodSecurityPolicy to the Built-In PodSecurity Admission Controller쿠버네티스 오브젝트 관리구성 파일을 이용한 쿠버네티스 오브젝트의 선언형 관리Kustomize를 이용한 쿠버네티스 오브젝트의 선언형 관리명령형 커맨드를 이용한 쿠버네티스 오브젝트 관리하기구성 파일을 이용한 명령형 쿠버네티스 오브젝트 관리Update API Objects in Place Using kubectl patchMigrate Kubernetes Objects Using Storage Version Migration시크릿(Secret) 관리kubectl을 사용한 시크릿(Secret) 관리환경 설정 파일을 사용하여 시크릿을 관리kustomize를 사용하여 시크릿(Secret) 관리애플리케이션에 데이터 주입하기컨테이너를 위한 커맨드와 인자 정의하기종속 환경 변수 정의하기컨테이너를 위한 환경 변수 정의하기환경 변수로 컨테이너에 파드 정보 노출하기파일로 컨테이너에 파드 정보 노출하기시크릿(Secret)을 사용하여 안전하게 자격증명 배포하기애플리케이션 실행디플로이먼트(Deployment)로 스테이트리스 애플리케이션 실행하기단일 인스턴스 스테이트풀 애플리케이션 실행하기복제 스테이트풀 애플리케이션 실행하기스테이트풀셋(StatefulSet) 확장하기스테이트풀셋(StatefulSet) 삭제하기스테이트풀셋(StatefulSet) 파드 강제 삭제하기Horizontal Pod AutoscalingHorizontalPodAutoscaler 연습Specifying a Disruption Budget for your Application파드 내에서 쿠버네티스 API에 접근잡(Job) 실행크론잡(CronJob)으로 자동화된 작업 실행작업 대기열을 사용한 거친 병렬 처리작업 대기열을 사용한 정밀 병렬 처리정적 작업 할당을 통한 병렬 처리를 위한 색인된 잡파드 간 통신이 활성화된 잡확장을 사용한 병렬 처리Handling retriable and non-retriable pod failures with Pod failure policy클러스터 내 어플리케이션 접근쿠버네티스 대시보드를 배포하고 접속하기클러스터 접근다중 클러스터 접근 구성포트 포워딩을 사용해서 클러스터 내 애플리케이션에 접근하기클러스터 내 애플리케이션에 접근하기 위해 서비스 사용하기서비스를 사용하여 프론트엔드를 백엔드에 연결외부 로드 밸런서 생성하기NGINX 인그레스(Ingress) 컨트롤러로 Minikube에서 인그레스 설정하기클러스터 내 모든 컨테이너 이미지 목록 보기공유 볼륨을 이용하여 동일한 파드의 컨테이너 간에 통신하기클러스터의 DNS 구성하기클러스터에서 실행되는 서비스에 접근쿠버네티스 확장Configure the Aggregation LayerUse Custom ResourcesExtend the Kubernetes API with CustomResourceDefinitionsVersions in CustomResourceDefinitions확장 API 서버 설정다중 스케줄러 설정HTTP 프록시를 사용하여 쿠버네티스 API에 접근SOCKS5 프록시를 사용하여 쿠버네티스 API에 접근Konnectivity 서비스 설정TLSKubelet의 인증서 갱신 구성Manual Rotation of CA Certificates클러스터에서 TLS 인증서 관리클러스터 데몬 관리데몬셋(DaemonSet)에서 롤링 업데이트 수행데몬셋(DaemonSet)에서 롤백 수행Running Pods on Only Some Nodes네트워킹HostAliases로 파드의 /etc/hosts 항목 추가하기Extend Service IP RangesIPv4/IPv6 이중 스택 검증GPU 스케줄링HugePages 관리플러그인으로 kubectl 확장튜토리얼Hello Minikube쿠버네티스 기초 학습클러스터 생성하기Minikube를 사용해서 클러스터 생성하기대화형 튜토리얼 - 클러스터 생성하기앱 배포하기kubectl을 사용해서 디플로이먼트 생성하기대화형 튜토리얼 - 앱 배포하기앱 조사하기파드와 노드 보기대화형 튜토리얼 - 앱 조사하기앱 외부로 노출하기앱 노출을 위해 서비스 이용하기대화형 튜토리얼 - 앱 노출하기앱 스케일링하기복수의 앱 인스턴스를 구동하기대화형 튜토리얼 - 앱 스케일링하기앱 업데이트하기롤링 업데이트 수행하기대화형 튜토리얼 - 앱 업데이트 하기설정예제: Java 마이크로서비스 구성하기MicroProfile, 컨피그맵(ConfigMaps) 및 시크릿(Secrets)을 사용하여 구성 외부화(externalizing)대화형 튜토리얼 - Java 마이크로서비스 구성하기Updating Configuration via a ConfigMapAdopting Sidecar Containers컨피그맵을 사용해서 Redis 설정하기보안AppArmor를 사용하여 리소스에 대한 컨테이너의 접근 제한파드 시큐리티 스탠다드를 네임스페이스 수준에 적용하기파드 시큐리티 스탠다드를 클러스터 수준에 적용하기Restrict a Container's Syscalls with seccomp상태 유지를 하지 않는 애플리케이션외부 IP 주소를 노출하여 클러스터의 애플리케이션에 접속하기예시: Redis를 사용한 PHP 방명록 애플리케이션 배포하기상태 유지가 필요한(stateful) 애플리케이션스테이트풀셋 기본예시: WordPress와 MySQL을 퍼시스턴트 볼륨에 배포하기예시: 카산드라를 스테이트풀셋으로 배포하기분산 시스템 코디네이터 ZooKeeper 실행하기서비스서비스와 애플리케이션 연결하기소스 IP 주소 이용하기Explore Termination Behavior for Pods And Their Endpoints레퍼런스용어집API 개요Kubernetes API ConceptsServer-Side Apply클라이언트 라이브러리Common Expression Language in KubernetesKubernetes Deprecation PolicyDeprecated API Migration Guide쿠버네티스 API 헬스(health) 엔드포인트API 접근 제어Authenticating부트스트랩 토큰을 사용한 인증Using RBAC AuthorizationUsing Node AuthorizationWebhook ModeUsing ABAC AuthorizationAdmission ControllersDynamic Admission Control서비스 어카운트 관리하기Certificates and Certificate Signing Requests인가 개요Mapping PodSecurityPolicies to Pod Security StandardsKubelet 인증/인가TLS bootstrappingValidating Admission Policy잘 알려진 레이블, 어노테이션, 테인트(Taint)Audit AnnotationsKubernetes APIWorkload ResourcesPodBindingPodTemplateReplicationControllerReplicaSetDeploymentStatefulSetControllerRevisionDaemonSetJobCronJobHorizontalPodAutoscalerHorizontalPodAutoscalerPriorityClassPodSchedulingContext v1alpha3ResourceClaim v1alpha3ResourceClaimTemplate v1alpha3ResourceSlice v1alpha3Service ResourcesServiceEndpointsEndpointSliceIngressIngressClassConfig and Storage ResourcesConfigMapSecretCSIDriverCSINodeCSIStorageCapacityPersistentVolumeClaimPersistentVolumeStorageClassStorageVersionMigration v1alpha1VolumeVolumeAttachmentVolumeAttributesClass v1beta1Authentication ResourcesServiceAccountTokenRequestTokenReviewCertificateSigningRequestClusterTrustBundle v1alpha1SelfSubjectReviewAuthorization ResourcesLocalSubjectAccessReviewSelfSubjectAccessReviewSelfSubjectRulesReviewSubjectAccessReviewClusterRoleClusterRoleBindingRoleRoleBindingPolicy ResourcesFlowSchemaLimitRangeResourceQuotaNetworkPolicyPodDisruptionBudgetPriorityLevelConfigurationValidatingAdmissionPolicyValidatingAdmissionPolicyBindingExtend ResourcesCustomResourceDefinitionDeviceClass v1alpha3MutatingWebhookConfigurationValidatingWebhookConfigurationCluster ResourcesAPIServiceComponentStatusEventIPAddress v1beta1LeaseLeaseCandidate v1alpha1NamespaceNodeRuntimeClassServiceCIDR v1beta1Common DefinitionsDeleteOptionsLabelSelectorListMetaLocalObjectReferenceNodeSelectorRequirementObjectFieldSelectorObjectMetaObjectReferencePatchQuantityResourceFieldSelectorStatusTypedLocalObjectReferenceCommon Parameters노드 메트릭 데이터InstrumentationService Level Indicator MetricsCRI Pod & Container MetricsNode metrics dataKubernetes Metrics Reference쿠버네티스 이슈와 보안쿠버네티스 이슈 트래커쿠버네티스 보안과 공개 정보CVE feed노드 레퍼런스 정보kubelet 체크포인트 APILinux Kernel Version Requirements도커심 제거 및 CRI 호환 런타임 사용에 대한 기사Node Labels Populated By The KubeletKubelet Configuration Directory MergingKubelet Device Manager API VersionsNode Status네트워킹 레퍼런스서비스가 지원하는 프로토콜포트와 프로토콜가상 IP 및 서비스 프록시설치 도구Kubeadmkubeadm initkubeadm joinkubeadm upgradekubeadm configkubeadm resetkubeadm tokenkubeadm versionkubeadm alphakubeadm certskubeadm init phasekubeadm join phasekubeadm kubeconfigkubeadm reset phasekubeadm upgrade phaseImplementation details명령줄 도구 (kubectl)Introduction to kubectlkubectl Quick Referencekubectl referencekubectlkubectl annotatekubectl api-resourceskubectl api-versionskubectl applykubectl apply edit-last-appliedkubectl apply set-last-appliedkubectl apply view-last-appliedkubectl attachkubectl authkubectl auth can-ikubectl auth reconcilekubectl auth whoamikubectl autoscalekubectl certificatekubectl certificate approvekubectl certificate denykubectl cluster-infokubectl cluster-info dumpkubectl completionkubectl configkubectl config current-contextkubectl config delete-clusterkubectl config delete-contextkubectl config delete-userkubectl config get-clusterskubectl config get-contextskubectl config get-userskubectl config rename-contextkubectl config setkubectl config set-clusterkubectl config set-contextkubectl config set-credentialskubectl config unsetkubectl config use-contextkubectl config viewkubectl cordonkubectl cpkubectl createkubectl create clusterrolekubectl create clusterrolebindingkubectl create configmapkubectl create cronjobkubectl create deploymentkubectl create ingresskubectl create jobkubectl create namespacekubectl create poddisruptionbudgetkubectl create priorityclasskubectl create quotakubectl create rolekubectl create rolebindingkubectl create secretkubectl create secret docker-registrykubectl create secret generickubectl create secret tlskubectl create servicekubectl create service clusteripkubectl create service externalnamekubectl create service loadbalancerkubectl create service nodeportkubectl create serviceaccountkubectl create tokenkubectl debugkubectl deletekubectl describekubectl diffkubectl drainkubectl editkubectl eventskubectl execkubectl explainkubectl exposekubectl getkubectl kustomizekubectl labelkubectl logskubectl optionskubectl patchkubectl pluginkubectl plugin listkubectl port-forwardkubectl proxykubectl replacekubectl rolloutkubectl rollout historykubectl rollout pausekubectl rollout restartkubectl rollout resumekubectl rollout statuskubectl rollout undokubectl runkubectl scalekubectl setkubectl set envkubectl set imagekubectl set resourceskubectl set selectorkubectl set serviceaccountkubectl set subjectkubectl taintkubectl topkubectl top nodekubectl top podkubectl uncordonkubectl versionkubectl waitkubectl 치트 시트kubectl CommandskubectlJSONPath 지원도커 사용자를 위한 kubectlkubectl 사용 규칙Debug clusterFlow control컴포넌트 도구기능 게이트제거된 기능 게이트kubeletkube-apiserverkube-controller-managerkube-proxykube-schedulerConfiguration APIsClient Authentication (v1)Client Authentication (v1beta1)Event Rate Limit Configuration (v1alpha1)Image Policy API (v1alpha1)kube-apiserver Admission (v1)kube-apiserver Audit Configuration (v1)kube-apiserver Configuration (v1)kube-apiserver Configuration (v1alpha1)kube-apiserver Configuration (v1beta1)kube-controller-manager Configuration (v1alpha1)kube-proxy Configuration (v1alpha1)kube-scheduler Configuration (v1)kubeadm Configuration (v1beta3)kubeadm Configuration (v1beta4)kubeconfig (v1)Kubelet Configuration (v1)Kubelet Configuration (v1alpha1)Kubelet Configuration (v1beta1)Kubelet CredentialProvider (v1)WebhookAdmission Configuration (v1)External APIsKubernetes Custom Metrics (v1beta2)Kubernetes External Metrics (v1beta1)Kubernetes Metrics (v1beta1)스케줄링스케줄러 구성스케줄링 정책도구Mapping from dockercli to crictl기여Contribute to Kubernetes Documentation콘텐츠 개선 제안하기새로운 콘텐츠 기여하기풀 리퀘스트 열기Documenting for a releaseBlogs and case studies변경 사항 리뷰하기풀 리퀘스트 리뷰하기승인자와 리뷰어용Localizing Kubernetes documentationSIG Docs에 참여하기역할과 책임Issue WranglersPR 랭글러(PR Wrangler)레퍼런스 문서 갱신하기QuickstartContributing to the Upstream Kubernetes CodeGenerating Reference Documentation for the Kubernetes APIGenerating Reference Documentation for kubectl CommandsGenerating Reference Documentation for MetricsGenerating Reference Pages for Kubernetes Components and Tools문서 스타일 개요Content guideStyle guideDiagram guide새로운 주제의 문서 작성Page content typesContent organizationCustom Hugo Shortcodes고급 기여사이트 분석 보기쿠버네티스 문서 한글화 가이드Docs smoke test page쿠버네티스 문서문서Information in this document may be out of dateThis document has an older update date than the original, so the information it contains may be out of date. If you're able to read English, see the English version for the most up-to-date information:Kubernetes Documentation쿠버네티스는 배포, 스케일링, 그리고 컨테이너화된 애플리케이션의 관리를 자동화 해주는 오픈 소스 컨테이너 오케스트레이션 엔진이다. 본 오픈 소스 프로젝트는 Cloud Native Computing Foundation(CNCF)가 주관한다.쿠버네티스 이해하기쿠버네티스와 쿠버네티스의 기본 개념을 배운다.쿠버네티스란 무엇인가?쿠버네티스 컴포넌트쿠버네티스 API쿠버네티스 오브젝트 이해하기파드개념 살펴보기쿠버네티스 사용해보기쿠버네티스에 애플리케이션을 배포하는 방법을 튜토리얼을 따라하며 배운다.Hello Minikube쿠버네티스 기초 학습상태를 유지하지 않는 예제: Redis를 사용한 PHP 방명록스테이트풀셋 예시: Wordpress와 퍼시스턴트 볼륨튜토리얼 보기K8s 클러스터 구축하기보유한 자원과 요구에 맞게 동작하는 쿠버네티스를 구축한다.kubeadm 설정 도구 설치학습 환경프로덕션 환경쿠버네티스 구축하기쿠버네티스 사용법 배우기일반적인 태스크와 이를 수행하는 방법을 여러 단계로 구성된 짧은 시퀀스를 통해 살펴본다.macOS에 kubectl 설치하기리눅스에 kubectl 설치하기윈도우에 kubectl 설치하기웹 UI 대시보드 사용다중 클러스터 접근 구성태스크 보기교육공인 쿠버네티스 인증을 획득하고 클라우드 네이티브 프로젝트를 성공적으로 수행하세요!교육 보기레퍼런스 정보 찾기용어, 커맨드 라인 구문, API 자원 종류, 그리고 설치 툴 문서를 살펴본다.용어집명령줄 도구 (kubectl)kubectl 치트 시트Kubeadm기능 게이트레퍼런스 보기문서에 기여하기이 프로젝트가 처음인 사람이든, 오래 활동한 사람이든 상관없이 누구나 기여할 수 있다.K8s에 기여 시작하기콘텐츠 개선 제안하기풀 리퀘스트 열기SIG Docs에 참여하기사이트 분석 보기문서에 기여하기K8s 릴리스 노트쿠버네티스를 설치하거나 최신의 버전으로 업그레이드하는 경우, 현재 릴리스 노트를 참고한다.쿠버네티스 다운로드문서에 대하여이 웹사이트는 현재 버전과 이전 4개 버전의 쿠버네티스 문서를 포함한다.최종 수정 November 11, 2023 at 6:34 PM PST:[ko] Change footer l10n from Home to Documentation (3edcad8ebc)페이지 편집하부 페이지 생성문서에 이슈 생성전체 섹션 프린트문서블로그교육파트너커뮤니티사례 연구© 2024 The Kubernetes Authors | Documentation Distributed underCC BY 4.0Copyright © 2024 The Linux Foundation ®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see ourTrademark Usage pageICP license: 京ICP备17074266号-3
+The Kubernetes API
+The core of Kubernetes' [control plane](/docs/reference/glossary/?all=true#term-control-plane)
+is the [API server](/docs/concepts/architecture/#kube-apiserver). The API server
+exposes an HTTP API that lets end users, different parts of your cluster, and
+external components communicate with one another.
+The Kubernetes API lets you query and manipulate the state of API objects in Kubernetes (for example: Pods, Namespaces, ConfigMaps, and Events).
+Most operations can be performed through the [kubectl](/docs/reference/kubectl/)
+command-line interface or other command-line tools, such as
+[kubeadm](/docs/reference/setup-tools/kubeadm/), which in turn use the API.
+However, you can also access the API directly using REST calls. Kubernetes
+provides a set of [client libraries](/docs/reference/using-api/client-libraries/)
+for those looking to
+write applications using the Kubernetes API.
+Each Kubernetes cluster publishes the specification of the APIs that the cluster serves.
+There are two mechanisms that Kubernetes uses to publish these API specifications; both are useful
+to enable automatic interoperability. For example, the kubectl
+tool fetches and caches the API
+specification for enabling command-line completion and other features.
+The two supported mechanisms are as follows:
+[The Discovery API](#discovery-api)provides information about the Kubernetes APIs: API names, resources, versions, and supported operations. This is a Kubernetes specific term as it is a separate API from the Kubernetes OpenAPI. It is intended to be a brief summary of the available resources and it does not detail specific schema for the resources. For reference about resource schemas, please refer to the OpenAPI document.The
+[Kubernetes OpenAPI Document](#openapi-interface-definition)provides (full)[OpenAPI v2.0 and 3.0 schemas](https://www.openapis.org/)for all Kubernetes API endpoints. The OpenAPI v3 is the preferred method for accessing OpenAPI as it provides a more comprehensive and accurate view of the API. It includes all the available API paths, as well as all resources consumed and produced for every operations on every endpoints. It also includes any extensibility components that a cluster supports. The data is a complete specification and is significantly larger than that from the Discovery API.
+Discovery API
+Kubernetes publishes a list of all group versions and resources supported via the Discovery API. This includes the following for each resource:
+- Name
+- Cluster or namespaced scope
+- Endpoint URL and supported verbs
+- Alternative names
+- Group, version, kind
+The API is available both aggregated and unaggregated form. The aggregated discovery serves two endpoints while the unaggregated discovery serves a separate endpoint for each group version.
+Aggregated discovery
+Kubernetes v1.30 [stable]
+Kubernetes offers stable support for aggregated discovery, publishing
+all resources supported by a cluster through two endpoints (/api
+and
+/apis
+). Requesting this
+endpoint drastically reduces the number of requests sent to fetch the
+discovery data from the cluster. You can access the data by
+requesting the respective endpoints with an Accept
+header indicating
+the aggregated discovery resource:
+Accept: application/json;v=v2;g=apidiscovery.k8s.io;as=APIGroupDiscoveryList
+.
+Without indicating the resource type using the Accept
+header, the default
+response for the /api
+and /apis
+endpoint is an unaggregated discovery
+document.
+The [discovery document](https://github.com/kubernetes/kubernetes/blob/release-1.31/api/discovery/aggregated_v2beta1.json)
+for the built-in resources can be found in the Kubernetes GitHub repository.
+This Github document can be used as a reference of the base set of the available resources
+if a Kubernetes cluster is not available to query.
+The endpoint also supports ETag and protobuf encoding.
+Unaggregated discovery
+Without discovery aggregation, discovery is published in levels, with the root endpoints publishing discovery information for downstream documents.
+A list of all group versions supported by a cluster is published at
+the /api
+and /apis
+endpoints. Example:
+{
+"kind": "APIGroupList",
+"apiVersion": "v1",
+"groups": [
+{
+"name": "apiregistration.k8s.io",
+"versions": [
+{
+"groupVersion": "apiregistration.k8s.io/v1",
+"version": "v1"
+}
+],
+"preferredVersion": {
+"groupVersion": "apiregistration.k8s.io/v1",
+"version": "v1"
+}
+},
+{
+"name": "apps",
+"versions": [
+{
+"groupVersion": "apps/v1",
+"version": "v1"
+}
+],
+"preferredVersion": {
+"groupVersion": "apps/v1",
+"version": "v1"
+}
+},
+...
+}
+Additional requests are needed to obtain the discovery document for each group version at
+/apis/<group>/<version>
+(for example:
+/apis/rbac.authorization.k8s.io/v1alpha1
+), which advertises the list of
+resources served under a particular group version. These endpoints are used by
+kubectl to fetch the list of resources supported by a cluster.
+OpenAPI interface definition
+For details about the OpenAPI specifications, see the [OpenAPI documentation](https://www.openapis.org/).
+Kubernetes serves both OpenAPI v2.0 and OpenAPI v3.0. OpenAPI v3 is the
+preferred method of accessing the OpenAPI because it offers a more comprehensive
+(lossless) representation of Kubernetes resources. Due to limitations of OpenAPI
+version 2, certain fields are dropped from the published OpenAPI including but not
+limited to default
+, nullable
+, oneOf
+.
+OpenAPI V2
+The Kubernetes API server serves an aggregated OpenAPI v2 spec via the
+/openapi/v2
+endpoint. You can request the response format using
+request headers as follows:
+Header | Possible values | Notes |
+---|---|---|
+Accept-Encoding | gzip | not supplying this header is also acceptable |
+Accept | application/com.github.proto-openapi.spec.v2@v1.0+protobuf | mainly for intra-cluster use |
+application/json | default | |
+* | serves application/json |
+OpenAPI V3
+Kubernetes v1.27 [stable]
+Kubernetes supports publishing a description of its APIs as OpenAPI v3.
+A discovery endpoint /openapi/v3
+is provided to see a list of all
+group/versions available. This endpoint only returns JSON. These
+group/versions are provided in the following format:
+{
+"paths": {
+...,
+"api/v1": {
+"serverRelativeURL": "/openapi/v3/api/v1?hash=CC0E9BFD992D8C59AEC98A1E2336F899E8318D3CF4C68944C3DEC640AF5AB52D864AC50DAA8D145B3494F75FA3CFF939FCBDDA431DAD3CA79738B297795818CF"
+},
+"apis/admissionregistration.k8s.io/v1": {
+"serverRelativeURL": "/openapi/v3/apis/admissionregistration.k8s.io/v1?hash=E19CC93A116982CE5422FC42B590A8AFAD92CDE9AE4D59B5CAAD568F083AD07946E6CB5817531680BCE6E215C16973CD39003B0425F3477CFD854E89A9DB6597"
+},
+....
+}
+}
+The relative URLs are pointing to immutable OpenAPI descriptions, in
+order to improve client-side caching. The proper HTTP caching headers
+are also set by the API server for that purpose (Expires
+to 1 year in
+the future, and Cache-Control
+to immutable
+). When an obsolete URL is
+used, the API server returns a redirect to the newest URL.
+The Kubernetes API server publishes an OpenAPI v3 spec per Kubernetes
+group version at the /openapi/v3/apis/<group>/<version>?hash=<hash>
+endpoint.
+Refer to the table below for accepted request headers.
+Header | Possible values | Notes |
+---|---|---|
+Accept-Encoding | gzip | not supplying this header is also acceptable |
+Accept | application/com.github.proto-openapi.spec.v3@v1.0+protobuf | mainly for intra-cluster use |
+application/json | default | |
+* | serves application/json |
+A Golang implementation to fetch the OpenAPI V3 is provided in the package
+[ k8s.io/client-go/openapi3](https://pkg.go.dev/k8s.io/client-go/openapi3).
+Kubernetes 1.31 publishes OpenAPI v2.0 and v3.0; there are no plans to support 3.1 in the near future.
+Protobuf serialization
+Kubernetes implements an alternative Protobuf based serialization format that
+is primarily intended for intra-cluster communication. For more information
+about this format, see the [Kubernetes Protobuf serialization](https://git.k8s.io/design-proposals-archive/api-machinery/protobuf.md)
+design proposal and the
+Interface Definition Language (IDL) files for each schema located in the Go
+packages that define the API objects.
+Persistence
+Kubernetes stores the serialized state of objects by writing them into
+[etcd](/docs/tasks/administer-cluster/configure-upgrade-etcd/).
+API groups and versioning
+To make it easier to eliminate fields or restructure resource representations,
+Kubernetes supports multiple API versions, each at a different API path, such
+as /api/v1
+or /apis/rbac.authorization.k8s.io/v1alpha1
+.
+Versioning is done at the API level rather than at the resource or field level to ensure that the API presents a clear, consistent view of system resources and behavior, and to enable controlling access to end-of-life and/or experimental APIs.
+To make it easier to evolve and to extend its API, Kubernetes implements
+[API groups](/docs/reference/using-api/#api-groups) that can be
+[enabled or disabled](/docs/reference/using-api/#enabling-or-disabling).
+API resources are distinguished by their API group, resource type, namespace (for namespaced resources), and name. The API server handles the conversion between API versions transparently: all the different versions are actually representations of the same persisted data. The API server may serve the same underlying data through multiple API versions.
+For example, suppose there are two API versions, v1
+and v1beta1
+, for the same
+resource. If you originally created an object using the v1beta1
+version of its
+API, you can later read, update, or delete that object using either the v1beta1
+or the v1
+API version, until the v1beta1
+version is deprecated and removed.
+At that point you can continue accessing and modifying the object using the v1
+API.
+API changes
+Any system that is successful needs to grow and change as new use cases emerge or existing ones change. Therefore, Kubernetes has designed the Kubernetes API to continuously change and grow. The Kubernetes project aims to not break compatibility with existing clients, and to maintain that compatibility for a length of time so that other projects have an opportunity to adapt.
+In general, new API resources and new resource fields can be added often and frequently.
+Elimination of resources or fields requires following the
+[API deprecation policy](/docs/reference/using-api/deprecation-policy/).
+Kubernetes makes a strong commitment to maintain compatibility for official Kubernetes APIs
+once they reach general availability (GA), typically at API version v1
+. Additionally,
+Kubernetes maintains compatibility with data persisted via beta API versions of official Kubernetes APIs,
+and ensures that data can be converted and accessed via GA API versions when the feature goes stable.
+If you adopt a beta API version, you will need to transition to a subsequent beta or stable API version once the API graduates. The best time to do this is while the beta API is in its deprecation period, since objects are simultaneously accessible via both API versions. Once the beta API completes its deprecation period and is no longer served, the replacement API version must be used.
+Note:
+Although Kubernetes also aims to maintain compatibility for alpha APIs versions, in some circumstances this is not possible. If you use any alpha API versions, check the release notes for Kubernetes when upgrading your cluster, in case the API did change in incompatible ways that require deleting all existing alpha objects prior to upgrade.Refer to [API versions reference](/docs/reference/using-api/#api-versioning)
+for more details on the API version level definitions.
+API Extension
+The Kubernetes API can be extended in one of two ways:
+[Custom resources](/docs/concepts/extend-kubernetes/api-extension/custom-resources/)let you declaratively define how the API server should provide your chosen resource API.- You can also extend the Kubernetes API by implementing an
+[aggregation layer](/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/).
+What's next
+- Learn how to extend the Kubernetes API by adding your own
+[CustomResourceDefinition](/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/). [Controlling Access To The Kubernetes API](/docs/concepts/security/controlling-access/)describes how the cluster manages authentication and authorization for API access.- Learn about API endpoints, resource types and samples by reading
+[API Reference](/docs/reference/kubernetes-api/). - Learn about what constitutes a compatible change, and how to change the API, from
+[API changes](https://git.k8s.io/community/contributors/devel/sig-architecture/api_changes.md#readme).
+[fix the broken link for discovery document (2b1ea305be)](https://github.com/kubernetes/website/commit/2b1ea305bed116a46693b517c98f014d99bcd207)

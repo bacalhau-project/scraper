@@ -1,28 +1,101 @@
 Source: nats_io
-URL: https://nats.io/blog/microonnats/
+URL: https://nats.io/blog/nats-server-2.9.16-release/#-minimizing-restart-impact
 
-AboutDownloadDocumentationBlogCommunitySupportPrivacyGuest Post: Micro on NATS - Microservices with MessagingAsim Aslam— April 11, 2016Back to BlogIn this post we’re going to discuss usingMicroonNATS. It includes discussion around service discovery, synchronous and asynchronous communication for microservices.If you would like to learn more about Micro first, check out the blog post detailing the toolkit here.Let’s get down to business.What is NATS?NATSis an open source cloud native messaging system or more simply a message bus. NATS was created by Derek Collison, the founder of Apcera. It originated within VMWare and began life as a ruby based system. It’s long since been rewritten in Go and is steadily gaining adoption amongst those looking for a highly scalable and performant messaging system.If you want to learn more about NATS itself, visitnats.ioor join the communityhere.Why NATS?Why not NATS? Having worked with many message buses in the past, it was very quickly clear that NATS stood apart. Over the years messaging has been hailed as the saviour of the enterprise, resulting in systems that attempted to be everything to everyone. It led to a lot of false promises, significant feature bloat and high cost technologies that created more problems than they solved.NATS, in contrast, takes the approach of being very focused, solving the problems of performance and availability while staying incredibly lean. It speaks of being “always on and available”, and using a “fire and forget” messaging pattern. It’s simplicity, focus and lightweight characteristics make it a prime candidate for the microservices ecosystem. We believe it will soon become the primary candidate as a transport for communication between services where messaging is concerned.What NATS provides:High performance and scalabilityHigh availabilityExtremely lightweightAt most once deliveryWhat NATS does not provide:PersistenceTransactionsEnhanced delivery modesEnterprise queueingThat briefly covers the what’s and why’s of NATS. So how does it fit in with Micro? Let’s discuss.Micro on NATSMicrois a microservice toolkit built with a pluggable architecture allowing the underlying dependencies to be swapped out with minimal changes. Each interface of theGo-Microframework provides a building block for microservices; theregistryfor service discovery,transportfor synchronous communication,brokerfor asynchronous messaging, etc.Creating a plugin for each component is as simple as implementing the interface. We’ll spend more time detailing how to write plugins in a future blog post. If you want to check out the plugins for NATS or any other systems such as etcd discovery, kafka broker, rabbitmq transport, you can find them here:github.com/micro/go-plugins.Micro on NATS is essentially a set of go-micro plugins that can be used to integrate with the NATS messaging system. By providing plugins for the various interfaces of go-micro, we create a number of integration points which allow a choice of architecture patterns.In our experience one size does not fit all and the flexibility of Micro on NATS allows you to define the model that works for you and your team.Below we’ll discuss implementations of the NATS plugins for the transport, broker and registry.TransportThe transport is the go-micro interface for synchronous communication. It uses fairly common Socket semantics similar to other Go code with Listen, Dial and Accept. These concepts and patterns are well understood for synchronous communication using tcp, http, etc but it can be somewhat more difficult to adapt to a message bus. A connection is established with the message bus rather than with a service itself. To get around this we use the notion of a pseudo connection with topics and channels.Here’s how it works:A service usestransport.Listento listen for messages. This will create a connection to NATS. Whentransport.Acceptis called, a unique topic is created and subscribed to. This unique topic will be used as the service address in the go-micro registry. Every message received will then be used as the basis for a pseudo socket/connection. If an existing connection exists with the same reply address we’ll simply put the message in the backlog for that connection.A client which wants to communicate with this service will use transport.Dial to create a connection to the service. This will connect to NATS, create it’s own unique topic and subscribe to it. The topic is used for responses from the service. Anytime a message is sent by the client to the service, it will set the reply address to this topic.When either side wants to close the connection, they simply calltransport.Closewhich will terminate the connection to NATS.Using the transport pluginImport the transport pluginimport _ "github.com/micro/go-plugins/transport/nats"Start with the transport flaggo run main.go --transport=nats --transport_address=127.0.0.1:4222Alternatively use the transport directlytransport := nats.NewTransport()…
-The go-micro transport interface:type Transport interface {
-    Dial(addr string, opts ...DialOption) (Client, error)
-    Listen(addr string, opts ...ListenOption) (Listener, error)
-    String() string
-}TransportBrokerThe broker is the go-micro interface for asynchronous messaging. It provides a high level generic implementation that applies across most message brokers. NATS, by its very nature, is an asynchronous messaging system, it’s made for use as a message broker. There’s only one caveat, NATS does not persist messages. While this may not be ideal for some, we still believe NATS can and should be used as a broker with go-micro. Where persistence is not required, it allows for a highly scalable pub sub architecture.NATS provides a very straight forward Publish and Subscribe mechanism with the concepts of Topics, Channels, etc. There was no real fancy work required here to make it work. Messages can be published in an asynchronous fire and forget manner. Subscribers using the same channel name form a Queue Group in NATS which will then allow messages to automatically be evenly distributed across the subscribers.Using the broker pluginImport the broker pluginimport _ "github.com/micro/go-plugins/broker/nats"Start with the broker flaggo run main.go --broker=nats --broker_address=127.0.0.1:4222Alternatively use the broker directlybroker := nats.NewBroker()…
-The go-micro broker interface:type Broker interface {
-    Options() Options
-    Address() string
-    Connect() error
-    Disconnect() error
-    Init(...Option) error
-    Publish(string, *Message, ...PublishOption) error
-    Subscribe(string, Handler, ...SubscribeOption) (Subscriber, error)
-    String() string
-}BrokerRegistryThe registry is the go-micro interface for service discovery. You might be thinking. Service discovery using a message bus? Does that even work? Indeed it does and rather well. Many people using a message bus for their transport will avoid using any kind of separate discovery mechanism. This is because the message bus itself can handle routing via topics and channels. Topics defined as service names can be used as the routing key, automatically load balancing between instances of a service that subscribe to the topic.Go-micro treats the service discovery and transport mechanisms as two separate concerns. Anytime a client makes a request to another service, beneath the covers, it looks up the service in the registry by name, picks the address of a node and then communicates with it via the transport.Usually the most common way of storing service discovery information is via
-a distributed key-value store like zookeeper, etcd or something similar. As you may have realised, NATS is not a distributed key-value store, so we’re going to do something a little different…Broadcast queries!Broadcast queries are just as you may imagine. Services listen on a particular topic we deem for broadcasting queries. Anyone who wants service discovery information will first create a reply topic which it subscribes to, then make its query on the broadcast topic with their reply address.Because we don’t actually know how many instances of a service are running or how many responses will be returned, we set an upper bound on the time we’re willing to wait for a response. It’s a crude mechanism of scatter gather for discovery but because of the scalable and performant nature of NATs, it actually works incredibly well. It also indirectly provides a very simple way of filtering services with higher response times. In the future we’ll look to improve the underlying implementation.So to sum up how it works:Create reply topic and subscribeSend query on broadcast topic with reply addressListen for responses and unsubscribe after a time limitAggregate response and return resultUsing the registry pluginImport the registry pluginimport _ "github.com/micro/go-plugins/registry/nats"Start with the registry flaggo run main.go --registry=nats --registry_address=127.0.0.1:4222Alternatively use the registry directlyregistry := nats.NewRegistry()…
-The go-micro registry interface:type Registry interface {
-    Register(*Service, ...RegisterOption) error
-    Deregister(*Service) error
-    GetService(string) ([]*Service, error)
-    ListServices() ([]*Service, error)
-    Watch() (Watcher, error)
-    String() string
-}RegistryScaling Micro on NATSIn the examples above we’re only specifying a single NATS server on localhost but our recommended practice for real world use is to setup a NATS cluster for highly availability and fault tolerance. To learn more about NATs clustering checkout the NATS documentation here.Micro accepts a comma separated list of addresses as the flags mentioned above or optionally the use of environment variables. If you’re using the client libraries directly it also allows a variadic set of hosts as an option for initialisation of the registry, transport and broker.In terms of architecture in a cloud native world, our past experiences suggest that clusters per AZ or per region are ideal. Most cloud providers have relatively low (3-5ms) latency between AZs which allows for regional clustering without issue. When running a highly available configuration, it’s important to ensure that you’re system is capable of tolerating an AZ failure and in more mature configurations an entire region failure. We do not recommend clustering across regions. Ideally higher level tools should be used to manage multi-cluster and multi-region systems.Micro is an incredibly flexible runtime agnostic microservices system. It’s designed to run anywhere and in any configuration. It’s view of the world is guided by the service registry. Clusters of services can be localised and namespaced within a pool of machines, AZs or regions based entirely on which registry you provide the service access to. In combination with NATS clustering it allows you to build a highly available architecture to serve your needs.SummaryNATSis a scalable and performant messaging system which we believe fits nicely into the microservice ecosystem. It plays extremely well with Micro and as we’ve demonstrated can be used as a plugin for theRegistry,TransportorBroker. We’ve implemented all three to highlight just how flexible NATS can be.Micro on NATS is an example of Micro’s powerful pluggable architecture. Each of the go-micro packages can be implemented and swapped out with minimal changes. In the future look to see more of examples of Micro on [X]. The next most likely to be Micro on Kubernetes.Hopefully this will inspire you to try out Micro on NATS or even write some plugins for other systems and contribute back to the community.Find the source for the NATS plugins atgithub.com/micro/go-plugins.If you want to learn more about the services we offer or microservices, check out theblog, the websitemicro.muor the github repo.Follow us on Twitter at@MicroHQor join theSlackcommunityhere.Back to BlogCopyright © NATS Authors 2024NATS is aCloud Native Computing Foundationincubating projectThe Linux Foundation has registered trademarks and uses trademarks.For a list of trademarks of The Linux Foundation, please seeTrademark Usage page.
+[Back to Blog](/blog)
+NATS Server 2.9.16 Release
+Byron Ruth — April 19, 2023
+The NATS maintainers are very proud to announce the
+[2.9.16 release](https://github.com/nats-io/nats-server/releases/tag/v2.9.16)
+! 🥳
+This release brings another round of stability and performance improvements, leveraging our new quality engineering practices described in the
+[2.9.15 announcement post](/blog/nats-server-2.9.15-release/)
+, and iterating directly with users having high-scale and latency-sensitive workloads.
+Given the positive feedback on the previous announcement post focusing on the higher-level impact of the changes, going forward all releases will have an announcement post!
+In this post we will cover a few key areas:
+[False positive vulnerabilities](#-false-positive-vulnerabilities)[Nightly builds](#-nightly-builds)[Raft self-healing and cleanup](#-raft-self-healing-and-cleanup)[Minimizing restart impact](#-minimizing-restart-impact)[P99 performance](#-p99-performance)
+For the entirety of the improvements and fixes, check out the
+[release
+notes](https://github.com/nats-io/nats-server/releases/tag/v2.9.16)
+.
+🪆 False positive vulnerabilities
+A
+[report from last month](https://github.com/nats-io/nats-server/issues/3992)
+indicated that security vulnerability scanners, such as
+[Grype](https://github.com/anchore/grype)
+and
+[Trivy](https://github.com/aquasecurity/trivy)
+, would report the server had an active CVE or would not pass due to a “malformed version”.
+We eventually discovered that using go build .
+rather than go build main.go
+resulted in Go not listing the package itself as a dependency with the (devel)
+version which was tripping up the vulnerability scanners.
+Although a subtle change, after updating this, there are no more false positives. Given the increasing sensitivity of vulnerable dependencies and supply chain attacks, we take reports like these very seriously and want to ensure even false positives are remediated.
+Relevant PRs
+🏗️ Nightly builds
+As part of this development cycle, a new nightly build based off of the main
+branch was introduced, which follows the current minor release series, such as 2.9.x
+. This was driven by user demand to be able to try and test out recently-landed server PRs as they are merged throughout the development cycle in preparation for the next patch release.
+Making this available has been invaluable for the NATS team since it shortens the feedback loop for users actively engaged and testing changes in their own environments.
+The build is available as a
+[Docker image](https://hub.docker.com/r/synadia/nats-server/tags?page=1&name=nightly-main)
+under the synadia
+Docker Hub organization with the nightly-main
+tag:
+$ docker run -p 4222:4222 synadia/nats-server:nightly-main -js
+For those that were not aware, there is an
+[existing Docker image](https://hub.docker.com/r/synadia/nats-server/tags?page=1&name=nightly)
+having the nightly
+tag based on the dev
+branch which tracks the next minor version, in this case 2.10.0
+.
+$ docker run -p 4222:4222 synadia/nats-server:nightly -js
+Relevant PRs
+🪵 Raft self-healing and cleanup
+One of the NATS core pillars is for the server to be self-healing. Specifically, the ability to preserve itself against slow or rogue clients, and recover in the face of partial failure.
+The JetStream subsystem, managing streams and consumers, relies on a
+[custom Raft implementation](https://github.com/nats-io/nats-server/blob/main/server/raft.go)
+built on top of Core NATS itself enhanced by two distinctive features:
+- Optimized hand-offs using cooperative step-down on leader transfers to minimize interruption
+- Detection of storage faults and corruption using checksums on read and writes
+This release brings additional fixes and improvements making this self-healing attribute more robust.
+One fix addressed a memory leak that could occur if the JetStream subsystem shut down on a server, making it inactive from the cluster’s standpoint, but the server itself was still holding on to resources.
+A second improvement detects servers in
+[lame duck mode](https://docs.nats.io/running-a-nats-service/nats_admin/lame_duck_mode)
+and omits them as possible leaders for Raft groups. Although the previous behavior would eventually correct itself once the server finally shut down, this optimizes the leader election so that a server that is about to shut down will not be selected, reducing impact to active JetStream assets.
+Finally, an uncommon split-brain failure mode, resulting in two separate leaders trying to run for the same asset leadership term, has been addressed. Previously, manual intervention was required to force step-down
+one of the leaders, but this is now performed automatically when detected.
+Relevant PRs
+⏳ Minimizing restart impact
+For NATS deployments that have hundreds or thousands (or more) streams and consumers with high loads, a server restart (or failure) can be potentially disruptive in production.
+When a clustered server goes offline whilst running as replica leaders, although leader election is handled transparently, all of the load will ultimately shift to other servers, increasing their load further. When the offline server comes back online (or is replaced), it will need to be deemed healthy before it is possible to shift leaders and load back to this server.
+The single entrypoint for determining server health is the /healthz
+monitoring endpoint. For Kubernetes-based deployments, this is the endpoint used for the readiness and liveness probes (using different parameters). For servers having many assigned assets, becoming healthy for all assets could take a significant amount of time, delaying the server from being an active participant for the assets that were asserted to be healthy.
+A key improvement in this release is to provide more granular, per asset checking to prevent blocking healthy assets from participating in their Raft group.
+As noted above, for high throughput workloads, the amount of data the server needs to churn through may not be small, so optimizing this path can be critical for reducing startup times and aiding cluster recovery.
+A second improvement is to better handle the case that recovering the local state for a JetStream asset had stalled (usually resulting in Catching up for server X stalled
+warnings), instead resetting the log and recovering with the assistance of other healthy servers in the cluster.
+Previous manual intervention required scaling down a stream to R1, effectively wiping local replica state, followed by scaling back up, causing a fresh copy to sync from the leader.
+This stall detection will reduce the time for a server to become healthy (via /healthz
+), thus minimizing the impact on planned or unplanned restarts.
+Relevant PRs
+⚡ P99 performance
+[Synadia](https://synadia.com)
+was fortunate to work with a customer in the financial services industry measuring JetStream publish latency. They cared deeply about 99th percentile (P99) publish latencies, keeping the variance (even at peak load) as low as possible.
+Their setup consisted of ~200 R3 streams spread out across a private network tying together all three major public clouds. Their workload had peak publish throughput of ~180-200k messages/second.
+After their own evaluation, they discovered their P99 metric had some publish latencies reaching several seconds. To level-set, in this context, P99 refers to the 1% worst publish latencies that were measured. The other 99% of measured publish latencies were in range of their needs.
+The quality engineering team modeled the workload with a similar topology, number streams, etc. and added it as part of the load testing suite. Throughout the development cycle, this workload was run repeatedly to ensure proposed changes were in fact improving performance.
+After a day’s worth of changes were incorporated, the customer was able to pull a nightly build and re-test within their own environment, resulting in a productive daily feedback loop. 🙌
+The range of improvements and optimizations varied, but by the end of this journey, the team was able to reduce the P99 publish latency to under 30ms at peak load.
+📝 As an obligatory disclaimer, performance numbers are very workload and environment-specific. The takeaway from this section should be the magnitude of improvement that was achieved as a result of this effort.
+Relevant PRs
+Conclusion
+The NATS team is incredibly proud of this release and reinforces the impact the new quality engineering process provides (and now our nightly builds) in optimizing the feedback loop for discovering, assessing, and addressing fixes and improvements.
+As always, refer to the
+[download page](https://nats.io/download/)
+for direct links to the GitHub release page and the official Docker image.
+About the Author
+[Byron Ruth](https://www.linkedin.com/in/byron-ruth/)
+is the Director of Developer Relations at
+[Synadia](https://synadia.com)
+and a long-time NATS user.
+[Back to Blog](/blog)

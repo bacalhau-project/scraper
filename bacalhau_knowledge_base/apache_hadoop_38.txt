@@ -1,39 +1,43 @@
-URL: https://hadoop.apache.org/release.html
+Source: apache_hadoop
+URL: https://hadoop.apache.org/news.html
 
-Toggle navigationApache HadoopDownloadDocumentationCurrent (trunk)LatestStable3.4.03.3.62.10.2WikiCommunityBylawsCriteria for CommittershipMailing listsPublished CVEsWho We areDevelopmentHow to ContributeIssue TrackingVersion ControlVersioningHelpBuy StuffSponsorshipThanksApache Software FoundationReleases ArchiveRelease 3.4.0 available2024 Mar 17This is the first release of Apache Hadoop 3.4 line. It contains 2888 bug fixes, improvements and enhancements since 3.3.Users are encouraged to read theoverview of major changes.
-For details of please checkrelease notesandchangelog.Release 3.3.6 available2023 Jun 23This is a release of Apache Hadoop 3.3 line.It contains 117 bug fixes, improvements and enhancements since 3.3.5.
-Users of Apache Hadoop 3.3.5 and earlier should upgrade to this release.Feature highlights:SBOM artifactsStarting from this release, Hadoop publishes Software Bill of Materials (SBOM) using
-CycloneDX Maven plugin. For more information on SBOM, please go toSBOM.HDFS RBF: RDBMS based token storage supportHDFS Router-Router Based Federation now supports storing delegation tokens on MySQL,HADOOP-18535which improves token operation through over the original Zookeeper-based implementation.New File System APIsHADOOP-18671moved a number of
-HDFS-specific APIs to Hadoop Common to make it possible for certain applications that
-depend on HDFS semantics to run on other Hadoop compatible file systems.In particular, recoverLease() and isFileClosed() are exposed through LeaseRecoverable
-interface, while setSafeMode() is exposed through SafeMode interface.Users are encouraged to read theoverview of major changessince release 3.3.5.
-For details of 117 bug fixes, improvements, and other enhancements since the previous 3.3.5 release,
-please checkrelease notesandchangelog.Release 3.3.5 available2023 Mar 22This is a release of Apache Hadoop 3.3 line.Key changes includeA big update of dependencies to try and keep those reports of
-transitive CVEs under control -both genuine and false positives.Critical fix to ABFS input stream prefetching for correct reading.Vectored IO API for all FSDataInputStream implementations, with
-high-performance versions for file:// and s3a:// filesystems.
-file:// through java native IO
-s3a:// parallel GET requests.Arm64 binaries. Note, because the arm64 release was on a different
-platform, the jar files may not match those of the x86
-release -and therefore the maven artifacts.Security fixes in Hadoop’s own code.Users of Apache Hadoop 3.3.4 and earlier should upgrade to
-this release.All users are encouraged to read theoverview of major changessince release 3.3.4.For details of bug fixes, improvements, and other enhancements since
-the previous 3.3.4 release, please checkrelease notesandchangelog.Azure ABFS: Critical Stream Prefetch FixThe ABFS connector has a critical bug fixhttps://issues.apache.org/jira/browse/HADOOP-18546:ABFS. Disable purging list of in-progress reads in abfs stream close().All users of the abfs connector in hadoop releases 3.3.2+ MUST either upgrade
-to this release or disable prefetching by settingfs.azure.readaheadqueue.depthto0.Release 3.3.4 available2022 Aug 8This is a release of Apache Hadoop 3.3 line.It contains a small number security and critical integration fixes since 3.3.3.Users of Apache Hadoop 3.3.3 should upgrade to this release.Users of hadoop 2.x and hadoop 3.2 should also upgrade to the 3.3.x line.
-As well as feature enhancements, this is the sole branch currently
-receiving fixes for anything other than critical security/data integrity
-issues.Users are encouraged to read theoverview of major changessince release 3.3.3.
-For details of bug fixes, improvements, and other enhancements since the previous 3.3.3 release,
-please checkrelease notesandchangelog.Release 3.2.4 available2022 Jul 22This is the third stable release of Apache Hadoop 3.2 line.It contains 153 bug fixes, improvements and enhancements since 3.2.3.Users are encouraged to read theoverview of major changessince 3.2.3.
-For details of 153 bug fixes, improvements, and other enhancements since the previous 3.2.3 release,
-please checkrelease notesandchangelog.Release 2.10.2 available2022 May 31This is the second stable release of Apache Hadoop 2.10 line.It contains 211 bug fixes, improvements and enhancements since 2.10.1.Users are encouraged to read theoverview of major changessince 2.10.1.
-For details of 211 bug fixes, improvements, and other enhancements since the previous 2.10.1 release,
-please checkrelease notesandchangelog.Release 3.3.3 available2022 May 17This is the third stable release of the Apache Hadoop 3.3 line.It contains 23 bug fixes, improvements and enhancements since 3.3.2.This is primarily a security update; for this reason, upgrading is strongly advised.Users are encouraged to read theoverview of major changessince 3.3.2.
-For details of bug fixes, improvements, and other enhancements since the previous 3.3.2 release,
-please checkrelease notesandchangelog.Release 3.2.3 available2022 Mar 28This is the third stable release of Apache Hadoop 3.2 line. It contains 328 bug fixes, improvements and enhancements since 3.2.2.Users are encouraged to read theoverview of major changessince 3.2.2.
-For details of 328 bug fixes, improvements, and other enhancements since the previous 3.2.2 release,
-please checkrelease notesandchangelogdetail the changes since 3.2.2.Release 3.3.2 available2022 Mar 3This is the second stable release of Apache Hadoop 3.3 line. It contains 284 bug fixes, improvements and enhancements since 3.3.1.Users are encouraged to read theoverview of major changessince 3.3.1.
-For details of 284 bug fixes, improvements, and other enhancements since the previous 3.3.1 release,
-please checkrelease notesandchangelogdetail the changes since 3.3.1.Release 3.3.1 available2021 Jun 15This is the first stable release of Apache Hadoop 3.3.x line. It contains 697 bug fixes, improvements and enhancements since 3.3.0.Users are encouraged to read theoverview of major changessince 3.3.0.
-For details of 697 bug fixes, improvements, and other enhancements since the previous 3.3.0 release,
-please checkrelease notesandchangelogdetail the changes since 3.3.0.«««12345»»»Apache Hadoop, Hadoop, Apache, the Apache feather logo,
-    and the Apache Hadoop project logo are either registered trademarks or trademarks of the Apache Software Foundation
-     in the United States and other countriesCopyright Â© 2006-2024 The Apache Software FoundationPrivacy policy
+News Archive
+[Hadoop is not susceptible to log4shell vulnerability](/news/2021-12-17-log4shell.html)
+2021 Dec 17
+Hadoop, as of today depends on log4j 1.x, which is NOT susceptible to the attack (CVE-2021-44228).
+For more information check the [published CVEs](https://hadoop.apache.org/cve_list.html) page.
+[Ozone 1.1.0 is released](/news/2021-04-17-ozone-1.1.0.html)
+2021 Apr 17
+General available(GA) release of Apache Hadoop Ozone with Volume/Bucket Quota Support, Security related enhancements, ofs/o3fs performance improvements, Recon improvements etc.
+For more information check the [ozone site](https://hadoop.apache.org/ozone/release/1.1.0/).
+[Ozone 1.0.0 is released](/news/2020-09-02-ozone-1.0.0.html)
+2020 Sep 2
+First general available(GA) release of Apache Hadoop Ozone with OM HA, OFS, Security phase II, Ozone Filesystem performance improvement, security enabled Hadoop 2.x support, bucket link, Recon / Recon UI improvment, etc.
+For more information check the [ozone site](https://hadoop.apache.org/ozone/release/1.0.0/).
+[Ozone 0.5.0-beta is released](/news/2020-03-24-ozone-0.5.0-beta.html)
+2020 Mar 24
+First beta release of Apache Hadoop Ozone with GDPR Right to Erasure, Network Topology Awareness, O3FS, and improved scalability/stability.
+For more information check the [ozone site](https://hadoop.apache.org/ozone/release/0.5.0-beta/).
+[Ozone 0.4.1-alpha is released](/news/2019-10-13-ozone-0.4.1-alpha.html)
+2019 Oct 13
+Next version of Apache Hadoop Ozone is released with Native ACLs, K8s support and improved stability.
+For more information check the [ozone site](https://hadoop.apache.org/ozone/release/0.4.1-alpha/).
+[Ozone 0.4.0-alpha is released](/news/2019-05-07-ozone-0.4.0-alpha.html)
+2019 May 7
+Ozone 0.4.0 alpha version supports kerberos and transparent data encryption. This is first secure Ozone release. It is compatible with apache Spark, Hive and Yarn.
+For more information check the [ozone site](https://hadoop.apache.org/ozone/release/0.4.0-alpha/).
+[Ozone 0.3.0-alpha is released](/news/2018-11-22-ozone-0.3.0-alpha.html)
+2018 Nov 22
+Next version of Apache Hadoop Ozone is released with S3 support and improved stability.
+For more information check the [ozone site](https://hadoop.apache.org/ozone/release/0.3.0-alpha/).
+[Ozone release 0.2.1-alpha available](/news/2018-10-01-ozone-0.2.1-alpha.html)
+2018 Oct 1
+This is the first version of Apache Hadoop Ozone. Ozone is an Object store for Hadoop built using Hadoop Distributed Data Store.
+For more information check the [ozone site](https://hadoop.apache.org/ozone/release/0.2.1-alpha/).
+[Apache Hadoop takes top prize at Media Guardian Innovation Awards](/news/2011-03-xx-award.html)
+2011 Mar 31
+Described by the judging panel as a “Swiss army knife of the 21st century”, Apache Hadoop picked up the innovator of the year award for having the potential to change the face of media innovations.
+[ZooKeeper Graduates](/news/2011-01-xx-zookeeper.html)
+2011 Jan 30
+Hadoop’s ZooKeeper subproject has graduated to become a top-level Apache project.
+Apache ZooKeeper can now be found at [http://zookeeper.apache.org/](http://zookeeper.apache.org/)

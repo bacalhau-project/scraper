@@ -1,42 +1,127 @@
-URL: https://kubernetes.io/docs/concepts/overview/working-with-objects/owners-dependents/
+Source: kubernetes_io
+URL: https://kubernetes.io/docs/tasks/administer-cluster/kubelet-credential-provider/
 
-DocumentationKubernetes BlogTrainingPartnersCommunityCase StudiesVersionsRelease Informationv1.31v1.30v1.29v1.28v1.27English中文 (Chinese)日本語 (Japanese)DocumentationAvailable Documentation VersionsGetting startedLearning environmentProduction environmentContainer RuntimesInstalling Kubernetes with deployment toolsBootstrapping clusters with kubeadmInstalling kubeadmTroubleshooting kubeadmCreating a cluster with kubeadmCustomizing components with the kubeadm APIOptions for Highly Available TopologyCreating Highly Available Clusters with kubeadmSet up a High Availability etcd Cluster with kubeadmConfiguring each kubelet in your cluster using kubeadmDual-stack support with kubeadmTurnkey Cloud SolutionsBest practicesConsiderations for large clustersRunning in multiple zonesValidate node setupEnforcing Pod Security StandardsPKI certificates and requirementsConceptsOverviewKubernetes ComponentsObjects In KubernetesKubernetes Object ManagementObject Names and IDsLabels and SelectorsNamespacesAnnotationsField SelectorsFinalizersOwners and DependentsRecommended LabelsThe Kubernetes APICluster ArchitectureNodesCommunication between Nodes and the Control PlaneControllersLeasesCloud Controller ManagerAbout cgroup v2Container Runtime Interface (CRI)Garbage CollectionMixed Version ProxyContainersImagesContainer EnvironmentRuntime ClassContainer Lifecycle HooksWorkloadsPodsPod LifecycleInit ContainersSidecar ContainersEphemeral ContainersDisruptionsPod Quality of Service ClassesUser NamespacesDownward APIWorkload ManagementDeploymentsReplicaSetStatefulSetsDaemonSetJobsAutomatic Cleanup for Finished JobsCronJobReplicationControllerAutoscaling WorkloadsManaging WorkloadsServices, Load Balancing, and NetworkingServiceIngressIngress ControllersGateway APIEndpointSlicesNetwork PoliciesDNS for Services and PodsIPv4/IPv6 dual-stackTopology Aware RoutingNetworking on WindowsService ClusterIP allocationService Internal Traffic PolicyStorageVolumesPersistent VolumesProjected VolumesEphemeral VolumesStorage ClassesVolume Attributes ClassesDynamic Volume ProvisioningVolume SnapshotsVolume Snapshot ClassesCSI Volume CloningStorage CapacityNode-specific Volume LimitsVolume Health MonitoringWindows StorageConfigurationConfiguration Best PracticesConfigMapsSecretsLiveness, Readiness, and Startup ProbesResource Management for Pods and ContainersOrganizing Cluster Access Using kubeconfig FilesResource Management for Windows nodesSecurityCloud Native SecurityPod Security StandardsPod Security AdmissionService AccountsPod Security PoliciesSecurity For Windows NodesControlling Access to the Kubernetes APIRole Based Access Control Good PracticesGood practices for Kubernetes SecretsMulti-tenancyHardening Guide - Authentication MechanismsKubernetes API Server Bypass RisksLinux kernel security constraints for Pods and containersSecurity ChecklistPoliciesLimit RangesResource QuotasProcess ID Limits And ReservationsNode Resource ManagersScheduling, Preemption and EvictionKubernetes SchedulerAssigning Pods to NodesPod OverheadPod Scheduling ReadinessPod Topology Spread ConstraintsTaints and TolerationsScheduling FrameworkDynamic Resource AllocationScheduler Performance TuningResource Bin PackingPod Priority and PreemptionNode-pressure EvictionAPI-initiated EvictionCluster AdministrationNode ShutdownsCertificatesCluster NetworkingLogging ArchitectureMetrics For Kubernetes System ComponentsMetrics for Kubernetes Object StatesSystem LogsTraces For Kubernetes System ComponentsProxies in KubernetesAPI Priority and FairnessCluster AutoscalingInstalling AddonsCoordinated Leader ElectionWindows in KubernetesWindows containers in KubernetesGuide for Running Windows Containers in KubernetesExtending KubernetesCompute, Storage, and Networking ExtensionsNetwork PluginsDevice PluginsExtending the Kubernetes APICustom ResourcesKubernetes API Aggregation LayerOperator patternTasksInstall ToolsInstall and Set Up kubectl on LinuxInstall and Set Up kubectl on macOSInstall and Set Up kubectl on WindowsAdminister a ClusterAdministration with kubeadmCertificate Management with kubeadmConfiguring a cgroup driverReconfiguring a kubeadm clusterUpgrading kubeadm clustersUpgrading Linux nodesUpgrading Windows nodesChanging The Kubernetes Package RepositoryMigrating from dockershimChanging the Container Runtime on a Node from Docker Engine to containerdMigrate Docker Engine nodes from dockershim to cri-dockerdFind Out What Container Runtime is Used on a NodeTroubleshooting CNI plugin-related errorsCheck whether dockershim removal affects youMigrating telemetry and security agents from dockershimGenerate Certificates ManuallyManage Memory, CPU, and API ResourcesConfigure Default Memory Requests and Limits for a NamespaceConfigure Default CPU Requests and Limits for a NamespaceConfigure Minimum and Maximum Memory Constraints for a NamespaceConfigure Minimum and Maximum CPU Constraints for a NamespaceConfigure Memory and CPU Quotas for a NamespaceConfigure a Pod Quota for a NamespaceInstall a Network Policy ProviderUse Antrea for NetworkPolicyUse Calico for NetworkPolicyUse Cilium for NetworkPolicyUse Kube-router for NetworkPolicyRomana for NetworkPolicyWeave Net for NetworkPolicyAccess Clusters Using the Kubernetes APIAdvertise Extended Resources for a NodeAutoscale the DNS Service in a ClusterChange the Access Mode of a PersistentVolume to ReadWriteOncePodChange the default StorageClassSwitching from Polling to CRI Event-based Updates to Container StatusChange the Reclaim Policy of a PersistentVolumeCloud Controller Manager AdministrationConfigure a kubelet image credential providerConfigure Quotas for API ObjectsControl CPU Management Policies on the NodeControl Topology Management Policies on a nodeCustomizing DNS ServiceDebugging DNS ResolutionDeclare Network PolicyDeveloping Cloud Controller ManagerEnable Or Disable A Kubernetes APIEncrypting Confidential Data at RestDecrypt Confidential Data that is Already Encrypted at RestGuaranteed Scheduling For Critical Add-On PodsIP Masquerade Agent User GuideLimit Storage ConsumptionMigrate Replicated Control Plane To Use Cloud Controller ManagerNamespaces WalkthroughOperating etcd clusters for KubernetesReserve Compute Resources for System DaemonsRunning Kubernetes Node Components as a Non-root UserSafely Drain a NodeSecuring a ClusterSet Kubelet Parameters Via A Configuration FileShare a Cluster with NamespacesUpgrade A ClusterUse Cascading Deletion in a ClusterUsing a KMS provider for data encryptionUsing CoreDNS for Service DiscoveryUsing NodeLocal DNSCache in Kubernetes ClustersUsing sysctls in a Kubernetes ClusterUtilizing the NUMA-aware Memory ManagerVerify Signed Kubernetes ArtifactsConfigure Pods and ContainersAssign Memory Resources to Containers and PodsAssign CPU Resources to Containers and PodsConfigure GMSA for Windows Pods and containersResize CPU and Memory Resources assigned to ContainersConfigure RunAsUserName for Windows pods and containersCreate a Windows HostProcess PodConfigure Quality of Service for PodsAssign Extended Resources to a ContainerConfigure a Pod to Use a Volume for StorageConfigure a Pod to Use a PersistentVolume for StorageConfigure a Pod to Use a Projected Volume for StorageConfigure a Security Context for a Pod or ContainerConfigure Service Accounts for PodsPull an Image from a Private RegistryConfigure Liveness, Readiness and Startup ProbesAssign Pods to NodesAssign Pods to Nodes using Node AffinityConfigure Pod InitializationAttach Handlers to Container Lifecycle EventsConfigure a Pod to Use a ConfigMapShare Process Namespace between Containers in a PodUse a User Namespace With a PodUse an Image Volume With a PodCreate static PodsTranslate a Docker Compose File to Kubernetes ResourcesEnforce Pod Security Standards by Configuring the Built-in Admission ControllerEnforce Pod Security Standards with Namespace LabelsMigrate from PodSecurityPolicy to the Built-In PodSecurity Admission ControllerMonitoring, Logging, and DebuggingTroubleshooting ApplicationsDebug PodsDebug ServicesDebug a StatefulSetDetermine the Reason for Pod FailureDebug Init ContainersDebug Running PodsGet a Shell to a Running ContainerTroubleshooting ClustersTroubleshooting kubectlResource metrics pipelineTools for Monitoring ResourcesMonitor Node HealthDebugging Kubernetes nodes with crictlAuditingDebugging Kubernetes Nodes With KubectlDeveloping and debugging services locally using telepresenceWindows debugging tipsManage Kubernetes ObjectsDeclarative Management of Kubernetes Objects Using Configuration FilesDeclarative Management of Kubernetes Objects Using KustomizeManaging Kubernetes Objects Using Imperative CommandsImperative Management of Kubernetes Objects Using Configuration FilesUpdate API Objects in Place Using kubectl patchMigrate Kubernetes Objects Using Storage Version MigrationManaging SecretsManaging Secrets using kubectlManaging Secrets using Configuration FileManaging Secrets using KustomizeInject Data Into ApplicationsDefine a Command and Arguments for a ContainerDefine Dependent Environment VariablesDefine Environment Variables for a ContainerExpose Pod Information to Containers Through Environment VariablesExpose Pod Information to Containers Through FilesDistribute Credentials Securely Using SecretsRun ApplicationsRun a Stateless Application Using a DeploymentRun a Single-Instance Stateful ApplicationRun a Replicated Stateful ApplicationScale a StatefulSetDelete a StatefulSetForce Delete StatefulSet PodsHorizontal Pod AutoscalingHorizontalPodAutoscaler WalkthroughSpecifying a Disruption Budget for your ApplicationAccessing the Kubernetes API from a PodRun JobsRunning Automated Tasks with a CronJobCoarse Parallel Processing Using a Work QueueFine Parallel Processing Using a Work QueueIndexed Job for Parallel Processing with Static Work AssignmentJob with Pod-to-Pod CommunicationParallel Processing using ExpansionsHandling retriable and non-retriable pod failures with Pod failure policyAccess Applications in a ClusterDeploy and Access the Kubernetes DashboardAccessing ClustersConfigure Access to Multiple ClustersUse Port Forwarding to Access Applications in a ClusterUse a Service to Access an Application in a ClusterConnect a Frontend to a Backend Using ServicesCreate an External Load BalancerList All Container Images Running in a ClusterSet up Ingress on Minikube with the NGINX Ingress ControllerCommunicate Between Containers in the Same Pod Using a Shared VolumeConfigure DNS for a ClusterAccess Services Running on ClustersExtend KubernetesConfigure the Aggregation LayerUse Custom ResourcesExtend the Kubernetes API with CustomResourceDefinitionsVersions in CustomResourceDefinitionsSet up an Extension API ServerConfigure Multiple SchedulersUse an HTTP Proxy to Access the Kubernetes APIUse a SOCKS5 Proxy to Access the Kubernetes APISet up Konnectivity serviceTLSConfigure Certificate Rotation for the KubeletManage TLS Certificates in a ClusterManual Rotation of CA CertificatesManage Cluster DaemonsPerform a Rolling Update on a DaemonSetPerform a Rollback on a DaemonSetRunning Pods on Only Some NodesNetworkingAdding entries to Pod /etc/hosts with HostAliasesExtend Service IP RangesValidate IPv4/IPv6 dual-stackExtend kubectl with pluginsManage HugePagesSchedule GPUsTutorialsHello MinikubeLearn Kubernetes BasicsCreate a ClusterUsing Minikube to Create a ClusterDeploy an AppUsing kubectl to Create a DeploymentExplore Your AppViewing Pods and NodesExpose Your App PubliclyUsing a Service to Expose Your AppScale Your AppRunning Multiple Instances of Your AppUpdate Your AppPerforming a Rolling UpdateConfigurationExample: Configuring a Java MicroserviceExternalizing config using MicroProfile, ConfigMaps and SecretsUpdating Configuration via a ConfigMapConfiguring Redis using a ConfigMapAdopting Sidecar ContainersSecurityApply Pod Security Standards at the Cluster LevelApply Pod Security Standards at the Namespace LevelRestrict a Container's Access to Resources with AppArmorRestrict a Container's Syscalls with seccompStateless ApplicationsExposing an External IP Address to Access an Application in a ClusterExample: Deploying PHP Guestbook application with RedisStateful ApplicationsStatefulSet BasicsExample: Deploying WordPress and MySQL with Persistent VolumesExample: Deploying Cassandra with a StatefulSetRunning ZooKeeper, A Distributed System CoordinatorServicesConnecting Applications with ServicesUsing Source IPExplore Termination Behavior for Pods And Their EndpointsReferenceGlossaryAPI OverviewKubernetes API ConceptsServer-Side ApplyClient LibrariesCommon Expression Language in KubernetesKubernetes Deprecation PolicyDeprecated API Migration GuideKubernetes API health endpointsAPI Access ControlAuthenticatingAuthenticating with Bootstrap TokensAuthorizationUsing RBAC AuthorizationUsing Node AuthorizationWebhook ModeUsing ABAC AuthorizationAdmission ControllersDynamic Admission ControlManaging Service AccountsCertificates and Certificate Signing RequestsMapping PodSecurityPolicies to Pod Security StandardsKubelet authentication/authorizationTLS bootstrappingValidating Admission PolicyWell-Known Labels, Annotations and TaintsAudit AnnotationsKubernetes APIWorkload ResourcesPodBindingPodTemplateReplicationControllerReplicaSetDeploymentStatefulSetControllerRevisionDaemonSetJobCronJobHorizontalPodAutoscalerHorizontalPodAutoscalerPriorityClassPodSchedulingContext v1alpha3ResourceClaim v1alpha3ResourceClaimTemplate v1alpha3ResourceSlice v1alpha3Service ResourcesServiceEndpointsEndpointSliceIngressIngressClassConfig and Storage ResourcesConfigMapSecretCSIDriverCSINodeCSIStorageCapacityPersistentVolumeClaimPersistentVolumeStorageClassStorageVersionMigration v1alpha1VolumeVolumeAttachmentVolumeAttributesClass v1beta1Authentication ResourcesServiceAccountTokenRequestTokenReviewCertificateSigningRequestClusterTrustBundle v1alpha1SelfSubjectReviewAuthorization ResourcesLocalSubjectAccessReviewSelfSubjectAccessReviewSelfSubjectRulesReviewSubjectAccessReviewClusterRoleClusterRoleBindingRoleRoleBindingPolicy ResourcesFlowSchemaLimitRangeResourceQuotaNetworkPolicyPodDisruptionBudgetPriorityLevelConfigurationValidatingAdmissionPolicyValidatingAdmissionPolicyBindingExtend ResourcesCustomResourceDefinitionDeviceClass v1alpha3MutatingWebhookConfigurationValidatingWebhookConfigurationCluster ResourcesAPIServiceComponentStatusEventIPAddress v1beta1LeaseLeaseCandidate v1alpha1NamespaceNodeRuntimeClassServiceCIDR v1beta1Common DefinitionsDeleteOptionsLabelSelectorListMetaLocalObjectReferenceNodeSelectorRequirementObjectFieldSelectorObjectMetaObjectReferencePatchQuantityResourceFieldSelectorStatusTypedLocalObjectReferenceCommon ParametersInstrumentationService Level Indicator MetricsCRI Pod & Container MetricsNode metrics dataKubernetes Metrics ReferenceKubernetes Issues and SecurityKubernetes Issue TrackerKubernetes Security and Disclosure InformationCVE feedNode Reference InformationKubelet Checkpoint APILinux Kernel Version RequirementsArticles on dockershim Removal and on Using CRI-compatible RuntimesNode Labels Populated By The KubeletKubelet Configuration Directory MergingKubelet Device Manager API VersionsNode StatusNetworking ReferenceProtocols for ServicesPorts and ProtocolsVirtual IPs and Service ProxiesSetup toolsKubeadmkubeadm initkubeadm joinkubeadm upgradekubeadm configkubeadm resetkubeadm tokenkubeadm versionkubeadm alphakubeadm certskubeadm init phasekubeadm join phasekubeadm kubeconfigkubeadm reset phasekubeadm upgrade phaseImplementation detailsCommand line tool (kubectl)Introduction to kubectlkubectl Quick Referencekubectl referencekubectlkubectl annotatekubectl api-resourceskubectl api-versionskubectl applykubectl apply edit-last-appliedkubectl apply set-last-appliedkubectl apply view-last-appliedkubectl attachkubectl authkubectl auth can-ikubectl auth reconcilekubectl auth whoamikubectl autoscalekubectl certificatekubectl certificate approvekubectl certificate denykubectl cluster-infokubectl cluster-info dumpkubectl completionkubectl configkubectl config current-contextkubectl config delete-clusterkubectl config delete-contextkubectl config delete-userkubectl config get-clusterskubectl config get-contextskubectl config get-userskubectl config rename-contextkubectl config setkubectl config set-clusterkubectl config set-contextkubectl config set-credentialskubectl config unsetkubectl config use-contextkubectl config viewkubectl cordonkubectl cpkubectl createkubectl create clusterrolekubectl create clusterrolebindingkubectl create configmapkubectl create cronjobkubectl create deploymentkubectl create ingresskubectl create jobkubectl create namespacekubectl create poddisruptionbudgetkubectl create priorityclasskubectl create quotakubectl create rolekubectl create rolebindingkubectl create secretkubectl create secret docker-registrykubectl create secret generickubectl create secret tlskubectl create servicekubectl create service clusteripkubectl create service externalnamekubectl create service loadbalancerkubectl create service nodeportkubectl create serviceaccountkubectl create tokenkubectl debugkubectl deletekubectl describekubectl diffkubectl drainkubectl editkubectl eventskubectl execkubectl explainkubectl exposekubectl getkubectl kustomizekubectl labelkubectl logskubectl optionskubectl patchkubectl pluginkubectl plugin listkubectl port-forwardkubectl proxykubectl replacekubectl rolloutkubectl rollout historykubectl rollout pausekubectl rollout restartkubectl rollout resumekubectl rollout statuskubectl rollout undokubectl runkubectl scalekubectl setkubectl set envkubectl set imagekubectl set resourceskubectl set selectorkubectl set serviceaccountkubectl set subjectkubectl taintkubectl topkubectl top nodekubectl top podkubectl uncordonkubectl versionkubectl waitkubectl CommandskubectlJSONPath Supportkubectl for Docker Userskubectl Usage ConventionsComponent toolsFeature GatesFeature Gates (removed)kubeletkube-apiserverkube-controller-managerkube-proxykube-schedulerDebug clusterFlow controlConfiguration APIsClient Authentication (v1)Client Authentication (v1beta1)Event Rate Limit Configuration (v1alpha1)Image Policy API (v1alpha1)kube-apiserver Admission (v1)kube-apiserver Audit Configuration (v1)kube-apiserver Configuration (v1)kube-apiserver Configuration (v1alpha1)kube-apiserver Configuration (v1beta1)kube-controller-manager Configuration (v1alpha1)kube-proxy Configuration (v1alpha1)kube-scheduler Configuration (v1)kubeadm Configuration (v1beta3)kubeadm Configuration (v1beta4)kubeconfig (v1)Kubelet Configuration (v1)Kubelet Configuration (v1alpha1)Kubelet Configuration (v1beta1)Kubelet CredentialProvider (v1)WebhookAdmission Configuration (v1)External APIsKubernetes Custom Metrics (v1beta2)Kubernetes External Metrics (v1beta1)Kubernetes Metrics (v1beta1)SchedulingScheduler ConfigurationScheduling PoliciesOther ToolsMapping from dockercli to crictlContributeContribute to Kubernetes DocumentationSuggesting content improvementsContributing new contentOpening a pull requestDocumenting for a releaseBlogs and case studiesReviewing changesReviewing pull requestsFor approvers and reviewersLocalizing Kubernetes documentationParticipating in SIG DocsRoles and responsibilitiesIssue WranglersPR wranglersDocumentation style overviewContent guideStyle guideDiagram guideWriting a new topicPage content typesContent organizationCustom Hugo ShortcodesUpdating Reference DocumentationQuickstartContributing to the Upstream Kubernetes CodeGenerating Reference Documentation for the Kubernetes APIGenerating Reference Documentation for kubectl CommandsGenerating Reference Documentation for MetricsGenerating Reference Pages for Kubernetes Components and ToolsAdvanced contributingViewing Site AnalyticsDocs smoke test pageKubernetes DocumentationConceptsOverviewObjects In KubernetesOwners and DependentsOwners and DependentsIn Kubernetes, someobjectsareownersof other objects. For example, aReplicaSetis the owner
-of a set of Pods. These owned objects aredependentsof their owner.Ownership is different from thelabels and selectorsmechanism that some resources also use. For example, consider a Service that
-createsEndpointSliceobjects. The Service useslabelsto allow the control plane to
-determine whichEndpointSliceobjects are used for that Service. In addition
-to the labels, eachEndpointSlicethat is managed on behalf of a Service has
-an owner reference. Owner references help different parts of Kubernetes avoid
-interfering with objects they don’t control.Owner references in object specificationsDependent objects have ametadata.ownerReferencesfield that references their
-owner object. A valid owner reference consists of the object name and aUIDwithin the samenamespaceas the dependent object. Kubernetes sets the value of
-this field automatically for objects that are dependents of other objects like
-ReplicaSets, DaemonSets, Deployments, Jobs and CronJobs, and ReplicationControllers.
-You can also configure these relationships manually by changing the value of
-this field. However, you usually don't need to and can allow Kubernetes to
-automatically manage the relationships.Dependent objects also have anownerReferences.blockOwnerDeletionfield that
-takes a boolean value and controls whether specific dependents can block garbage
-collection from deleting their owner object. Kubernetes automatically sets this
-field totrueif acontroller(for example, the Deployment controller) sets the value of themetadata.ownerReferencesfield. You can also set the value of theblockOwnerDeletionfield manually to control which dependents block garbage
-collection.A Kubernetes admission controller controls user access to change this field for
-dependent resources, based on the delete permissions of the owner. This control
-prevents unauthorized users from delaying owner object deletion.Note:Cross-namespace owner references are disallowed by design.
-Namespaced dependents can specify cluster-scoped or namespaced owners.
-A namespaced ownermustexist in the same namespace as the dependent.
-If it does not, the owner reference is treated as absent, and the dependent
-is subject to deletion once all owners are verified absent.Cluster-scoped dependents can only specify cluster-scoped owners.
-In v1.20+, if a cluster-scoped dependent specifies a namespaced kind as an owner,
-it is treated as having an unresolvable owner reference, and is not able to be garbage collected.In v1.20+, if the garbage collector detects an invalid cross-namespaceownerReference,
-or a cluster-scoped dependent with anownerReferencereferencing a namespaced kind, a warning Event
-with a reason ofOwnerRefInvalidNamespaceand aninvolvedObjectof the invalid dependent is reported.
-You can check for that kind of Event by runningkubectl get events -A --field-selector=reason=OwnerRefInvalidNamespace.Ownership and finalizersWhen you tell Kubernetes to delete a resource, the API server allows the
-managing controller to process anyfinalizer rulesfor the resource.Finalizersprevent accidental deletion of resources your cluster may still need to function
-correctly. For example, if you try to delete aPersistentVolumethat is still
-in use by a Pod, the deletion does not happen immediately because thePersistentVolumehas thekubernetes.io/pv-protectionfinalizer on it.
-Instead, thevolumeremains in theTerminatingstatus until Kubernetes clears
-the finalizer, which only happens after thePersistentVolumeis no longer
-bound to a Pod.Kubernetes also adds finalizers to an owner resource when you use eitherforeground or orphan cascading deletion.
-In foreground deletion, it adds theforegroundfinalizer so that the
-controller must delete dependent resources that also haveownerReferences.blockOwnerDeletion=truebefore it deletes the owner. If you
-specify an orphan deletion policy, Kubernetes adds theorphanfinalizer so
-that the controller ignores dependent resources after it deletes the owner
-object.What's nextLearn more aboutKubernetes finalizers.Learn aboutgarbage collection.Read the API reference forobject metadata.FeedbackWas this page helpful?YesNoThanks for the feedback. If you have a specific, answerable question about how to use Kubernetes, ask it onStack Overflow.
-Open an issue in theGitHub Repositoryif you want toreport a problemorsuggest an improvement.Last modified January 08, 2022 at 6:09 PM PST:Reorganize Working with Kubernetes Objects section (634c17f61c)Edit this pageCreate child pageCreate documentation issuePrint entire sectionOwner references in object specificationsOwnership and finalizersWhat's nextDocumentationBlogTrainingPartnersCommunityCase Studies© 2024 The Kubernetes Authors | Documentation Distributed underCC BY 4.0Copyright © 2024 The Linux Foundation ®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see ourTrademark Usage pageICP license: 京ICP备17074266号-3
+Configure a kubelet image credential provider
+Kubernetes v1.26 [stable]
+Starting from Kubernetes v1.20, the kubelet can dynamically retrieve credentials for a container image registry using exec plugins. The kubelet and the exec plugin communicate through stdio (stdin, stdout, and stderr) using Kubernetes versioned APIs. These plugins allow the kubelet to request credentials for a container registry dynamically as opposed to storing static credentials on disk. For example, the plugin may talk to a local metadata server to retrieve short-lived credentials for an image that is being pulled by the kubelet.
+You may be interested in using this capability if any of the below are true:
+- API calls to a cloud provider service are required to retrieve authentication information for a registry.
+- Credentials have short expiration times and requesting new credentials frequently is required.
+- Storing registry credentials on disk or in imagePullSecrets is not acceptable.
+This guide demonstrates how to configure the kubelet's image credential provider plugin mechanism.
+Before you begin
+- You need a Kubernetes cluster with nodes that support kubelet credential provider plugins. This support is available in Kubernetes 1.31; Kubernetes v1.24 and v1.25 included this as a beta feature, enabled by default.
+- A working implementation of a credential provider exec plugin. You can build your own plugin or use one provided by cloud providers.
+kubectl version
+.Installing Plugins on Nodes
+A credential provider plugin is an executable binary that will be run by the kubelet. Ensure that the plugin binary exists on every node in your cluster and stored in a known directory. The directory will be required later when configuring kubelet flags.
+Configuring the Kubelet
+In order to use this feature, the kubelet expects two flags to be set:
+--image-credential-provider-config
+- the path to the credential provider plugin config file.--image-credential-provider-bin-dir
+- the path to the directory where credential provider plugin binaries are located.
+Configure a kubelet credential provider
+The configuration file passed into --image-credential-provider-config
+is read by the kubelet to determine which exec plugins
+should be invoked for which container images. Here's an example configuration file you may end up using if you are using the
+[ECR-based plugin](https://github.com/kubernetes/cloud-provider-aws/tree/master/cmd/ecr-credential-provider):
+apiVersion: kubelet.config.k8s.io/v1
+kind: CredentialProviderConfig
+# providers is a list of credential provider helper plugins that will be enabled by the kubelet.
+# Multiple providers may match against a single image, in which case credentials
+# from all providers will be returned to the kubelet. If multiple providers are called
+# for a single image, the results are combined. If providers return overlapping
+# auth keys, the value from the provider earlier in this list is used.
+providers:
+# name is the required name of the credential provider. It must match the name of the
+# provider executable as seen by the kubelet. The executable must be in the kubelet's
+# bin directory (set by the --image-credential-provider-bin-dir flag).
+- name: ecr-credential-provider
+# matchImages is a required list of strings used to match against images in order to
+# determine if this provider should be invoked. If one of the strings matches the
+# requested image from the kubelet, the plugin will be invoked and given a chance
+# to provide credentials. Images are expected to contain the registry domain
+# and URL path.
+#
+# Each entry in matchImages is a pattern which can optionally contain a port and a path.
+# Globs can be used in the domain, but not in the port or the path. Globs are supported
+# as subdomains like '*.k8s.io' or 'k8s.*.io', and top-level-domains such as 'k8s.*'.
+# Matching partial subdomains like 'app*.k8s.io' is also supported. Each glob can only match
+# a single subdomain segment, so `*.io` does **not** match `*.k8s.io`.
+#
+# A match exists between an image and a matchImage when all of the below are true:
+# - Both contain the same number of domain parts and each part matches.
+# - The URL path of an matchImages must be a prefix of the target image URL path.
+# - If the matchImages contains a port, then the port must match in the image as well.
+#
+# Example values of matchImages:
+# - 123456789.dkr.ecr.us-east-1.amazonaws.com
+# - *.azurecr.io
+# - gcr.io
+# - *.*.registry.io
+# - registry.io:8080/path
+matchImages:
+- "*.dkr.ecr.*.amazonaws.com"
+- "*.dkr.ecr.*.amazonaws.com.cn"
+- "*.dkr.ecr-fips.*.amazonaws.com"
+- "*.dkr.ecr.us-iso-east-1.c2s.ic.gov"
+- "*.dkr.ecr.us-isob-east-1.sc2s.sgov.gov"
+# defaultCacheDuration is the default duration the plugin will cache credentials in-memory
+# if a cache duration is not provided in the plugin response. This field is required.
+defaultCacheDuration: "12h"
+# Required input version of the exec CredentialProviderRequest. The returned CredentialProviderResponse
+# MUST use the same encoding version as the input. Current supported values are:
+# - credentialprovider.kubelet.k8s.io/v1
+apiVersion: credentialprovider.kubelet.k8s.io/v1
+# Arguments to pass to the command when executing it.
+# +optional
+# args:
+# - --example-argument
+# Env defines additional environment variables to expose to the process. These
+# are unioned with the host's environment, as well as variables client-go uses
+# to pass argument to the plugin.
+# +optional
+env:
+- name: AWS_PROFILE
+value: example_profile
+The providers
+field is a list of enabled plugins used by the kubelet. Each entry has a few required fields:
+name
+: the name of the plugin which MUST match the name of the executable binary that exists in the directory passed into--image-credential-provider-bin-dir
+.matchImages
+: a list of strings used to match against images in order to determine if this provider should be invoked. More on this below.defaultCacheDuration
+: the default duration the kubelet will cache credentials in-memory if a cache duration was not specified by the plugin.apiVersion
+: the API version that the kubelet and the exec plugin will use when communicating.
+Each credential provider can also be given optional args and environment variables as well. Consult the plugin implementors to determine what set of arguments and environment variables are required for a given plugin.
+Configure image matching
+The matchImages
+field for each credential provider is used by the kubelet to determine whether a plugin should be invoked
+for a given image that a Pod is using. Each entry in matchImages
+is an image pattern which can optionally contain a port and a path.
+Globs can be used in the domain, but not in the port or the path. Globs are supported as subdomains like *.k8s.io
+or k8s.*.io
+,
+and top-level domains such as k8s.*
+. Matching partial subdomains like app*.k8s.io
+is also supported. Each glob can only match
+a single subdomain segment, so *.io
+does NOT match *.k8s.io
+.
+A match exists between an image name and a matchImage
+entry when all of the below are true:
+- Both contain the same number of domain parts and each part matches.
+- The URL path of match image must be a prefix of the target image URL path.
+- If the matchImages contains a port, then the port must match in the image as well.
+Some example values of matchImages
+patterns are:
+123456789.dkr.ecr.us-east-1.amazonaws.com
+*.azurecr.io
+gcr.io
+*.*.registry.io
+foo.registry.io:8080/path
+What's next
+- Read the details about
+CredentialProviderConfig
+in the[kubelet configuration API (v1) reference](/docs/reference/config-api/kubelet-config.v1/). - Read the
+[kubelet credential provider API reference (v1)](/docs/reference/config-api/kubelet-credentialprovider.v1/).
+[Remove redundant text (b3cb227378)](https://github.com/kubernetes/website/commit/b3cb227378cb0d3b6594f68a85cf1b1f9fdbd18e)

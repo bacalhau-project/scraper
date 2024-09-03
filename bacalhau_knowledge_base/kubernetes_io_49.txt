@@ -1,3 +1,573 @@
-URL: https://kubernetes.io/it/docs/home/
+Source: kubernetes_io
+URL: https://kubernetes.io/docs/concepts/policy/resource-quotas/
 
-DocumentazioneBlog di KubernetesFormazionePartnerCommunityCasi di StudioVersionsRelease Informationv1.31v1.30v1.29v1.28v1.27Italiano (Italian)Englishবাংলা (Bengali)中文 (Chinese)Français (French)Deutsch (German)हिन्दी (Hindi)Bahasa Indonesia (Indonesian)日本語 (Japanese)한국어 (Korean)Polski (Polish)Português (Portuguese)Русский (Russian)Español (Spanish)Українська (Ukrainian)Tiếng Việt (Vietnamese)Documentazione di KubernetesGlossarioDocumentazioneVersioni supportate della documentazione di KubernetesGetting startedLearning environmentProduction environmentContainer RuntimesInstalling Kubernetes with deployment toolsBootstrapping clusters with kubeadmInstalling kubeadmTroubleshooting kubeadmCreating a cluster with kubeadmCustomizing components with the kubeadm APIOptions for Highly Available TopologyCreating Highly Available Clusters with kubeadmSet up a High Availability etcd Cluster with kubeadmConfiguring each kubelet in your cluster using kubeadmDual-stack support with kubeadmTurnkey Cloud SolutionsBest practicesConsiderations for large clustersRunning in multiple zonesValidate node setupEnforcing Pod Security StandardsPKI certificates and requirementsConcettiOverviewCos'è Kubernetes?I componenti di KubernetesLe API di KubernetesObjects In KubernetesKubernetes Object ManagementObject Names and IDsLabels and SelectorsNamespacesAnnotationsField SelectorsFinalizersOwners and DependentsRecommended LabelsArchitettura di KubernetesNodesComunicazione Control Plane - NodoConcetti alla base del Cloud Controller ManagerControllerLeasesAbout cgroup v2Container Runtime Interface (CRI)Garbage CollectionMixed Version ProxyContainersImmaginiContainer EnvironmentContainer Lifecycle HooksRuntime ClassWorkloadsPodsPod LifecycleInit ContainersSidecar ContainersEphemeral ContainersDisruptionsPod Quality of Service ClassesUser NamespacesDownward APIWorkload ManagementDeploymentsReplicaSetStatefulSetsDaemonSetJobsAutomatic Cleanup for Finished JobsCronJobReplicationControllerAutoscaling WorkloadsManaging WorkloadsServices, Load Balancing, and NetworkingServiceIngressIngress ControllersGateway APIEndpointSlicesNetwork PoliciesDNS for Services and PodsIPv4/IPv6 dual-stackTopology Aware RoutingNetworking on WindowsService ClusterIP allocationService Internal Traffic PolicyStorageVolumesPersistent VolumesProjected VolumesEphemeral VolumesStorage ClassesVolume Attributes ClassesDynamic Volume ProvisioningVolume SnapshotsVolume Snapshot ClassesCSI Volume CloningStorage CapacityNode-specific Volume LimitsVolume Health MonitoringWindows StorageConfigurazioneConfiguration Best PracticesConfigMapsSecretsLiveness, Readiness, and Startup ProbesResource Management for Pods and ContainersOrganizing Cluster Access Using kubeconfig FilesResource Management for Windows nodesSecurityCloud Native SecurityPod Security StandardsPod Security AdmissionService AccountsPod Security PoliciesSecurity For Windows NodesControlling Access to the Kubernetes APIRole Based Access Control Good PracticesGood practices for Kubernetes SecretsMulti-tenancyHardening Guide - Authentication MechanismsKubernetes API Server Bypass RisksLinux kernel security constraints for Pods and containersSecurity ChecklistPoliciesLimit RangesResource QuotasProcess ID Limits And ReservationsNode Resource ManagersScheduling, Preemption and EvictionKubernetes SchedulerAssigning Pods to NodesPod OverheadPod Scheduling ReadinessPod Topology Spread ConstraintsTaints and TolerationsScheduling FrameworkDynamic Resource AllocationScheduler Performance TuningResource Bin PackingPod Priority and PreemptionNode-pressure EvictionAPI-initiated EvictionAmministrazione del ClusterNode ShutdownsCertificatesCluster NetworkingLogging ArchitectureMetrics For Kubernetes System ComponentsMetrics for Kubernetes Object StatesSystem LogsProxy in KubernetesTraces For Kubernetes System ComponentsAPI Priority and FairnessCluster AutoscalingInstalling AddonsCoordinated Leader ElectionWindows in KubernetesWindows containers in KubernetesGuide for Running Windows Containers in KubernetesExtending KubernetesCompute, Storage, and Networking ExtensionsNetwork PluginsDevice PluginsExtending the Kubernetes APICustom ResourcesKubernetes API Aggregation LayerOperator patternTasksInstall ToolsInstall and Set Up kubectl on LinuxInstall and Set Up kubectl on macOSInstall and Set Up kubectl on WindowsAdminister a ClusterAdministration with kubeadmCertificate Management with kubeadmConfiguring a cgroup driverReconfiguring a kubeadm clusterUpgrading kubeadm clustersUpgrading Linux nodesUpgrading Windows nodesChanging The Kubernetes Package RepositoryMigrating from dockershimChanging the Container Runtime on a Node from Docker Engine to containerdMigrate Docker Engine nodes from dockershim to cri-dockerdFind Out What Container Runtime is Used on a NodeTroubleshooting CNI plugin-related errorsCheck whether dockershim removal affects youMigrating telemetry and security agents from dockershimGenerate Certificates ManuallyManage Memory, CPU, and API ResourcesConfigure Default Memory Requests and Limits for a NamespaceConfigure Default CPU Requests and Limits for a NamespaceConfigure Minimum and Maximum Memory Constraints for a NamespaceConfigure Minimum and Maximum CPU Constraints for a NamespaceConfigure Memory and CPU Quotas for a NamespaceConfigure a Pod Quota for a NamespaceInstall a Network Policy ProviderUse Antrea for NetworkPolicyUse Calico for NetworkPolicyUse Cilium for NetworkPolicyUse Kube-router for NetworkPolicyRomana for NetworkPolicyWeave Net for NetworkPolicyAccess Clusters Using the Kubernetes APIAdvertise Extended Resources for a NodeAutoscale the DNS Service in a ClusterChange the Access Mode of a PersistentVolume to ReadWriteOncePodChange the default StorageClassSwitching from Polling to CRI Event-based Updates to Container StatusChange the Reclaim Policy of a PersistentVolumeCloud Controller Manager AdministrationConfigure a kubelet image credential providerConfigure Quotas for API ObjectsControl CPU Management Policies on the NodeControl Topology Management Policies on a nodeCustomizing DNS ServiceDebugging DNS ResolutionDeclare Network PolicyDeveloping Cloud Controller ManagerEnable Or Disable A Kubernetes APIEncrypting Confidential Data at RestDecrypt Confidential Data that is Already Encrypted at RestGuaranteed Scheduling For Critical Add-On PodsIP Masquerade Agent User GuideLimit Storage ConsumptionMigrate Replicated Control Plane To Use Cloud Controller ManagerNamespaces WalkthroughOperating etcd clusters for KubernetesReserve Compute Resources for System DaemonsRunning Kubernetes Node Components as a Non-root UserSafely Drain a NodeSecuring a ClusterSet Kubelet Parameters Via A Configuration FileShare a Cluster with NamespacesUpgrade A ClusterUse Cascading Deletion in a ClusterUsing a KMS provider for data encryptionUsing CoreDNS for Service DiscoveryUsing NodeLocal DNSCache in Kubernetes ClustersUsing sysctls in a Kubernetes ClusterUtilizing the NUMA-aware Memory ManagerVerify Signed Kubernetes ArtifactsConfigure Pods and ContainersAssign Memory Resources to Containers and PodsAssign CPU Resources to Containers and PodsConfigure GMSA for Windows Pods and containersResize CPU and Memory Resources assigned to ContainersConfigure RunAsUserName for Windows pods and containersCreate a Windows HostProcess PodConfigure Quality of Service for PodsAssign Extended Resources to a ContainerConfigure a Pod to Use a Volume for StorageConfigure a Pod to Use a PersistentVolume for StorageConfigure a Pod to Use a Projected Volume for StorageConfigure a Security Context for a Pod or ContainerConfigure Service Accounts for PodsPull an Image from a Private RegistryConfigure Liveness, Readiness and Startup ProbesAssign Pods to NodesAssign Pods to Nodes using Node AffinityConfigure Pod InitializationAttach Handlers to Container Lifecycle EventsConfigure a Pod to Use a ConfigMapShare Process Namespace between Containers in a PodUse a User Namespace With a PodUse an Image Volume With a PodCreate static PodsTranslate a Docker Compose File to Kubernetes ResourcesEnforce Pod Security Standards by Configuring the Built-in Admission ControllerEnforce Pod Security Standards with Namespace LabelsMigrate from PodSecurityPolicy to the Built-In PodSecurity Admission ControllerMonitoring, Logging, and DebuggingTroubleshooting ApplicationsDebug PodsDebug ServicesDebug a StatefulSetDetermine the Reason for Pod FailureDebug Init ContainersDebug Running PodsGet a Shell to a Running ContainerTroubleshooting ClustersTroubleshooting kubectlResource metrics pipelineTools for Monitoring ResourcesMonitor Node HealthDebugging Kubernetes nodes with crictlAuditingDebugging Kubernetes Nodes With KubectlDeveloping and debugging services locally using telepresenceWindows debugging tipsManage Kubernetes ObjectsDeclarative Management of Kubernetes Objects Using Configuration FilesDeclarative Management of Kubernetes Objects Using KustomizeManaging Kubernetes Objects Using Imperative CommandsImperative Management of Kubernetes Objects Using Configuration FilesUpdate API Objects in Place Using kubectl patchMigrate Kubernetes Objects Using Storage Version MigrationManaging SecretsManaging Secrets using kubectlManaging Secrets using Configuration FileManaging Secrets using KustomizeInject Data Into ApplicationsDefine a Command and Arguments for a ContainerDefine Dependent Environment VariablesDefine Environment Variables for a ContainerExpose Pod Information to Containers Through Environment VariablesExpose Pod Information to Containers Through FilesDistribute Credentials Securely Using SecretsRun ApplicationsRun a Stateless Application Using a DeploymentRun a Single-Instance Stateful ApplicationRun a Replicated Stateful ApplicationScale a StatefulSetDelete a StatefulSetForce Delete StatefulSet PodsHorizontal Pod AutoscalingHorizontalPodAutoscaler WalkthroughSpecifying a Disruption Budget for your ApplicationAccessing the Kubernetes API from a PodRun JobsRunning Automated Tasks with a CronJobCoarse Parallel Processing Using a Work QueueFine Parallel Processing Using a Work QueueIndexed Job for Parallel Processing with Static Work AssignmentJob with Pod-to-Pod CommunicationParallel Processing using ExpansionsHandling retriable and non-retriable pod failures with Pod failure policyAccess Applications in a ClusterDeploy and Access the Kubernetes DashboardAccessing ClustersConfigure Access to Multiple ClustersUse Port Forwarding to Access Applications in a ClusterUse a Service to Access an Application in a ClusterConnect a Frontend to a Backend Using ServicesCreate an External Load BalancerList All Container Images Running in a ClusterSet up Ingress on Minikube with the NGINX Ingress ControllerCommunicate Between Containers in the Same Pod Using a Shared VolumeConfigure DNS for a ClusterAccess Services Running on ClustersExtend KubernetesConfigure the Aggregation LayerUse Custom ResourcesExtend the Kubernetes API with CustomResourceDefinitionsVersions in CustomResourceDefinitionsSet up an Extension API ServerConfigure Multiple SchedulersUse an HTTP Proxy to Access the Kubernetes APIUse a SOCKS5 Proxy to Access the Kubernetes APISet up Konnectivity serviceTLSConfigure Certificate Rotation for the KubeletManage TLS Certificates in a ClusterManual Rotation of CA CertificatesManage Cluster DaemonsPerform a Rolling Update on a DaemonSetPerform a Rollback on a DaemonSetRunning Pods on Only Some NodesNetworkingAdding entries to Pod /etc/hosts with HostAliasesExtend Service IP RangesValidate IPv4/IPv6 dual-stackExtend kubectl with pluginsManage HugePagesSchedule GPUsTutorialsHello MinikubeLearn Kubernetes BasicsCreate a ClusterUsing Minikube to Create a ClusterDeploy an AppUsing kubectl to Create a DeploymentExplore Your AppViewing Pods and NodesExpose Your App PubliclyUsing a Service to Expose Your AppScale Your AppRunning Multiple Instances of Your AppUpdate Your AppPerforming a Rolling UpdateConfigurationExample: Configuring a Java MicroserviceExternalizing config using MicroProfile, ConfigMaps and SecretsUpdating Configuration via a ConfigMapConfiguring Redis using a ConfigMapAdopting Sidecar ContainersSecurityApply Pod Security Standards at the Cluster LevelApply Pod Security Standards at the Namespace LevelRestrict a Container's Access to Resources with AppArmorRestrict a Container's Syscalls with seccompStateless ApplicationsExposing an External IP Address to Access an Application in a ClusterExample: Deploying PHP Guestbook application with RedisStateful ApplicationsStatefulSet BasicsExample: Deploying WordPress and MySQL with Persistent VolumesExample: Deploying Cassandra with a StatefulSetRunning ZooKeeper, A Distributed System CoordinatorServicesConnecting Applications with ServicesUsing Source IPExplore Termination Behavior for Pods And Their EndpointsReferenceGlossaryAPI OverviewKubernetes API ConceptsServer-Side ApplyClient LibrariesCommon Expression Language in KubernetesKubernetes Deprecation PolicyDeprecated API Migration GuideKubernetes API health endpointsAPI Access ControlAuthenticatingAuthenticating with Bootstrap TokensAuthorizationUsing RBAC AuthorizationUsing Node AuthorizationWebhook ModeUsing ABAC AuthorizationAdmission ControllersDynamic Admission ControlManaging Service AccountsCertificates and Certificate Signing RequestsMapping PodSecurityPolicies to Pod Security StandardsKubelet authentication/authorizationTLS bootstrappingValidating Admission PolicyWell-Known Labels, Annotations and TaintsAudit AnnotationsKubernetes APIWorkload ResourcesPodBindingPodTemplateReplicationControllerReplicaSetDeploymentStatefulSetControllerRevisionDaemonSetJobCronJobHorizontalPodAutoscalerHorizontalPodAutoscalerPriorityClassPodSchedulingContext v1alpha3ResourceClaim v1alpha3ResourceClaimTemplate v1alpha3ResourceSlice v1alpha3Service ResourcesServiceEndpointsEndpointSliceIngressIngressClassConfig and Storage ResourcesConfigMapSecretCSIDriverCSINodeCSIStorageCapacityPersistentVolumeClaimPersistentVolumeStorageClassStorageVersionMigration v1alpha1VolumeVolumeAttachmentVolumeAttributesClass v1beta1Authentication ResourcesServiceAccountTokenRequestTokenReviewCertificateSigningRequestClusterTrustBundle v1alpha1SelfSubjectReviewAuthorization ResourcesLocalSubjectAccessReviewSelfSubjectAccessReviewSelfSubjectRulesReviewSubjectAccessReviewClusterRoleClusterRoleBindingRoleRoleBindingPolicy ResourcesFlowSchemaLimitRangeResourceQuotaNetworkPolicyPodDisruptionBudgetPriorityLevelConfigurationValidatingAdmissionPolicyValidatingAdmissionPolicyBindingExtend ResourcesCustomResourceDefinitionDeviceClass v1alpha3MutatingWebhookConfigurationValidatingWebhookConfigurationCluster ResourcesAPIServiceComponentStatusEventIPAddress v1beta1LeaseLeaseCandidate v1alpha1NamespaceNodeRuntimeClassServiceCIDR v1beta1Common DefinitionsDeleteOptionsLabelSelectorListMetaLocalObjectReferenceNodeSelectorRequirementObjectFieldSelectorObjectMetaObjectReferencePatchQuantityResourceFieldSelectorStatusTypedLocalObjectReferenceCommon ParametersInstrumentationService Level Indicator MetricsCRI Pod & Container MetricsNode metrics dataKubernetes Metrics ReferenceKubernetes Issues and SecurityKubernetes Issue TrackerKubernetes Security and Disclosure InformationCVE feedNode Reference InformationKubelet Checkpoint APILinux Kernel Version RequirementsArticles on dockershim Removal and on Using CRI-compatible RuntimesNode Labels Populated By The KubeletKubelet Configuration Directory MergingKubelet Device Manager API VersionsNode StatusNetworking ReferenceProtocols for ServicesPorts and ProtocolsVirtual IPs and Service ProxiesSetup toolsKubeadmkubeadm initkubeadm joinkubeadm upgradekubeadm configkubeadm resetkubeadm tokenkubeadm versionkubeadm alphakubeadm certskubeadm init phasekubeadm join phasekubeadm kubeconfigkubeadm reset phasekubeadm upgrade phaseImplementation detailsCommand line tool (kubectl)Introduction to kubectlkubectl Quick Referencekubectl referencekubectlkubectl annotatekubectl api-resourceskubectl api-versionskubectl applykubectl apply edit-last-appliedkubectl apply set-last-appliedkubectl apply view-last-appliedkubectl attachkubectl authkubectl auth can-ikubectl auth reconcilekubectl auth whoamikubectl autoscalekubectl certificatekubectl certificate approvekubectl certificate denykubectl cluster-infokubectl cluster-info dumpkubectl completionkubectl configkubectl config current-contextkubectl config delete-clusterkubectl config delete-contextkubectl config delete-userkubectl config get-clusterskubectl config get-contextskubectl config get-userskubectl config rename-contextkubectl config setkubectl config set-clusterkubectl config set-contextkubectl config set-credentialskubectl config unsetkubectl config use-contextkubectl config viewkubectl cordonkubectl cpkubectl createkubectl create clusterrolekubectl create clusterrolebindingkubectl create configmapkubectl create cronjobkubectl create deploymentkubectl create ingresskubectl create jobkubectl create namespacekubectl create poddisruptionbudgetkubectl create priorityclasskubectl create quotakubectl create rolekubectl create rolebindingkubectl create secretkubectl create secret docker-registrykubectl create secret generickubectl create secret tlskubectl create servicekubectl create service clusteripkubectl create service externalnamekubectl create service loadbalancerkubectl create service nodeportkubectl create serviceaccountkubectl create tokenkubectl debugkubectl deletekubectl describekubectl diffkubectl drainkubectl editkubectl eventskubectl execkubectl explainkubectl exposekubectl getkubectl kustomizekubectl labelkubectl logskubectl optionskubectl patchkubectl pluginkubectl plugin listkubectl port-forwardkubectl proxykubectl replacekubectl rolloutkubectl rollout historykubectl rollout pausekubectl rollout restartkubectl rollout resumekubectl rollout statuskubectl rollout undokubectl runkubectl scalekubectl setkubectl set envkubectl set imagekubectl set resourceskubectl set selectorkubectl set serviceaccountkubectl set subjectkubectl taintkubectl topkubectl top nodekubectl top podkubectl uncordonkubectl versionkubectl waitkubectl CommandskubectlJSONPath Supportkubectl for Docker Userskubectl Usage ConventionsComponent toolsFeature GatesFeature Gates (removed)kubeletkube-apiserverkube-controller-managerkube-proxykube-schedulerDebug clusterFlow controlConfiguration APIsClient Authentication (v1)Client Authentication (v1beta1)Event Rate Limit Configuration (v1alpha1)Image Policy API (v1alpha1)kube-apiserver Admission (v1)kube-apiserver Audit Configuration (v1)kube-apiserver Configuration (v1)kube-apiserver Configuration (v1alpha1)kube-apiserver Configuration (v1beta1)kube-controller-manager Configuration (v1alpha1)kube-proxy Configuration (v1alpha1)kube-scheduler Configuration (v1)kubeadm Configuration (v1beta3)kubeadm Configuration (v1beta4)kubeconfig (v1)Kubelet Configuration (v1)Kubelet Configuration (v1alpha1)Kubelet Configuration (v1beta1)Kubelet CredentialProvider (v1)WebhookAdmission Configuration (v1)External APIsKubernetes Custom Metrics (v1beta2)Kubernetes External Metrics (v1beta1)Kubernetes Metrics (v1beta1)SchedulingScheduler ConfigurationScheduling PoliciesOther ToolsMapping from dockercli to crictlContributeContribute to Kubernetes DocumentationSuggesting content improvementsContributing new contentOpening a pull requestDocumenting for a releaseBlogs and case studiesReviewing changesReviewing pull requestsFor approvers and reviewersLocalizing Kubernetes documentationParticipating in SIG DocsRoles and responsibilitiesIssue WranglersPR wranglersDocumentation style overviewContent guideStyle guideDiagram guideWriting a new topicPage content typesContent organizationCustom Hugo ShortcodesUpdating Reference DocumentationQuickstartContributing to the Upstream Kubernetes CodeGenerating Reference Documentation for the Kubernetes APIGenerating Reference Documentation for kubectl CommandsGenerating Reference Documentation for MetricsGenerating Reference Pages for Kubernetes Components and ToolsAdvanced contributingViewing Site AnalyticsDocs smoke test pageDocumentazioneDocumentazioneInformation in this document may be out of dateThis document has an older update date than the original, so the information it contains may be out of date. If you're able to read English, see the English version for the most up-to-date information:Kubernetes DocumentationKubernetes è un motore open source di orchestrazione di containers che automatizza il deployment, la scalabilità e la gestione di applicazioni containerizzate. Il progetto open source è ospitato dalla Cloud Native Computing Foundation (CNCF).Capire le basiImpara Kubernetes e i suoi concetti fondamentali.Cos'è Kubernetes?I componenti di KubernetesLe API di KubernetesImpara i concettiProva KubernetesSegui delle guide per imparare come fare il deployment di applicativi in Kubernetes.Hello MinikubeVedi le guideConfigura un clusterEsegui Kubernetes sulla base delle tue risorse e necessità.Configura KubernetesImpara come usare KubernetesImpara quali sono le procedure principali e come eseguirle in pochi passaggi.Guarda le procedureGuarda le referenzeNaviga la terminologia, la sintassi della riga di comando, la documentazione delle API e degli strumenti di installazione.GlossarioVedi le referenzeContribuisci alla documentazioneChiunque può contribuire, indipendentemente dal fatto che sia nuovo nel progetto o un utente esperto.Contribuisci alla documentazioneScarica KubernetesSe stai installando Kubernetes o aggiornandolo all'ultima versione, controlla le note di rilascio per la versione corrente.Sulla documentazioneQuesto sito contiene la documentazione per la versione corrente e le precedenti 4 versioni di Kubernetes.Ultima modifica November 11, 2023 at 6:33 PM PST:[it](Change footer l10n from Home to Documentation) (f129591124)ModificaCreate child pageCrea issue di documentazionePrint entire sectionDocumentazioneBlogFormazionePartnerCommunityCasi di Studio© 2024 Gli autori di Kubernetes | Documentazione distribuita sottoCC BY 4.0Copyright © 2024 The Linux Foundation ®. Tutti i diritti riservati. The Linux Foundation ha marchi registrati e utilizza marchi commerciali. Per un elenco dei marchi di Linux Foundation, consulta lapagina sull'utilizzo dei marchiICP license: 京ICP备17074266号-3
+Resource Quotas
+When several users or teams share a cluster with a fixed number of nodes, there is a concern that one team could use more than its fair share of resources.
+Resource quotas are a tool for administrators to address this concern.
+A resource quota, defined by a ResourceQuota
+object, provides constraints that limit
+aggregate resource consumption per namespace. It can limit the quantity of objects that can
+be created in a namespace by type, as well as the total amount of compute resources that may
+be consumed by resources in that namespace.
+Resource quotas work like this:
+Different teams work in different namespaces. This can be enforced with
+[RBAC](/docs/reference/access-authn-authz/rbac/).The administrator creates one ResourceQuota for each namespace.
+Users create resources (pods, services, etc.) in the namespace, and the quota system tracks usage to ensure it does not exceed hard resource limits defined in a ResourceQuota.
+If creating or updating a resource violates a quota constraint, the request will fail with HTTP status code
+403 FORBIDDEN
+with a message explaining the constraint that would have been violated.If quota is enabled in a namespace for compute resources like
+cpu
+andmemory
+, users must specify requests or limits for those values; otherwise, the quota system may reject pod creation. Hint: Use theLimitRanger
+admission controller to force defaults for pods that make no compute resource requirements.See the
+[walkthrough](/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/)for an example of how to avoid this problem.
+Note:
+- For
+cpu
+andmemory
+resources, ResourceQuotas enforce that every (new) pod in that namespace sets a limit for that resource. If you enforce a resource quota in a namespace for eithercpu
+ormemory
+, you, and other clients, must specify eitherrequests
+orlimits
+for that resource, for every new Pod you submit. If you don't, the control plane may reject admission for that Pod. - For other resources: ResourceQuota works and will ignore pods in the namespace without setting a limit or request for that resource. It means that you can create a new pod without limit/request ephemeral storage if the resource quota limits the ephemeral storage of this namespace.
+You can use a
+[LimitRange](/docs/concepts/policy/limit-range/)to automatically set a default request for these resources.
+The name of a ResourceQuota object must be a valid
+[DNS subdomain name](/docs/concepts/overview/working-with-objects/names/#dns-subdomain-names).
+Examples of policies that could be created using namespaces and quotas are:
+- In a cluster with a capacity of 32 GiB RAM, and 16 cores, let team A use 20 GiB and 10 cores, let B use 10GiB and 4 cores, and hold 2GiB and 2 cores in reserve for future allocation.
+- Limit the "testing" namespace to using 1 core and 1GiB RAM. Let the "production" namespace use any amount.
+In the case where the total capacity of the cluster is less than the sum of the quotas of the namespaces, there may be contention for resources. This is handled on a first-come-first-served basis.
+Neither contention nor changes to quota will affect already created resources.
+Enabling Resource Quota
+Resource Quota support is enabled by default for many Kubernetes distributions. It is
+enabled when the [API server](/docs/concepts/architecture/#kube-apiserver)
+--enable-admission-plugins=
+flag has ResourceQuota
+as
+one of its arguments.
+A resource quota is enforced in a particular namespace when there is a ResourceQuota in that namespace.
+Compute Resource Quota
+You can limit the total sum of
+[compute resources](/docs/concepts/configuration/manage-resources-containers/)
+that can be requested in a given namespace.
+The following resource types are supported:
+Resource Name | Description |
+---|---|
+limits.cpu | Across all pods in a non-terminal state, the sum of CPU limits cannot exceed this value. |
+limits.memory | Across all pods in a non-terminal state, the sum of memory limits cannot exceed this value. |
+requests.cpu | Across all pods in a non-terminal state, the sum of CPU requests cannot exceed this value. |
+requests.memory | Across all pods in a non-terminal state, the sum of memory requests cannot exceed this value. |
+hugepages-<size> | Across all pods in a non-terminal state, the number of huge page requests of the specified size cannot exceed this value. |
+cpu | Same as requests.cpu |
+memory | Same as requests.memory |
+Resource Quota For Extended Resources
+In addition to the resources mentioned above, in release 1.10, quota support for
+[extended resources](/docs/concepts/configuration/manage-resources-containers/#extended-resources) is added.
+As overcommit is not allowed for extended resources, it makes no sense to specify both requests
+and limits
+for the same extended resource in a quota. So for extended resources, only quota items
+with prefix requests.
+is allowed for now.
+Take the GPU resource as an example, if the resource name is nvidia.com/gpu
+, and you want to
+limit the total number of GPUs requested in a namespace to 4, you can define a quota as follows:
+requests.nvidia.com/gpu: 4
+See [Viewing and Setting Quotas](#viewing-and-setting-quotas) for more detail information.
+Storage Resource Quota
+You can limit the total sum of [storage resources](/docs/concepts/storage/persistent-volumes/) that can be requested in a given namespace.
+In addition, you can limit consumption of storage resources based on associated storage-class.
+Resource Name | Description |
+---|---|
+requests.storage | Across all persistent volume claims, the sum of storage requests cannot exceed this value. |
+persistentvolumeclaims | The total number of
+|
+<storage-class-name>.storageclass.storage.k8s.io/requests.storage
+<storage-class-name>
+, the sum of storage requests cannot exceed this value.<storage-class-name>.storageclass.storage.k8s.io/persistentvolumeclaims
+<storage-class-name>
+, the total number of [persistent volume claims](/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims)that can exist in the namespace.For example, if an operator wants to quota storage with gold
+storage class separate from bronze
+storage class, the operator can
+define a quota as follows:
+gold.storageclass.storage.k8s.io/requests.storage: 500Gi
+bronze.storageclass.storage.k8s.io/requests.storage: 100Gi
+In release 1.8, quota support for local ephemeral storage is added as an alpha feature:
+Resource Name | Description |
+---|---|
+requests.ephemeral-storage | Across all pods in the namespace, the sum of local ephemeral storage requests cannot exceed this value. |
+limits.ephemeral-storage | Across all pods in the namespace, the sum of local ephemeral storage limits cannot exceed this value. |
+ephemeral-storage | Same as requests.ephemeral-storage . |
+Note:
+When using a CRI container runtime, container logs will count against the ephemeral storage quota. This can result in the unexpected eviction of pods that have exhausted their storage quotas. Refer to[Logging Architecture](/docs/concepts/cluster-administration/logging/)for details.
+Object Count Quota
+You can set quota for the total number of one particular resource kind in the Kubernetes API, using the following syntax:
+count/<resource>.<group>
+for resources from non-core groupscount/<resource>
+for resources from the core group
+Here is an example set of resources users may want to put under object count quota:
+count/persistentvolumeclaims
+count/services
+count/secrets
+count/configmaps
+count/replicationcontrollers
+count/deployments.apps
+count/replicasets.apps
+count/statefulsets.apps
+count/jobs.batch
+count/cronjobs.batch
+If you define a quota this way, it applies to Kubernetes' APIs that are part of the API server, and
+to any custom resources backed by a CustomResourceDefinition. If you use [API aggregation](/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/) to
+add additional, custom APIs that are not defined as CustomResourceDefinitions, the core Kubernetes
+control plane does not enforce quota for the aggregated API. The extension API server is expected to
+provide quota enforcement if that's appropriate for the custom API.
+For example, to create a quota on a widgets
+custom resource in the example.com
+API group, use count/widgets.example.com
+.
+When using such a resource quota (nearly for all object kinds), an object is charged against the quota if the object kind exists (is defined) in the control plane. These types of quotas are useful to protect against exhaustion of storage resources. For example, you may want to limit the number of Secrets in a server given their large size. Too many Secrets in a cluster can actually prevent servers and controllers from starting. You can set a quota for Jobs to protect against a poorly configured CronJob. CronJobs that create too many Jobs in a namespace can lead to a denial of service.
+There is another syntax only to set the same type of quota for certain resources. The following types are supported:
+Resource Name | Description |
+---|---|
+configmaps | The total number of ConfigMaps that can exist in the namespace. |
+persistentvolumeclaims | The total number of
+|
+pods
+.status.phase in (Failed, Succeeded)
+is true.replicationcontrollers
+resourcequotas
+services
+services.loadbalancers
+LoadBalancer
+that can exist in the namespace.services.nodeports
+NodePorts
+allocated to Services of type NodePort
+or LoadBalancer
+that can exist in the namespace.secrets
+For example, pods
+quota counts and enforces a maximum on the number of pods
+created in a single namespace that are not terminal. You might want to set a pods
+quota on a namespace to avoid the case where a user creates many small pods and
+exhausts the cluster's supply of Pod IPs.
+You can find more examples on [Viewing and Setting Quotas](#viewing-and-setting-quotas).
+Quota Scopes
+Each quota can have an associated set of scopes
+. A quota will only measure usage for a resource if it matches
+the intersection of enumerated scopes.
+When a scope is added to the quota, it limits the number of resources it supports to those that pertain to the scope. Resources specified on the quota outside of the allowed set results in a validation error.
+Scope | Description |
+---|---|
+Terminating | Match pods where .spec.activeDeadlineSeconds >= 0 |
+NotTerminating | Match pods where .spec.activeDeadlineSeconds is nil |
+BestEffort | Match pods that have best effort quality of service. |
+NotBestEffort | Match pods that do not have best effort quality of service. |
+PriorityClass | Match pods that references the specified
+|
+CrossNamespacePodAffinity
+[(anti)affinity terms](/docs/concepts/scheduling-eviction/assign-pod-node/).The BestEffort
+scope restricts a quota to tracking the following resource:
+pods
+The Terminating
+, NotTerminating
+, NotBestEffort
+and PriorityClass
+scopes restrict a quota to tracking the following resources:
+pods
+cpu
+memory
+requests.cpu
+requests.memory
+limits.cpu
+limits.memory
+Note that you cannot specify both the Terminating
+and the NotTerminating
+scopes in the same quota, and you cannot specify both the BestEffort
+and
+NotBestEffort
+scopes in the same quota either.
+The scopeSelector
+supports the following values in the operator
+field:
+In
+NotIn
+Exists
+DoesNotExist
+When using one of the following values as the scopeName
+when defining the
+scopeSelector
+, the operator
+must be Exists
+.
+Terminating
+NotTerminating
+BestEffort
+NotBestEffort
+If the operator
+is In
+or NotIn
+, the values
+field must have at least
+one value. For example:
+scopeSelector:
+matchExpressions:
+- scopeName: PriorityClass
+operator: In
+values:
+- middle
+If the operator
+is Exists
+or DoesNotExist
+, the values
+field must NOT be
+specified.
+Resource Quota Per PriorityClass
+Kubernetes v1.17 [stable]
+Pods can be created at a specific [priority](/docs/concepts/scheduling-eviction/pod-priority-preemption/#pod-priority).
+You can control a pod's consumption of system resources based on a pod's priority, by using the scopeSelector
+field in the quota spec.
+A quota is matched and consumed only if scopeSelector
+in the quota spec selects the pod.
+When quota is scoped for priority class using scopeSelector
+field, quota object
+is restricted to track only following resources:
+pods
+cpu
+memory
+ephemeral-storage
+limits.cpu
+limits.memory
+limits.ephemeral-storage
+requests.cpu
+requests.memory
+requests.ephemeral-storage
+This example creates a quota object and matches it with pods at specific priorities. The example works as follows:
+- Pods in the cluster have one of the three priority classes, "low", "medium", "high".
+- One quota object is created for each priority.
+Save the following YAML to a file quota.yml
+.
+apiVersion: v1
+kind: List
+items:
+- apiVersion: v1
+kind: ResourceQuota
+metadata:
+name: pods-high
+spec:
+hard:
+cpu: "1000"
+memory: 200Gi
+pods: "10"
+scopeSelector:
+matchExpressions:
+- operator : In
+scopeName: PriorityClass
+values: ["high"]
+- apiVersion: v1
+kind: ResourceQuota
+metadata:
+name: pods-medium
+spec:
+hard:
+cpu: "10"
+memory: 20Gi
+pods: "10"
+scopeSelector:
+matchExpressions:
+- operator : In
+scopeName: PriorityClass
+values: ["medium"]
+- apiVersion: v1
+kind: ResourceQuota
+metadata:
+name: pods-low
+spec:
+hard:
+cpu: "5"
+memory: 10Gi
+pods: "10"
+scopeSelector:
+matchExpressions:
+- operator : In
+scopeName: PriorityClass
+values: ["low"]
+Apply the YAML using kubectl create
+.
+kubectl create -f ./quota.yml
+resourcequota/pods-high created
+resourcequota/pods-medium created
+resourcequota/pods-low created
+Verify that Used
+quota is 0
+using kubectl describe quota
+.
+kubectl describe quota
+Name: pods-high
+Namespace: default
+Resource Used Hard
+-------- ---- ----
+cpu 0 1k
+memory 0 200Gi
+pods 0 10
+Name: pods-low
+Namespace: default
+Resource Used Hard
+-------- ---- ----
+cpu 0 5
+memory 0 10Gi
+pods 0 10
+Name: pods-medium
+Namespace: default
+Resource Used Hard
+-------- ---- ----
+cpu 0 10
+memory 0 20Gi
+pods 0 10
+Create a pod with priority "high". Save the following YAML to a
+file high-priority-pod.yml
+.
+apiVersion: v1
+kind: Pod
+metadata:
+name: high-priority
+spec:
+containers:
+- name: high-priority
+image: ubuntu
+command: ["/bin/sh"]
+args: ["-c", "while true; do echo hello; sleep 10;done"]
+resources:
+requests:
+memory: "10Gi"
+cpu: "500m"
+limits:
+memory: "10Gi"
+cpu: "500m"
+priorityClassName: high
+Apply it with kubectl create
+.
+kubectl create -f ./high-priority-pod.yml
+Verify that "Used" stats for "high" priority quota, pods-high
+, has changed and that
+the other two quotas are unchanged.
+kubectl describe quota
+Name: pods-high
+Namespace: default
+Resource Used Hard
+-------- ---- ----
+cpu 500m 1k
+memory 10Gi 200Gi
+pods 1 10
+Name: pods-low
+Namespace: default
+Resource Used Hard
+-------- ---- ----
+cpu 0 5
+memory 0 10Gi
+pods 0 10
+Name: pods-medium
+Namespace: default
+Resource Used Hard
+-------- ---- ----
+cpu 0 10
+memory 0 20Gi
+pods 0 10
+Cross-namespace Pod Affinity Quota
+Kubernetes v1.24 [stable]
+Operators can use CrossNamespacePodAffinity
+quota scope to limit which namespaces are allowed to
+have pods with affinity terms that cross namespaces. Specifically, it controls which pods are allowed
+to set namespaces
+or namespaceSelector
+fields in pod affinity terms.
+Preventing users from using cross-namespace affinity terms might be desired since a pod with anti-affinity constraints can block pods from all other namespaces from getting scheduled in a failure domain.
+Using this scope operators can prevent certain namespaces (foo-ns
+in the example below)
+from having pods that use cross-namespace pod affinity by creating a resource quota object in
+that namespace with CrossNamespacePodAffinity
+scope and hard limit of 0:
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+name: disable-cross-namespace-affinity
+namespace: foo-ns
+spec:
+hard:
+pods: "0"
+scopeSelector:
+matchExpressions:
+- scopeName: CrossNamespacePodAffinity
+operator: Exists
+If operators want to disallow using namespaces
+and namespaceSelector
+by default, and
+only allow it for specific namespaces, they could configure CrossNamespacePodAffinity
+as a limited resource by setting the kube-apiserver flag --admission-control-config-file
+to the path of the following configuration file:
+apiVersion: apiserver.config.k8s.io/v1
+kind: AdmissionConfiguration
+plugins:
+- name: "ResourceQuota"
+configuration:
+apiVersion: apiserver.config.k8s.io/v1
+kind: ResourceQuotaConfiguration
+limitedResources:
+- resource: pods
+matchScopes:
+- scopeName: CrossNamespacePodAffinity
+operator: Exists
+With the above configuration, pods can use namespaces
+and namespaceSelector
+in pod affinity only
+if the namespace where they are created have a resource quota object with
+CrossNamespacePodAffinity
+scope and a hard limit greater than or equal to the number of pods using those fields.
+Requests compared to Limits
+When allocating compute resources, each container may specify a request and a limit value for either CPU or memory. The quota can be configured to quota either value.
+If the quota has a value specified for requests.cpu
+or requests.memory
+, then it requires that every incoming
+container makes an explicit request for those resources. If the quota has a value specified for limits.cpu
+or limits.memory
+,
+then it requires that every incoming container specifies an explicit limit for those resources.
+Viewing and Setting Quotas
+Kubectl supports creating, updating, and viewing quotas:
+kubectl create namespace myspace
+cat <<EOF > compute-resources.yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+name: compute-resources
+spec:
+hard:
+requests.cpu: "1"
+requests.memory: 1Gi
+limits.cpu: "2"
+limits.memory: 2Gi
+requests.nvidia.com/gpu: 4
+EOF
+kubectl create -f ./compute-resources.yaml --namespace=myspace
+cat <<EOF > object-counts.yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+name: object-counts
+spec:
+hard:
+configmaps: "10"
+persistentvolumeclaims: "4"
+pods: "4"
+replicationcontrollers: "20"
+secrets: "10"
+services: "10"
+services.loadbalancers: "2"
+EOF
+kubectl create -f ./object-counts.yaml --namespace=myspace
+kubectl get quota --namespace=myspace
+NAME AGE
+compute-resources 30s
+object-counts 32s
+kubectl describe quota compute-resources --namespace=myspace
+Name: compute-resources
+Namespace: myspace
+Resource Used Hard
+-------- ---- ----
+limits.cpu 0 2
+limits.memory 0 2Gi
+requests.cpu 0 1
+requests.memory 0 1Gi
+requests.nvidia.com/gpu 0 4
+kubectl describe quota object-counts --namespace=myspace
+Name: object-counts
+Namespace: myspace
+Resource Used Hard
+-------- ---- ----
+configmaps 0 10
+persistentvolumeclaims 0 4
+pods 0 4
+replicationcontrollers 0 20
+secrets 1 10
+services 0 10
+services.loadbalancers 0 2
+Kubectl also supports object count quota for all standard namespaced resources
+using the syntax count/<resource>.<group>
+:
+kubectl create namespace myspace
+kubectl create quota test --hard=count/deployments.apps=2,count/replicasets.apps=4,count/pods=3,count/secrets=4 --namespace=myspace
+kubectl create deployment nginx --image=nginx --namespace=myspace --replicas=2
+kubectl describe quota --namespace=myspace
+Name: test
+Namespace: myspace
+Resource Used Hard
+-------- ---- ----
+count/deployments.apps 1 2
+count/pods 2 3
+count/replicasets.apps 1 4
+count/secrets 1 4
+Quota and Cluster Capacity
+ResourceQuotas are independent of the cluster capacity. They are expressed in absolute units. So, if you add nodes to your cluster, this does not automatically give each namespace the ability to consume more resources.
+Sometimes more complex policies may be desired, such as:
+- Proportionally divide total cluster resources among several teams.
+- Allow each tenant to grow resource usage as needed, but have a generous limit to prevent accidental resource exhaustion.
+- Detect demand from one namespace, add nodes, and increase quota.
+Such policies could be implemented using ResourceQuotas
+as building blocks, by
+writing a "controller" that watches the quota usage and adjusts the quota
+hard limits of each namespace according to other signals.
+Note that resource quota divides up aggregate cluster resources, but it creates no restrictions around nodes: pods from several namespaces may run on the same node.
+Limit Priority Class consumption by default
+It may be desired that pods at a particular priority, eg. "cluster-services", should be allowed in a namespace, if and only if, a matching quota object exists.
+With this mechanism, operators are able to restrict usage of certain high priority classes to a limited number of namespaces and not every namespace will be able to consume these priority classes by default.
+To enforce this, kube-apiserver
+flag --admission-control-config-file
+should be
+used to pass path to the following configuration file:
+apiVersion: apiserver.config.k8s.io/v1
+kind: AdmissionConfiguration
+plugins:
+- name: "ResourceQuota"
+configuration:
+apiVersion: apiserver.config.k8s.io/v1
+kind: ResourceQuotaConfiguration
+limitedResources:
+- resource: pods
+matchScopes:
+- scopeName: PriorityClass
+operator: In
+values: ["cluster-services"]
+Then, create a resource quota object in the kube-system
+namespace:
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+name: pods-cluster-services
+spec:
+scopeSelector:
+matchExpressions:
+- operator : In
+scopeName: PriorityClass
+values: ["cluster-services"]
+kubectl apply -f https://k8s.io/examples/policy/priority-class-resourcequota.yaml -n kube-system
+resourcequota/pods-cluster-services created
+In this case, a pod creation will be allowed if:
+- the Pod's
+priorityClassName
+is not specified. - the Pod's
+priorityClassName
+is specified to a value other thancluster-services
+. - the Pod's
+priorityClassName
+is set tocluster-services
+, it is to be created in thekube-system
+namespace, and it has passed the resource quota check.
+A Pod creation request is rejected if its priorityClassName
+is set to cluster-services
+and it is to be created in a namespace other than kube-system
+.
+What's next
+- See
+[ResourceQuota design doc](https://git.k8s.io/design-proposals-archive/resource-management/admission_control_resource_quota.md)for more information. - See a
+[detailed example for how to use resource quota](/docs/tasks/administer-cluster/quota-api-object/). - Read
+[Quota support for priority class design doc](https://git.k8s.io/design-proposals-archive/scheduling/pod-priority-resourcequota.md). - See
+[LimitedResources](https://github.com/kubernetes/kubernetes/pull/36765)
+[Updated the ResourceQuota doc for NodePort and LoadBalancer (c87b19193d)](https://github.com/kubernetes/website/commit/c87b19193d8b1e96de03d76ec7eece02262580f0)

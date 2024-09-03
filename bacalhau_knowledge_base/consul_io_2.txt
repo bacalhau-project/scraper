@@ -1,3 +1,31 @@
-URL: https://www.consul.io/community
+Source: consul_io
+URL: https://www.consul.io/use-cases/discover-services
 
-HashiDaysGet certified in HashiCorp products for free at HashiDays 2024Register nowDismiss alertOverviewUse CasesEnterpriseTutorialsDocsAPICLICommunityGitHubDownloadTry HCP ConsulCommunityConsul is a large project with a growing community. There are active, dedicated users willing to help you through various mediums.Community ForumConsul Community ForumBug TrackerIssue tracker on GitHub. Please only use this for reporting bugs. Do not ask for general help here; use Gitter or the mailing list for that.Community ToolsDownload Community Tools. Please check out some of the awesome Consul tooling our amazing community has helped build.TrainingPaidHashiCorp training coursesare also available in a city near you. Private training courses are also available.CertificationLearn more about ourCloud Engineer Certification programandHashiCorp's Networking Automation Certificationexams.IntroGuidesDocsCommunityPrivacySecurityConsent ManagerManage cookiesHashiCorp uses data collected by cookies and JavaScript libraries to improve your browsing experience, analyze site traffic, and increase the overall performance of our site. By using our website, you’re agreeing to ourPrivacy PolicyandCookie Policy.The categories below outline which companies and tools we use for collecting data. To opt out of a category of data collection, set the toggle to “Off” and save your preferences.Save preferencesAccept all
+Tutorial
+Getting started with Consul
+Consul can be deployed on any runtime. Get started by deploying your first Consul on a VM and register your first service for discovery.
+Use case
+Use Consul as a centralized registry that discovers, tracks, and monitors your services. Consul can be your single source of truth for cataloging and maintaining a record of all your services.
+Challenge
+Traditionally, applications and services tend to be static where IPs remain unchanged. Maintaining service information like IP addresses was manageable with configuration management databases (CMDB). However, this becomes a challenge today where cloud-based applications are much more dynamic and traditional tools struggle to keep up. This is even more evident today with microservices that are ephemeral and constantly changing.
+Solution
+Rather than depending on legacy tools that require manual updates, developers can use Consul to discover, track, and monitor services. Clients can then query Consul's API and discover service dependencies.
+200+
+services across multiple Kubernetes clusters
+Days > minutes
+reduction in time to discover and connect services using Consul
+1 billion +
+data points coordinated and connected
+Tutorial
+Consul can be deployed on any runtime. Get started by deploying your first Consul on a VM and register your first service for discovery.
+Tutorial
+Learn how to install Consul on Kubernetes, then explore service mesh features such as service-to-service permissions with intentions and enhanced observability.
+Tutorial
+Learn how to configure AWS Lambda functions to interact with Consul service mesh. Replace a Kubernetes service deployment with an AWS Lambda function.
+Documentation
+One of the main goals of service discovery is to provide a catalog of available services.
+Documentation
+The DNS interface allows applications to make use of service discovery without any high-touch integration with Consul.
+Documentation
+One of the primary roles of the agent is management of system-level and application-level health checks.
+HashiCorp Co-Founder and CTO Armon Dadgar gives a whiteboard overview of HashiCorp Consul, a service networking solution to connect, configure, and secure services in dynamic infrastructure.

@@ -1,117 +1,44 @@
-URL: https://grpc.io/docs/languages/java/basics/
+Source: grpc_io
+URL: https://grpc.io/docs/guides/keepalive/
 
-gRPCAboutMeetDocsGuidesShowcaseBlogCommunitygRPConf 2024 is happening NEXT WEEK onAug. 27th!-Register nowand get 25% off with the code GOOGLE25.DocsWhat is gRPC?IntroductionCore conceptsFAQLanguagesC# / .NETAPI (legacy)Daily builds (legacy)C++Quick startBasics tutorialAsync-API tutorialAsynchronous Callback API TutorialBest Practices for gRPC C++ API and FAQALTSAPIDartQuick startBasics tutorialAPIGoQuick startBasics tutorialALTSAPIGenerated codeJavaQuick startBasics tutorialALTSAPIGenerated codeKotlinQuick startBasics tutorialAPINodeQuick startBasics tutorialAPIObjective-CQuick startBasics tutorialOAuth2APIPHPQuick startBasics tutorialAPIDaily buildsPythonQuick startBasics tutorialALTSGenerated codeAPIDaily buildsRubyQuick startBasics tutorialAPIDaily buildsPlatformsAndroidJavaQuick startBasics tutorialAPIKotlinQuick startAPIWebQuick startBasics tutorialGuidesAuthenticationBenchmarkingCancellationCompressionCustom Backend MetricsCustom Load Balancing PoliciesCustom Name ResolutionDeadlinesDebuggingError handlingFlow ControlHealth CheckingInterceptorsKeepaliveMetadataOpenTelemetry MetricsPerformance Best PracticesReflectionRequest HedgingRetryService ConfigStatus CodesWait-for-ReadyView page sourceEdit this pageCreate child pageCreate documentation issueCreate project issueWhy use gRPC?Example code and setupDefining the serviceGenerating client and server codeCreating the serverImplementing RouteGuideSimple RPCServer-side streaming RPCClient-side streaming RPCBidirectional streaming RPCStarting the serverCreating the clientInstantiating a stubCalling service methodsSimple RPCServer-side streaming RPCClient-side streaming RPCBidirectional streaming RPCTry it out!DocsLanguagesJavaBasics tutorialBasics tutorialA basic tutorial introduction to gRPC in Java.ContentsWhy use gRPC?Example code and setupDefining the serviceGenerating client and server codeCreating the serverImplementing RouteGuideSimple RPCServer-side streaming RPCClient-side streaming RPCBidirectional streaming RPCStarting the serverCreating the clientInstantiating a stubCalling service methodsSimple RPCServer-side streaming RPCClient-side streaming RPCBidirectional streaming RPCTry it out!Basics tutorialA basic tutorial introduction to gRPC in Java.This tutorial provides a basic Java programmer’s introduction to
-working with gRPC.By walking through this example you’ll learn how to:Define a service in a.protofile.Generate server and client code using the protocol buffer compiler.Use the Java gRPC API to write a simple client and server for your service.It assumes that you have read theIntroduction to gRPCand are familiar
-withprotocol
-buffers. Note
-that the example in this tutorial uses theproto3version of the protocol
-buffers language: you can find out more in theproto3 language
-guideandJava
-generated code
-guide.Why use gRPC?Our example is a simple route mapping application that lets clients get
-information about features on their route, create a summary of their route, and
-exchange route information such as traffic updates with the server and other
-clients.With gRPC we can define our service once in a.protofile and generate clients
-and servers in any of gRPC’s supported languages, which in turn can be run in
-environments ranging from servers inside a large data center to your own tablet —
-all the complexity of communication between different languages and environments is
-handled for you by gRPC. We also get all the advantages of working with protocol
-buffers, including efficient serialization, a simple IDL, and easy interface
-updating.Example code and setupThe example code for our tutorial is ingrpc/grpc-java/examples/src/main/java/io/grpc/examples/routeguide.
-To download the example, clone the latest release ingrpc-javarepository by
-running the following command:$ git clone -b v1.66.0 --depth1https://github.com/grpc/grpc-javaThen change your current directory togrpc-java/examples:$cdgrpc-java/examplesDefining the serviceOur first step (as you’ll know from theIntroduction to gRPC) is to
-define the gRPCserviceand the methodrequestandresponsetypes usingprotocol
-buffers. You can
-see the complete.protofile ingrpc-java/examples/src/main/proto/route_guide.proto.As we’re generating Java code in this example, we’ve specified ajava_packagefile option in our.proto:optionjava_package="io.grpc.examples.routeguide";This specifies the package we want to use for our generated Java classes. If no
-explicitjava_packageoption is given in the.protofile, then by default the
-proto package (specified using the “package” keyword) will be used. However,
-proto packages generally do not make good Java packages since proto packages are
-not expected to start with reverse domain names. If we generate code in another
-language from this.proto, thejava_packageoption has no effect.To define a service, we specify a namedservicein the.protofile:serviceRouteGuide {...}Then we definerpcmethods inside our service definition, specifying their
-request and response types. gRPC lets you define four kinds of service methods,
-all of which are used in theRouteGuideservice:Asimple RPCwhere the client sends a request to the server using the stub
-and waits for a response to come back, just like a normal function call.// Obtains the feature at a given position.rpcGetFeature(Point)returns(Feature) {}Aserver-side streaming RPCwhere the client sends a request to the server
-and gets a stream to read a sequence of messages back. The client reads from
-the returned stream until there are no more messages. As you can see in our
-example, you specify a server-side streaming method by placing thestreamkeyword before theresponsetype.// Obtains the Features available within the given Rectangle.  Results are// streamed rather than returned at once (e.g. in a response message with a// repeated field), as the rectangle may cover a large area and contain a// huge number of features.rpcListFeatures(Rectangle)returns(stream Feature) {}Aclient-side streaming RPCwhere the client writes a sequence of messages
-and sends them to the server, again using a provided stream. Once the client
-has finished writing the messages, it waits for the server to read them all
-and return its response. You specify a client-side streaming method by placing
-thestreamkeyword before therequesttype.// Accepts a stream of Points on a route being traversed, returning a// RouteSummary when traversal is completed.rpcRecordRoute(stream Point)returns(RouteSummary) {}Abidirectional streaming RPCwhere both sides send a sequence of messages
-using a read-write stream. The two streams operate independently, so clients
-and servers can read and write in whatever order they like: for example, the
-server could wait to receive all the client messages before writing its
-responses, or it could alternately read a message then write a message, or
-some other combination of reads and writes. The order of messages in each
-stream is preserved. You specify this type of method by placing thestreamkeyword before both the request and the response.// Accepts a stream of RouteNotes sent while a route is being traversed,// while receiving other RouteNotes (e.g. from other users).rpcRouteChat(stream RouteNote)returns(stream RouteNote) {}Our.protofile also contains protocol buffer message type definitions for all
-the request and response types used in our service methods - for example, here’s
-thePointmessage type:// Points are represented as latitude-longitude pairs in the E7 representation// (degrees multiplied by 10**7 and rounded to the nearest integer).// Latitudes should be in the range +/- 90 degrees and longitude should be in// the range +/- 180 degrees (inclusive).messagePoint{int32latitude=1;int32longitude=2;}Generating client and server codeNext we need to generate the gRPC client and server interfaces from our.protoservice definition. We do this using the protocol buffer compilerprotocwith
-a special gRPC Java plugin. You need to use theproto3compiler (which supports
-both proto2 and proto3 syntax) in order to generate gRPC services.When using Gradle or Maven, the protoc build plugin can generate the necessary
-code as part of the build. You can refer to thegrpc-java READMEfor
-how to generate code from your own.protofiles.The following classes are generated from our service definition:Feature.java,Point.java,Rectangle.java, and others which contain all
-the protocol buffer code to populate, serialize, and retrieve our request and
-response message types.RouteGuideGrpc.javawhich contains (along with some other useful code):a base class forRouteGuideservers to implement,RouteGuideGrpc.RouteGuideImplBase, with all the methods defined in theRouteGuideservice.stubclasses that clients can use to talk to aRouteGuideserver.Creating the serverFirst let’s look at how we create aRouteGuideserver. If you’re only
-interested in creating gRPC clients, you can skip this section and go straight
-toCreating the client(though you might find it interesting
-anyway!).There are two parts to making ourRouteGuideservice do its job:Overriding the service base class generated from our service definition: doing
-the actual “work” of our service.Running a gRPC server to listen for requests from clients and return the
-service responses.You can find our exampleRouteGuideserver ingrpc-java/examples/src/main/java/io/grpc/examples/routeguide/RouteGuideServer.java.
-Let’s take a closer look at how it works.Implementing RouteGuideAs you can see, our server has aRouteGuideServiceclass that extends the
-generatedRouteGuideGrpc.RouteGuideImplBaseabstract class:privatestaticclassRouteGuideServiceextendsRouteGuideGrpc.RouteGuideImplBase{...}Simple RPCRouteGuideServiceimplements all our service methods. Let’s
-look at the simplest method first,GetFeature(), which just gets aPointfrom
-the client and returns the corresponding feature information from its database
-in aFeature.@OverridepublicvoidgetFeature(Point request,StreamObserver<Feature>responseObserver){responseObserver.onNext(checkFeature(request));responseObserver.onCompleted();}...privateFeaturecheckFeature(Point location){for(Feature feature:features){if(feature.getLocation().getLatitude()==location.getLatitude()&&feature.getLocation().getLongitude()==location.getLongitude()){returnfeature;}}// No feature was found, return an unnamed feature.returnFeature.newBuilder().setName("").setLocation(location).build();}ThegetFeature()method takes two parameters:Point: the requestStreamObserver<Feature>: a response observer, which is a special interface
-for the server to call with its response.To return our response to the client and complete the call:We construct and populate aFeatureresponse object to return to the
-client, as specified in our service definition. In this example, we do this
-in a separate privatecheckFeature()method.We use the response observer’sonNext()method to return theFeature.We use the response observer’sonCompleted()method to specify that we’ve
-finished dealing with the RPC.Server-side streaming RPCNext let’s look at one of our streaming RPCs.ListFeaturesis a server-side
-streaming RPC, so we need to send back multipleFeatures to our client.privatefinalCollection<Feature>features;...@OverridepublicvoidlistFeatures(Rectangle request,StreamObserver<Feature>responseObserver){intleft=min(request.getLo().getLongitude(),request.getHi().getLongitude());intright=max(request.getLo().getLongitude(),request.getHi().getLongitude());inttop=max(request.getLo().getLatitude(),request.getHi().getLatitude());intbottom=min(request.getLo().getLatitude(),request.getHi().getLatitude());for(Feature feature:features){if(!RouteGuideUtil.exists(feature)){continue;}intlat=feature.getLocation().getLatitude();intlon=feature.getLocation().getLongitude();if(lon>=left&&lon<=right&&lat>=bottom&&lat<=top){responseObserver.onNext(feature);}}responseObserver.onCompleted();}Like the simple RPC, this method gets a request object (theRectanglein which
-our client wants to findFeatures) and aStreamObserverresponse observer.This time, we get as manyFeatureobjects as we need to return to the client
-(in this case, we select them from the service’s feature collection based on
-whether they’re inside our requestRectangle), and write them each in turn to
-the response observer using itsonNext()method. Finally, as in our simple
-RPC, we use the response observer’sonCompleted()method to tell gRPC that
-we’ve finished writing responses.Client-side streaming RPCNow let’s look at something a little more complicated: the client-side streaming
-methodRecordRoute(), where we get a stream ofPoints from the client and
-return a singleRouteSummarywith information about their trip.@OverridepublicStreamObserver<Point>recordRoute(finalStreamObserver<RouteSummary>responseObserver){returnnewStreamObserver<Point>(){intpointCount;intfeatureCount;intdistance;Point previous;longstartTime=System.nanoTime();@OverridepublicvoidonNext(Point point){pointCount++;if(RouteGuideUtil.exists(checkFeature(point))){featureCount++;}// For each point after the first, add the incremental distance from the previous point// to the total distance value.if(previous!=null){distance+=calcDistance(previous,point);}previous=point;}@OverridepublicvoidonError(Throwable t){logger.log(Level.WARNING,"Encountered error in recordRoute",t);}@OverridepublicvoidonCompleted(){longseconds=NANOSECONDS.toSeconds(System.nanoTime()-startTime);responseObserver.onNext(RouteSummary.newBuilder().setPointCount(pointCount).setFeatureCount(featureCount).setDistance(distance).setElapsedTime((int)seconds).build());responseObserver.onCompleted();}};}As you can see, like the previous method types our method gets aStreamObserverresponse observer parameter, but this time it returns aStreamObserverfor the client to write itsPoints.In the method body we instantiate an anonymousStreamObserverto return, in
-which we:Override theonNext()method to get features and other information each time
-the client writes aPointto the message stream.Override theonCompleted()method (called when theclienthas finished
-writing messages) to populate and build ourRouteSummary. We then call our
-method’s own response observer’sonNext()with ourRouteSummary, and then
-call itsonCompleted()method to finish the call from the server side.Bidirectional streaming RPCFinally, let’s look at our bidirectional streaming RPCRouteChat().@OverridepublicStreamObserver<RouteNote>routeChat(finalStreamObserver<RouteNote>responseObserver){returnnewStreamObserver<RouteNote>(){@OverridepublicvoidonNext(RouteNote note){List<RouteNote>notes=getOrCreateNotes(note.getLocation());// Respond with all previous notes at this location.for(RouteNote prevNote:notes.toArray(newRouteNote[0])){responseObserver.onNext(prevNote);}// Now add the new note to the listnotes.add(note);}@OverridepublicvoidonError(Throwable t){logger.log(Level.WARNING,"Encountered error in routeChat",t);}@OverridepublicvoidonCompleted(){responseObserver.onCompleted();}};}As with our client-side streaming example, we both get and return aStreamObserverresponse observer, except this time we return values via our
-method’s response observer while the client is still writing messages totheirmessage stream. The syntax for reading and writing here is exactly the same as
-for our client-streaming and server-streaming methods. Although each side will
-always get the other’s messages in the order they were written, both the client
-and server can read and write in any order — the streams operate completely
-independently.Starting the serverOnce we’ve implemented all our methods, we also need to start up a gRPC server
-so that clients can actually use our service. The following snippet shows how we
-do this for ourRouteGuideservice:publicRouteGuideServer(intport,URL featureFile)throwsIOException{this(ServerBuilder.forPort(port),port,RouteGuideUtil.parseFeatures(featureFile));}/** Create a RouteGuide server using serverBuilder as a base and features as data. */publicRouteGuideServer(ServerBuilder<?>serverBuilder,intport,Collection<Feature>features){this.port=port;server=serverBuilder.addService(newRouteGuideService(features)).build();}...publicvoidstart()throwsIOException{server.start();logger.info("Server started, listening on "+port);...}As you can see, we build and start our server using aServerBuilder.To do this, we:Specify the address and port we want to use to listen for client requests
-using the builder’sforPort()method.Create an instance of our service implementation classRouteGuideServiceand pass it to the builder’saddService()method.Callbuild()andstart()on the builder to create and start an RPC server
-for our service.Creating the clientIn this section, we’ll look at creating a client for ourRouteGuideservice. You can see our complete example client code ingrpc-java/examples/src/main/java/io/grpc/examples/routeguide/RouteGuideClient.java.Instantiating a stubTo call service methods, we first need to create astub, or rather, two stubs:ablocking/synchronousstub: this means that the RPC call waits for the
-server to respond, and will either return a response or raise an exception.anon-blocking/asynchronousstub that makes non-blocking calls to the
-server, where the response is returned asynchronously. You can make certain
-types of streaming call only using the asynchronous stub.First we need to create a gRPCchannelfor our stub, specifying the server
-address and port we want to connect to:publicRouteGuideClient(String host,intport){this(ManagedChannelBuilder.forAddress(host,port).usePlaintext());}/** Construct client for accessing RouteGuide server using the existing channel. */publicRouteGuideClient(ManagedChannelBuilder<?>channelBuilder){channel=channelBuilder.build();blockingStub=RouteGuideGrpc.newBlockingStub(channel);asyncStub=RouteGuideGrpc.newStub(channel);}We use aManagedChannelBuilderto create the channel.Now we can use the channel to create our stubs using thenewStubandnewBlockingStubmethods provided in theRouteGuideGrpcclass we generated
-from our.proto.blockingStub=RouteGuideGrpc.newBlockingStub(channel);asyncStub=RouteGuideGrpc.newStub(channel);Calling service methodsNow let’s look at how we call our service methods.Simple RPCCalling the simple RPCGetFeatureon the blocking stub is as straightforward
-as calling a local method.Point request=Point.newBuilder().setLatitude(lat).setLongitude(lon).build();Feature feature;try{feature=blockingStub.getFeature(request);}catch(StatusRuntimeException e){logger.log(Level.WARNING,"RPC failed: {0}",e.getStatus());return;}We create and populate a request protocol buffer object (in our casePoint),
-pass it to thegetFeature()method on our blocking stub, and get back aFeature.If an error occurs, it is encoded as aStatus, which we can obtain from theStatusRuntimeException.Server-side streaming RPCNext, let’s look at a server-side streaming call toListFeatures, which
-returns a stream of geographicalFeatures:Rectangle request=Rectangle.newBuilder().setLo(Point.newBuilder().setLatitude(lowLat).setLongitude(lowLon).build()).setHi(Point.newBuilder().setLatitude(hiLat).setLongitude(hiLon).build()).build();Iterator<Feature>features;try{features=blockingStub.listFeatures(request);}catch(StatusRuntimeException e){logger.log(Level.WARNING,"RPC failed: {0}",e.getStatus());return;}As you can see, it’s very similar to the simple RPC we just looked at, except
-instead of returning a singleFeature, the method returns anIteratorthat
-the client can use to read all the returnedFeatures.Client-side streaming RPCNow for something a little more complicated: the client-side streaming methodRecordRoute, where we send a stream ofPoints to the server and get back a
-singleRouteSummary. For this method we need to use the asynchronous stub. If
-you’ve already readCreating the serversome of this may look very
-familiar - asynchronous streaming RPCs are implemented in a similar way on both
-sides.publicvoidrecordRoute(List<Feature>features,intnumPoints)throwsInterruptedException{info("*** RecordRoute");finalCountDownLatch finishLatch=newCountDownLatch(1);StreamObserver<RouteSummary>responseObserver=newStreamObserver<RouteSummary>(){@OverridepublicvoidonNext(RouteSummary summary){info("Finished trip with {0} points. Passed {1} features. "+"Travelled {2} meters. It took {3} seconds.",summary.getPointCount(),summary.getFeatureCount(),summary.getDistance(),summary.getElapsedTime());}@OverridepublicvoidonError(Throwable t){Status status=Status.fromThrowable(t);logger.log(Level.WARNING,"RecordRoute Failed: {0}",status);finishLatch.countDown();}@OverridepublicvoidonCompleted(){info("Finished RecordRoute");finishLatch.countDown();}};StreamObserver<Point>requestObserver=asyncStub.recordRoute(responseObserver);try{// Send numPoints points randomly selected from the features list.Random rand=newRandom();for(inti=0;i<numPoints;++i){intindex=rand.nextInt(features.size());Point point=features.get(index).getLocation();info("Visiting point {0}, {1}",RouteGuideUtil.getLatitude(point),RouteGuideUtil.getLongitude(point));requestObserver.onNext(point);// Sleep for a bit before sending the next one.Thread.sleep(rand.nextInt(1000)+500);if(finishLatch.getCount()==0){// RPC completed or errored before we finished sending.// Sending further requests won't error, but they will just be thrown away.return;}}}catch(RuntimeException e){// Cancel RPCrequestObserver.onError(e);throwe;}// Mark the end of requestsrequestObserver.onCompleted();// Receiving happens asynchronouslyfinishLatch.await(1,TimeUnit.MINUTES);}As you can see, to call this method we need to create aStreamObserver, which
-implements a special interface for the server to call with itsRouteSummaryresponse. In ourStreamObserverwe:Override theonNext()method to print out the returned information when the
-server writes aRouteSummaryto the message stream.Override theonCompleted()method (called when theserverhas completed
-the call on its side) to reduce aCountDownLatchthat we can check to see if
-the server has finished writing.We then pass theStreamObserverto the asynchronous stub’srecordRoute()method and get back our ownStreamObserverrequest observer to write ourPoints to send to the server. Once we’ve finished writing points, we use the
-request observer’sonCompleted()method to tell gRPC that we’ve finished
-writing on the client side. Once we’re done, we check ourCountDownLatchto
-check that the server has completed on its side.Bidirectional streaming RPCFinally, let’s look at our bidirectional streaming RPCRouteChat().publicvoidrouteChat()throwsException{info("*** RoutChat");finalCountDownLatch finishLatch=newCountDownLatch(1);StreamObserver<RouteNote>requestObserver=asyncStub.routeChat(newStreamObserver<RouteNote>(){@OverridepublicvoidonNext(RouteNote note){info("Got message \"{0}\" at {1}, {2}",note.getMessage(),note.getLocation().getLatitude(),note.getLocation().getLongitude());}@OverridepublicvoidonError(Throwable t){Status status=Status.fromThrowable(t);logger.log(Level.WARNING,"RouteChat Failed: {0}",status);finishLatch.countDown();}@OverridepublicvoidonCompleted(){info("Finished RouteChat");finishLatch.countDown();}});try{RouteNote[]requests={newNote("First message",0,0),newNote("Second message",0,1),newNote("Third message",1,0),newNote("Fourth message",1,1)};for(RouteNote request:requests){info("Sending message \"{0}\" at {1}, {2}",request.getMessage(),request.getLocation().getLatitude(),request.getLocation().getLongitude());requestObserver.onNext(request);}}catch(RuntimeException e){// Cancel RPCrequestObserver.onError(e);throwe;}// Mark the end of requestsrequestObserver.onCompleted();// Receiving happens asynchronouslyfinishLatch.await(1,TimeUnit.MINUTES);}As with our client-side streaming example, we both get and return aStreamObserverresponse observer, except this time we send values via our
-method’s response observer while the server is still writing messages totheirmessage stream. The syntax for reading and writing here is exactly the same as
-for our client-streaming method. Although each side will always get the other’s
-messages in the order they were written, both the client and server can read and
-write in any order — the streams operate completely independently.Try it out!Follow the instructions in theexample directory READMEto build and run the
-client and server.Last modified July 12, 2023:Java: Update basics.md - Format file extensions in code font (#1161) (0597f48)View page sourceEdit this pageCreate child pageCreate documentation issueCreate project issue© 2024 gRPC AuthorsTerms|Privacy|Trademarks|License|About
+Keepalive
+How to use HTTP/2 PING-based keepalives in gRPC.
+Keepalive
+Overview
+HTTP/2 PING-based keepalives are a way to keep an HTTP/2 connection alive even when there is no data being transferred. This is done by periodically sending a [PING frame](https://httpwg.org/specs/rfc7540.html#PING) to the other end of the connection. HTTP/2 keepalives can improve performance and reliability of HTTP/2 connections, but it is important to configure the keepalive interval carefully.
+Note
+There is a related but separate concern called [Health Checking]. Health checking allows a server to signal whether a service is healthy while keepalive is only about the connection.Background
+[TCP keepalive](https://en.wikipedia.org/wiki/Keepalive#TCP_keepalive) is a well-known method of maintaining connections and detecting broken connections. When TCP keepalive was enabled, either side of the connection can send redundant packets. Once ACKed by the other side, the connection will be considered as good. If no ACK is received after repeated attempts, the connection is deemed broken.
+Unlike TCP keepalive, gRPC uses HTTP/2 which provides a mandatory [PING frame](https://httpwg.org/specs/rfc7540.html#PING) which can be used to estimate round-trip time, bandwidth-delay product, or test the connection. The interval and retry in TCP keepalive don’t quite apply to PING because the transport is reliable, so they’re replaced with timeout (equivalent to interval * retry) in gRPC PING-based keepalive implementation.
+Note
+It’s not required for service owners to support keepalive. Client authors must coordinate with service owners for whether a particular client-side setting is acceptable. Service owners decide what they are willing to support, including whether they are willing to receive keepalives at all (If the service does not support keepalive, the first few keepalive pings will be ignored, and the server will eventually send aGOAWAY
+message with debug data equal to the ASCII code for too_many_pings
+).How configuring keepalive affects a call
+Keepalive is less likely to be triggered for unary RPCs with quick replies. Keepalive is primarily triggered when there is a long-lived RPC, which will fail if the keepalive check fails and the connection is closed.
+For streaming RPCs, if the connection is closed, any in-progress RPCs will fail. If a call is streaming data, the stream will also be closed and any data that has not yet been sent will be lost.
+Warning
+To avoid DDoSing, it’s important to take caution when setting the keepalive configurations. Thus, it is recommended to avoid enabling keepalive without calls and for clients to avoid configuring their keepalive much below one minute.Common situations where keepalives can be useful
+gRPC HTTP/2 keepalives can be useful in a variety of situations, including but not limited to:
+- When sending data over a long-lived connection which might be considered as idle by proxy or load balancers.
+- When the network is less reliable (For example, mobile applications).
+- When using a connection after a long period of inactivity.
+Keepalive configuration specification
+Options | Availability | Description | Client Default | Server Default |
+---|---|---|---|---|
+KEEPALIVE_TIME | Client and Server | The interval in milliseconds between PING frames. | INT_MAX (Disabled) | 7200000 (2 hours) |
+KEEPALIVE_TIMEOUT | Client and Server | The timeout in milliseconds for a PING frame to be acknowledged. If sender does not receive an acknowledgment within this time, it will close the connection. | 20000 (20 seconds) | 20000 (20 seconds) |
+KEEPALIVE_WITHOUT_CALLS | Client | Is it permissible to send keepalive pings from the client without any outstanding streams. | 0 (false) | N/A |
+PERMIT_KEEPALIVE_WITHOUT_CALLS | Server | Is it permissible to send keepalive pings from the client without any outstanding streams. | N/A | 0 (false) |
+PERMIT_KEEPALIVE_TIME | Server | Minimum allowed time between a server receiving successive ping frames without sending any data/header frame. | N/A | 300000 (5 minutes) |
+MAX_CONNECTION_IDLE | Server | Maximum time that a channel may have no outstanding rpcs, after which the server will close the connection. | N/A | INT_MAX (Infinite) |
+MAX_CONNECTION_AGE | Server | Maximum time that a channel may exist. | N/A | INT_MAX (Infinite) |
+MAX_CONNECTION_AGE_GRACE | Server | Grace period after the channel reaches its max age. | N/A | INT_MAX (Infinite) |
+Note
+Some languages may provide additional options, please refer to language examples and additional resource for more details.Language guides and examples
+Language | Example | Documentation |
+---|---|---|
+C++ |
+|
+[C++ Documentation](https://github.com/grpc/grpc/blob/master/doc/keepalive.md)[Go Example](https://github.com/grpc/grpc-go/tree/master/examples/features/keepalive)[Go Documentation](https://github.com/grpc/grpc-go/blob/master/Documentation/keepalive.md)[Java Example](https://github.com/grpc/grpc-java/tree/master/examples/src/main/java/io/grpc/examples/keepalive)[Java Documentation](https://grpc.github.io/grpc-java/javadoc/io/grpc/ManagedChannelBuilder.html#keepAliveTime-long-java.util.concurrent.TimeUnit-)[Python Example](https://github.com/grpc/grpc/tree/master/examples/python/keep_alive)[Python Documentation](https://github.com/grpc/grpc/blob/master/doc/keepalive.md)Additional Resources
+[gRFC for Client-side Keepalive](https://github.com/grpc/proposal/blob/master/A8-client-side-keepalive.md)[gRFC for Server-side Connection Management](https://github.com/grpc/proposal/blob/master/A9-server-side-conn-mgt.md)[Using gRPC for Long-lived and Streaming RPCs](https://www.youtube.com/watch?v=Naonb2XD_2Q)
+[Fix default value of KEEPALIVE_TIME (#1239) (e7e993e)](https://github.com/grpc/grpc.io/commit/e7e993eb0c52e19399fa336284c4e13ea713045b)

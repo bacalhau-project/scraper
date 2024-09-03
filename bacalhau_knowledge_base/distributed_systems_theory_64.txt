@@ -1,5 +1,0 @@
-Source: distributed_systems_theory
-URL: https://www.the-paper-trail.org/%20/tags/paper-review
-
-Paper TrailBlogpaper review20092009-03-03OSDI '08: FlightPath: Obedience vs. Choice in Cooperative Services2009-01-19OSDI '08 - CuriOS: Improving Reliability Through Operating System Structure2009-01-14OSDI '08: Corey, an operating system for many cores20082008-10-29BigTable: Google's Distributed Data Store2008-10-12Yahoo's PNUTS2008-10-01The Google File System2008-08-26Consistency and availability in Amazon's Dynamo2008-08-13A Brief Tour of FLP Impossibility©  - 2023 ·Paper Trail·
-  ThemeSimplenessPowered byHugo·

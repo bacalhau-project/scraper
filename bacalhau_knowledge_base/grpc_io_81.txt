@@ -1,3 +1,130 @@
-URL: https://grpc.io/docs/platforms/android/
+Source: grpc_io
+URL: https://grpc.io/docs/languages/php/quickstart/
 
-gRPCAboutMeetDocsGuidesShowcaseBlogCommunitygRPConf 2024 is happening NEXT WEEK onAug. 27th!-Register nowand get 25% off with the code GOOGLE25.DocsWhat is gRPC?IntroductionCore conceptsFAQLanguagesC# / .NETAPI (legacy)Daily builds (legacy)C++Quick startBasics tutorialAsync-API tutorialAsynchronous Callback API TutorialBest Practices for gRPC C++ API and FAQALTSAPIDartQuick startBasics tutorialAPIGoQuick startBasics tutorialALTSAPIGenerated codeJavaQuick startBasics tutorialALTSAPIGenerated codeKotlinQuick startBasics tutorialAPINodeQuick startBasics tutorialAPIObjective-CQuick startBasics tutorialOAuth2APIPHPQuick startBasics tutorialAPIDaily buildsPythonQuick startBasics tutorialALTSGenerated codeAPIDaily buildsRubyQuick startBasics tutorialAPIDaily buildsPlatformsAndroidJavaQuick startBasics tutorialAPIKotlinQuick startAPIWebQuick startBasics tutorialGuidesAuthenticationBenchmarkingCancellationCompressionCustom Backend MetricsCustom Load Balancing PoliciesCustom Name ResolutionDeadlinesDebuggingError handlingFlow ControlHealth CheckingInterceptorsKeepaliveMetadataOpenTelemetry MetricsPerformance Best PracticesReflectionRequest HedgingRetryService ConfigStatus CodesWait-for-ReadyView page sourceEdit this pageCreate child pageCreate documentation issueCreate project issueDocsPlatformsAndroidAndroidThe following languages support client-side gRPC on Android:JavaKotlinLast modified August 11, 2021:Language & platform landing page cleanup (#818) (6dab4c8)View page sourceEdit this pageCreate child pageCreate documentation issueCreate project issue© 2024 gRPC AuthorsTerms|Privacy|Trademarks|License|About
+Quick start
+This guide gets you started with gRPC in PHP with a simple working example.
+Quick start
+Prerequisites
+- PHP 7.0 or higher, PECL, Composer
+- grpc extension, protocol buffers compiler: for installation instructions, see
+the
+[gRPC PHP readme](https://github.com/grpc/grpc/blob/v1.66.0/src/php/README.md).
+Get the example code
+The example code is part of the [grpc](https://github.com/grpc/grpc) repo.
+Note
+You can only create gRPC clients in PHP. Use[another language](/docs/languages/)to create a gRPC server.
+Clone the
+[grpc](https://github.com/grpc/grpc)repo and its submodules:$ git clone --recurse-submodules -b v1.66.0 --depth 1 --shallow-submodules https://github.com/grpc/grpc
+Change to the quick start example directory:
+$ cd grpc/examples/php
+Install the
+grpc
+composer package:$ ./greeter_proto_gen.sh $ composer install
+Run the example
+Launch the quick start server: for example, follow the instructions given in the
+[Quick start for Node](/docs/languages/node/quickstart/).From the
+examples/php
+directory, run the PHP client:$ ./run_greeter_client.sh
+Congratulations! You’ve just run a client-server application with gRPC.
+Update the gRPC service
+Now let’s look at how to update the application with an extra method on the
+server for the client to call. Our gRPC service is defined using protocol
+buffers; you can find out lots more about how to define a service in a .proto
+file in [Basics tutorial](/docs/languages/php/basics/). For now all you need to know is that both the
+server and the client “stub” have a SayHello
+RPC method that takes a
+HelloRequest
+parameter from the client and returns a HelloResponse
+from
+the server, and that this method is defined like this:
+// The greeting service definition.
+service Greeter {
+// Sends a greeting
+rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+// The request message containing the user's name.
+message HelloRequest {
+string name = 1;
+}
+// The response message containing the greetings
+message HelloReply {
+string message = 1;
+}
+Let’s update this so that the Greeter
+service has two methods. Edit
+examples/protos/helloworld.proto
+and update it with a new SayHelloAgain
+method, with the same request and response types:
+// The greeting service definition.
+service Greeter {
+// Sends a greeting
+rpc SayHello (HelloRequest) returns (HelloReply) {}
+// Sends another greeting
+rpc SayHelloAgain (HelloRequest) returns (HelloReply) {}
+}
+// The request message containing the user's name.
+message HelloRequest {
+string name = 1;
+}
+// The response message containing the greetings
+message HelloReply {
+string message = 1;
+}
+Remember to save the file!
+Regenerate gRPC code
+Next we need to update the gRPC code used by our application to use the new
+service definition. From the grpc
+root directory:
+$ protoc --proto_path=examples/protos \
+--php_out=examples/php \
+--grpc_out=examples/php \
+--plugin=protoc-gen-grpc=bins/opt/grpc_php_plugin \
+./examples/protos/helloworld.proto
+or running the helper script under the grpc/example/php
+directory if you build
+grpc-php-plugin by source:
+$ ./greeter_proto_gen.sh
+This regenerates the protobuf files, which contain our generated client classes, as well as classes for populating, serializing, and retrieving our request and response types.
+Update and run the application
+We now have new generated client code, but we still need to implement and call the new method in the human-written parts of our example application.
+Update the server
+In the same directory, open greeter_server.js
+. Implement the new method like
+this:
+function sayHello(call, callback) {
+callback(null, {message: 'Hello ' + call.request.name});
+}
+function sayHelloAgain(call, callback) {
+callback(null, {message: 'Hello again, ' + call.request.name});
+}
+function main() {
+var server = new grpc.Server();
+server.addProtoService(hello_proto.Greeter.service,
+{sayHello: sayHello, sayHelloAgain: sayHelloAgain});
+server.bind('0.0.0.0:50051', grpc.ServerCredentials.createInsecure());
+server.start();
+}
+...
+Update the client
+In the same directory, open greeter_client.php
+. Call the new method like this:
+$request = new Helloworld\HelloRequest();
+$request->setName($name);
+list($reply, $status) = $client->SayHello($request)->wait();
+$message = $reply->getMessage();
+list($reply, $status) = $client->SayHelloAgain($request)->wait();
+$message = $reply->getMessage();
+Run!
+Just like we did before, from the grpc-node/examples/helloworld/dynamic_codegen
+directory:
+Run the server:
+$ node greeter_server.js
+From another terminal, from the
+examples/php
+directory, run the client:$ ./run_greeter_client.sh
+What’s next
+- Learn how gRPC works in
+[Introduction to gRPC](/docs/what-is-grpc/introduction/)and[Core concepts](/docs/what-is-grpc/core-concepts/). - Work through the
+[Basics tutorial](/docs/languages/php/basics/). - Explore the
+[API reference](../api).
+[Update Node example documentation for example migration to grpc-node repository (#1154) (de75d84)](https://github.com/grpc/grpc.io/commit/de75d848536f956f607b5932c24204365a81721a)

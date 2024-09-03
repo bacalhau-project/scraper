@@ -1,3 +1,801 @@
-URL: https://kubernetes.io/case-studies/blackrock/
+Source: kubernetes_io
+URL: https://kubernetes.io/docs/concepts/configuration/
 
-DocumentationKubernetes BlogTrainingPartnersCommunityCase StudiesVersionsRelease Informationv1.31v1.30v1.29v1.28v1.27Englishবাংলা (Bengali)中文 (Chinese)Case study:Rolling Out Kubernetes in Production in 100 DaysCompanyBlackRockLocationNew York, NYIndustryFinancial ServicesChallengeThe world's largest asset manager,BlackRockoperates a very controlled static deployment scheme, which has allowed for scalability over the years. But in their data science division, there was a need for more dynamic access to resources. "We want to be able to give every investor access to data science, meaningPythonnotebooks, or even something much more advanced, like a MapReduce engine based onSpark," says Michael Francis, a Managing Director in BlackRock's Product Group, which runs the company's investment management platform. "Managing complex Python installations on users' desktops is really hard because everyone ends up with slightly different environments. We have existing environments that do these things, but we needed to make it real, expansive and scalable. Being able to spin that up on demand, tear it down, make that much more dynamic, became a critical thought process for us. It's not so much that we had to solve our main core production problem, it's how do we extend that? How do we evolve?"SolutionDrawing from what they learned during a pilot done last year usingDockerenvironments, Francis put together a cross-sectional team of 20 to build an investor research web app usingKuberneteswith the goal of getting it into production within one quarter.Impact"Our goal was: How do you give people tools rapidly without having to install them on their desktop?" says Francis. And the team hit the goal within 100 days. Francis is pleased with the results and says, "We're going to use this infrastructure for lots of other application workloads as time goes on. It's not just data science; it's this style of application that needs the dynamism. But I think we're 6-12 months away from making a [large scale] decision. We need to gain experience of running the system in production, we need to understand failure modes and how best to manage operational issues. What's interesting is that just having this technology there is changing the way our developers are starting to think about their future development.""My message to other enterprises like us is you can actually integrate Kubernetes into an existing, well-orchestrated machinery. You don't have to throw out everything you do. And using Kubernetes made a complex problem significantly easier."— Michael Francis, Managing Director, BlackRockOne of the management objectives for BlackRock's Product Group employees in 2017 was to "build cool stuff." Led by Managing Director Michael Francis, a cross-sectional group of 20 did just that: They rolled out a full production Kubernetes environment and released a new investor research web app on it. In 100 days.For a company that's the world's largest asset manager, "just equipment procurement can take 100 days sometimes, let alone from inception to delivery," says Karl Wieman, a Senior System Administrator. "It was an aggressive schedule. But it moved the dial." In fact, the project achieved two goals: It solved a business problem (creating the needed web app) as well as provided real-world, in-production experience with Kubernetes, a cloud-native technology that the company was eager to explore. "It's not so much that we had to solve our main core production problem, it's how do we extend that? How do we evolve?" says Francis. The ultimate success of this project, beyond delivering the app, lies in the fact that "we've managed to integrate a radically new thought process into a controlled infrastructure that we didn't want to change."After all, in its three decades of existence, BlackRock has "a very well-established environment for managing our compute resources," says Francis. "We manage large cluster processes on machines, so we do a lot of orchestration and management for our main production processes in a way that's very cloudish in concept. We're able to manage them in a very controlled, static deployment scheme, and that has given us a huge amount of scalability."Though that works well for the core production, the company has found that some data science workloads require more dynamic access to resources. "It's a very bursty process," says Francis, who is head of data for the company's Aladdin investment management platform division.Aladdin, which connects the people, information and technology needed for money management in real time, is used internally and is also sold as a platform to other asset managers and insurance companies. "We want to be able to give every investor access to data science, meaningPythonnotebooks, or even something much more advanced, like a MapReduce engine based onSpark," says Francis. But "managing complex Python installations on users' desktops is really hard because everyone ends up with slightly different environments. Docker allows us to flatten that environment.""We manage large cluster processes on machines, so we do a lot of orchestration and management for our main production processes in a way that's very cloudish in concept. We're able to manage them in a very controlled, static deployment scheme, and that has given us a huge amount of scalability."Still, challenges remain. "If you have a shared cluster, you get this storming herd problem where everyone wants to do the same thing at the same time," says Francis. "You could put limits on it, but you'd have to build an infrastructure to define limits for our processes, and the Python notebooks weren't really designed for that. We have existing environments that do these things, but we needed to make it real, expansive, and scalable. Being able to spin that up on demand, tear it down, and make that much more dynamic, became a critical thought process for us."Made up of managers from technology, infrastructure, production operations, development and information security, Francis's team was able to look at the problem holistically and come up with a solution that made sense for BlackRock. "Our initial straw man was that we were going to build everything usingAnsibleand run it all using some completely different distributed environment," says Francis. "That would have been absolutely the wrong thing to do. Had we gone off on our own as the dev team and developed this solution, it would have been a very different product. And it would have been very expensive. We would not have gone down the route of running under our existing orchestration system. Because we don't understand it. These guys [in operations and infrastructure] understand it. Having the multidisciplinary team allowed us to get to the right solutions and that actually meant we didn't build anywhere near the amount we thought we were going to end up building."In search of a solution in which they could manage usage on a user-by-user level, Francis's team gravitated to Red Hat'sOpenShiftKubernetes offering. The company had already experimented with other cloud-native environments, but the team liked that Kubernetes was open source, and "we felt the winds were blowing in the direction of Kubernetes long term," says Francis. "Typically we make technology choices that we believe are going to be here in 5-10 years' time, in some form. And right now, in this space, Kubernetes feels like the one that's going to be there." Adds Uri Morris, Vice President of Production Operations: "When you see that the non-Google committers to Kubernetes overtook the Google committers, that's an indicator of the momentum."Once that decision was made, the major challenge was figuring out how to make Kubernetes work within BlackRock's existing framework. "It's about understanding how we can operate, manage and support a platform like this, in addition to tacking it onto our existing technology platform," says Project Manager Michael Maskallis. "All the controls we have in place, the change management process, the software development lifecycle, onboarding processes we go through—how can we do all these things?"The first (anticipated) speed bump was working around issues behind BlackRock's corporate firewalls. "One of our challenges is there are no firewalls in most open source software," says Francis. "So almost all install scripts fail in some bizarre way, and pulling down packages doesn't necessarily work." The team ran into these types of problems usingMinikubeand did a few small pushes back to the open source project."Typically we make technology choices that we believe are going to be here in 5-10 years' time, in some form. And right now, in this space, Kubernetes feels like the one that's going to be there."There were also questions about service discovery. "You can think of Aladdin as a cloud of services with APIs between them that allows us to build applications rapidly," says Francis. "It's all on a proprietary message bus, which gives us all sorts of advantages but at the same time, how does that play in a third party [platform]?"Another issue they had to navigate was that in BlackRock's existing system, the messaging protocol has different instances in the different development, test and production environments. While Kubernetes enables a more DevOps-style model, it didn't make sense for BlackRock. "I think what we are very proud of is that the ability for us to push into production is still incredibly rapid in this [new] infrastructure, but we have the control points in place, and we didn't have to disrupt everything," says Francis. "A lot of the cost of this development was thinking how best to leverage our internal tools. So it was less costly than we actually thought it was going to be."The project leveraged tools associated with the messaging bus, for example. "The way that the Kubernetes cluster will talk to our internal messaging platform is through a gateway program, and this gateway program already has built-in checks and throttles," says Morris. "We can use them to control and potentially throttle the requests coming in from Kubernetes's very elastic infrastructure to the production infrastructure. We'll continue to go in that direction. It enables us to scale as we need to from the operational perspective."The solution also had to be complementary with BlackRock's centralized operational support team structure. "The core infrastructure components of Kubernetes are hooked into our existing orchestration framework, which means that anyone in our support team has both control and visibility to the cluster using the existing operational tools," Morris explains. "That means that I don't need to hire more people."With those points established, the team created a procedure for the project: "We rolled this out first to a development environment, then moved on to a testing environment and then eventually to two production environments, in that sequential order," says Maskallis. "That drove a lot of our learning curve. We have all these moving parts, the software components on the infrastructure side, the software components with Kubernetes directly, the interconnectivity with the rest of the environment that we operate here at BlackRock, and how we connect all these pieces. If we came across issues, we fixed them, and then moved on to the different environments to replicate that until we eventually ended up in our production environment where this particular cluster is supposed to live."The team had weekly one-hour working sessions with all the members (who are located around the world) participating, and smaller breakout or deep-dive meetings focusing on specific technical details. Possible solutions would be reported back to the group and debated the following week. "I think what made it a successful experiment was people had to work to learn, and they shared their experiences with others," says Vice President and Software Developer Fouad Semaan. Then, Francis says, "We gave our engineers the space to do what they're good at. This hasn't been top-down.""The core infrastructure components of Kubernetes are hooked into our existing orchestration framework, which means that anyone in our support team has both control and visibility to the cluster using the existing operational tools. That means that I don't need to hire more people."They were led by one key axiom: To stay focused and avoid scope creep. This meant that they wouldn't use features that weren't in the core of Kubernetes and Docker. But if there was a real need, they'd build the features themselves. Luckily, Francis says, "Because of the rapidity of the development, a lot of things we thought we would have to build ourselves have been rolled into the core product. [The package managerHelmis one example]. People have similar problems."By the end of the 100 days, the app was up and running for internal BlackRock users. The initial capacity of 30 users was hit within hours, and quickly increased to 150. "People were immediately all over it," says Francis. In the next phase of this project, they are planning to scale up the cluster to have more capacity.Even more importantly, they now have in-production experience with Kubernetes that they can continue to build on—and a complete framework for rolling out new applications. "We're going to use this infrastructure for lots of other application workloads as time goes on. It's not just data science; it's this style of application that needs the dynamism," says Francis. "Is it the right place to move our core production processes onto? It might be. We're not at a point where we can say yes or no, but we felt that having real production experience with something like Kubernetes at some form and scale would allow us to understand that. I think we're 6-12 months away from making a [large scale] decision. We need to gain experience of running the system in production, we need to understand failure modes and how best to manage operational issues."For other big companies considering a project like this, Francis says commitment and dedication are key: "We got the signoff from [senior management] from day one, with the commitment that we were able to get the right people. If I had to isolate what makes something complex like this succeed, I would say senior hands-on people who can actually drive it make a huge difference." With that in place, he adds, "My message to other enterprises like us is you can actually integrate Kubernetes into an existing, well-orchestrated machinery. You don't have to throw out everything you do. And using Kubernetes made a complex problem significantly easier."DocumentationBlogTrainingPartnersCommunityCase Studies© 2024 The Kubernetes Authors | Documentation Distributed underCC BY 4.0Copyright © 2024 The Linux Foundation ®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see ourTrademark Usage pageICP license: 京ICP备17074266号-3
+Documentation
+Kubernetes Blog
+Training
+Partners
+Community
+Case Studies
+Versions
+Release Information
+v1.31
+v1.30
+v1.29
+v1.28
+v1.27
+English
+বাংলা (Bengali)
+中文 (Chinese)
+Français (French)
+Deutsch (German)
+Bahasa Indonesia (Indonesian)
+Italiano (Italian)
+日本語 (Japanese)
+한국어 (Korean)
+Português (Portuguese)
+Español (Spanish)
+Українська (Ukrainian)
+Documentation
+Available Documentation Versions
+Getting started
+Learning environment
+Production environment
+Container Runtimes
+Installing Kubernetes with deployment tools
+Bootstrapping clusters with kubeadm
+Installing kubeadm
+Troubleshooting kubeadm
+Creating a cluster with kubeadm
+Customizing components with the kubeadm API
+Options for Highly Available Topology
+Creating Highly Available Clusters with kubeadm
+Set up a High Availability etcd Cluster with kubeadm
+Configuring each kubelet in your cluster using kubeadm
+Dual-stack support with kubeadm
+Turnkey Cloud Solutions
+Best practices
+Considerations for large clusters
+Running in multiple zones
+Validate node setup
+Enforcing Pod Security Standards
+PKI certificates and requirements
+Concepts
+Overview
+Kubernetes Components
+Objects In Kubernetes
+Kubernetes Object Management
+Object Names and IDs
+Labels and Selectors
+Namespaces
+Annotations
+Field Selectors
+Finalizers
+Owners and Dependents
+Recommended Labels
+The Kubernetes API
+Cluster Architecture
+Nodes
+Communication between Nodes and the Control Plane
+Controllers
+Leases
+Cloud Controller Manager
+About cgroup v2
+Container Runtime Interface (CRI)
+Garbage Collection
+Mixed Version Proxy
+Containers
+Images
+Container Environment
+Runtime Class
+Container Lifecycle Hooks
+Workloads
+Pods
+Pod Lifecycle
+Init Containers
+Sidecar Containers
+Ephemeral Containers
+Disruptions
+Pod Quality of Service Classes
+User Namespaces
+Downward API
+Workload Management
+Deployments
+ReplicaSet
+StatefulSets
+DaemonSet
+Jobs
+Automatic Cleanup for Finished Jobs
+CronJob
+ReplicationController
+Autoscaling Workloads
+Managing Workloads
+Services, Load Balancing, and Networking
+Service
+Ingress
+Ingress Controllers
+Gateway API
+EndpointSlices
+Network Policies
+DNS for Services and Pods
+IPv4/IPv6 dual-stack
+Topology Aware Routing
+Networking on Windows
+Service ClusterIP allocation
+Service Internal Traffic Policy
+Storage
+Volumes
+Persistent Volumes
+Projected Volumes
+Ephemeral Volumes
+Storage Classes
+Volume Attributes Classes
+Dynamic Volume Provisioning
+Volume Snapshots
+Volume Snapshot Classes
+CSI Volume Cloning
+Storage Capacity
+Node-specific Volume Limits
+Volume Health Monitoring
+Windows Storage
+Configuration
+Configuration Best Practices
+ConfigMaps
+Secrets
+Liveness, Readiness, and Startup Probes
+Resource Management for Pods and Containers
+Organizing Cluster Access Using kubeconfig Files
+Resource Management for Windows nodes
+Security
+Cloud Native Security
+Pod Security Standards
+Pod Security Admission
+Service Accounts
+Pod Security Policies
+Security For Windows Nodes
+Controlling Access to the Kubernetes API
+Role Based Access Control Good Practices
+Good practices for Kubernetes Secrets
+Multi-tenancy
+Hardening Guide - Authentication Mechanisms
+Kubernetes API Server Bypass Risks
+Linux kernel security constraints for Pods and containers
+Security Checklist
+Policies
+Limit Ranges
+Resource Quotas
+Process ID Limits And Reservations
+Node Resource Managers
+Scheduling, Preemption and Eviction
+Kubernetes Scheduler
+Assigning Pods to Nodes
+Pod Overhead
+Pod Scheduling Readiness
+Pod Topology Spread Constraints
+Taints and Tolerations
+Scheduling Framework
+Dynamic Resource Allocation
+Scheduler Performance Tuning
+Resource Bin Packing
+Pod Priority and Preemption
+Node-pressure Eviction
+API-initiated Eviction
+Cluster Administration
+Node Shutdowns
+Certificates
+Cluster Networking
+Logging Architecture
+Metrics For Kubernetes System Components
+Metrics for Kubernetes Object States
+System Logs
+Traces For Kubernetes System Components
+Proxies in Kubernetes
+API Priority and Fairness
+Cluster Autoscaling
+Installing Addons
+Coordinated Leader Election
+Windows in Kubernetes
+Windows containers in Kubernetes
+Guide for Running Windows Containers in Kubernetes
+Extending Kubernetes
+Compute, Storage, and Networking Extensions
+Network Plugins
+Device Plugins
+Extending the Kubernetes API
+Custom Resources
+Kubernetes API Aggregation Layer
+Operator pattern
+Tasks
+Install Tools
+Install and Set Up kubectl on Linux
+Install and Set Up kubectl on macOS
+Install and Set Up kubectl on Windows
+Administer a Cluster
+Administration with kubeadm
+Certificate Management with kubeadm
+Configuring a cgroup driver
+Reconfiguring a kubeadm cluster
+Upgrading kubeadm clusters
+Upgrading Linux nodes
+Upgrading Windows nodes
+Changing The Kubernetes Package Repository
+Migrating from dockershim
+Changing the Container Runtime on a Node from Docker Engine to containerd
+Migrate Docker Engine nodes from dockershim to cri-dockerd
+Find Out What Container Runtime is Used on a Node
+Troubleshooting CNI plugin-related errors
+Check whether dockershim removal affects you
+Migrating telemetry and security agents from dockershim
+Generate Certificates Manually
+Manage Memory, CPU, and API Resources
+Configure Default Memory Requests and Limits for a Namespace
+Configure Default CPU Requests and Limits for a Namespace
+Configure Minimum and Maximum Memory Constraints for a Namespace
+Configure Minimum and Maximum CPU Constraints for a Namespace
+Configure Memory and CPU Quotas for a Namespace
+Configure a Pod Quota for a Namespace
+Install a Network Policy Provider
+Use Antrea for NetworkPolicy
+Use Calico for NetworkPolicy
+Use Cilium for NetworkPolicy
+Use Kube-router for NetworkPolicy
+Romana for NetworkPolicy
+Weave Net for NetworkPolicy
+Access Clusters Using the Kubernetes API
+Advertise Extended Resources for a Node
+Autoscale the DNS Service in a Cluster
+Change the Access Mode of a PersistentVolume to ReadWriteOncePod
+Change the default StorageClass
+Switching from Polling to CRI Event-based Updates to Container Status
+Change the Reclaim Policy of a PersistentVolume
+Cloud Controller Manager Administration
+Configure a kubelet image credential provider
+Configure Quotas for API Objects
+Control CPU Management Policies on the Node
+Control Topology Management Policies on a node
+Customizing DNS Service
+Debugging DNS Resolution
+Declare Network Policy
+Developing Cloud Controller Manager
+Enable Or Disable A Kubernetes API
+Encrypting Confidential Data at Rest
+Decrypt Confidential Data that is Already Encrypted at Rest
+Guaranteed Scheduling For Critical Add-On Pods
+IP Masquerade Agent User Guide
+Limit Storage Consumption
+Migrate Replicated Control Plane To Use Cloud Controller Manager
+Namespaces Walkthrough
+Operating etcd clusters for Kubernetes
+Reserve Compute Resources for System Daemons
+Running Kubernetes Node Components as a Non-root User
+Safely Drain a Node
+Securing a Cluster
+Set Kubelet Parameters Via A Configuration File
+Share a Cluster with Namespaces
+Upgrade A Cluster
+Use Cascading Deletion in a Cluster
+Using a KMS provider for data encryption
+Using CoreDNS for Service Discovery
+Using NodeLocal DNSCache in Kubernetes Clusters
+Using sysctls in a Kubernetes Cluster
+Utilizing the NUMA-aware Memory Manager
+Verify Signed Kubernetes Artifacts
+Configure Pods and Containers
+Assign Memory Resources to Containers and Pods
+Assign CPU Resources to Containers and Pods
+Configure GMSA for Windows Pods and containers
+Resize CPU and Memory Resources assigned to Containers
+Configure RunAsUserName for Windows pods and containers
+Create a Windows HostProcess Pod
+Configure Quality of Service for Pods
+Assign Extended Resources to a Container
+Configure a Pod to Use a Volume for Storage
+Configure a Pod to Use a PersistentVolume for Storage
+Configure a Pod to Use a Projected Volume for Storage
+Configure a Security Context for a Pod or Container
+Configure Service Accounts for Pods
+Pull an Image from a Private Registry
+Configure Liveness, Readiness and Startup Probes
+Assign Pods to Nodes
+Assign Pods to Nodes using Node Affinity
+Configure Pod Initialization
+Attach Handlers to Container Lifecycle Events
+Configure a Pod to Use a ConfigMap
+Share Process Namespace between Containers in a Pod
+Use a User Namespace With a Pod
+Use an Image Volume With a Pod
+Create static Pods
+Translate a Docker Compose File to Kubernetes Resources
+Enforce Pod Security Standards by Configuring the Built-in Admission Controller
+Enforce Pod Security Standards with Namespace Labels
+Migrate from PodSecurityPolicy to the Built-In PodSecurity Admission Controller
+Monitoring, Logging, and Debugging
+Troubleshooting Applications
+Debug Pods
+Debug Services
+Debug a StatefulSet
+Determine the Reason for Pod Failure
+Debug Init Containers
+Debug Running Pods
+Get a Shell to a Running Container
+Troubleshooting Clusters
+Troubleshooting kubectl
+Resource metrics pipeline
+Tools for Monitoring Resources
+Monitor Node Health
+Debugging Kubernetes nodes with crictl
+Auditing
+Debugging Kubernetes Nodes With Kubectl
+Developing and debugging services locally using telepresence
+Windows debugging tips
+Manage Kubernetes Objects
+Declarative Management of Kubernetes Objects Using Configuration Files
+Declarative Management of Kubernetes Objects Using Kustomize
+Managing Kubernetes Objects Using Imperative Commands
+Imperative Management of Kubernetes Objects Using Configuration Files
+Update API Objects in Place Using kubectl patch
+Migrate Kubernetes Objects Using Storage Version Migration
+Managing Secrets
+Managing Secrets using kubectl
+Managing Secrets using Configuration File
+Managing Secrets using Kustomize
+Inject Data Into Applications
+Define a Command and Arguments for a Container
+Define Dependent Environment Variables
+Define Environment Variables for a Container
+Expose Pod Information to Containers Through Environment Variables
+Expose Pod Information to Containers Through Files
+Distribute Credentials Securely Using Secrets
+Run Applications
+Run a Stateless Application Using a Deployment
+Run a Single-Instance Stateful Application
+Run a Replicated Stateful Application
+Scale a StatefulSet
+Delete a StatefulSet
+Force Delete StatefulSet Pods
+Horizontal Pod Autoscaling
+HorizontalPodAutoscaler Walkthrough
+Specifying a Disruption Budget for your Application
+Accessing the Kubernetes API from a Pod
+Run Jobs
+Running Automated Tasks with a CronJob
+Coarse Parallel Processing Using a Work Queue
+Fine Parallel Processing Using a Work Queue
+Indexed Job for Parallel Processing with Static Work Assignment
+Job with Pod-to-Pod Communication
+Parallel Processing using Expansions
+Handling retriable and non-retriable pod failures with Pod failure policy
+Access Applications in a Cluster
+Deploy and Access the Kubernetes Dashboard
+Accessing Clusters
+Configure Access to Multiple Clusters
+Use Port Forwarding to Access Applications in a Cluster
+Use a Service to Access an Application in a Cluster
+Connect a Frontend to a Backend Using Services
+Create an External Load Balancer
+List All Container Images Running in a Cluster
+Set up Ingress on Minikube with the NGINX Ingress Controller
+Communicate Between Containers in the Same Pod Using a Shared Volume
+Configure DNS for a Cluster
+Access Services Running on Clusters
+Extend Kubernetes
+Configure the Aggregation Layer
+Use Custom Resources
+Extend the Kubernetes API with CustomResourceDefinitions
+Versions in CustomResourceDefinitions
+Set up an Extension API Server
+Configure Multiple Schedulers
+Use an HTTP Proxy to Access the Kubernetes API
+Use a SOCKS5 Proxy to Access the Kubernetes API
+Set up Konnectivity service
+TLS
+Configure Certificate Rotation for the Kubelet
+Manage TLS Certificates in a Cluster
+Manual Rotation of CA Certificates
+Manage Cluster Daemons
+Perform a Rolling Update on a DaemonSet
+Perform a Rollback on a DaemonSet
+Running Pods on Only Some Nodes
+Networking
+Adding entries to Pod /etc/hosts with HostAliases
+Extend Service IP Ranges
+Validate IPv4/IPv6 dual-stack
+Extend kubectl with plugins
+Manage HugePages
+Schedule GPUs
+Tutorials
+Hello Minikube
+Learn Kubernetes Basics
+Create a Cluster
+Using Minikube to Create a Cluster
+Deploy an App
+Using kubectl to Create a Deployment
+Explore Your App
+Viewing Pods and Nodes
+Expose Your App Publicly
+Using a Service to Expose Your App
+Scale Your App
+Running Multiple Instances of Your App
+Update Your App
+Performing a Rolling Update
+Configuration
+Example: Configuring a Java Microservice
+Externalizing config using MicroProfile, ConfigMaps and Secrets
+Updating Configuration via a ConfigMap
+Configuring Redis using a ConfigMap
+Adopting Sidecar Containers
+Security
+Apply Pod Security Standards at the Cluster Level
+Apply Pod Security Standards at the Namespace Level
+Restrict a Container's Access to Resources with AppArmor
+Restrict a Container's Syscalls with seccomp
+Stateless Applications
+Exposing an External IP Address to Access an Application in a Cluster
+Example: Deploying PHP Guestbook application with Redis
+Stateful Applications
+StatefulSet Basics
+Example: Deploying WordPress and MySQL with Persistent Volumes
+Example: Deploying Cassandra with a StatefulSet
+Running ZooKeeper, A Distributed System Coordinator
+Services
+Connecting Applications with Services
+Using Source IP
+Explore Termination Behavior for Pods And Their Endpoints
+Reference
+Glossary
+API Overview
+Kubernetes API Concepts
+Server-Side Apply
+Client Libraries
+Common Expression Language in Kubernetes
+Kubernetes Deprecation Policy
+Deprecated API Migration Guide
+Kubernetes API health endpoints
+API Access Control
+Authenticating
+Authenticating with Bootstrap Tokens
+Authorization
+Using RBAC Authorization
+Using Node Authorization
+Webhook Mode
+Using ABAC Authorization
+Admission Controllers
+Dynamic Admission Control
+Managing Service Accounts
+Certificates and Certificate Signing Requests
+Mapping PodSecurityPolicies to Pod Security Standards
+Kubelet authentication/authorization
+TLS bootstrapping
+Validating Admission Policy
+Well-Known Labels, Annotations and Taints
+Audit Annotations
+Kubernetes API
+Workload Resources
+Pod
+Binding
+PodTemplate
+ReplicationController
+ReplicaSet
+Deployment
+StatefulSet
+ControllerRevision
+DaemonSet
+Job
+CronJob
+HorizontalPodAutoscaler
+HorizontalPodAutoscaler
+PriorityClass
+PodSchedulingContext v1alpha3
+ResourceClaim v1alpha3
+ResourceClaimTemplate v1alpha3
+ResourceSlice v1alpha3
+Service Resources
+Service
+Endpoints
+EndpointSlice
+Ingress
+IngressClass
+Config and Storage Resources
+ConfigMap
+Secret
+CSIDriver
+CSINode
+CSIStorageCapacity
+PersistentVolumeClaim
+PersistentVolume
+StorageClass
+StorageVersionMigration v1alpha1
+Volume
+VolumeAttachment
+VolumeAttributesClass v1beta1
+Authentication Resources
+ServiceAccount
+TokenRequest
+TokenReview
+CertificateSigningRequest
+ClusterTrustBundle v1alpha1
+SelfSubjectReview
+Authorization Resources
+LocalSubjectAccessReview
+SelfSubjectAccessReview
+SelfSubjectRulesReview
+SubjectAccessReview
+ClusterRole
+ClusterRoleBinding
+Role
+RoleBinding
+Policy Resources
+FlowSchema
+LimitRange
+ResourceQuota
+NetworkPolicy
+PodDisruptionBudget
+PriorityLevelConfiguration
+ValidatingAdmissionPolicy
+ValidatingAdmissionPolicyBinding
+Extend Resources
+CustomResourceDefinition
+DeviceClass v1alpha3
+MutatingWebhookConfiguration
+ValidatingWebhookConfiguration
+Cluster Resources
+APIService
+ComponentStatus
+Event
+IPAddress v1beta1
+Lease
+LeaseCandidate v1alpha1
+Namespace
+Node
+RuntimeClass
+ServiceCIDR v1beta1
+Common Definitions
+DeleteOptions
+LabelSelector
+ListMeta
+LocalObjectReference
+NodeSelectorRequirement
+ObjectFieldSelector
+ObjectMeta
+ObjectReference
+Patch
+Quantity
+ResourceFieldSelector
+Status
+TypedLocalObjectReference
+Common Parameters
+Instrumentation
+Service Level Indicator Metrics
+CRI Pod & Container Metrics
+Node metrics data
+Kubernetes Metrics Reference
+Kubernetes Issues and Security
+Kubernetes Issue Tracker
+Kubernetes Security and Disclosure Information
+CVE feed
+Node Reference Information
+Kubelet Checkpoint API
+Linux Kernel Version Requirements
+Articles on dockershim Removal and on Using CRI-compatible Runtimes
+Node Labels Populated By The Kubelet
+Kubelet Configuration Directory Merging
+Kubelet Device Manager API Versions
+Node Status
+Networking Reference
+Protocols for Services
+Ports and Protocols
+Virtual IPs and Service Proxies
+Setup tools
+Kubeadm
+kubeadm init
+kubeadm join
+kubeadm upgrade
+kubeadm config
+kubeadm reset
+kubeadm token
+kubeadm version
+kubeadm alpha
+kubeadm certs
+kubeadm init phase
+kubeadm join phase
+kubeadm kubeconfig
+kubeadm reset phase
+kubeadm upgrade phase
+Implementation details
+Command line tool (kubectl)
+Introduction to kubectl
+kubectl Quick Reference
+kubectl reference
+kubectl
+kubectl annotate
+kubectl api-resources
+kubectl api-versions
+kubectl apply
+kubectl apply edit-last-applied
+kubectl apply set-last-applied
+kubectl apply view-last-applied
+kubectl attach
+kubectl auth
+kubectl auth can-i
+kubectl auth reconcile
+kubectl auth whoami
+kubectl autoscale
+kubectl certificate
+kubectl certificate approve
+kubectl certificate deny
+kubectl cluster-info
+kubectl cluster-info dump
+kubectl completion
+kubectl config
+kubectl config current-context
+kubectl config delete-cluster
+kubectl config delete-context
+kubectl config delete-user
+kubectl config get-clusters
+kubectl config get-contexts
+kubectl config get-users
+kubectl config rename-context
+kubectl config set
+kubectl config set-cluster
+kubectl config set-context
+kubectl config set-credentials
+kubectl config unset
+kubectl config use-context
+kubectl config view
+kubectl cordon
+kubectl cp
+kubectl create
+kubectl create clusterrole
+kubectl create clusterrolebinding
+kubectl create configmap
+kubectl create cronjob
+kubectl create deployment
+kubectl create ingress
+kubectl create job
+kubectl create namespace
+kubectl create poddisruptionbudget
+kubectl create priorityclass
+kubectl create quota
+kubectl create role
+kubectl create rolebinding
+kubectl create secret
+kubectl create secret docker-registry
+kubectl create secret generic
+kubectl create secret tls
+kubectl create service
+kubectl create service clusterip
+kubectl create service externalname
+kubectl create service loadbalancer
+kubectl create service nodeport
+kubectl create serviceaccount
+kubectl create token
+kubectl debug
+kubectl delete
+kubectl describe
+kubectl diff
+kubectl drain
+kubectl edit
+kubectl events
+kubectl exec
+kubectl explain
+kubectl expose
+kubectl get
+kubectl kustomize
+kubectl label
+kubectl logs
+kubectl options
+kubectl patch
+kubectl plugin
+kubectl plugin list
+kubectl port-forward
+kubectl proxy
+kubectl replace
+kubectl rollout
+kubectl rollout history
+kubectl rollout pause
+kubectl rollout restart
+kubectl rollout resume
+kubectl rollout status
+kubectl rollout undo
+kubectl run
+kubectl scale
+kubectl set
+kubectl set env
+kubectl set image
+kubectl set resources
+kubectl set selector
+kubectl set serviceaccount
+kubectl set subject
+kubectl taint
+kubectl top
+kubectl top node
+kubectl top pod
+kubectl uncordon
+kubectl version
+kubectl wait
+kubectl Commands
+kubectl
+JSONPath Support
+kubectl for Docker Users
+kubectl Usage Conventions
+Component tools
+Feature Gates
+Feature Gates (removed)
+kubelet
+kube-apiserver
+kube-controller-manager
+kube-proxy
+kube-scheduler
+Debug cluster
+Flow control
+Configuration APIs
+Client Authentication (v1)
+Client Authentication (v1beta1)
+Event Rate Limit Configuration (v1alpha1)
+Image Policy API (v1alpha1)
+kube-apiserver Admission (v1)
+kube-apiserver Audit Configuration (v1)
+kube-apiserver Configuration (v1)
+kube-apiserver Configuration (v1alpha1)
+kube-apiserver Configuration (v1beta1)
+kube-controller-manager Configuration (v1alpha1)
+kube-proxy Configuration (v1alpha1)
+kube-scheduler Configuration (v1)
+kubeadm Configuration (v1beta3)
+kubeadm Configuration (v1beta4)
+kubeconfig (v1)
+Kubelet Configuration (v1)
+Kubelet Configuration (v1alpha1)
+Kubelet Configuration (v1beta1)
+Kubelet CredentialProvider (v1)
+WebhookAdmission Configuration (v1)
+External APIs
+Kubernetes Custom Metrics (v1beta2)
+Kubernetes External Metrics (v1beta1)
+Kubernetes Metrics (v1beta1)
+Scheduling
+Scheduler Configuration
+Scheduling Policies
+Other Tools
+Mapping from dockercli to crictl
+Contribute
+Contribute to Kubernetes Documentation
+Suggesting content improvements
+Contributing new content
+Opening a pull request
+Documenting for a release
+Blogs and case studies
+Reviewing changes
+Reviewing pull requests
+For approvers and reviewers
+Localizing Kubernetes documentation
+Participating in SIG Docs
+Roles and responsibilities
+Issue Wranglers
+PR wranglers
+Documentation style overview
+Content guide
+Style guide
+Diagram guide
+Writing a new topic
+Page content types
+Content organization
+Custom Hugo Shortcodes
+Updating Reference Documentation
+Quickstart
+Contributing to the Upstream Kubernetes Code
+Generating Reference Documentation for the Kubernetes API
+Generating Reference Documentation for kubectl Commands
+Generating Reference Documentation for Metrics
+Generating Reference Pages for Kubernetes Components and Tools
+Advanced contributing
+Viewing Site Analytics
+Docs smoke test page
+Kubernetes Documentation
+Concepts
+Configuration
+Configuration
+Resources that Kubernetes provides for configuring Pods.
+Configuration Best Practices
+ConfigMaps
+Secrets
+Liveness, Readiness, and Startup Probes
+Resource Management for Pods and Containers
+Organizing Cluster Access Using kubeconfig Files
+Resource Management for Windows nodes
+Last modified June 16, 2021 at 5:57 PM PST:
+Remove exec permission on markdown files (e9703497a1)
+Edit this page
+Create child page
+Create documentation issue
+Print entire section

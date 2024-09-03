@@ -1,9 +1,633 @@
-URL: http://hadoop.apache.org/docs/r3.3.5/hadoop-project-dist/hadoop-common/release/3.3.5/RELEASENOTES.3.3.5.html
+Source: apache_hadoop
+URL: http://hadoop.apache.org/docs/r3.3.5/hadoop-project-dist/hadoop-common/release/3.3.5/CHANGELOG.3.3.5.html
 
-Apache>Hadoop>Apache Hadoop Project Dist POM>Apache Hadoop 3.3.5>
-        Apache Hadoop  3.3.5 Release NotesWiki|git|Apache Hadoop| Last Published: 2023-03-15
-               | Version: 3.3.5GeneralOverviewSingle Node SetupCluster SetupCommands ReferenceFileSystem ShellCompatibility SpecificationDownstream Developer's GuideAdmin Compatibility GuideInterface ClassificationFileSystem SpecificationCommonCLI Mini ClusterFair Call QueueNative LibrariesProxy UserRack AwarenessSecure ModeService Level AuthorizationHTTP AuthenticationCredential Provider APIHadoop KMSTracingUnix Shell GuideRegistryHDFSArchitectureUser GuideCommands ReferenceNameNode HA With QJMNameNode HA With NFSObserver NameNodeFederationViewFsViewFsOverloadSchemeSnapshotsEdits ViewerImage ViewerPermissions and HDFSQuotas and HDFSlibhdfs (C API)WebHDFS (REST API)HttpFSShort Circuit Local ReadsCentralized Cache ManagementNFS GatewayRolling UpgradeExtended AttributesTransparent EncryptionMultihomingStorage PoliciesMemory Storage SupportSynthetic Load GeneratorErasure CodingDisk BalancerUpgrade DomainDataNode AdminRouter FederationProvided StorageMapReduceTutorialCommands ReferenceCompatibility with 1.xEncrypted ShufflePluggable Shuffle/SortDistributed Cache DeploySupport for YARN Shared CacheMapReduce REST APIsMR Application MasterMR History ServerYARNArchitectureCommands ReferenceCapacity SchedulerFair SchedulerResourceManager RestartResourceManager HAResource ModelNode LabelsNode AttributesWeb Application ProxyTimeline ServerTimeline Service V.2Writing YARN ApplicationsYARN Application SecurityNodeManagerRunning Applications in Docker ContainersRunning Applications in runC ContainersUsing CGroupsSecure ContainersReservation SystemGraceful DecommissionOpportunistic ContainersYARN FederationShared CacheUsing GPUUsing FPGAPlacement ConstraintsYARN UI2YARN REST APIsIntroductionResource ManagerNode ManagerTimeline ServerTimeline Service V.2YARN ServiceOverviewQuickStartConceptsYarn Service APIService DiscoverySystem ServicesHadoop Compatible File SystemsAliyun OSSAmazon S3Azure Blob StorageAzure Data Lake StorageTencent COSAuthOverviewExamplesConfigurationBuildingToolsHadoop StreamingHadoop ArchivesHadoop Archive LogsDistCpGridMixRumenResource Estimator ServiceScheduler Load SimulatorHadoop BenchmarkingDynamometerReferenceChangelog and Release NotesJava API docsUnix Shell APIMetricsConfigurationcore-default.xmlhdfs-default.xmlhdfs-rbf-default.xmlmapred-default.xmlyarn-default.xmlkms-default.xmlhttpfs-default.xmlDeprecated PropertiesApache Hadoop  3.3.5 Release NotesThese release notes cover new developer and user-facing incompatibilities, important issues, features, and major improvements.HADOOP-17956|Major|Replace all default Charset usage with UTF-8All of the default charset usages have been replaced to UTF-8. If the default charset of your environment is not UTF-8, the behavior can be different.HADOOP-15983|Major|Use jersey-json that is built to use jackson2Use modified jersey-json 1.20 inhttps://github.com/pjfanning/jersey-1.x/tree/v1.20that uses Jackson 2.x. By this change, Jackson 1.x dependency has been removed from Hadoop. downstream applications which explicitly exclude jersey from transitive dependencies must now exclude com.github.pjfanning:jersey-jsonHDFS-16595|Major|Slow peer metrics - add median, mad and upper latency limitsNamenode metrics that represent Slownode Json now include three important factors (median, median absolute deviation, upper latency limit) that can help user determine how urgently a given slownode requires manual intervention.HADOOP-17833|Minor|Improve Magic Committer PerformanceS3A filesytem’s createFile() operation supports an option to disable all safety checks when creating a file. Consult the documentation and use with careHADOOP-18382|Minor|Upgrade AWS SDK to V2 - PrerequisitesIn preparation for an (incompatible but necessary) move to the AWS SDK v2, some uses of internal/deprecated uses of AWS classes/interfaces are logged as warnings, though only once during the life of a JVM. Set the log “org.apache.hadoop.fs.s3a.SDKV2Upgrade” to only log at INFO to hide these.HADOOP-18442|Major|Remove the hadoop-openstack moduleTheswift://connector for openstack support has been removed. It had fundamental problems (swift’s handling of files > 4GB). A subset of the S3 protocol is now exported by almost all object store services -please use that through the s3a connector instead. The hadoop-openstack jar remains, only now it is empty of code. This is to ensure that projects which declare the JAR a dependency will still have successful builds.HADOOP-17563|Major|Update Bouncy Castle to 1.68 or laterbouncy castle 1.68+ is a multirelease JAR containing java classes compiled for different target JREs. older versions of asm.jar and maven shade plugin may have problems with these. fix: upgrade the dependenciesHADOOP-18528|Major|Disable abfs prefetching by defaultABFS block prefetching has been disabled to avoid HADOOP-18521 and buffer sharing on multithreaded processes (Hive, Spark etc). This will have little/no performance impact on queries against Parquet or ORC data, but can slow down sequential stream processing, including CSV files -however, the read data will be correct. It may slow down distcp downloads, where the race condition does not arise. For maximum distcp performance re-enable the readahead by setting fs.abfs.enable.readahead to true.HADOOP-18621|Critical|CryptoOutputStream::close leak when encrypted zones + quota exceptionsWARNING: No release note provided for this change.©            2008-2023
-              Apache Software Foundation
-            
-                          -Privacy Policy.
-        Apache Maven, Maven, Apache, the Apache feather logo, and the Apache Maven project logos are trademarks of The Apache Software Foundation.
+[HADOOP-17116](https://issues.apache.org/jira/browse/HADOOP-17116) |
+Skip Retry INFO logging on first failover from a proxy |
+Major |
+ha |
+Hanisha Koneru |
+Hanisha Koneru |
+[YARN-10553](https://issues.apache.org/jira/browse/YARN-10553) |
+Refactor TestDistributedShell |
+Major |
+distributed-shell, test |
+Ahmed Hussein |
+Ahmed Hussein |
+[HDFS-15839](https://issues.apache.org/jira/browse/HDFS-15839) |
+RBF: Cannot get method setBalancerBandwidth on Router Client |
+Major |
+rbf |
+Yang Yun |
+Yang Yun |
+[HADOOP-17588](https://issues.apache.org/jira/browse/HADOOP-17588) |
+CryptoInputStream#close() should be synchronized |
+Major |
+. |
+Renukaprasad C |
+Renukaprasad C |
+[HADOOP-17836](https://issues.apache.org/jira/browse/HADOOP-17836) |
+Improve logging on ABFS error reporting |
+Minor |
+fs/azure |
+Steve Loughran |
+Steve Loughran |
+[HADOOP-17989](https://issues.apache.org/jira/browse/HADOOP-17989) |
+ITestAzureBlobFileSystemDelete failing “Operations has null HTTP response” |
+Major |
+fs/azure, test |
+Steve Loughran |
+Steve Loughran |
+[YARN-11055](https://issues.apache.org/jira/browse/YARN-11055) |
+In cgroups-operations.c some fprintf format strings don’t end with “\n” |
+Minor |
+nodemanager |
+Gera Shegalov |
+Gera Shegalov |
+[YARN-11065](https://issues.apache.org/jira/browse/YARN-11065) |
+Bump follow-redirects from 1.13.3 to 1.14.7 in hadoop-yarn-ui |
+Major |
+yarn-ui-v2 |
+Akira Ajisaka |
+|
+[HDFS-16303](https://issues.apache.org/jira/browse/HDFS-16303) |
+Losing over 100 datanodes in state decommissioning results in full blockage of all datanode decommissioning |
+Major |
+. |
+Kevin Wikant |
+Kevin Wikant |
+[HDFS-16443](https://issues.apache.org/jira/browse/HDFS-16443) |
+Fix edge case where DatanodeAdminDefaultMonitor doubly enqueues a DatanodeDescriptor on exception |
+Major |
+hdfs |
+Kevin Wikant |
+Kevin Wikant |
+[HDFS-16449](https://issues.apache.org/jira/browse/HDFS-16449) |
+Fix hadoop web site release notes and changelog not available |
+Minor |
+documentation |
+guophilipse |
+guophilipse |
+[YARN-10788](https://issues.apache.org/jira/browse/YARN-10788) |
+TestCsiClient fails |
+Major |
+test |
+Akira Ajisaka |
+Akira Ajisaka |
+[HADOOP-18126](https://issues.apache.org/jira/browse/HADOOP-18126) |
+Update junit 5 version due to build issues |
+Major |
+bulid |
+PJ Fanning |
+PJ Fanning |
+[YARN-11033](https://issues.apache.org/jira/browse/YARN-11033) |
+isAbsoluteResource is not correct for dynamically created queues |
+Minor |
+yarn |
+Tamas Domok |
+Tamas Domok |
+[YARN-10894](https://issues.apache.org/jira/browse/YARN-10894) |
+Follow up YARN-10237: fix the new test case in TestRMWebServicesCapacitySched |
+Major |
+. |
+Tamas Domok |
+Tamas Domok |
+[YARN-11022](https://issues.apache.org/jira/browse/YARN-11022) |
+Fix the documentation for max-parallel-apps in CS |
+Major |
+capacity scheduler |
+Tamas Domok |
+Tamas Domok |
+[HADOOP-18150](https://issues.apache.org/jira/browse/HADOOP-18150) |
+Fix ITestAuditManagerDisabled after S3A audit logging was enabled in HADOOP-18091 |
+Major |
+fs/s3 |
+Mehakmeet Singh |
+Mehakmeet Singh |
+[HADOOP-17976](https://issues.apache.org/jira/browse/HADOOP-17976) |
+abfs etag extraction inconsistent between LIST and HEAD calls |
+Minor |
+fs/azure |
+Steve Loughran |
+Steve Loughran |
+[HADOOP-18129](https://issues.apache.org/jira/browse/HADOOP-18129) |
+Change URI[] in INodeLink to String[] to reduce memory footprint of ViewFileSystem |
+Major |
+. |
+Abhishek Das |
+Abhishek Das |
+[HADOOP-18145](https://issues.apache.org/jira/browse/HADOOP-18145) |
+Fileutil’s unzip method causes unzipped files to lose their original permissions |
+Major |
+common |
+jingxiong zhong |
+jingxiong zhong |
+[HDFS-16518](https://issues.apache.org/jira/browse/HDFS-16518) |
+KeyProviderCache close cached KeyProvider with Hadoop ShutdownHookManager |
+Major |
+hdfs |
+Lei Yang |
+Lei Yang |
+[HADOOP-18169](https://issues.apache.org/jira/browse/HADOOP-18169) |
+getDelegationTokens in ViewFs should also fetch the token from the fallback FS |
+Major |
+. |
+Xing Lin |
+Xing Lin |
+[HDFS-16479](https://issues.apache.org/jira/browse/HDFS-16479) |
+EC: NameNode should not send a reconstruction work when the source datanodes are insufficient |
+Critical |
+ec, erasure-coding |
+Yuanbo Liu |
+Takanobu Asanuma |
+[HDFS-16509](https://issues.apache.org/jira/browse/HDFS-16509) |
+Fix decommission UnsupportedOperationException: Remove unsupported |
+Major |
+namenode |
+daimin |
+daimin |
+[HDFS-16456](https://issues.apache.org/jira/browse/HDFS-16456) |
+EC: Decommission a rack with only on dn will fail when the rack number is equal with replication |
+Critical |
+ec, namenode |
+caozhiqiang |
+caozhiqiang |
+[HADOOP-18201](https://issues.apache.org/jira/browse/HADOOP-18201) |
+Remove base and bucket overrides for endpoint in ITestS3ARequesterPays.java |
+Major |
+fs/s3 |
+Mehakmeet Singh |
+Daniel Carl Jones |
+[HDFS-16536](https://issues.apache.org/jira/browse/HDFS-16536) |
+TestOfflineImageViewer fails on branch-3.3 |
+Major |
+test |
+Akira Ajisaka |
+Ashutosh Gupta |
+[HDFS-16538](https://issues.apache.org/jira/browse/HDFS-16538) |
+EC decoding failed due to not enough valid inputs |
+Major |
+erasure-coding |
+qinyuren |
+qinyuren |
+[HDFS-16544](https://issues.apache.org/jira/browse/HDFS-16544) |
+EC decoding failed due to invalid buffer |
+Major |
+erasure-coding |
+qinyuren |
+qinyuren |
+[HADOOP-17564](https://issues.apache.org/jira/browse/HADOOP-17564) |
+Fix typo in UnixShellGuide.html |
+Trivial |
+. |
+Takanobu Asanuma |
+Ashutosh Gupta |
+[HDFS-16552](https://issues.apache.org/jira/browse/HDFS-16552) |
+Fix NPE for TestBlockManager |
+Major |
+. |
+Tao Li |
+Tao Li |
+[MAPREDUCE-7246](https://issues.apache.org/jira/browse/MAPREDUCE-7246) |
+In MapredAppMasterRest#Mapreduce_Application_Master_Info_API, the datatype of appId should be “string”. |
+Major |
+documentation |
+jenny |
+Ashutosh Gupta |
+[YARN-10187](https://issues.apache.org/jira/browse/YARN-10187) |
+Removing hadoop-yarn-project/hadoop-yarn/README as it is no longer maintained. |
+Minor |
+documentation |
+N Sanketh Reddy |
+Ashutosh Gupta |
+[HADOOP-16515](https://issues.apache.org/jira/browse/HADOOP-16515) |
+Update the link to compatibility guide |
+Minor |
+documentation |
+Akira Ajisaka |
+Ashutosh Gupta |
+[HDFS-16185](https://issues.apache.org/jira/browse/HDFS-16185) |
+Fix comment in LowRedundancyBlocks.java |
+Minor |
+documentation |
+Akira Ajisaka |
+Ashutosh Gupta |
+[HADOOP-17479](https://issues.apache.org/jira/browse/HADOOP-17479) |
+Fix the examples of hadoop config prefix |
+Minor |
+documentation |
+Akira Ajisaka |
+Ashutosh Gupta |
+[HADOOP-18222](https://issues.apache.org/jira/browse/HADOOP-18222) |
+Prevent DelegationTokenSecretManagerMetrics from registering multiple times |
+Major |
+. |
+Hector Sandoval Chaverri |
+Hector Sandoval Chaverri |
+[HDFS-16540](https://issues.apache.org/jira/browse/HDFS-16540) |
+Data locality is lost when DataNode pod restarts in kubernetes |
+Major |
+namenode |
+Huaxiang Sun |
+Huaxiang Sun |
+[YARN-11133](https://issues.apache.org/jira/browse/YARN-11133) |
+YarnClient gets the wrong EffectiveMinCapacity value |
+Major |
+api |
+Zilong Zhu |
+Zilong Zhu |
+[YARN-10850](https://issues.apache.org/jira/browse/YARN-10850) |
+TimelineService v2 lists containers for all attempts when filtering for one |
+Major |
+timelinereader |
+Benjamin Teke |
+Benjamin Teke |
+[YARN-11141](https://issues.apache.org/jira/browse/YARN-11141) |
+Capacity Scheduler does not support ambiguous queue names when moving application across queues |
+Major |
+capacity scheduler |
+András Győri |
+András Győri |
+[HDFS-16586](https://issues.apache.org/jira/browse/HDFS-16586) |
+Purge FsDatasetAsyncDiskService threadgroup; it causes BPServiceActor$CommandProcessingThread IllegalThreadStateException ‘fatal exception and exit’ |
+Major |
+datanode |
+Michael Stack |
+Michael Stack |
+[HADOOP-18251](https://issues.apache.org/jira/browse/HADOOP-18251) |
+Fix failure of extracting JIRA id from commit message in git_jira_fix_version_check.py |
+Minor |
+build |
+Masatake Iwasaki |
+Masatake Iwasaki |
+[YARN-11128](https://issues.apache.org/jira/browse/YARN-11128) |
+Fix comments in TestProportionalCapacityPreemptionPolicy* |
+Minor |
+capacityscheduler, documentation |
+Ashutosh Gupta |
+Ashutosh Gupta |
+[HADOOP-18234](https://issues.apache.org/jira/browse/HADOOP-18234) |
+s3a access point xml examples are wrong |
+Minor |
+documentation, fs/s3 |
+Steve Loughran |
+Ashutosh Gupta |
+[HADOOP-18238](https://issues.apache.org/jira/browse/HADOOP-18238) |
+Fix reentrancy check in SFTPFileSystem.close() |
+Major |
+common |
+yi liu |
+Ashutosh Gupta |
+[HDFS-16583](https://issues.apache.org/jira/browse/HDFS-16583) |
+DatanodeAdminDefaultMonitor can get stuck in an infinite loop |
+Major |
+. |
+Stephen O’Donnell |
+Stephen O’Donnell |
+[HDFS-16608](https://issues.apache.org/jira/browse/HDFS-16608) |
+Fix the link in TestClientProtocolForPipelineRecovery |
+Minor |
+documentation |
+Samrat Deb |
+Samrat Deb |
+[HDFS-16563](https://issues.apache.org/jira/browse/HDFS-16563) |
+Namenode WebUI prints sensitive information on Token Expiry |
+Major |
+namanode, security, webhdfs |
+Renukaprasad C |
+Renukaprasad C |
+[HDFS-16623](https://issues.apache.org/jira/browse/HDFS-16623) |
+IllegalArgumentException in LifelineSender |
+Major |
+. |
+ZanderXu |
+ZanderXu |
+[HDFS-16064](https://issues.apache.org/jira/browse/HDFS-16064) |
+Determine when to invalidate corrupt replicas based on number of usable replicas |
+Major |
+datanode, namenode |
+Kevin Wikant |
+Kevin Wikant |
+[HADOOP-18255](https://issues.apache.org/jira/browse/HADOOP-18255) |
+fsdatainputstreambuilder.md refers to hadoop 3.3.3, when it shouldn’t |
+Minor |
+documentation |
+Steve Loughran |
+Ashutosh Gupta |
+[MAPREDUCE-7387](https://issues.apache.org/jira/browse/MAPREDUCE-7387) |
+Fix TestJHSSecurity#testDelegationToken AssertionError due to HDFS-16563 |
+Major |
+. |
+Shilun Fan |
+Shilun Fan |
+[MAPREDUCE-7369](https://issues.apache.org/jira/browse/MAPREDUCE-7369) |
+MapReduce tasks timing out when spends more time on MultipleOutputs#close |
+Major |
+. |
+Prabhu Joseph |
+Ashutosh Gupta |
+[MAPREDUCE-7391](https://issues.apache.org/jira/browse/MAPREDUCE-7391) |
+TestLocalDistributedCacheManager failing after HADOOP-16202 |
+Major |
+test |
+Steve Loughran |
+Steve Loughran |
+[HDFS-16591](https://issues.apache.org/jira/browse/HDFS-16591) |
+StateStoreZooKeeper fails to initialize |
+Major |
+rbf |
+Hector Sandoval Chaverri |
+Hector Sandoval Chaverri |
+[HADOOP-18321](https://issues.apache.org/jira/browse/HADOOP-18321) |
+Fix when to read an additional record from a BZip2 text file split |
+Critical |
+io |
+Ashutosh Gupta |
+Ashutosh Gupta |
+[HADOOP-18100](https://issues.apache.org/jira/browse/HADOOP-18100) |
+Change scope of inner classes in InodeTree to make them accessible outside package |
+Major |
+. |
+Abhishek Das |
+Abhishek Das |
+[HADOOP-18217](https://issues.apache.org/jira/browse/HADOOP-18217) |
+shutdownhookmanager should not be multithreaded (deadlock possible) |
+Minor |
+util |
+Catherinot Remi |
+|
+[MAPREDUCE-7372](https://issues.apache.org/jira/browse/MAPREDUCE-7372) |
+MapReduce set permission too late in copyJar method |
+Major |
+mrv2 |
+Zhang Dongsheng |
+|
+[HADOOP-18330](https://issues.apache.org/jira/browse/HADOOP-18330) |
+S3AFileSystem removes Path when calling createS3Client |
+Minor |
+fs/s3 |
+Ashutosh Pant |
+Ashutosh Pant |
+[HADOOP-18390](https://issues.apache.org/jira/browse/HADOOP-18390) |
+Fix out of sync import for HADOOP-18321 |
+Minor |
+. |
+Ashutosh Gupta |
+Ashutosh Gupta |
+[HADOOP-18340](https://issues.apache.org/jira/browse/HADOOP-18340) |
+deleteOnExit does not work with S3AFileSystem |
+Minor |
+fs/s3 |
+Huaxiang Sun |
+Huaxiang Sun |
+[HADOOP-18383](https://issues.apache.org/jira/browse/HADOOP-18383) |
+Codecs with @DoNotPool annotation are not closed causing memory leak |
+Major |
+common |
+Kevin Sewell |
+Kevin Sewell |
+[HDFS-16729](https://issues.apache.org/jira/browse/HDFS-16729) |
+RBF: fix some unreasonably annotated docs |
+Major |
+documentation, rbf |
+JiangHua Zhu |
+JiangHua Zhu |
+[HADOOP-18398](https://issues.apache.org/jira/browse/HADOOP-18398) |
+Prevent AvroRecord*.class from being included non-test jar |
+Major |
+common |
+YUBI LEE |
+YUBI LEE |
+[HDFS-4043](https://issues.apache.org/jira/browse/HDFS-4043) |
+Namenode Kerberos Login does not use proper hostname for host qualified hdfs principal name. |
+Major |
+security |
+Ahad Rana |
+Steve Vaughan |
+[MAPREDUCE-7403](https://issues.apache.org/jira/browse/MAPREDUCE-7403) |
+Support spark dynamic partitioning in the Manifest Committer |
+Major |
+mrv2 |
+Steve Loughran |
+Steve Loughran |
+[HDFS-16732](https://issues.apache.org/jira/browse/HDFS-16732) |
+[SBN READ] Avoid get location from observer when the block report is delayed. |
+Critical |
+hdfs |
+zhengchenyu |
+zhengchenyu |
+[HADOOP-18375](https://issues.apache.org/jira/browse/HADOOP-18375) |
+Fix failure of shelltest for hadoop_add_ldlibpath |
+Minor |
+test |
+Masatake Iwasaki |
+Masatake Iwasaki |
+[HDFS-16755](https://issues.apache.org/jira/browse/HDFS-16755) |
+TestQJMWithFaults.testUnresolvableHostName() can fail due to unexpected host resolution |
+Minor |
+test |
+Steve Vaughan |
+Steve Vaughan |
+[HADOOP-18400](https://issues.apache.org/jira/browse/HADOOP-18400) |
+Fix file split duplicating records from a succeeding split when reading BZip2 text files |
+Critical |
+. |
+Ashutosh Gupta |
+Ashutosh Gupta |
+[HADOOP-18242](https://issues.apache.org/jira/browse/HADOOP-18242) |
+ABFS Rename Failure when tracking metadata is in incomplete state |
+Major |
+fs/azure |
+Mehakmeet Singh |
+Mehakmeet Singh |
+[HADOOP-18456](https://issues.apache.org/jira/browse/HADOOP-18456) |
+NullPointerException in ObjectListingIterator’s constructor |
+Blocker |
+fs/s3 |
+Quanlong Huang |
+Steve Loughran |
+[HADOOP-18444](https://issues.apache.org/jira/browse/HADOOP-18444) |
+Add Support for localized trash for ViewFileSystem in Trash.moveToAppropriateTrash |
+Major |
+. |
+Xing Lin |
+Xing Lin |
+[HADOOP-18443](https://issues.apache.org/jira/browse/HADOOP-18443) |
+Upgrade snakeyaml to 1.32 |
+Major |
+security |
+Ashutosh Gupta |
+Ashutosh Gupta |
+[HDFS-16766](https://issues.apache.org/jira/browse/HDFS-16766) |
+hdfs ec command loads (administrator provided) erasure code policy files without disabling xml entity expansion |
+Major |
+security |
+Jing |
+Ashutosh Gupta |
+[HDFS-13369](https://issues.apache.org/jira/browse/HDFS-13369) |
+FSCK Report broken with RequestHedgingProxyProvider |
+Major |
+hdfs |
+Harshakiran Reddy |
+Ranith Sardar |
+[YARN-11039](https://issues.apache.org/jira/browse/YARN-11039) |
+LogAggregationFileControllerFactory::getFileControllerForRead can leak threads |
+Blocker |
+log-aggregation |
+Rajesh Balamohan |
+Steve Loughran |
+[HADOOP-18499](https://issues.apache.org/jira/browse/HADOOP-18499) |
+S3A to support HTTPS web proxies |
+Major |
+fs/s3 |
+Mehakmeet Singh |
+Mehakmeet Singh |
+[HADOOP-18233](https://issues.apache.org/jira/browse/HADOOP-18233) |
+Possible race condition with TemporaryAWSCredentialsProvider |
+Major |
+auth, fs/s3 |
+Jason Sleight |
+Jimmy Wong |
+[MAPREDUCE-7425](https://issues.apache.org/jira/browse/MAPREDUCE-7425) |
+Document Fix for yarn.app.mapreduce.client-am.ipc.max-retries |
+Major |
+yarn |
+teng wang |
+teng wang |
+[HADOOP-18528](https://issues.apache.org/jira/browse/HADOOP-18528) |
+Disable abfs prefetching by default |
+Major |
+fs/azure |
+Mehakmeet Singh |
+Mehakmeet Singh |
+[HDFS-16836](https://issues.apache.org/jira/browse/HDFS-16836) |
+StandbyCheckpointer can still trigger rollback fs image after RU is finalized |
+Major |
+hdfs |
+Lei Yang |
+Lei Yang |
+[HADOOP-18324](https://issues.apache.org/jira/browse/HADOOP-18324) |
+Interrupting RPC Client calls can lead to thread exhaustion |
+Critical |
+ipc |
+Owen O’Malley |
+Owen O’Malley |
+[HDFS-16832](https://issues.apache.org/jira/browse/HDFS-16832) |
+[SBN READ] Fix NPE when check the block location of empty directory |
+Major |
+. |
+zhengchenyu |
+zhengchenyu |
+[HADOOP-18498](https://issues.apache.org/jira/browse/HADOOP-18498) |
+[ABFS]: Error introduced when SAS Token containing ‘?’ prefix is passed |
+Minor |
+fs/azure |
+Sree Bhattacharyya |
+Sree Bhattacharyya |
+[HDFS-16847](https://issues.apache.org/jira/browse/HDFS-16847) |
+RBF: StateStore writer should not commit tmp fail if there was an error in writing the file. |
+Critical |
+hdfs, rbf |
+Simbarashe Dzinamarira |
+Simbarashe Dzinamarira |
+[HADOOP-18401](https://issues.apache.org/jira/browse/HADOOP-18401) |
+No ARM binaries in branch-3.3.x releases |
+Minor |
+build |
+Ling Xu |
+|
+[HADOOP-18408](https://issues.apache.org/jira/browse/HADOOP-18408) |
+[ABFS]: ITestAbfsManifestCommitProtocol fails on nonHNS configuration |
+Minor |
+fs/azure, test |
+Pranav Saxena |
+Sree Bhattacharyya |
+[HADOOP-18402](https://issues.apache.org/jira/browse/HADOOP-18402) |
+S3A committer NPE in spark job abort |
+Blocker |
+fs/s3 |
+Steve Loughran |
+Steve Loughran |
+[HADOOP-18569](https://issues.apache.org/jira/browse/HADOOP-18569) |
+NFS Gateway may release buffer too early |
+Blocker |
+nfs |
+Attila Doroszlai |
+Attila Doroszlai |
+[HADOOP-18574](https://issues.apache.org/jira/browse/HADOOP-18574) |
+Changing log level of IOStatistics increment to make the DEBUG logs less noisy |
+Major |
+fs/s3 |
+Mehakmeet Singh |
+Mehakmeet Singh |
+[HADOOP-18521](https://issues.apache.org/jira/browse/HADOOP-18521) |
+ABFS ReadBufferManager buffer sharing across concurrent HTTP requests |
+Critical |
+fs/azure |
+Steve Loughran |
+Steve Loughran |
+[MAPREDUCE-7375](https://issues.apache.org/jira/browse/MAPREDUCE-7375) |
+JobSubmissionFiles don’t set right permission after mkdirs |
+Major |
+mrv2 |
+Zhang Dongsheng |
+|
+[HADOOP-17717](https://issues.apache.org/jira/browse/HADOOP-17717) |
+Update wildfly openssl to 1.1.3.Final |
+Major |
+. |
+Wei-Chiu Chuang |
+Wei-Chiu Chuang |
+[HADOOP-18598](https://issues.apache.org/jira/browse/HADOOP-18598) |
+maven site generation doesn’t include javadocs |
+Blocker |
+site |
+Steve Loughran |
+Steve Loughran |
+[HDFS-16895](https://issues.apache.org/jira/browse/HDFS-16895) |
+NamenodeHeartbeatService should use credentials of logged in user |
+Major |
+rbf |
+Hector Sandoval Chaverri |
+Hector Sandoval Chaverri |
+[HDFS-16853](https://issues.apache.org/jira/browse/HDFS-16853) |
+The UT TestLeaseRecovery2#testHardLeaseRecoveryAfterNameNodeRestart failed because HADOOP-18324 |
+Blocker |
+. |
+ZanderXu |
+ZanderXu |
+[HADOOP-18641](https://issues.apache.org/jira/browse/HADOOP-18641) |
+cyclonedx maven plugin breaks builds on recent maven releases (3.9.0) |
+Major |
+build |
+Steve Loughran |
+Steve Loughran |
+[HDFS-16923](https://issues.apache.org/jira/browse/HDFS-16923) |
+The getListing RPC will throw NPE if the path does not exist |
+Critical |
+. |
+ZanderXu |
+ZanderXu |
+[HDFS-16896](https://issues.apache.org/jira/browse/HDFS-16896) |
+HDFS Client hedged read has increased failure rate than without hedged read |
+Major |
+hdfs-client |
+Tom McCormick |
+Tom McCormick |
+[YARN-11383](https://issues.apache.org/jira/browse/YARN-11383) |
+Workflow priority mappings is case sensitive |
+Major |
+yarn |
+Aparajita Choudhary |
+Aparajita Choudhary |
+[HDFS-16939](https://issues.apache.org/jira/browse/HDFS-16939) |
+Fix the thread safety bug in LowRedundancyBlocks |
+Major |
+namanode |
+Shuyan Zhang |
+Shuyan Zhang |
+[HDFS-16934](https://issues.apache.org/jira/browse/HDFS-16934) |
+org.apache.hadoop.hdfs.tools.TestDFSAdmin#testAllDatanodesReconfig regression |
+Minor |
+dfsadmin, test |
+Steve Loughran |
+Shilun Fan |

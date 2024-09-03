@@ -1,3 +1,0 @@
-URL: https://cassandra.apache.org/ecosystem.html
-
-Not FoundThe requested URL was not found on this server.

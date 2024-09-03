@@ -1,3 +1,0 @@
-URL: https://cassandra.apache.org/blog/Behind-the-scenes-of-an-Apache-Cassandra-Release.html
-
-Not FoundThe requested URL was not found on this server.

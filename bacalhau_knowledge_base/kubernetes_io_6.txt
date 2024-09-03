@@ -1,3 +1,19 @@
-URL: https://kubernetes.io/partners/
+Source: kubernetes_io
+URL: https://kubernetes.io/community/
 
-DocumentationKubernetes BlogTrainingPartnersCommunityCase StudiesVersionsRelease Informationv1.31v1.30v1.29v1.28v1.27Englishবাংলা (Bengali)中文 (Chinese)Français (French)Deutsch (German)Italiano (Italian)日本語 (Japanese)한국어 (Korean)Português (Portuguese)Español (Spanish)Tiếng Việt (Vietnamese)Kubernetes PartnersKubernetes works with partners to create a strong, vibrant codebase that supports a spectrum of complementary platforms.Kubernetes Certified Service ProvidersVetted service providers with deep experience helping enterprises successfully adopt Kubernetes.See KCSP PartnersInterested in becoming aKCSP?Certified Kubernetes Distributions, Hosted Platforms, and InstallersSoftware conformance ensures that every vendor’s version of Kubernetes supports the required APIs.See Conformance PartnersInterested in becomingKubernetes Certified?Kubernetes Training PartnersVetted training providers who have deep experience in cloud native technology training.See KTP PartnersInterested in becoming aKTP?DocumentationBlogTrainingPartnersCommunityCase Studies© 2024 The Kubernetes Authors | Documentation Distributed underCC BY 4.0Copyright © 2024 The Linux Foundation ®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see ourTrademark Usage pageICP license: 京ICP备17074266号-3
+The Kubernetes community — users, contributors, and the culture we've built together — is one of the biggest reasons for the meteoric rise of this open source project. Our culture and values continue to grow and change as the project itself grows and changes. We all work together toward constant improvement of the project and the ways we work on it.
+We are the people who file issues and pull requests, attend SIG meetings,
+Kubernetes meetups, and KubeCon, advocate for its adoption and innovation,
+run kubectl get pods
+, and contribute in a thousand other vital
+ways. Read on to learn how you can get involved and become part of this amazing
+community.
+The Kubernetes Community values are the keystone to the ongoing success of the project.
+These principles guide every aspect of the Kubernetes project.
+The Kubernetes community values respect and inclusiveness, and enforces a Code of Conduct in all interactions.
+If you notice a violation of the Code of Conduct at an event or meeting, in [Slack](#slack), or in another communication mechanism, reach out to the Kubernetes Code of Conduct Committee at [conduct@kubernetes.io](mailto:conduct@kubernetes.io). All reports are kept confidential. You can read [about the committee](https://github.com/kubernetes/community/tree/master/committee-code-of-conduct) in the Kubernetes community repository on GitHub.
+Kubernetes is on YouTube, a lot. Subscribe for a wide range of topics.
+We talk a lot. Find us and join the conversation on any of these platforms.
+Topic-based technical discussions that bridge docs, troubleshooting, and so much more.
+With 170+ channels, you'll find one that fits your needs.
+With over 150 meetups in the world and growing, go find your local kube people. If one isn't near, take charge and create your own.

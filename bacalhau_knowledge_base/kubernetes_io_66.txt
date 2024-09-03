@@ -1,100 +1,447 @@
-URL: https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/troubleshooting-kubeadm/
+Source: kubernetes_io
+URL: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/
 
-DocumentationKubernetes BlogTrainingPartnersCommunityCase StudiesVersionsRelease Informationv1.31v1.30v1.29v1.28v1.27English中文 (Chinese)Français (French)日本語 (Japanese)DocumentationAvailable Documentation VersionsGetting startedLearning environmentProduction environmentContainer RuntimesInstalling Kubernetes with deployment toolsBootstrapping clusters with kubeadmInstalling kubeadmTroubleshooting kubeadmCreating a cluster with kubeadmCustomizing components with the kubeadm APIOptions for Highly Available TopologyCreating Highly Available Clusters with kubeadmSet up a High Availability etcd Cluster with kubeadmConfiguring each kubelet in your cluster using kubeadmDual-stack support with kubeadmTurnkey Cloud SolutionsBest practicesConsiderations for large clustersRunning in multiple zonesValidate node setupEnforcing Pod Security StandardsPKI certificates and requirementsConceptsOverviewKubernetes ComponentsObjects In KubernetesKubernetes Object ManagementObject Names and IDsLabels and SelectorsNamespacesAnnotationsField SelectorsFinalizersOwners and DependentsRecommended LabelsThe Kubernetes APICluster ArchitectureNodesCommunication between Nodes and the Control PlaneControllersLeasesCloud Controller ManagerAbout cgroup v2Container Runtime Interface (CRI)Garbage CollectionMixed Version ProxyContainersImagesContainer EnvironmentRuntime ClassContainer Lifecycle HooksWorkloadsPodsPod LifecycleInit ContainersSidecar ContainersEphemeral ContainersDisruptionsPod Quality of Service ClassesUser NamespacesDownward APIWorkload ManagementDeploymentsReplicaSetStatefulSetsDaemonSetJobsAutomatic Cleanup for Finished JobsCronJobReplicationControllerAutoscaling WorkloadsManaging WorkloadsServices, Load Balancing, and NetworkingServiceIngressIngress ControllersGateway APIEndpointSlicesNetwork PoliciesDNS for Services and PodsIPv4/IPv6 dual-stackTopology Aware RoutingNetworking on WindowsService ClusterIP allocationService Internal Traffic PolicyStorageVolumesPersistent VolumesProjected VolumesEphemeral VolumesStorage ClassesVolume Attributes ClassesDynamic Volume ProvisioningVolume SnapshotsVolume Snapshot ClassesCSI Volume CloningStorage CapacityNode-specific Volume LimitsVolume Health MonitoringWindows StorageConfigurationConfiguration Best PracticesConfigMapsSecretsLiveness, Readiness, and Startup ProbesResource Management for Pods and ContainersOrganizing Cluster Access Using kubeconfig FilesResource Management for Windows nodesSecurityCloud Native SecurityPod Security StandardsPod Security AdmissionService AccountsPod Security PoliciesSecurity For Windows NodesControlling Access to the Kubernetes APIRole Based Access Control Good PracticesGood practices for Kubernetes SecretsMulti-tenancyHardening Guide - Authentication MechanismsKubernetes API Server Bypass RisksLinux kernel security constraints for Pods and containersSecurity ChecklistPoliciesLimit RangesResource QuotasProcess ID Limits And ReservationsNode Resource ManagersScheduling, Preemption and EvictionKubernetes SchedulerAssigning Pods to NodesPod OverheadPod Scheduling ReadinessPod Topology Spread ConstraintsTaints and TolerationsScheduling FrameworkDynamic Resource AllocationScheduler Performance TuningResource Bin PackingPod Priority and PreemptionNode-pressure EvictionAPI-initiated EvictionCluster AdministrationNode ShutdownsCertificatesCluster NetworkingLogging ArchitectureMetrics For Kubernetes System ComponentsMetrics for Kubernetes Object StatesSystem LogsTraces For Kubernetes System ComponentsProxies in KubernetesAPI Priority and FairnessCluster AutoscalingInstalling AddonsCoordinated Leader ElectionWindows in KubernetesWindows containers in KubernetesGuide for Running Windows Containers in KubernetesExtending KubernetesCompute, Storage, and Networking ExtensionsNetwork PluginsDevice PluginsExtending the Kubernetes APICustom ResourcesKubernetes API Aggregation LayerOperator patternTasksInstall ToolsInstall and Set Up kubectl on LinuxInstall and Set Up kubectl on macOSInstall and Set Up kubectl on WindowsAdminister a ClusterAdministration with kubeadmCertificate Management with kubeadmConfiguring a cgroup driverReconfiguring a kubeadm clusterUpgrading kubeadm clustersUpgrading Linux nodesUpgrading Windows nodesChanging The Kubernetes Package RepositoryMigrating from dockershimChanging the Container Runtime on a Node from Docker Engine to containerdMigrate Docker Engine nodes from dockershim to cri-dockerdFind Out What Container Runtime is Used on a NodeTroubleshooting CNI plugin-related errorsCheck whether dockershim removal affects youMigrating telemetry and security agents from dockershimGenerate Certificates ManuallyManage Memory, CPU, and API ResourcesConfigure Default Memory Requests and Limits for a NamespaceConfigure Default CPU Requests and Limits for a NamespaceConfigure Minimum and Maximum Memory Constraints for a NamespaceConfigure Minimum and Maximum CPU Constraints for a NamespaceConfigure Memory and CPU Quotas for a NamespaceConfigure a Pod Quota for a NamespaceInstall a Network Policy ProviderUse Antrea for NetworkPolicyUse Calico for NetworkPolicyUse Cilium for NetworkPolicyUse Kube-router for NetworkPolicyRomana for NetworkPolicyWeave Net for NetworkPolicyAccess Clusters Using the Kubernetes APIAdvertise Extended Resources for a NodeAutoscale the DNS Service in a ClusterChange the Access Mode of a PersistentVolume to ReadWriteOncePodChange the default StorageClassSwitching from Polling to CRI Event-based Updates to Container StatusChange the Reclaim Policy of a PersistentVolumeCloud Controller Manager AdministrationConfigure a kubelet image credential providerConfigure Quotas for API ObjectsControl CPU Management Policies on the NodeControl Topology Management Policies on a nodeCustomizing DNS ServiceDebugging DNS ResolutionDeclare Network PolicyDeveloping Cloud Controller ManagerEnable Or Disable A Kubernetes APIEncrypting Confidential Data at RestDecrypt Confidential Data that is Already Encrypted at RestGuaranteed Scheduling For Critical Add-On PodsIP Masquerade Agent User GuideLimit Storage ConsumptionMigrate Replicated Control Plane To Use Cloud Controller ManagerNamespaces WalkthroughOperating etcd clusters for KubernetesReserve Compute Resources for System DaemonsRunning Kubernetes Node Components as a Non-root UserSafely Drain a NodeSecuring a ClusterSet Kubelet Parameters Via A Configuration FileShare a Cluster with NamespacesUpgrade A ClusterUse Cascading Deletion in a ClusterUsing a KMS provider for data encryptionUsing CoreDNS for Service DiscoveryUsing NodeLocal DNSCache in Kubernetes ClustersUsing sysctls in a Kubernetes ClusterUtilizing the NUMA-aware Memory ManagerVerify Signed Kubernetes ArtifactsConfigure Pods and ContainersAssign Memory Resources to Containers and PodsAssign CPU Resources to Containers and PodsConfigure GMSA for Windows Pods and containersResize CPU and Memory Resources assigned to ContainersConfigure RunAsUserName for Windows pods and containersCreate a Windows HostProcess PodConfigure Quality of Service for PodsAssign Extended Resources to a ContainerConfigure a Pod to Use a Volume for StorageConfigure a Pod to Use a PersistentVolume for StorageConfigure a Pod to Use a Projected Volume for StorageConfigure a Security Context for a Pod or ContainerConfigure Service Accounts for PodsPull an Image from a Private RegistryConfigure Liveness, Readiness and Startup ProbesAssign Pods to NodesAssign Pods to Nodes using Node AffinityConfigure Pod InitializationAttach Handlers to Container Lifecycle EventsConfigure a Pod to Use a ConfigMapShare Process Namespace between Containers in a PodUse a User Namespace With a PodUse an Image Volume With a PodCreate static PodsTranslate a Docker Compose File to Kubernetes ResourcesEnforce Pod Security Standards by Configuring the Built-in Admission ControllerEnforce Pod Security Standards with Namespace LabelsMigrate from PodSecurityPolicy to the Built-In PodSecurity Admission ControllerMonitoring, Logging, and DebuggingTroubleshooting ApplicationsDebug PodsDebug ServicesDebug a StatefulSetDetermine the Reason for Pod FailureDebug Init ContainersDebug Running PodsGet a Shell to a Running ContainerTroubleshooting ClustersTroubleshooting kubectlResource metrics pipelineTools for Monitoring ResourcesMonitor Node HealthDebugging Kubernetes nodes with crictlAuditingDebugging Kubernetes Nodes With KubectlDeveloping and debugging services locally using telepresenceWindows debugging tipsManage Kubernetes ObjectsDeclarative Management of Kubernetes Objects Using Configuration FilesDeclarative Management of Kubernetes Objects Using KustomizeManaging Kubernetes Objects Using Imperative CommandsImperative Management of Kubernetes Objects Using Configuration FilesUpdate API Objects in Place Using kubectl patchMigrate Kubernetes Objects Using Storage Version MigrationManaging SecretsManaging Secrets using kubectlManaging Secrets using Configuration FileManaging Secrets using KustomizeInject Data Into ApplicationsDefine a Command and Arguments for a ContainerDefine Dependent Environment VariablesDefine Environment Variables for a ContainerExpose Pod Information to Containers Through Environment VariablesExpose Pod Information to Containers Through FilesDistribute Credentials Securely Using SecretsRun ApplicationsRun a Stateless Application Using a DeploymentRun a Single-Instance Stateful ApplicationRun a Replicated Stateful ApplicationScale a StatefulSetDelete a StatefulSetForce Delete StatefulSet PodsHorizontal Pod AutoscalingHorizontalPodAutoscaler WalkthroughSpecifying a Disruption Budget for your ApplicationAccessing the Kubernetes API from a PodRun JobsRunning Automated Tasks with a CronJobCoarse Parallel Processing Using a Work QueueFine Parallel Processing Using a Work QueueIndexed Job for Parallel Processing with Static Work AssignmentJob with Pod-to-Pod CommunicationParallel Processing using ExpansionsHandling retriable and non-retriable pod failures with Pod failure policyAccess Applications in a ClusterDeploy and Access the Kubernetes DashboardAccessing ClustersConfigure Access to Multiple ClustersUse Port Forwarding to Access Applications in a ClusterUse a Service to Access an Application in a ClusterConnect a Frontend to a Backend Using ServicesCreate an External Load BalancerList All Container Images Running in a ClusterSet up Ingress on Minikube with the NGINX Ingress ControllerCommunicate Between Containers in the Same Pod Using a Shared VolumeConfigure DNS for a ClusterAccess Services Running on ClustersExtend KubernetesConfigure the Aggregation LayerUse Custom ResourcesExtend the Kubernetes API with CustomResourceDefinitionsVersions in CustomResourceDefinitionsSet up an Extension API ServerConfigure Multiple SchedulersUse an HTTP Proxy to Access the Kubernetes APIUse a SOCKS5 Proxy to Access the Kubernetes APISet up Konnectivity serviceTLSConfigure Certificate Rotation for the KubeletManage TLS Certificates in a ClusterManual Rotation of CA CertificatesManage Cluster DaemonsPerform a Rolling Update on a DaemonSetPerform a Rollback on a DaemonSetRunning Pods on Only Some NodesNetworkingAdding entries to Pod /etc/hosts with HostAliasesExtend Service IP RangesValidate IPv4/IPv6 dual-stackExtend kubectl with pluginsManage HugePagesSchedule GPUsTutorialsHello MinikubeLearn Kubernetes BasicsCreate a ClusterUsing Minikube to Create a ClusterDeploy an AppUsing kubectl to Create a DeploymentExplore Your AppViewing Pods and NodesExpose Your App PubliclyUsing a Service to Expose Your AppScale Your AppRunning Multiple Instances of Your AppUpdate Your AppPerforming a Rolling UpdateConfigurationExample: Configuring a Java MicroserviceExternalizing config using MicroProfile, ConfigMaps and SecretsUpdating Configuration via a ConfigMapConfiguring Redis using a ConfigMapAdopting Sidecar ContainersSecurityApply Pod Security Standards at the Cluster LevelApply Pod Security Standards at the Namespace LevelRestrict a Container's Access to Resources with AppArmorRestrict a Container's Syscalls with seccompStateless ApplicationsExposing an External IP Address to Access an Application in a ClusterExample: Deploying PHP Guestbook application with RedisStateful ApplicationsStatefulSet BasicsExample: Deploying WordPress and MySQL with Persistent VolumesExample: Deploying Cassandra with a StatefulSetRunning ZooKeeper, A Distributed System CoordinatorServicesConnecting Applications with ServicesUsing Source IPExplore Termination Behavior for Pods And Their EndpointsReferenceGlossaryAPI OverviewKubernetes API ConceptsServer-Side ApplyClient LibrariesCommon Expression Language in KubernetesKubernetes Deprecation PolicyDeprecated API Migration GuideKubernetes API health endpointsAPI Access ControlAuthenticatingAuthenticating with Bootstrap TokensAuthorizationUsing RBAC AuthorizationUsing Node AuthorizationWebhook ModeUsing ABAC AuthorizationAdmission ControllersDynamic Admission ControlManaging Service AccountsCertificates and Certificate Signing RequestsMapping PodSecurityPolicies to Pod Security StandardsKubelet authentication/authorizationTLS bootstrappingValidating Admission PolicyWell-Known Labels, Annotations and TaintsAudit AnnotationsKubernetes APIWorkload ResourcesPodBindingPodTemplateReplicationControllerReplicaSetDeploymentStatefulSetControllerRevisionDaemonSetJobCronJobHorizontalPodAutoscalerHorizontalPodAutoscalerPriorityClassPodSchedulingContext v1alpha3ResourceClaim v1alpha3ResourceClaimTemplate v1alpha3ResourceSlice v1alpha3Service ResourcesServiceEndpointsEndpointSliceIngressIngressClassConfig and Storage ResourcesConfigMapSecretCSIDriverCSINodeCSIStorageCapacityPersistentVolumeClaimPersistentVolumeStorageClassStorageVersionMigration v1alpha1VolumeVolumeAttachmentVolumeAttributesClass v1beta1Authentication ResourcesServiceAccountTokenRequestTokenReviewCertificateSigningRequestClusterTrustBundle v1alpha1SelfSubjectReviewAuthorization ResourcesLocalSubjectAccessReviewSelfSubjectAccessReviewSelfSubjectRulesReviewSubjectAccessReviewClusterRoleClusterRoleBindingRoleRoleBindingPolicy ResourcesFlowSchemaLimitRangeResourceQuotaNetworkPolicyPodDisruptionBudgetPriorityLevelConfigurationValidatingAdmissionPolicyValidatingAdmissionPolicyBindingExtend ResourcesCustomResourceDefinitionDeviceClass v1alpha3MutatingWebhookConfigurationValidatingWebhookConfigurationCluster ResourcesAPIServiceComponentStatusEventIPAddress v1beta1LeaseLeaseCandidate v1alpha1NamespaceNodeRuntimeClassServiceCIDR v1beta1Common DefinitionsDeleteOptionsLabelSelectorListMetaLocalObjectReferenceNodeSelectorRequirementObjectFieldSelectorObjectMetaObjectReferencePatchQuantityResourceFieldSelectorStatusTypedLocalObjectReferenceCommon ParametersInstrumentationService Level Indicator MetricsCRI Pod & Container MetricsNode metrics dataKubernetes Metrics ReferenceKubernetes Issues and SecurityKubernetes Issue TrackerKubernetes Security and Disclosure InformationCVE feedNode Reference InformationKubelet Checkpoint APILinux Kernel Version RequirementsArticles on dockershim Removal and on Using CRI-compatible RuntimesNode Labels Populated By The KubeletKubelet Configuration Directory MergingKubelet Device Manager API VersionsNode StatusNetworking ReferenceProtocols for ServicesPorts and ProtocolsVirtual IPs and Service ProxiesSetup toolsKubeadmkubeadm initkubeadm joinkubeadm upgradekubeadm configkubeadm resetkubeadm tokenkubeadm versionkubeadm alphakubeadm certskubeadm init phasekubeadm join phasekubeadm kubeconfigkubeadm reset phasekubeadm upgrade phaseImplementation detailsCommand line tool (kubectl)Introduction to kubectlkubectl Quick Referencekubectl referencekubectlkubectl annotatekubectl api-resourceskubectl api-versionskubectl applykubectl apply edit-last-appliedkubectl apply set-last-appliedkubectl apply view-last-appliedkubectl attachkubectl authkubectl auth can-ikubectl auth reconcilekubectl auth whoamikubectl autoscalekubectl certificatekubectl certificate approvekubectl certificate denykubectl cluster-infokubectl cluster-info dumpkubectl completionkubectl configkubectl config current-contextkubectl config delete-clusterkubectl config delete-contextkubectl config delete-userkubectl config get-clusterskubectl config get-contextskubectl config get-userskubectl config rename-contextkubectl config setkubectl config set-clusterkubectl config set-contextkubectl config set-credentialskubectl config unsetkubectl config use-contextkubectl config viewkubectl cordonkubectl cpkubectl createkubectl create clusterrolekubectl create clusterrolebindingkubectl create configmapkubectl create cronjobkubectl create deploymentkubectl create ingresskubectl create jobkubectl create namespacekubectl create poddisruptionbudgetkubectl create priorityclasskubectl create quotakubectl create rolekubectl create rolebindingkubectl create secretkubectl create secret docker-registrykubectl create secret generickubectl create secret tlskubectl create servicekubectl create service clusteripkubectl create service externalnamekubectl create service loadbalancerkubectl create service nodeportkubectl create serviceaccountkubectl create tokenkubectl debugkubectl deletekubectl describekubectl diffkubectl drainkubectl editkubectl eventskubectl execkubectl explainkubectl exposekubectl getkubectl kustomizekubectl labelkubectl logskubectl optionskubectl patchkubectl pluginkubectl plugin listkubectl port-forwardkubectl proxykubectl replacekubectl rolloutkubectl rollout historykubectl rollout pausekubectl rollout restartkubectl rollout resumekubectl rollout statuskubectl rollout undokubectl runkubectl scalekubectl setkubectl set envkubectl set imagekubectl set resourceskubectl set selectorkubectl set serviceaccountkubectl set subjectkubectl taintkubectl topkubectl top nodekubectl top podkubectl uncordonkubectl versionkubectl waitkubectl CommandskubectlJSONPath Supportkubectl for Docker Userskubectl Usage ConventionsComponent toolsFeature GatesFeature Gates (removed)kubeletkube-apiserverkube-controller-managerkube-proxykube-schedulerDebug clusterFlow controlConfiguration APIsClient Authentication (v1)Client Authentication (v1beta1)Event Rate Limit Configuration (v1alpha1)Image Policy API (v1alpha1)kube-apiserver Admission (v1)kube-apiserver Audit Configuration (v1)kube-apiserver Configuration (v1)kube-apiserver Configuration (v1alpha1)kube-apiserver Configuration (v1beta1)kube-controller-manager Configuration (v1alpha1)kube-proxy Configuration (v1alpha1)kube-scheduler Configuration (v1)kubeadm Configuration (v1beta3)kubeadm Configuration (v1beta4)kubeconfig (v1)Kubelet Configuration (v1)Kubelet Configuration (v1alpha1)Kubelet Configuration (v1beta1)Kubelet CredentialProvider (v1)WebhookAdmission Configuration (v1)External APIsKubernetes Custom Metrics (v1beta2)Kubernetes External Metrics (v1beta1)Kubernetes Metrics (v1beta1)SchedulingScheduler ConfigurationScheduling PoliciesOther ToolsMapping from dockercli to crictlContributeContribute to Kubernetes DocumentationSuggesting content improvementsContributing new contentOpening a pull requestDocumenting for a releaseBlogs and case studiesReviewing changesReviewing pull requestsFor approvers and reviewersLocalizing Kubernetes documentationParticipating in SIG DocsRoles and responsibilitiesIssue WranglersPR wranglersDocumentation style overviewContent guideStyle guideDiagram guideWriting a new topicPage content typesContent organizationCustom Hugo ShortcodesUpdating Reference DocumentationQuickstartContributing to the Upstream Kubernetes CodeGenerating Reference Documentation for the Kubernetes APIGenerating Reference Documentation for kubectl CommandsGenerating Reference Documentation for MetricsGenerating Reference Pages for Kubernetes Components and ToolsAdvanced contributingViewing Site AnalyticsDocs smoke test pageKubernetes DocumentationGetting startedProduction environmentInstalling Kubernetes with deployment toolsBootstrapping clusters with kubeadmTroubleshooting kubeadmTroubleshooting kubeadmAs with any program, you might run into an error installing or running kubeadm.
-This page lists some common failure scenarios and have provided steps that can help you understand and fix the problem.If your problem is not listed below, please follow the following steps:If you think your problem is a bug with kubeadm:Go togithub.com/kubernetes/kubeadmand search for existing issues.If no issue exists, pleaseopen oneand follow the issue template.If you are unsure about how kubeadm works, you can ask onSlackin#kubeadm,
-or open a question onStackOverflow. Please include
-relevant tags like#kubernetesand#kubeadmso folks can help you.Not possible to join a v1.18 Node to a v1.17 cluster due to missing RBACIn v1.18 kubeadm added prevention for joining a Node in the cluster if a Node with the same name already exists.
-This required adding RBAC for the bootstrap-token user to be able to GET a Node object.However this causes an issue wherekubeadm joinfrom v1.18 cannot join a cluster created by kubeadm v1.17.To workaround the issue you have two options:Executekubeadm init phase bootstrap-tokenon a control-plane node using kubeadm v1.18.
-Note that this enables the rest of the bootstrap-token permissions as well.orApply the following RBAC manually usingkubectl apply -f ...:apiVersion:rbac.authorization.k8s.io/v1kind:ClusterRolemetadata:name:kubeadm:get-nodesrules:-apiGroups:-""resources:- nodesverbs:- get---apiVersion:rbac.authorization.k8s.io/v1kind:ClusterRoleBindingmetadata:name:kubeadm:get-nodesroleRef:apiGroup:rbac.authorization.k8s.iokind:ClusterRolename:kubeadm:get-nodessubjects:-apiGroup:rbac.authorization.k8s.iokind:Groupname:system:bootstrappers:kubeadm:default-node-tokenebtablesor some similar executable not found during installationIf you see the following warnings while runningkubeadm init[preflight] WARNING: ebtables not found in system path[preflight] WARNING: ethtool not found in system pathThen you may be missingebtables,ethtoolor a similar executable on your node.
-You can install them with the following commands:For Ubuntu/Debian users, runapt install ebtables ethtool.For CentOS/Fedora users, runyum install ebtables ethtool.kubeadm blocks waiting for control plane during installationIf you notice thatkubeadm inithangs after printing out the following line:[apiclient] Created API client, waiting for the control plane to become readyThis may be caused by a number of problems. The most common are:network connection problems. Check that your machine has full network connectivity before continuing.the cgroup driver of the container runtime differs from that of the kubelet. To understand how to
-configure it properly, seeConfiguring a cgroup driver.control plane containers are crashlooping or hanging. You can check this by runningdocker psand investigating each container by runningdocker logs. For other container runtime, seeDebugging Kubernetes nodes with crictl.kubeadm blocks when removing managed containersThe following could happen if the container runtime halts and does not remove
-any Kubernetes-managed containers:sudo kubeadm reset[preflight] Running pre-flight checks[reset] Stopping the kubelet service[reset] Unmounting mounted directories in "/var/lib/kubelet"[reset] Removing kubernetes-managed containers(block)A possible solution is to restart the container runtime and then re-runkubeadm reset.
-You can also usecrictlto debug the state of the container runtime. SeeDebugging Kubernetes nodes with crictl.Pods inRunContainerError,CrashLoopBackOfforErrorstateRight afterkubeadm initthere should not be any pods in these states.If there are pods in one of these statesright afterkubeadm init, please open an
-issue in the kubeadm repo.coredns(orkube-dns) should be in thePendingstate
-until you have deployed the network add-on.If you see Pods in theRunContainerError,CrashLoopBackOfforErrorstate
-after deploying the network add-on and nothing happens tocoredns(orkube-dns),
-it's very likely that the Pod Network add-on that you installed is somehow broken.
-You might have to grant it more RBAC privileges or use a newer version. Please file
-an issue in the Pod Network providers' issue tracker and get the issue triaged there.corednsis stuck in thePendingstateThis isexpectedand part of the design. kubeadm is network provider-agnostic, so the admin
-shouldinstall the pod network add-onof choice. You have to install a Pod Network
-before CoreDNS may be deployed fully. Hence thePendingstate before the network is set up.HostPortservices do not workTheHostPortandHostIPfunctionality is available depending on your Pod Network
-provider. Please contact the author of the Pod Network add-on to find out whetherHostPortandHostIPfunctionality are available.Calico, Canal, and Flannel CNI providers are verified to support HostPort.For more information, see theCNI portmap documentation.If your network provider does not support the portmap CNI plugin, you may need to use theNodePort feature of servicesor useHostNetwork=true.Pods are not accessible via their Service IPMany network add-ons do not yet enablehairpin modewhich allows pods to access themselves via their Service IP. This is an issue related toCNI. Please contact the network
-add-on provider to get the latest status of their support for hairpin mode.If you are using VirtualBox (directly or via Vagrant), you will need to
-ensure thathostname -ireturns a routable IP address. By default, the first
-interface is connected to a non-routable host-only network. A work around
-is to modify/etc/hosts, see thisVagrantfilefor an example.TLS certificate errorsThe following error indicates a possible certificate mismatch.# kubectl get pods
-Unable to connect to the server: x509: certificate signed by unknown authority (possibly because of "crypto/rsa: verification error" while trying to verify candidate authority certificate "kubernetes")Verify that the$HOME/.kube/configfile contains a valid certificate, and
-regenerate a certificate if necessary. The certificates in a kubeconfig file
-are base64 encoded. Thebase64 --decodecommand can be used to decode the certificate
-andopenssl x509 -text -nooutcan be used for viewing the certificate information.Unset theKUBECONFIGenvironment variable using:unsetKUBECONFIGOr set it to the defaultKUBECONFIGlocation:exportKUBECONFIG=/etc/kubernetes/admin.confAnother workaround is to overwrite the existingkubeconfigfor the "admin" user:mv$HOME/.kube$HOME/.kube.bakmkdir$HOME/.kubesudo cp -i /etc/kubernetes/admin.conf$HOME/.kube/configsudo chown$(id -u):$(id -g)$HOME/.kube/configKubelet client certificate rotation failsBy default, kubeadm configures a kubelet with automatic rotation of client certificates by using the/var/lib/kubelet/pki/kubelet-client-current.pemsymlink specified in/etc/kubernetes/kubelet.conf.
-If this rotation process fails you might see errors such asx509: certificate has expired or is not yet validin kube-apiserver logs. To fix the issue you must follow these steps:Backup and delete/etc/kubernetes/kubelet.confand/var/lib/kubelet/pki/kubelet-client*from the failed node.From a working control plane node in the cluster that has/etc/kubernetes/pki/ca.keyexecutekubeadm kubeconfig user --org system:nodes --client-name system:node:$NODE > kubelet.conf.$NODEmust be set to the name of the existing failed node in the cluster.
-Modify the resultedkubelet.confmanually to adjust the cluster name and server endpoint,
-or passkubeconfig user --config(seeGenerating kubeconfig files for additional users). If your cluster does not have
-theca.keyyou must sign the embedded certificates in thekubelet.confexternally.Copy this resultedkubelet.confto/etc/kubernetes/kubelet.confon the failed node.Restart the kubelet (systemctl restart kubelet) on the failed node and wait for/var/lib/kubelet/pki/kubelet-client-current.pemto be recreated.Manually edit thekubelet.confto point to the rotated kubelet client certificates, by replacingclient-certificate-dataandclient-key-datawith:client-certificate:/var/lib/kubelet/pki/kubelet-client-current.pemclient-key:/var/lib/kubelet/pki/kubelet-client-current.pemRestart the kubelet.Make sure the node becomesReady.Default NIC When using flannel as the pod network in VagrantThe following error might indicate that something was wrong in the pod network:Error from server(NotFound): the server could not find the requested resourceIf you're using flannel as the pod network inside Vagrant, then you will have to
-specify the default interface name for flannel.Vagrant typically assigns two interfaces to all VMs. The first, for which all hosts
-are assigned the IP address10.0.2.15, is for external traffic that gets NATed.This may lead to problems with flannel, which defaults to the first interface on a host.
-This leads to all hosts thinking they have the same public IP address. To prevent this,
-pass the--iface eth1flag to flannel so that the second interface is chosen.Non-public IP used for containersIn some situationskubectl logsandkubectl runcommands may return with the
-following errors in an otherwise functional cluster:Error from server: Get https://10.19.0.41:10250/containerLogs/default/mysql-ddc65b868-glc5m/mysql: dial tcp 10.19.0.41:10250: getsockopt: no route to hostThis may be due to Kubernetes using an IP that can not communicate with other IPs on
-the seemingly same subnet, possibly by policy of the machine provider.DigitalOcean assigns a public IP toeth0as well as a private one to be used internally
-as anchor for their floating IP feature, yetkubeletwill pick the latter as the node'sInternalIPinstead of the public one.Useip addr showto check for this scenario instead ofifconfigbecauseifconfigwill
-not display the offending alias IP address. Alternatively an API endpoint specific to
-DigitalOcean allows to query for the anchor IP from the droplet:curl http://169.254.169.254/metadata/v1/interfaces/public/0/anchor_ipv4/addressThe workaround is to tellkubeletwhich IP to use using--node-ip.
-When using DigitalOcean, it can be the public one (assigned toeth0) or
-the private one (assigned toeth1) should you want to use the optional
-private network. ThekubeletExtraArgssection of the kubeadmNodeRegistrationOptionsstructurecan be used for this.Then restartkubelet:systemctl daemon-reloadsystemctl restart kubeletcorednspods haveCrashLoopBackOfforErrorstateIf you have nodes that are running SELinux with an older version of Docker, you might experience a scenario
-where thecorednspods are not starting. To solve that, you can try one of the following options:Upgrade to anewer version of Docker.Disable SELinux.Modify thecorednsdeployment to setallowPrivilegeEscalationtotrue:kubectl -n kube-system get deployment coredns -o yaml |\sed's/allowPrivilegeEscalation: false/allowPrivilegeEscalation: true/g'|\kubectl apply -f -Another cause for CoreDNS to haveCrashLoopBackOffis when a CoreDNS Pod deployed in Kubernetes detects a loop.A number of workaroundsare available to avoid Kubernetes trying to restart the CoreDNS Pod every time CoreDNS detects the loop and exits.Warning:Disabling SELinux or settingallowPrivilegeEscalationtotruecan compromise
-the security of your cluster.etcd pods restart continuallyIf you encounter the following error:rpc error: code = 2 desc = oci runtime error: exec failed: container_linux.go:247: starting container process caused "process_linux.go:110: decoding init error from pipe caused \"read parent: connection reset by peer\""This issue appears if you run CentOS 7 with Docker 1.13.1.84.
-This version of Docker can prevent the kubelet from executing into the etcd container.To work around the issue, choose one of these options:Roll back to an earlier version of Docker, such as 1.13.1-75yum downgrade docker-1.13.1-75.git8633870.el7.centos.x86_64 docker-client-1.13.1-75.git8633870.el7.centos.x86_64 docker-common-1.13.1-75.git8633870.el7.centos.x86_64Install one of the more recent recommended versions, such as 18.06:sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repoyum install docker-ce-18.06.1.ce-3.el7.x86_64Not possible to pass a comma separated list of values to arguments inside a--component-extra-argsflagkubeadm initflags such as--component-extra-argsallow you to pass custom arguments to a control-plane
-component like the kube-apiserver. However, this mechanism is limited due to the underlying type used for parsing
-the values (mapStringString).If you decide to pass an argument that supports multiple, comma-separated values such as--apiserver-extra-args "enable-admission-plugins=LimitRanger,NamespaceExists"this flag will fail withflag: malformed pair, expect string=string. This happens because the list of arguments for--apiserver-extra-argsexpectskey=valuepairs and in this caseNamespacesExistsis considered
-as a key that is missing a value.Alternatively, you can try separating thekey=valuepairs like so:--apiserver-extra-args "enable-admission-plugins=LimitRanger,enable-admission-plugins=NamespaceExists"but this will result in the keyenable-admission-pluginsonly having the value ofNamespaceExists.A known workaround is to use the kubeadmconfiguration file.kube-proxy scheduled before node is initialized by cloud-controller-managerIn cloud provider scenarios, kube-proxy can end up being scheduled on new worker nodes before
-the cloud-controller-manager has initialized the node addresses. This causes kube-proxy to fail
-to pick up the node's IP address properly and has knock-on effects to the proxy function managing
-load balancers.The following error can be seen in kube-proxy Pods:server.go:610] Failed to retrieve node IP: host IP unknown; known addresses: []
-proxier.go:340] invalid nodeIP, initializing kube-proxy with 127.0.0.1 as nodeIPA known solution is to patch the kube-proxy DaemonSet to allow scheduling it on control-plane
-nodes regardless of their conditions, keeping it off of other nodes until their initial guarding
-conditions abate:kubectl -n kube-system patch ds kube-proxy -p='{
-  "spec": {
-    "template": {
-      "spec": {
-        "tolerations": [
-          {
-            "key": "CriticalAddonsOnly",
-            "operator": "Exists"
-          },
-          {
-            "effect": "NoSchedule",
-            "key": "node-role.kubernetes.io/control-plane"
-          }
-        ]
-      }
-    }
-  }
-}'The tracking issue for this problem ishere./usris mounted read-only on nodesOn Linux distributions such as Fedora CoreOS or Flatcar Container Linux, the directory/usris mounted as a read-only filesystem.
-Forflex-volume support,
-Kubernetes components like the kubelet and kube-controller-manager use the default path of/usr/libexec/kubernetes/kubelet-plugins/volume/exec/, yet the flex-volume directorymust be writeablefor the feature to work.Note:FlexVolume was deprecated in the Kubernetes v1.23 release.To workaround this issue, you can configure the flex-volume directory using the kubeadmconfiguration file.On the primary control-plane Node (created usingkubeadm init), pass the following
-file using--config:apiVersion:kubeadm.k8s.io/v1beta4kind:InitConfigurationnodeRegistration:kubeletExtraArgs:-name:"volume-plugin-dir"value:"/opt/libexec/kubernetes/kubelet-plugins/volume/exec/"---apiVersion:kubeadm.k8s.io/v1beta4kind:ClusterConfigurationcontrollerManager:extraArgs:-name:"flex-volume-plugin-dir"value:"/opt/libexec/kubernetes/kubelet-plugins/volume/exec/"On joining Nodes:apiVersion:kubeadm.k8s.io/v1beta4kind:JoinConfigurationnodeRegistration:kubeletExtraArgs:-name:"volume-plugin-dir"value:"/opt/libexec/kubernetes/kubelet-plugins/volume/exec/"Alternatively, you can modify/etc/fstabto make the/usrmount writeable, but please
-be advised that this is modifying a design principle of the Linux distribution.kubeadm upgrade planprints outcontext deadline exceedederror messageThis error message is shown when upgrading a Kubernetes cluster withkubeadmin
-the case of running an external etcd. This is not a critical bug and happens because
-older versions of kubeadm perform a version check on the external etcd cluster.
-You can proceed withkubeadm upgrade apply ....This issue is fixed as of version 1.19.kubeadm resetunmounts/var/lib/kubeletIf/var/lib/kubeletis being mounted, performing akubeadm resetwill effectively unmount it.To workaround the issue, re-mount the/var/lib/kubeletdirectory after performing thekubeadm resetoperation.This is a regression introduced in kubeadm 1.15. The issue is fixed in 1.20.Cannot use the metrics-server securely in a kubeadm clusterIn a kubeadm cluster, themetrics-servercan be used insecurely by passing the--kubelet-insecure-tlsto it. This is not recommended for production clusters.If you want to use TLS between the metrics-server and the kubelet there is a problem,
-since kubeadm deploys a self-signed serving certificate for the kubelet. This can cause the following errors
-on the side of the metrics-server:x509: certificate signed by unknown authority
-x509: certificate is valid for IP-foo not IP-barSeeEnabling signed kubelet serving certificatesto understand how to configure the kubelets in a kubeadm cluster to have properly signed serving certificates.Also seeHow to run the metrics-server securely.Upgrade fails due to etcd hash not changingOnly applicable to upgrading a control plane node with a kubeadm binary v1.28.3 or later,
-where the node is currently managed by kubeadm versions v1.28.0, v1.28.1 or v1.28.2.Here is the error message you may encounter:[upgrade/etcd] Failed to upgrade etcd: couldn't upgrade control plane. kubeadm has tried to recover everything into the earlier state. Errors faced: static Pod hash for component etcd on Node kinder-upgrade-control-plane-1 did not change after 5m0s: timed out waiting for the condition
-[upgrade/etcd] Waiting for previous etcd to become available
-I0907 10:10:09.109104    3704 etcd.go:588] [etcd] attempting to see if all cluster endpoints ([https://172.17.0.6:2379/ https://172.17.0.4:2379/ https://172.17.0.3:2379/]) are available 1/10
-[upgrade/etcd] Etcd was rolled back and is now available
-static Pod hash for component etcd on Node kinder-upgrade-control-plane-1 did not change after 5m0s: timed out waiting for the condition
-couldn't upgrade control plane. kubeadm has tried to recover everything into the earlier state. Errors faced
-k8s.io/kubernetes/cmd/kubeadm/app/phases/upgrade.rollbackOldManifests
-	cmd/kubeadm/app/phases/upgrade/staticpods.go:525
-k8s.io/kubernetes/cmd/kubeadm/app/phases/upgrade.upgradeComponent
-	cmd/kubeadm/app/phases/upgrade/staticpods.go:254
-k8s.io/kubernetes/cmd/kubeadm/app/phases/upgrade.performEtcdStaticPodUpgrade
-	cmd/kubeadm/app/phases/upgrade/staticpods.go:338
-...The reason for this failure is that the affected versions generate an etcd manifest file with
-unwanted defaults in the PodSpec. This will result in a diff from the manifest comparison,
-and kubeadm will expect a change in the Pod hash, but the kubelet will never update the hash.There are two way to workaround this issue if you see it in your cluster:The etcd upgrade can be skipped between the affected versions and v1.28.3 (or later) by using:kubeadm upgrade{apply|node}[version]--etcd-upgrade=falseThis is not recommended in case a new etcd version was introduced by a later v1.28 patch version.Before upgrade, patch the manifest for the etcd static pod, to remove the problematic defaulted attributes:diff --git a/etc/kubernetes/manifests/etcd_defaults.yaml b/etc/kubernetes/manifests/etcd_origin.yamlindex d807ccbe0aa..46b35f00e15 100644--- a/etc/kubernetes/manifests/etcd_defaults.yaml+++ b/etc/kubernetes/manifests/etcd_origin.yaml@@ -43,7 +43,6 @@ spec:scheme: HTTPinitialDelaySeconds: 10periodSeconds: 10-      successThreshold: 1timeoutSeconds: 15name: etcdresources:@@ -59,26 +58,18 @@ spec:scheme: HTTPinitialDelaySeconds: 10periodSeconds: 10-      successThreshold: 1timeoutSeconds: 15-    terminationMessagePath: /dev/termination-log-    terminationMessagePolicy: FilevolumeMounts:- mountPath: /var/lib/etcdname: etcd-data- mountPath: /etc/kubernetes/pki/etcdname: etcd-certs-  dnsPolicy: ClusterFirst-  enableServiceLinks: truehostNetwork: truepriority: 2000001000priorityClassName: system-node-critical-  restartPolicy: Always-  schedulerName: default-schedulersecurityContext:seccompProfile:type: RuntimeDefault-  terminationGracePeriodSeconds: 30volumes:- hostPath:path: /etc/kubernetes/pki/etcdMore information can be found in thetracking issuefor this bug.FeedbackWas this page helpful?YesNoThanks for the feedback. If you have a specific, answerable question about how to use Kubernetes, ask it onStack Overflow.
-Open an issue in theGitHub Repositoryif you want toreport a problemorsuggest an improvement.Last modified July 05, 2024 at 4:06 PM PST:kubeadm: use v1beta4 in all docs examples (efc1133fa4)Edit this pageCreate child pageCreate documentation issuePrint entire sectionNot possible to join a v1.18 Node to a v1.17 cluster due to missing RBACebtablesor some similar executable not found during installationkubeadm blocks waiting for control plane during installationkubeadm blocks when removing managed containersPods inRunContainerError,CrashLoopBackOfforErrorstatecorednsis stuck in thePendingstateHostPortservices do not workPods are not accessible via their Service IPTLS certificate errorsKubelet client certificate rotation failsDefault NIC When using flannel as the pod network in VagrantNon-public IP used for containerscorednspods haveCrashLoopBackOfforErrorstateetcd pods restart continuallyNot possible to pass a comma separated list of values to arguments inside a--component-extra-argsflagkube-proxy scheduled before node is initialized by cloud-controller-manager/usris mounted read-only on nodeskubeadm upgrade planprints outcontext deadline exceedederror messagekubeadm resetunmounts/var/lib/kubeletCannot use the metrics-server securely in a kubeadm clusterUpgrade fails due to etcd hash not changingDocumentationBlogTrainingPartnersCommunityCase Studies© 2024 The Kubernetes Authors | Documentation Distributed underCC BY 4.0Copyright © 2024 The Linux Foundation ®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see ourTrademark Usage pageICP license: 京ICP备17074266号-3
+HorizontalPodAutoscaler Walkthrough
+A [HorizontalPodAutoscaler](/docs/tasks/run-application/horizontal-pod-autoscale/)
+(HPA for short)
+automatically updates a workload resource (such as
+a [Deployment](/docs/concepts/workloads/controllers/deployment/) or
+[StatefulSet](/docs/concepts/workloads/controllers/statefulset/)), with the
+aim of automatically scaling the workload to match demand.
+Horizontal scaling means that the response to increased load is to deploy more
+[Pods](/docs/concepts/workloads/pods/).
+This is different from vertical scaling, which for Kubernetes would mean
+assigning more resources (for example: memory or CPU) to the Pods that are already
+running for the workload.
+If the load decreases, and the number of Pods is above the configured minimum, the HorizontalPodAutoscaler instructs the workload resource (the Deployment, StatefulSet, or other similar resource) to scale back down.
+This document walks you through an example of enabling HorizontalPodAutoscaler to automatically manage scale for an example web app. This example workload is Apache httpd running some PHP code.
+Before you begin
+You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. It is recommended to run this tutorial on a cluster with at least two nodes that are not acting as control plane hosts. If you do not already have a
+cluster, you can create one by using
+[minikube](https://minikube.sigs.k8s.io/docs/tutorials/multi_node/)
+or you can use one of these Kubernetes playgrounds:
+kubectl version
+.
+If you're running an older
+release of Kubernetes, refer to the version of the documentation for that release (see
+[available documentation versions](/docs/home/supported-doc-versions/)).
+To follow this walkthrough, you also need to use a cluster that has a
+[Metrics Server](https://github.com/kubernetes-sigs/metrics-server#readme) deployed and configured.
+The Kubernetes Metrics Server collects resource metrics from
+the [kubelets](/docs/reference/generated/kubelet) in your cluster, and exposes those metrics
+through the [Kubernetes API](/docs/concepts/overview/kubernetes-api/),
+using an [APIService](/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/) to add
+new kinds of resource that represent metric readings.
+To learn how to deploy the Metrics Server, see the
+[metrics-server documentation](https://github.com/kubernetes-sigs/metrics-server#deployment).
+If you are running [Minikube](/docs/setup/learning-environment/minikube/), run the following command to enable metrics-server:
+minikube addons enable metrics-server
+Run and expose php-apache server
+To demonstrate a HorizontalPodAutoscaler, you will first start a Deployment that runs a container using the
+hpa-example
+image, and expose it as a [Service](/docs/concepts/services-networking/service/)
+using the following manifest:
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+name: php-apache
+spec:
+selector:
+matchLabels:
+run: php-apache
+template:
+metadata:
+labels:
+run: php-apache
+spec:
+containers:
+- name: php-apache
+image: registry.k8s.io/hpa-example
+ports:
+- containerPort: 80
+resources:
+limits:
+cpu: 500m
+requests:
+cpu: 200m
+---
+apiVersion: v1
+kind: Service
+metadata:
+name: php-apache
+labels:
+run: php-apache
+spec:
+ports:
+- port: 80
+selector:
+run: php-apache
+To do so, run the following command:
+kubectl apply -f https://k8s.io/examples/application/php-apache.yaml
+deployment.apps/php-apache created
+service/php-apache created
+Create the HorizontalPodAutoscaler
+Now that the server is running, create the autoscaler using kubectl
+. The
+[ kubectl autoscale](/docs/reference/generated/kubectl/kubectl-commands#autoscale) subcommand,
+part of
+kubectl
+, helps you do this.You will shortly run a command that creates a HorizontalPodAutoscaler that maintains between 1 and 10 replicas of the Pods controlled by the php-apache Deployment that you created in the first step of these instructions.
+Roughly speaking, the HPA [controller](/docs/concepts/architecture/controller/) will increase and decrease
+the number of replicas (by updating the Deployment) to maintain an average CPU utilization across all Pods of 50%.
+The Deployment then updates the ReplicaSet - this is part of how all Deployments work in Kubernetes -
+and then the ReplicaSet either adds or removes Pods based on the change to its .spec
+.
+Since each pod requests 200 milli-cores by kubectl run
+, this means an average CPU usage of 100 milli-cores.
+See [Algorithm details](/docs/tasks/run-application/horizontal-pod-autoscale/#algorithm-details) for more details
+on the algorithm.
+Create the HorizontalPodAutoscaler:
+kubectl autoscale deployment php-apache --cpu-percent=50 --min=1 --max=10
+horizontalpodautoscaler.autoscaling/php-apache autoscaled
+You can check the current status of the newly-made HorizontalPodAutoscaler, by running:
+# You can use "hpa" or "horizontalpodautoscaler"; either name works OK.
+kubectl get hpa
+The output is similar to:
+NAME REFERENCE TARGET MINPODS MAXPODS REPLICAS AGE
+php-apache Deployment/php-apache/scale 0% / 50% 1 10 1 18s
+(if you see other HorizontalPodAutoscalers with different names, that means they already existed, and isn't usually a problem).
+Please note that the current CPU consumption is 0% as there are no clients sending requests to the server
+(the TARGET
+column shows the average across all the Pods controlled by the corresponding deployment).
+Increase the load
+Next, see how the autoscaler reacts to increased load. To do this, you'll start a different Pod to act as a client. The container within the client Pod runs in an infinite loop, sending queries to the php-apache service.
+# Run this in a separate terminal
+# so that the load generation continues and you can carry on with the rest of the steps
+kubectl run -i --tty load-generator --rm --image=busybox:1.28 --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://php-apache; done"
+Now run:
+# type Ctrl+C to end the watch when you're ready
+kubectl get hpa php-apache --watch
+Within a minute or so, you should see the higher CPU load; for example:
+NAME REFERENCE TARGET MINPODS MAXPODS REPLICAS AGE
+php-apache Deployment/php-apache/scale 305% / 50% 1 10 1 3m
+and then, more replicas. For example:
+NAME REFERENCE TARGET MINPODS MAXPODS REPLICAS AGE
+php-apache Deployment/php-apache/scale 305% / 50% 1 10 7 3m
+Here, CPU consumption has increased to 305% of the request. As a result, the Deployment was resized to 7 replicas:
+kubectl get deployment php-apache
+You should see the replica count matching the figure from the HorizontalPodAutoscaler
+NAME READY UP-TO-DATE AVAILABLE AGE
+php-apache 7/7 7 7 19m
+Note:
+It may take a few minutes to stabilize the number of replicas. Since the amount of load is not controlled in any way it may happen that the final number of replicas will differ from this example.Stop generating load
+To finish the example, stop sending the load.
+In the terminal where you created the Pod that runs a busybox
+image, terminate
+the load generation by typing <Ctrl> + C
+.
+Then verify the result state (after a minute or so):
+# type Ctrl+C to end the watch when you're ready
+kubectl get hpa php-apache --watch
+The output is similar to:
+NAME REFERENCE TARGET MINPODS MAXPODS REPLICAS AGE
+php-apache Deployment/php-apache/scale 0% / 50% 1 10 1 11m
+and the Deployment also shows that it has scaled down:
+kubectl get deployment php-apache
+NAME READY UP-TO-DATE AVAILABLE AGE
+php-apache 1/1 1 1 27m
+Once CPU utilization dropped to 0, the HPA automatically scaled the number of replicas back down to 1.
+Autoscaling the replicas may take a few minutes.
+Autoscaling on multiple metrics and custom metrics
+You can introduce additional metrics to use when autoscaling the php-apache
+Deployment
+by making use of the autoscaling/v2
+API version.
+First, get the YAML of your HorizontalPodAutoscaler in the autoscaling/v2
+form:
+kubectl get hpa php-apache -o yaml > /tmp/hpa-v2.yaml
+Open the /tmp/hpa-v2.yaml
+file in an editor, and you should see YAML which looks like this:
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+name: php-apache
+spec:
+scaleTargetRef:
+apiVersion: apps/v1
+kind: Deployment
+name: php-apache
+minReplicas: 1
+maxReplicas: 10
+metrics:
+- type: Resource
+resource:
+name: cpu
+target:
+type: Utilization
+averageUtilization: 50
+status:
+observedGeneration: 1
+lastScaleTime: <some-time>
+currentReplicas: 1
+desiredReplicas: 1
+currentMetrics:
+- type: Resource
+resource:
+name: cpu
+current:
+averageUtilization: 0
+averageValue: 0
+Notice that the targetCPUUtilizationPercentage
+field has been replaced with an array called metrics
+.
+The CPU utilization metric is a resource metric, since it is represented as a percentage of a resource
+specified on pod containers. Notice that you can specify other resource metrics besides CPU. By default,
+the only other supported resource metric is memory
+. These resources do not change names from cluster
+to cluster, and should always be available, as long as the metrics.k8s.io
+API is available.
+You can also specify resource metrics in terms of direct values, instead of as percentages of the
+requested value, by using a target.type
+of AverageValue
+instead of Utilization
+, and
+setting the corresponding target.averageValue
+field instead of the target.averageUtilization
+.
+metrics:
+- type: Resource
+resource:
+name: memory
+target:
+type: AverageValue
+averageValue: 500Mi
+There are two other types of metrics, both of which are considered custom metrics: pod metrics and object metrics. These metrics may have names which are cluster specific, and require a more advanced cluster monitoring setup.
+The first of these alternative metric types is pod metrics. These metrics describe Pods, and
+are averaged together across Pods and compared with a target value to determine the replica count.
+They work much like resource metrics, except that they only support a target
+type of AverageValue
+.
+Pod metrics are specified using a metric block like this:
+type: Pods
+pods:
+metric:
+name: packets-per-second
+target:
+type: AverageValue
+averageValue: 1k
+The second alternative metric type is object metrics. These metrics describe a different
+object in the same namespace, instead of describing Pods. The metrics are not necessarily
+fetched from the object; they only describe it. Object metrics support target
+types of
+both Value
+and AverageValue
+. With Value
+, the target is compared directly to the returned
+metric from the API. With AverageValue
+, the value returned from the custom metrics API is divided
+by the number of Pods before being compared to the target. The following example is the YAML
+representation of the requests-per-second
+metric.
+type: Object
+object:
+metric:
+name: requests-per-second
+describedObject:
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+name: main-route
+target:
+type: Value
+value: 2k
+If you provide multiple such metric blocks, the HorizontalPodAutoscaler will consider each metric in turn. The HorizontalPodAutoscaler will calculate proposed replica counts for each metric, and then choose the one with the highest replica count.
+For example, if you had your monitoring system collecting metrics about network traffic,
+you could update the definition above using kubectl edit
+to look like this:
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+name: php-apache
+spec:
+scaleTargetRef:
+apiVersion: apps/v1
+kind: Deployment
+name: php-apache
+minReplicas: 1
+maxReplicas: 10
+metrics:
+- type: Resource
+resource:
+name: cpu
+target:
+type: Utilization
+averageUtilization: 50
+- type: Pods
+pods:
+metric:
+name: packets-per-second
+target:
+type: AverageValue
+averageValue: 1k
+- type: Object
+object:
+metric:
+name: requests-per-second
+describedObject:
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+name: main-route
+target:
+type: Value
+value: 10k
+status:
+observedGeneration: 1
+lastScaleTime: <some-time>
+currentReplicas: 1
+desiredReplicas: 1
+currentMetrics:
+- type: Resource
+resource:
+name: cpu
+current:
+averageUtilization: 0
+averageValue: 0
+- type: Object
+object:
+metric:
+name: requests-per-second
+describedObject:
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+name: main-route
+current:
+value: 10k
+Then, your HorizontalPodAutoscaler would attempt to ensure that each pod was consuming roughly 50% of its requested CPU, serving 1000 packets per second, and that all pods behind the main-route Ingress were serving a total of 10000 requests per second.
+Autoscaling on more specific metrics
+Many metrics pipelines allow you to describe metrics either by name or by a set of additional
+descriptors called labels. For all non-resource metric types (pod, object, and external,
+described below), you can specify an additional label selector which is passed to your metric
+pipeline. For instance, if you collect a metric http_requests
+with the verb
+label, you can specify the following metric block to scale only on GET requests:
+type: Object
+object:
+metric:
+name: http_requests
+selector: {matchLabels: {verb: GET}}
+This selector uses the same syntax as the full Kubernetes label selectors. The monitoring pipeline
+determines how to collapse multiple series into a single value, if the name and selector
+match multiple series. The selector is additive, and cannot select metrics
+that describe objects that are not the target object (the target pods in the case of the Pods
+type, and the described object in the case of the Object
+type).
+Autoscaling on metrics not related to Kubernetes objects
+Applications running on Kubernetes may need to autoscale based on metrics that don't have an obvious relationship to any object in the Kubernetes cluster, such as metrics describing a hosted service with no direct correlation to Kubernetes namespaces. In Kubernetes 1.10 and later, you can address this use case with external metrics.
+Using external metrics requires knowledge of your monitoring system; the setup is
+similar to that required when using custom metrics. External metrics allow you to autoscale your cluster
+based on any metric available in your monitoring system. Provide a metric
+block with a
+name
+and selector
+, as above, and use the External
+metric type instead of Object
+.
+If multiple time series are matched by the metricSelector
+,
+the sum of their values is used by the HorizontalPodAutoscaler.
+External metrics support both the Value
+and AverageValue
+target types, which function exactly the same
+as when you use the Object
+type.
+For example if your application processes tasks from a hosted queue service, you could add the following section to your HorizontalPodAutoscaler manifest to specify that you need one worker per 30 outstanding tasks.
+- type: External
+external:
+metric:
+name: queue_messages_ready
+selector:
+matchLabels:
+queue: "worker_tasks"
+target:
+type: AverageValue
+averageValue: 30
+When possible, it's preferable to use the custom metric target types instead of external metrics, since it's easier for cluster administrators to secure the custom metrics API. The external metrics API potentially allows access to any metric, so cluster administrators should take care when exposing it.
+Appendix: Horizontal Pod Autoscaler Status Conditions
+When using the autoscaling/v2
+form of the HorizontalPodAutoscaler, you will be able to see
+status conditions set by Kubernetes on the HorizontalPodAutoscaler. These status conditions indicate
+whether or not the HorizontalPodAutoscaler is able to scale, and whether or not it is currently restricted
+in any way.
+The conditions appear in the status.conditions
+field. To see the conditions affecting a HorizontalPodAutoscaler,
+we can use kubectl describe hpa
+:
+kubectl describe hpa cm-test
+Name: cm-test
+Namespace: prom
+Labels: <none>
+Annotations: <none>
+CreationTimestamp: Fri, 16 Jun 2017 18:09:22 +0000
+Reference: ReplicationController/cm-test
+Metrics: ( current / target )
+"http_requests" on pods: 66m / 500m
+Min replicas: 1
+Max replicas: 4
+ReplicationController pods: 1 current / 1 desired
+Conditions:
+Type Status Reason Message
+---- ------ ------ -------
+AbleToScale True ReadyForNewScale the last scale time was sufficiently old as to warrant a new scale
+ScalingActive True ValidMetricFound the HPA was able to successfully calculate a replica count from pods metric http_requests
+ScalingLimited False DesiredWithinRange the desired replica count is within the acceptable range
+Events:
+For this HorizontalPodAutoscaler, you can see several conditions in a healthy state. The first,
+AbleToScale
+, indicates whether or not the HPA is able to fetch and update scales, as well as
+whether or not any backoff-related conditions would prevent scaling. The second, ScalingActive
+,
+indicates whether or not the HPA is enabled (i.e. the replica count of the target is not zero) and
+is able to calculate desired scales. When it is False
+, it generally indicates problems with
+fetching metrics. Finally, the last condition, ScalingLimited
+, indicates that the desired scale
+was capped by the maximum or minimum of the HorizontalPodAutoscaler. This is an indication that
+you may wish to raise or lower the minimum or maximum replica count constraints on your
+HorizontalPodAutoscaler.
+Quantities
+All metrics in the HorizontalPodAutoscaler and metrics APIs are specified using
+a special whole-number notation known in Kubernetes as a
+[quantity](/docs/reference/glossary/?all=true#term-quantity). For example,
+the quantity 10500m
+would be written as 10.5
+in decimal notation. The metrics APIs
+will return whole numbers without a suffix when possible, and will generally return
+quantities in milli-units otherwise. This means you might see your metric value fluctuate
+between 1
+and 1500m
+, or 1
+and 1.5
+when written in decimal notation.
+Other possible scenarios
+Creating the autoscaler declaratively
+Instead of using kubectl autoscale
+command to create a HorizontalPodAutoscaler imperatively we
+can use the following manifest to create it declaratively:
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+name: php-apache
+spec:
+scaleTargetRef:
+apiVersion: apps/v1
+kind: Deployment
+name: php-apache
+minReplicas: 1
+maxReplicas: 10
+metrics:
+- type: Resource
+resource:
+name: cpu
+target:
+type: Utilization
+averageUtilization: 50
+Then, create the autoscaler by executing the following command:
+kubectl create -f https://k8s.io/examples/application/hpa/php-apache.yaml
+horizontalpodautoscaler.autoscaling/php-apache created
+[Clarify sentence (39e0fd6023)](https://github.com/kubernetes/website/commit/39e0fd6023908ce46974d072844ba571a3460e0c)

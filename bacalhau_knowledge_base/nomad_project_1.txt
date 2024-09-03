@@ -1,4 +1,26 @@
 Source: nomad_project
-URL: https://www.nomadproject.io/docs/nomad-vs-kubernetes/supplement
+URL: https://www.nomadproject.io/
 
-HashiDaysOne conference. Three cities.Find a city near youDismiss alertHashiCorp DeveloperHashiCorp Cloud PlatformTerraformPackerConsulVaultBoundaryNomadWaypointVagrantNomadInstallIntroTutorialsDocumentationAPIToolsPluginsIntegrationsSearchCommand or control keyK keySign inSign upThemeNomad HomeDocumentationDocumentationInstall NomadUpgradingRelease NotesIntegrationsConceptsConfigurationCommands (CLI)GlossaryJob SpecificationOther SpecificationsTask DriversDevice PluginsSchedulersRuntimeNetworkingAutoscalingOperationsNomad vs. KubernetesOverviewAlternative to KubernetesSupplement to KubernetesNomad EcosystemNomad PartnershipsWho Uses NomadNomad EnterpriseFAQResourcesTutorial LibraryCommunity Forum(opens in new tab)Support(opens in new tab)GitHub(opens in new tab)DeveloperNomadDocumentationNomad vs. KubernetesSupplement to Kubernetesv1.8.x (latest)Nomadv1.7.xv1.6.xv1.5.xv1.4.xv1.3.xv1.2.xv1.1.xv1.0.xSupplement to KubernetesEnterprises are comprised of multiple groups of people (business units) with different projects, infrastructure environments, technical competencies, team sizes, budgets, and SLAs. Each group has different requirements and leverages technologies based on their particular needs and constraints.Medium to large scale enterprises run into challenges when trying to standardize hundreds to thousands of software developers and administrators onto one single orchestrator (Kubernetes, Nomad, Mesos) as no scheduler today fits all applications, environments, projects, and teams.Companies in the Global 2000 today such as Intel, Autodesk and GitHub with multiple products and business units organically run Nomad and Kubernetes to supplement each other. They leverage each scheduler to its strengths with Kubernetes for its cutting edge ecosystem and Nomad for simple maintenance and flexibility in core scheduling.These are the characteristics we see in teams that typically adopt self-hosted Kubernetes:Greenfield use-cases such as machine learning (ML), serverless, and big data that require the Kubernetes ecosystem and Helm chartHigh budget and full-time staffing to maintain KubernetesHigh-profile projects with significant investment and long-term timeline (multi-year)Deploying and managing new, cloud-native applicationsPublic cloud environment such as AWS, GCP, AzureCharacteristics of teams that typically adopt Nomad:Run a mix of containerized and non-containerized workloads (Windows, Java)Small/medium-sized teams with limited capacity to maintain an orchestratorDeploying and managing core, existing applicationsOn-premises environment, or hybrid environmentsRequire simplicity to move fast and fulfill business needs with hard deadlinesWe continue to see small enterprises continue to standardize on a single orchestrator given the natural staffing and organizational constraints. There are not enough DevOps members to maintain more than one orchestrator, not enough developers to warrant diverging workflows, or simply not enough workload diversity to require more than one orchestrator.Edit this page on GitHubThemeCertificationsSystem StatusCookie ManagerTerms of UseSecurityPrivacyTrademark PolicyTrade ControlsAccessibilityGive Feedback(opens in new tab)
+Community
+Self-managed | Always free
+Download and learn Nomad, all within 15 minutes. Run locally or within your environments.
+A simple and flexible scheduler and orchestrator to deploy and manage containers and non-containerized applications across on-premises and clouds at scale.
+Nomad runs as a single binary with a small resource footprint and supports a wide range of workloads beyond containers, including Windows, Java, VM, Docker, and more.
+Deploy, manage, and scale containers in production with ease.
+Deploy and manage legacy applications without the need to refactor or rewrite.
+Globally scale edge deployments with a simple single-cluster topology.
+Natively run batch workloads with minimal operational overhead.
+Tutorial
+Schedule a sample job, deploy multiple instances of it, and perform a rolling update in this tutorial on getting started.
+Tutorial
+Deploy applications globally to any region using Nomad as a unified control plane.
+Tutorial
+Run Nomad as a native Windows service with service control manager and NSSM.
+Tutorial
+Ensure a safe application roll-out to production while minimizing downtime.
+Tutorial
+Learn to use Nomad Pack, a package manager and templating tool for Nomad.
+Tutorial
+Mount persistent data from local or remote storage volumes into task environments.
+An inside look at powerful solutions from some of the world’s most innovative companies.
+Get started with Nomad, a simple and flexible scheduler and workload orchestrator to deploy and manage containers and non-containerized applications.

@@ -1,116 +1,106 @@
 Source: raft_consensus
 URL: https://raft.github.io/
 
-The Raft Consensus AlgorithmQuick LinksRaft paperraft-dev mailing listRaft implementationsWhat is Raft?Raft is a consensus algorithm that is designed to be easy to understand. It's
-equivalent to Paxos in fault-tolerance and performance. The difference is that
-it's decomposed into relatively independent subproblems, and it cleanly
-addresses all major pieces needed for practical systems. We hope Raft will make
-consensus available to a wider audience, and that this wider audience will be
-able to develop a variety of higher quality consensus-based systems than are
-available today.Hold on—what is consensus?Consensus is a fundamental problem in fault-tolerant distributed systems.
-Consensus involves multiple servers agreeing on values. Once they reach a
-decision on a value, that decision is final. Typical consensus algorithms make
-progress when any majority of their servers is available; for example, a
-cluster of 5 servers can continue to operate even if 2 servers fail.
-If more servers fail, they stop making progress (but will never return an
-incorrect result).Consensus typically arises in the context of replicated state machines, a
-general approach to building fault-tolerant systems. Each server has a state
-machine and a log. The state machine is the component that we want to make
-fault-tolerant, such as a hash table. It will appear to clients that they are
-interacting with a single, reliable state machine, even if a minority of the
-servers in the cluster fail. Each state machine takes as input commands from
-its log. In our hash table example, the log would include commands likeset
-x to 3. A consensus algorithm is used to agree on the commands in the
-servers' logs. The consensus algorithm must ensure that if any state machine
-appliesset x to 3as thenthcommand, no other
-state machine will ever apply a differentnthcommand. As a
-result, each state machine processes the same series of commands and thus
-produces the same series of results and arrives at the same series of states.Raft VisualizationHere's a Raft cluster running in your browser. You can interact with it to see
+Raft is a consensus algorithm that is designed to be easy to understand. It's equivalent to Paxos in fault-tolerance and performance. The difference is that it's decomposed into relatively independent subproblems, and it cleanly addresses all major pieces needed for practical systems. We hope Raft will make consensus available to a wider audience, and that this wider audience will be able to develop a variety of higher quality consensus-based systems than are available today.
+Consensus is a fundamental problem in fault-tolerant distributed systems. Consensus involves multiple servers agreeing on values. Once they reach a decision on a value, that decision is final. Typical consensus algorithms make progress when any majority of their servers is available; for example, a cluster of 5 servers can continue to operate even if 2 servers fail. If more servers fail, they stop making progress (but will never return an incorrect result).
+Consensus typically arises in the context of replicated state machines, a general approach to building fault-tolerant systems. Each server has a state machine and a log. The state machine is the component that we want to make fault-tolerant, such as a hash table. It will appear to clients that they are interacting with a single, reliable state machine, even if a minority of the servers in the cluster fail. Each state machine takes as input commands from its log. In our hash table example, the log would include commands like set x to 3. A consensus algorithm is used to agree on the commands in the servers' logs. The consensus algorithm must ensure that if any state machine applies set x to 3 as the nth command, no other state machine will ever apply a different nth command. As a result, each state machine processes the same series of commands and thus produces the same series of results and arrives at the same series of states.
+Here's a Raft cluster running in your browser. You can interact with it to see
 Raft in action. Five servers are shown on the left, and their logs are shown on
 the right. We hope to create a screencast soon to explain what's going on. This
-visualization (RaftScope)
-is still pretty rough around the edges; pull requests would be very welcome.The Secret Lives of Datais a different visualization of Raft. It's more guided and less interactive, so
-it may be a gentler starting point.PublicationsThis is "the Raft paper", which describes Raft in detail:In Search of an Understandable Consensus Algorithm (Extended Version)byDiego OngaroandJohn Ousterhout.
-A slightly shorter version of this paper received a Best Paper Award at the2014 USENIX Annual Technical Conference.Diego Ongaro'sPh.D. dissertationexpands on the content of the paper in much more detail, and it includes a
+visualization ([RaftScope](https://github.com/ongardie/raftscope))
+is still pretty rough around the edges; pull requests would be very welcome.
+[The Secret Lives of Data](http://thesecretlivesofdata.com/raft/)
+is a different visualization of Raft. It's more guided and less interactive, so
+it may be a gentler starting point.
+This is "the Raft paper", which describes Raft in detail:
+[In Search of an Understandable Consensus Algorithm (Extended Version)](raft.pdf)
+by [Diego Ongaro](https://twitter.com/ongardie) and
+[John Ousterhout](https://www.stanford.edu/~ouster/).
+A slightly shorter version of this paper received a Best Paper Award at the
+[2014 USENIX Annual Technical Conference](https://www.usenix.org/conference/atc14/technical-sessions/presentation/ongaro).
+Diego Ongaro's
+[Ph.D. dissertation](https://github.com/ongardie/dissertation#readme)
+expands on the content of the paper in much more detail, and it includes a
 simpler cluster membership change algorithm. The dissertation also includes a
 formal specification of Raft written in TLA+; a slightly updated version of that
-specification ishere.More Raft-related papers:Doug Woos,
-    James R. Wilcox,
-    Steve Anton,
-    Zachary Tatlock,
-    Michael D. Ernst, and
-    Thomas Anderson.Planning for Change in a Formal Verification of the Raft Consensus Protocol.Certified Programs and Proofs (CPP), January 2016.James R. Wilcox,
-    Doug Woos,
-    Pavel Panchekha,
-    Zachary Tatlock,
-    Xi Wang,
-    Michael D. Ernst, and
-    Thomas Anderson.Verdi: A Framework for Implementing and Verifying Distributed Systems.Programming Language Design and Implementation (PLDI), June 2015.Hugues Evrard and
-    Frédéric Lang.Automatic Distributed Code Generation from Formal Models of Asynchronous Concurrent Processes.Parallel, Distributed, and Network-Based Processing (PDP), March 2015.Heidi Howard,
-    Malte Schwarzkopf,
-    Anil Madhavapeddy, and
-    Jon Crowcroft.Raft Refloated: Do We Have Consensus?.SIGOPS Operating Systems Review, January 2015.Heidi Howard.ARC: Analysis of Raft Consensus.University of Cambridge, Computer Laboratory, UCAM-CL-TR-857, July 2014.TalksThese talks serve as good introductions to Raft:Talk on Raft atCS@Illinois Distinguished Lecture SeriesbyJohn Ousterhout, August 2016:VideoYouTubeSlidesPDFwithRaftScope visualizationTalk on Raft and its TLA+ spec as part ofDr. TLA+ SeriesbyJin Li, July 2016:VideoYouTubeSlidesSlideShareTalk on Raft atBuild Stuff 2015byDiego Ongaro, November 2015:VideoInfoQSlidesHTMLPDFwithRaftScope visualizationTalks on Rust, Raft, and distributed systems atRust Bay Area MeetupbyYvonne Coady,Diego Ongaro,Andrew Hobden,Dan Burkert, andAlex Newman,
-    August 2015:VideoAir MozillaSlidesDiego:PDFwithRaftScope visualizationTalk on Raft atCoreOS Fest 2015byDiego Ongaro, May 2015:VideoYouTubeSlidesPDFwithRaftScope visualizationTalk on Raft atSourcegraph meetupbyDiego Ongaro, April 2015:VideoYouTubeSlidesPDFwithRaftScope visualizationTalk on Raft at LinkedIn
-    byDiego Ongaro, September 2014:VideoYouTubeSlidesPDFPPTXwithRaftScope visualizationTalk on Raft atUSI 2014and/dev/summer 2014byArnaud Bailly, July 2014:VideoYouTube(French)SlidesSpeaker Deck(English)Talk on Raft at2014 USENIX Annual Technical ConferencebyDiego Ongaro, June 2014:VideoUSENIXSlidesRaftScope visualizationTalk on Raft atCraftConf 2014byDiego Ongaro, April 2014:VideoUstreamSlidesPDFPPTXTalk on Raft atRubyconf 2013byPatrick Van Stee, November 2013:VideoYouTubeSlidesSpeaker DeckTalk on Raft atRICON West 2013byDiego Ongaro, October 2013:VideoYouTubeSlidesPDFPPTXTalk on Raft atStrange Loop 2013byBen Johnson, September 2013:VideoInfoQSlidesSpeaker DeckTalk on Raft andRafterat theErlang NYC MeetupbyTom SanteroandAndrew Stone, August 2013:VideoVimeoSlidesSpeaker DeckTalk on Raft (venue unknown)
-    byPatrick Van Stee, July 2013:SlidesSpeaker DeckLecture for theRaft User StudybyJohn Ousterhout, March 2013:Video (screencast)YouTubeMP4SlidesPDFPPTXCourses teaching RaftThis is a list of courses that include lectures or programming assignments on Raft.
+specification is [here](https://github.com/ongardie/raft.tla).
+More Raft-related papers:
+Doug Woos,
+James R. Wilcox,
+Steve Anton,
+Zachary Tatlock,
+Michael D. Ernst, and
+Thomas Anderson.
+[Planning for Change in a Formal Verification of the Raft Consensus Protocol](https://dl.acm.org/doi/abs/10.1145/2854065.2854081).
+Certified Programs and Proofs (CPP), January 2016.
+James R. Wilcox,
+Doug Woos,
+Pavel Panchekha,
+Zachary Tatlock,
+Xi Wang,
+Michael D. Ernst, and
+Thomas Anderson.
+[Verdi: A Framework for Implementing and Verifying Distributed Systems](http://verdi.uwplse.org/).
+Programming Language Design and Implementation (PLDI), June 2015.
+Hugues Evrard and
+Frédéric Lang.
+[Automatic Distributed Code Generation from Formal Models of Asynchronous Concurrent Processes](https://hal.inria.fr/hal-01086522).
+Parallel, Distributed, and Network-Based Processing (PDP), March 2015.
+[Heidi Howard](https://twitter.com/heidiann360),
+Malte Schwarzkopf,
+Anil Madhavapeddy, and
+Jon Crowcroft.
+[Raft Refloated: Do We Have Consensus?](https://www.cl.cam.ac.uk/~ms705/pub/papers/2015-osr-raft.pdf).
+SIGOPS Operating Systems Review, January 2015.
+Heidi Howard.
+[ARC: Analysis of Raft Consensus](https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-857.html).
+University of Cambridge, Computer Laboratory, UCAM-CL-TR-857, July 2014.
+These talks serve as good introductions to Raft:
+Video |
+|
+Video |
+|
+Video |
+|
+Video |
+|
+Video |
+|
+Video |
+|
+Video |
+|
+Video |
+|
+Video |
+|
+Video |
+|
+Video |
+|
+Video |
+|
+Video |
+|
+Video |
+|
+Slides |
+|
+Video (screencast) |
+|
+This is a list of courses that include lectures or programming assignments on Raft.
 This might be useful for other instructors and for online learners looking for materials.
-If you know of additional courses, please submit apull requestor an issue to update it.University of Virginia,CS4740: Cloud Computing,Chang Lou.
-    Includes lecture on Raft and programming assignment (Go). (Spring 2024 ...)University of California, San Deigo,CSE224: Graduate Networked Systems,George Porter.
-    Includes lecture on Raft and programming assignment (Go) to develop a fault-tolerant Dropbox clone. (Winter 2023/2022, Fall 2020/2019/2018 ...)Technical University of Munich,IN2259: Distributed Systems,Pramod BhatotiaandMartin Kleppmann.
-    Includes lecture on Raft. (Winter 2022/2023, ...)University of Illinois Urbana-Champaign,CS425: Distributed Systems,Indranil Gupta,Nikita Borisov, andRadhika Mittal.
-    Includes Raft programming assignment in Go. (Spring 2021, ...)The Chinese University of Hong Kong,CSCI4160: Distributed and Parallel Computing(Private),Eric Lo.
-    Includes lecture on Paxos and Raft as well asRaft programming assignmentin Java/Go
-    (Fall 2019, Spring 2021, ...)Indian Institute of Technology Delhi,COL 819: Distributed Systems,Smruti R. Sarangi.
-    Includes lecture on Raft (video)
-    (PPTX)
-    (Winter 2020, ...)Carnegie Mellon University,CS 440: Distributed Systems,Yuvraj Agarwal,Dave Andersen.
-    Includes Raft programming assignment in Go. (Fall 2019, ...)Northeastern University,CS 3700: Networks and Distributed Systems,Christo Wilson,Long Lu.
-    Includes an assignment to build a replicated key-value store based on the Raft protocol. (Fall 2018, ...)Institute Technology Bandung,
-    IF3230.
-    Raftassignmentswith testcases for showcasing edge cases and scoring
-    (2018)Rose-Hulman Institute of Technology,CS 403: Programming Language Paradigms,Buffalo Hewner.
-    Includes Raft programming assignment in Erlang (assignments).
-        (Winter 2017, ...)Princeton University,COS-418: Distributed Systems,Mike FreedmanandKyle Jamieson.
-    Includeslecture on Raft(PPTX) andprogramming assignmentsto build a Raft-based key-value store.
-    (Fall 2016, ...)University of Washington,CSE 452: Distributed Systems,Tom Anderson.
-    Includeslecture on Raft,
-    though they call it Paxos.
-    (Winter 2016, ...)University of Colorado, Boulder,CSCI 5673: Distributed Systems,Shivakant Mishra.
-    Includes assignment to download a Raft implementation and build a fault-tolerant data structure with it.
-    (Fall 2015, ...)University of Utah,CS 6963: Distributed Systems,Ryan Stutsman(@rstutsman).
-    Will include something about Raft (TBD).
-    (Fall 2015, ...)San Jose State University,CMPE 275 Enterprise Application Development,John Gash.
-    Includes project to make adistributed filesystemusing Raft.
-    (Spring 2015, ...)Brown,CS 138: Distributed Computer Systems,Tom Doeppner,Rodrigo Fonseca(@rodrigo_fonseca).
-    Includes Raft programming assignment in Go.
-    (Spring 2015, ...)MIT,6.824: Distributed Systems,Robert Morris.
-    Includes lecture on Raft
-    (lecture notes).
-    SeeJon Gjengset's posts forinstructorsandstudents.
-    (Spring 2015, ...)University of San Francisco,CS 636: Graduate Operating Systems,Greg Benson(@gregorydbenson).
-    Includes lecture on Raft.
-    (Spring 2015, ...)Harvard,CS 261: Research Topics in Operating Systems,Margo Seltzer.
-    Includes lecture on Raft
-    (lecture notes).
-    (Fall 2014, ...)University of Houston,COSC 6360: Operating Systems,Jehan-François Pâris(@jehanfrancois).
-    Includes lecture on Raft (PPT).
-    (Fall 2014, ...)Stanford,CS 244b: Distributed Systems,Dawson Engler,David Mazières(@dmazieres).
-    Included guest lecture on Raft by Diego Ongaro.
-    Several students chose to work on Raft-basedfinal projects.
-    (Fall 2014)NUST-SEECS,
-    CS 332: Distributed Computing,
-    Tahir Azim
-    (@TahirAzim).
-    Includes lecture on Raft based on user study materials
-    (tweet).
-    (Fall 2014, ...)Duke,CPS 512: Distributed Systems,Bruce Maggs.
-    Includes guest lecture on Raft
-    (PPTX)
-    byLandon Cox(@lpcox).
-    (Spring 2014, Spring 2015, ...)IIT Bombay,CS 733: Cloud Computing,Sriram Srinivasan.
-    Includes Raft programming assignment in Go (assignments).
-    (Spring 2014, Spring 2015, ...)Where can I ask questions?The best place to ask questions about Raft and its implementations is theraft-dev Google group.
-Some of the implementations also have their own mailing lists; check their READMEs.Where can I get Raft?There are many implementations of Raft available in various stages of
+If you know of additional courses, please submit a
+[pull request](https://github.com/raft/raft.github.io)
+or an issue to update it.
+The best place to ask questions about Raft and its implementations is the
+[raft-dev Google group](https://groups.google.com/forum/#!forum/raft-dev).
+Some of the implementations also have their own mailing lists; check their READMEs.
+There are many implementations of Raft available in various stages of
 development. This table lists the implementations we know about with source
 code available. The most popular and/or recently updated implementations are
-towards the top. This information will inevitably get out of date; please submit apull requestor an issue to update it.StarsNamePrimary AuthorsLanguageLicenseLeader Election + Log Replication?Persistence?Membership Changes?Log Compaction?Published withGitHub Pages.View on GitHub.This work is licensed under aCreative Commons Attribution 3.0 Unported License.
+towards the top. This information will inevitably get out of date; please submit a
+[pull request](https://github.com/raft/raft.github.io)
+or an issue to update it.
+Stars | Name | Primary Authors | Language | License | Leader Election + Log Replication? | Persistence? | Membership Changes? | Log Compaction? |
+---|

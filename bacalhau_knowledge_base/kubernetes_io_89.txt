@@ -1,5 +1,246 @@
-URL: https://kubernetes.io/docs/concepts/overview/working-with-objects/field-selectors/
+Source: kubernetes_io
+URL: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
 
-DocumentationKubernetes BlogTrainingPartnersCommunityCase StudiesVersionsRelease Informationv1.31v1.30v1.29v1.28v1.27English中文 (Chinese)Bahasa Indonesia (Indonesian)日本語 (Japanese)한국어 (Korean)Português (Portuguese)Русский (Russian)Español (Spanish)DocumentationAvailable Documentation VersionsGetting startedLearning environmentProduction environmentContainer RuntimesInstalling Kubernetes with deployment toolsBootstrapping clusters with kubeadmInstalling kubeadmTroubleshooting kubeadmCreating a cluster with kubeadmCustomizing components with the kubeadm APIOptions for Highly Available TopologyCreating Highly Available Clusters with kubeadmSet up a High Availability etcd Cluster with kubeadmConfiguring each kubelet in your cluster using kubeadmDual-stack support with kubeadmTurnkey Cloud SolutionsBest practicesConsiderations for large clustersRunning in multiple zonesValidate node setupEnforcing Pod Security StandardsPKI certificates and requirementsConceptsOverviewKubernetes ComponentsObjects In KubernetesKubernetes Object ManagementObject Names and IDsLabels and SelectorsNamespacesAnnotationsField SelectorsFinalizersOwners and DependentsRecommended LabelsThe Kubernetes APICluster ArchitectureNodesCommunication between Nodes and the Control PlaneControllersLeasesCloud Controller ManagerAbout cgroup v2Container Runtime Interface (CRI)Garbage CollectionMixed Version ProxyContainersImagesContainer EnvironmentRuntime ClassContainer Lifecycle HooksWorkloadsPodsPod LifecycleInit ContainersSidecar ContainersEphemeral ContainersDisruptionsPod Quality of Service ClassesUser NamespacesDownward APIWorkload ManagementDeploymentsReplicaSetStatefulSetsDaemonSetJobsAutomatic Cleanup for Finished JobsCronJobReplicationControllerAutoscaling WorkloadsManaging WorkloadsServices, Load Balancing, and NetworkingServiceIngressIngress ControllersGateway APIEndpointSlicesNetwork PoliciesDNS for Services and PodsIPv4/IPv6 dual-stackTopology Aware RoutingNetworking on WindowsService ClusterIP allocationService Internal Traffic PolicyStorageVolumesPersistent VolumesProjected VolumesEphemeral VolumesStorage ClassesVolume Attributes ClassesDynamic Volume ProvisioningVolume SnapshotsVolume Snapshot ClassesCSI Volume CloningStorage CapacityNode-specific Volume LimitsVolume Health MonitoringWindows StorageConfigurationConfiguration Best PracticesConfigMapsSecretsLiveness, Readiness, and Startup ProbesResource Management for Pods and ContainersOrganizing Cluster Access Using kubeconfig FilesResource Management for Windows nodesSecurityCloud Native SecurityPod Security StandardsPod Security AdmissionService AccountsPod Security PoliciesSecurity For Windows NodesControlling Access to the Kubernetes APIRole Based Access Control Good PracticesGood practices for Kubernetes SecretsMulti-tenancyHardening Guide - Authentication MechanismsKubernetes API Server Bypass RisksLinux kernel security constraints for Pods and containersSecurity ChecklistPoliciesLimit RangesResource QuotasProcess ID Limits And ReservationsNode Resource ManagersScheduling, Preemption and EvictionKubernetes SchedulerAssigning Pods to NodesPod OverheadPod Scheduling ReadinessPod Topology Spread ConstraintsTaints and TolerationsScheduling FrameworkDynamic Resource AllocationScheduler Performance TuningResource Bin PackingPod Priority and PreemptionNode-pressure EvictionAPI-initiated EvictionCluster AdministrationNode ShutdownsCertificatesCluster NetworkingLogging ArchitectureMetrics For Kubernetes System ComponentsMetrics for Kubernetes Object StatesSystem LogsTraces For Kubernetes System ComponentsProxies in KubernetesAPI Priority and FairnessCluster AutoscalingInstalling AddonsCoordinated Leader ElectionWindows in KubernetesWindows containers in KubernetesGuide for Running Windows Containers in KubernetesExtending KubernetesCompute, Storage, and Networking ExtensionsNetwork PluginsDevice PluginsExtending the Kubernetes APICustom ResourcesKubernetes API Aggregation LayerOperator patternTasksInstall ToolsInstall and Set Up kubectl on LinuxInstall and Set Up kubectl on macOSInstall and Set Up kubectl on WindowsAdminister a ClusterAdministration with kubeadmCertificate Management with kubeadmConfiguring a cgroup driverReconfiguring a kubeadm clusterUpgrading kubeadm clustersUpgrading Linux nodesUpgrading Windows nodesChanging The Kubernetes Package RepositoryMigrating from dockershimChanging the Container Runtime on a Node from Docker Engine to containerdMigrate Docker Engine nodes from dockershim to cri-dockerdFind Out What Container Runtime is Used on a NodeTroubleshooting CNI plugin-related errorsCheck whether dockershim removal affects youMigrating telemetry and security agents from dockershimGenerate Certificates ManuallyManage Memory, CPU, and API ResourcesConfigure Default Memory Requests and Limits for a NamespaceConfigure Default CPU Requests and Limits for a NamespaceConfigure Minimum and Maximum Memory Constraints for a NamespaceConfigure Minimum and Maximum CPU Constraints for a NamespaceConfigure Memory and CPU Quotas for a NamespaceConfigure a Pod Quota for a NamespaceInstall a Network Policy ProviderUse Antrea for NetworkPolicyUse Calico for NetworkPolicyUse Cilium for NetworkPolicyUse Kube-router for NetworkPolicyRomana for NetworkPolicyWeave Net for NetworkPolicyAccess Clusters Using the Kubernetes APIAdvertise Extended Resources for a NodeAutoscale the DNS Service in a ClusterChange the Access Mode of a PersistentVolume to ReadWriteOncePodChange the default StorageClassSwitching from Polling to CRI Event-based Updates to Container StatusChange the Reclaim Policy of a PersistentVolumeCloud Controller Manager AdministrationConfigure a kubelet image credential providerConfigure Quotas for API ObjectsControl CPU Management Policies on the NodeControl Topology Management Policies on a nodeCustomizing DNS ServiceDebugging DNS ResolutionDeclare Network PolicyDeveloping Cloud Controller ManagerEnable Or Disable A Kubernetes APIEncrypting Confidential Data at RestDecrypt Confidential Data that is Already Encrypted at RestGuaranteed Scheduling For Critical Add-On PodsIP Masquerade Agent User GuideLimit Storage ConsumptionMigrate Replicated Control Plane To Use Cloud Controller ManagerNamespaces WalkthroughOperating etcd clusters for KubernetesReserve Compute Resources for System DaemonsRunning Kubernetes Node Components as a Non-root UserSafely Drain a NodeSecuring a ClusterSet Kubelet Parameters Via A Configuration FileShare a Cluster with NamespacesUpgrade A ClusterUse Cascading Deletion in a ClusterUsing a KMS provider for data encryptionUsing CoreDNS for Service DiscoveryUsing NodeLocal DNSCache in Kubernetes ClustersUsing sysctls in a Kubernetes ClusterUtilizing the NUMA-aware Memory ManagerVerify Signed Kubernetes ArtifactsConfigure Pods and ContainersAssign Memory Resources to Containers and PodsAssign CPU Resources to Containers and PodsConfigure GMSA for Windows Pods and containersResize CPU and Memory Resources assigned to ContainersConfigure RunAsUserName for Windows pods and containersCreate a Windows HostProcess PodConfigure Quality of Service for PodsAssign Extended Resources to a ContainerConfigure a Pod to Use a Volume for StorageConfigure a Pod to Use a PersistentVolume for StorageConfigure a Pod to Use a Projected Volume for StorageConfigure a Security Context for a Pod or ContainerConfigure Service Accounts for PodsPull an Image from a Private RegistryConfigure Liveness, Readiness and Startup ProbesAssign Pods to NodesAssign Pods to Nodes using Node AffinityConfigure Pod InitializationAttach Handlers to Container Lifecycle EventsConfigure a Pod to Use a ConfigMapShare Process Namespace between Containers in a PodUse a User Namespace With a PodUse an Image Volume With a PodCreate static PodsTranslate a Docker Compose File to Kubernetes ResourcesEnforce Pod Security Standards by Configuring the Built-in Admission ControllerEnforce Pod Security Standards with Namespace LabelsMigrate from PodSecurityPolicy to the Built-In PodSecurity Admission ControllerMonitoring, Logging, and DebuggingTroubleshooting ApplicationsDebug PodsDebug ServicesDebug a StatefulSetDetermine the Reason for Pod FailureDebug Init ContainersDebug Running PodsGet a Shell to a Running ContainerTroubleshooting ClustersTroubleshooting kubectlResource metrics pipelineTools for Monitoring ResourcesMonitor Node HealthDebugging Kubernetes nodes with crictlAuditingDebugging Kubernetes Nodes With KubectlDeveloping and debugging services locally using telepresenceWindows debugging tipsManage Kubernetes ObjectsDeclarative Management of Kubernetes Objects Using Configuration FilesDeclarative Management of Kubernetes Objects Using KustomizeManaging Kubernetes Objects Using Imperative CommandsImperative Management of Kubernetes Objects Using Configuration FilesUpdate API Objects in Place Using kubectl patchMigrate Kubernetes Objects Using Storage Version MigrationManaging SecretsManaging Secrets using kubectlManaging Secrets using Configuration FileManaging Secrets using KustomizeInject Data Into ApplicationsDefine a Command and Arguments for a ContainerDefine Dependent Environment VariablesDefine Environment Variables for a ContainerExpose Pod Information to Containers Through Environment VariablesExpose Pod Information to Containers Through FilesDistribute Credentials Securely Using SecretsRun ApplicationsRun a Stateless Application Using a DeploymentRun a Single-Instance Stateful ApplicationRun a Replicated Stateful ApplicationScale a StatefulSetDelete a StatefulSetForce Delete StatefulSet PodsHorizontal Pod AutoscalingHorizontalPodAutoscaler WalkthroughSpecifying a Disruption Budget for your ApplicationAccessing the Kubernetes API from a PodRun JobsRunning Automated Tasks with a CronJobCoarse Parallel Processing Using a Work QueueFine Parallel Processing Using a Work QueueIndexed Job for Parallel Processing with Static Work AssignmentJob with Pod-to-Pod CommunicationParallel Processing using ExpansionsHandling retriable and non-retriable pod failures with Pod failure policyAccess Applications in a ClusterDeploy and Access the Kubernetes DashboardAccessing ClustersConfigure Access to Multiple ClustersUse Port Forwarding to Access Applications in a ClusterUse a Service to Access an Application in a ClusterConnect a Frontend to a Backend Using ServicesCreate an External Load BalancerList All Container Images Running in a ClusterSet up Ingress on Minikube with the NGINX Ingress ControllerCommunicate Between Containers in the Same Pod Using a Shared VolumeConfigure DNS for a ClusterAccess Services Running on ClustersExtend KubernetesConfigure the Aggregation LayerUse Custom ResourcesExtend the Kubernetes API with CustomResourceDefinitionsVersions in CustomResourceDefinitionsSet up an Extension API ServerConfigure Multiple SchedulersUse an HTTP Proxy to Access the Kubernetes APIUse a SOCKS5 Proxy to Access the Kubernetes APISet up Konnectivity serviceTLSConfigure Certificate Rotation for the KubeletManage TLS Certificates in a ClusterManual Rotation of CA CertificatesManage Cluster DaemonsPerform a Rolling Update on a DaemonSetPerform a Rollback on a DaemonSetRunning Pods on Only Some NodesNetworkingAdding entries to Pod /etc/hosts with HostAliasesExtend Service IP RangesValidate IPv4/IPv6 dual-stackExtend kubectl with pluginsManage HugePagesSchedule GPUsTutorialsHello MinikubeLearn Kubernetes BasicsCreate a ClusterUsing Minikube to Create a ClusterDeploy an AppUsing kubectl to Create a DeploymentExplore Your AppViewing Pods and NodesExpose Your App PubliclyUsing a Service to Expose Your AppScale Your AppRunning Multiple Instances of Your AppUpdate Your AppPerforming a Rolling UpdateConfigurationExample: Configuring a Java MicroserviceExternalizing config using MicroProfile, ConfigMaps and SecretsUpdating Configuration via a ConfigMapConfiguring Redis using a ConfigMapAdopting Sidecar ContainersSecurityApply Pod Security Standards at the Cluster LevelApply Pod Security Standards at the Namespace LevelRestrict a Container's Access to Resources with AppArmorRestrict a Container's Syscalls with seccompStateless ApplicationsExposing an External IP Address to Access an Application in a ClusterExample: Deploying PHP Guestbook application with RedisStateful ApplicationsStatefulSet BasicsExample: Deploying WordPress and MySQL with Persistent VolumesExample: Deploying Cassandra with a StatefulSetRunning ZooKeeper, A Distributed System CoordinatorServicesConnecting Applications with ServicesUsing Source IPExplore Termination Behavior for Pods And Their EndpointsReferenceGlossaryAPI OverviewKubernetes API ConceptsServer-Side ApplyClient LibrariesCommon Expression Language in KubernetesKubernetes Deprecation PolicyDeprecated API Migration GuideKubernetes API health endpointsAPI Access ControlAuthenticatingAuthenticating with Bootstrap TokensAuthorizationUsing RBAC AuthorizationUsing Node AuthorizationWebhook ModeUsing ABAC AuthorizationAdmission ControllersDynamic Admission ControlManaging Service AccountsCertificates and Certificate Signing RequestsMapping PodSecurityPolicies to Pod Security StandardsKubelet authentication/authorizationTLS bootstrappingValidating Admission PolicyWell-Known Labels, Annotations and TaintsAudit AnnotationsKubernetes APIWorkload ResourcesPodBindingPodTemplateReplicationControllerReplicaSetDeploymentStatefulSetControllerRevisionDaemonSetJobCronJobHorizontalPodAutoscalerHorizontalPodAutoscalerPriorityClassPodSchedulingContext v1alpha3ResourceClaim v1alpha3ResourceClaimTemplate v1alpha3ResourceSlice v1alpha3Service ResourcesServiceEndpointsEndpointSliceIngressIngressClassConfig and Storage ResourcesConfigMapSecretCSIDriverCSINodeCSIStorageCapacityPersistentVolumeClaimPersistentVolumeStorageClassStorageVersionMigration v1alpha1VolumeVolumeAttachmentVolumeAttributesClass v1beta1Authentication ResourcesServiceAccountTokenRequestTokenReviewCertificateSigningRequestClusterTrustBundle v1alpha1SelfSubjectReviewAuthorization ResourcesLocalSubjectAccessReviewSelfSubjectAccessReviewSelfSubjectRulesReviewSubjectAccessReviewClusterRoleClusterRoleBindingRoleRoleBindingPolicy ResourcesFlowSchemaLimitRangeResourceQuotaNetworkPolicyPodDisruptionBudgetPriorityLevelConfigurationValidatingAdmissionPolicyValidatingAdmissionPolicyBindingExtend ResourcesCustomResourceDefinitionDeviceClass v1alpha3MutatingWebhookConfigurationValidatingWebhookConfigurationCluster ResourcesAPIServiceComponentStatusEventIPAddress v1beta1LeaseLeaseCandidate v1alpha1NamespaceNodeRuntimeClassServiceCIDR v1beta1Common DefinitionsDeleteOptionsLabelSelectorListMetaLocalObjectReferenceNodeSelectorRequirementObjectFieldSelectorObjectMetaObjectReferencePatchQuantityResourceFieldSelectorStatusTypedLocalObjectReferenceCommon ParametersInstrumentationService Level Indicator MetricsCRI Pod & Container MetricsNode metrics dataKubernetes Metrics ReferenceKubernetes Issues and SecurityKubernetes Issue TrackerKubernetes Security and Disclosure InformationCVE feedNode Reference InformationKubelet Checkpoint APILinux Kernel Version RequirementsArticles on dockershim Removal and on Using CRI-compatible RuntimesNode Labels Populated By The KubeletKubelet Configuration Directory MergingKubelet Device Manager API VersionsNode StatusNetworking ReferenceProtocols for ServicesPorts and ProtocolsVirtual IPs and Service ProxiesSetup toolsKubeadmkubeadm initkubeadm joinkubeadm upgradekubeadm configkubeadm resetkubeadm tokenkubeadm versionkubeadm alphakubeadm certskubeadm init phasekubeadm join phasekubeadm kubeconfigkubeadm reset phasekubeadm upgrade phaseImplementation detailsCommand line tool (kubectl)Introduction to kubectlkubectl Quick Referencekubectl referencekubectlkubectl annotatekubectl api-resourceskubectl api-versionskubectl applykubectl apply edit-last-appliedkubectl apply set-last-appliedkubectl apply view-last-appliedkubectl attachkubectl authkubectl auth can-ikubectl auth reconcilekubectl auth whoamikubectl autoscalekubectl certificatekubectl certificate approvekubectl certificate denykubectl cluster-infokubectl cluster-info dumpkubectl completionkubectl configkubectl config current-contextkubectl config delete-clusterkubectl config delete-contextkubectl config delete-userkubectl config get-clusterskubectl config get-contextskubectl config get-userskubectl config rename-contextkubectl config setkubectl config set-clusterkubectl config set-contextkubectl config set-credentialskubectl config unsetkubectl config use-contextkubectl config viewkubectl cordonkubectl cpkubectl createkubectl create clusterrolekubectl create clusterrolebindingkubectl create configmapkubectl create cronjobkubectl create deploymentkubectl create ingresskubectl create jobkubectl create namespacekubectl create poddisruptionbudgetkubectl create priorityclasskubectl create quotakubectl create rolekubectl create rolebindingkubectl create secretkubectl create secret docker-registrykubectl create secret generickubectl create secret tlskubectl create servicekubectl create service clusteripkubectl create service externalnamekubectl create service loadbalancerkubectl create service nodeportkubectl create serviceaccountkubectl create tokenkubectl debugkubectl deletekubectl describekubectl diffkubectl drainkubectl editkubectl eventskubectl execkubectl explainkubectl exposekubectl getkubectl kustomizekubectl labelkubectl logskubectl optionskubectl patchkubectl pluginkubectl plugin listkubectl port-forwardkubectl proxykubectl replacekubectl rolloutkubectl rollout historykubectl rollout pausekubectl rollout restartkubectl rollout resumekubectl rollout statuskubectl rollout undokubectl runkubectl scalekubectl setkubectl set envkubectl set imagekubectl set resourceskubectl set selectorkubectl set serviceaccountkubectl set subjectkubectl taintkubectl topkubectl top nodekubectl top podkubectl uncordonkubectl versionkubectl waitkubectl CommandskubectlJSONPath Supportkubectl for Docker Userskubectl Usage ConventionsComponent toolsFeature GatesFeature Gates (removed)kubeletkube-apiserverkube-controller-managerkube-proxykube-schedulerDebug clusterFlow controlConfiguration APIsClient Authentication (v1)Client Authentication (v1beta1)Event Rate Limit Configuration (v1alpha1)Image Policy API (v1alpha1)kube-apiserver Admission (v1)kube-apiserver Audit Configuration (v1)kube-apiserver Configuration (v1)kube-apiserver Configuration (v1alpha1)kube-apiserver Configuration (v1beta1)kube-controller-manager Configuration (v1alpha1)kube-proxy Configuration (v1alpha1)kube-scheduler Configuration (v1)kubeadm Configuration (v1beta3)kubeadm Configuration (v1beta4)kubeconfig (v1)Kubelet Configuration (v1)Kubelet Configuration (v1alpha1)Kubelet Configuration (v1beta1)Kubelet CredentialProvider (v1)WebhookAdmission Configuration (v1)External APIsKubernetes Custom Metrics (v1beta2)Kubernetes External Metrics (v1beta1)Kubernetes Metrics (v1beta1)SchedulingScheduler ConfigurationScheduling PoliciesOther ToolsMapping from dockercli to crictlContributeContribute to Kubernetes DocumentationSuggesting content improvementsContributing new contentOpening a pull requestDocumenting for a releaseBlogs and case studiesReviewing changesReviewing pull requestsFor approvers and reviewersLocalizing Kubernetes documentationParticipating in SIG DocsRoles and responsibilitiesIssue WranglersPR wranglersDocumentation style overviewContent guideStyle guideDiagram guideWriting a new topicPage content typesContent organizationCustom Hugo ShortcodesUpdating Reference DocumentationQuickstartContributing to the Upstream Kubernetes CodeGenerating Reference Documentation for the Kubernetes APIGenerating Reference Documentation for kubectl CommandsGenerating Reference Documentation for MetricsGenerating Reference Pages for Kubernetes Components and ToolsAdvanced contributingViewing Site AnalyticsDocs smoke test pageKubernetes DocumentationConceptsOverviewObjects In KubernetesField SelectorsField SelectorsField selectorslet you select Kubernetesobjectsbased on the
-value of one or more resource fields. Here are some examples of field selector queries:metadata.name=my-servicemetadata.namespace!=defaultstatus.phase=PendingThiskubectlcommand selects all Pods for which the value of thestatus.phasefield isRunning:kubectl get pods --field-selector status.phase=RunningNote:Field selectors are essentially resourcefilters. By default, no selectors/filters are applied, meaning that all resources of the specified type are selected. This makes thekubectlquerieskubectl get podsandkubectl get pods --field-selector ""equivalent.Supported fieldsSupported field selectors vary by Kubernetes resource type. All resource types support themetadata.nameandmetadata.namespacefields. Using unsupported field selectors produces an error. For example:kubectl get ingress --field-selector foo.bar=bazError from server (BadRequest): Unable to find "ingresses" that match label selector "", field selector "foo.bar=baz": "foo.bar" is not a known field selector: only "metadata.name", "metadata.namespace"List of supported fieldsKindFieldsPodspec.nodeNamespec.restartPolicyspec.schedulerNamespec.serviceAccountNamespec.hostNetworkstatus.phasestatus.podIPstatus.nominatedNodeNameEventinvolvedObject.kindinvolvedObject.namespaceinvolvedObject.nameinvolvedObject.uidinvolvedObject.apiVersioninvolvedObject.resourceVersioninvolvedObject.fieldPathreasonreportingComponentsourcetypeSecrettypeNamespacestatus.phaseReplicaSetstatus.replicasReplicationControllerstatus.replicasJobstatus.successfulNodespec.unschedulableCertificateSigningRequestspec.signerNameSupported operatorsYou can use the=,==, and!=operators with field selectors (=and==mean the same thing). Thiskubectlcommand, for example, selects all Kubernetes Services that aren't in thedefaultnamespace:kubectl get services  --all-namespaces --field-selector metadata.namespace!=defaultNote:Set-based operators(in,notin,exists) are not supported for field selectors.Chained selectorsAs withlabeland other selectors, field selectors can be chained together as a comma-separated list. Thiskubectlcommand selects all Pods for which thestatus.phasedoes not equalRunningand thespec.restartPolicyfield equalsAlways:kubectl get pods --field-selector=status.phase!=Running,spec.restartPolicy=AlwaysMultiple resource typesYou can use field selectors across multiple resource types. Thiskubectlcommand selects all Statefulsets and Services that are not in thedefaultnamespace:kubectl get statefulsets,services --all-namespaces --field-selector metadata.namespace!=defaultFeedbackWas this page helpful?YesNoThanks for the feedback. If you have a specific, answerable question about how to use Kubernetes, ask it onStack Overflow.
-Open an issue in theGitHub Repositoryif you want toreport a problemorsuggest an improvement.Last modified April 04, 2024 at 11:18 AM PST:Add missing field selectors (ddc49f00d5)Edit this pageCreate child pageCreate documentation issuePrint entire sectionSupported fieldsList of supported fieldsSupported operatorsChained selectorsMultiple resource typesDocumentationBlogTrainingPartnersCommunityCase Studies© 2024 The Kubernetes Authors | Documentation Distributed underCC BY 4.0Copyright © 2024 The Linux Foundation ®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see ourTrademark Usage pageICP license: 京ICP备17074266号-3
+Taints and Tolerations
+[Node affinity](/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)
+is a property of [Pods](/docs/concepts/workloads/pods/) that attracts them to
+a set of [nodes](/docs/concepts/architecture/nodes/) (either as a preference or a
+hard requirement). Taints are the opposite -- they allow a node to repel a set of pods.
+Tolerations are applied to pods. Tolerations allow the scheduler to schedule pods with matching
+taints. Tolerations allow scheduling but don't guarantee scheduling: the scheduler also
+[evaluates other parameters](/docs/concepts/scheduling-eviction/pod-priority-preemption/)
+as part of its function.
+Taints and tolerations work together to ensure that pods are not scheduled onto inappropriate nodes. One or more taints are applied to a node; this marks that the node should not accept any pods that do not tolerate the taints.
+Concepts
+You add a taint to a node using [kubectl taint](/docs/reference/generated/kubectl/kubectl-commands#taint).
+For example,
+kubectl taint nodes node1 key1=value1:NoSchedule
+places a taint on node node1
+. The taint has key key1
+, value value1
+, and taint effect NoSchedule
+.
+This means that no pod will be able to schedule onto node1
+unless it has a matching toleration.
+To remove the taint added by the command above, you can run:
+kubectl taint nodes node1 key1=value1:NoSchedule-
+You specify a toleration for a pod in the PodSpec. Both of the following tolerations "match" the
+taint created by the kubectl taint
+line above, and thus a pod with either toleration would be able
+to schedule onto node1
+:
+tolerations:
+- key: "key1"
+operator: "Equal"
+value: "value1"
+effect: "NoSchedule"
+tolerations:
+- key: "key1"
+operator: "Exists"
+effect: "NoSchedule"
+The default Kubernetes scheduler takes taints and tolerations into account when
+selecting a node to run a particular Pod. However, if you manually specify the
+.spec.nodeName
+for a Pod, that action bypasses the scheduler; the Pod is then
+bound onto the node where you assigned it, even if there are NoSchedule
+taints on that node that you selected.
+If this happens and the node also has a NoExecute
+taint set, the kubelet will
+eject the Pod unless there is an appropriate tolerance set.
+Here's an example of a pod that has some tolerations defined:
+apiVersion: v1
+kind: Pod
+metadata:
+name: nginx
+labels:
+env: test
+spec:
+containers:
+- name: nginx
+image: nginx
+imagePullPolicy: IfNotPresent
+tolerations:
+- key: "example-key"
+operator: "Exists"
+effect: "NoSchedule"
+The default value for operator
+is Equal
+.
+A toleration "matches" a taint if the keys are the same and the effects are the same, and:
+- the
+operator
+isExists
+(in which case novalue
+should be specified), or - the
+operator
+isEqual
+and the values should be equal.
+Note:
+There are two special cases:
+An empty key
+with operator Exists
+matches all keys, values and effects which means this
+will tolerate everything.
+An empty effect
+matches all effects with key key1
+.
+The above example used the effect
+of NoSchedule
+. Alternatively, you can use the effect
+of PreferNoSchedule
+.
+The allowed values for the effect
+field are:
+NoExecute
+- This affects pods that are already running on the node as follows:
+- Pods that do not tolerate the taint are evicted immediately
+- Pods that tolerate the taint without specifying
+tolerationSeconds
+in their toleration specification remain bound forever - Pods that tolerate the taint with a specified
+tolerationSeconds
+remain bound for the specified amount of time. After that time elapses, the node lifecycle controller evicts the Pods from the node.
+NoSchedule
+- No new Pods will be scheduled on the tainted node unless they have a matching toleration. Pods currently running on the node are not evicted.
+PreferNoSchedule
+PreferNoSchedule
+is a "preference" or "soft" version ofNoSchedule
+. The control plane will try to avoid placing a Pod that does not tolerate the taint on the node, but it is not guaranteed.
+You can put multiple taints on the same node and multiple tolerations on the same pod. The way Kubernetes processes multiple taints and tolerations is like a filter: start with all of a node's taints, then ignore the ones for which the pod has a matching toleration; the remaining un-ignored taints have the indicated effects on the pod. In particular,
+- if there is at least one un-ignored taint with effect
+NoSchedule
+then Kubernetes will not schedule the pod onto that node - if there is no un-ignored taint with effect
+NoSchedule
+but there is at least one un-ignored taint with effectPreferNoSchedule
+then Kubernetes will try to not schedule the pod onto the node - if there is at least one un-ignored taint with effect
+NoExecute
+then the pod will be evicted from the node (if it is already running on the node), and will not be scheduled onto the node (if it is not yet running on the node).
+For example, imagine you taint a node like this
+kubectl taint nodes node1 key1=value1:NoSchedule
+kubectl taint nodes node1 key1=value1:NoExecute
+kubectl taint nodes node1 key2=value2:NoSchedule
+And a pod has two tolerations:
+tolerations:
+- key: "key1"
+operator: "Equal"
+value: "value1"
+effect: "NoSchedule"
+- key: "key1"
+operator: "Equal"
+value: "value1"
+effect: "NoExecute"
+In this case, the pod will not be able to schedule onto the node, because there is no toleration matching the third taint. But it will be able to continue running if it is already running on the node when the taint is added, because the third taint is the only one of the three that is not tolerated by the pod.
+Normally, if a taint with effect NoExecute
+is added to a node, then any pods that do
+not tolerate the taint will be evicted immediately, and pods that do tolerate the
+taint will never be evicted. However, a toleration with NoExecute
+effect can specify
+an optional tolerationSeconds
+field that dictates how long the pod will stay bound
+to the node after the taint is added. For example,
+tolerations:
+- key: "key1"
+operator: "Equal"
+value: "value1"
+effect: "NoExecute"
+tolerationSeconds: 3600
+means that if this pod is running and a matching taint is added to the node, then the pod will stay bound to the node for 3600 seconds, and then be evicted. If the taint is removed before that time, the pod will not be evicted.
+Example Use Cases
+Taints and tolerations are a flexible way to steer pods away from nodes or evict pods that shouldn't be running. A few of the use cases are
+Dedicated Nodes: If you want to dedicate a set of nodes for exclusive use by a particular set of users, you can add a taint to those nodes (say,
+kubectl taint nodes nodename dedicated=groupName:NoSchedule
+) and then add a corresponding toleration to their pods (this would be done most easily by writing a custom[admission controller](/docs/reference/access-authn-authz/admission-controllers/)). The pods with the tolerations will then be allowed to use the tainted (dedicated) nodes as well as any other nodes in the cluster. If you want to dedicate the nodes to them and ensure they only use the dedicated nodes, then you should additionally add a label similar to the taint to the same set of nodes (e.g.dedicated=groupName
+), and the admission controller should additionally add a node affinity to require that the pods can only schedule onto nodes labeled withdedicated=groupName
+.Nodes with Special Hardware: In a cluster where a small subset of nodes have specialized hardware (for example GPUs), it is desirable to keep pods that don't need the specialized hardware off of those nodes, thus leaving room for later-arriving pods that do need the specialized hardware. This can be done by tainting the nodes that have the specialized hardware (e.g.
+kubectl taint nodes nodename special=true:NoSchedule
+orkubectl taint nodes nodename special=true:PreferNoSchedule
+) and adding a corresponding toleration to pods that use the special hardware. As in the dedicated nodes use case, it is probably easiest to apply the tolerations using a custom[admission controller](/docs/reference/access-authn-authz/admission-controllers/). For example, it is recommended to use[Extended Resources](/docs/concepts/configuration/manage-resources-containers/#extended-resources)to represent the special hardware, taint your special hardware nodes with the extended resource name and run the[ExtendedResourceToleration](/docs/reference/access-authn-authz/admission-controllers/#extendedresourcetoleration)admission controller. Now, because the nodes are tainted, no pods without the toleration will schedule on them. But when you submit a pod that requests the extended resource, theExtendedResourceToleration
+admission controller will automatically add the correct toleration to the pod and that pod will schedule on the special hardware nodes. This will make sure that these special hardware nodes are dedicated for pods requesting such hardware and you don't have to manually add tolerations to your pods.Taint based Evictions: A per-pod-configurable eviction behavior when there are node problems, which is described in the next section.
+Taint based Evictions
+Kubernetes v1.18 [stable]
+The node controller automatically taints a Node when certain conditions are true. The following taints are built in:
+node.kubernetes.io/not-ready
+: Node is not ready. This corresponds to the NodeConditionReady
+being "False
+".node.kubernetes.io/unreachable
+: Node is unreachable from the node controller. This corresponds to the NodeConditionReady
+being "Unknown
+".node.kubernetes.io/memory-pressure
+: Node has memory pressure.node.kubernetes.io/disk-pressure
+: Node has disk pressure.node.kubernetes.io/pid-pressure
+: Node has PID pressure.node.kubernetes.io/network-unavailable
+: Node's network is unavailable.node.kubernetes.io/unschedulable
+: Node is unschedulable.node.cloudprovider.kubernetes.io/uninitialized
+: When the kubelet is started with an "external" cloud provider, this taint is set on a node to mark it as unusable. After a controller from the cloud-controller-manager initializes this node, the kubelet removes this taint.
+In case a node is to be drained, the node controller or the kubelet adds relevant taints
+with NoExecute
+effect. This effect is added by default for the
+node.kubernetes.io/not-ready
+and node.kubernetes.io/unreachable
+taints.
+If the fault condition returns to normal, the kubelet or node
+controller can remove the relevant taint(s).
+In some cases when the node is unreachable, the API server is unable to communicate with the kubelet on the node. The decision to delete the pods cannot be communicated to the kubelet until communication with the API server is re-established. In the meantime, the pods that are scheduled for deletion may continue to run on the partitioned node.
+Note:
+The control plane limits the rate of adding new taints to nodes. This rate limiting manages the number of evictions that are triggered when many nodes become unreachable at once (for example: if there is a network disruption).You can specify tolerationSeconds
+for a Pod to define how long that Pod stays bound
+to a failing or unresponsive Node.
+For example, you might want to keep an application with a lot of local state bound to node for a long time in the event of network partition, hoping that the partition will recover and thus the pod eviction can be avoided. The toleration you set for that Pod might look like:
+tolerations:
+- key: "node.kubernetes.io/unreachable"
+operator: "Exists"
+effect: "NoExecute"
+tolerationSeconds: 6000
+Note:
+Kubernetes automatically adds a toleration for
+node.kubernetes.io/not-ready
+and node.kubernetes.io/unreachable
+with tolerationSeconds=300
+,
+unless you, or a controller, set those tolerations explicitly.
+These automatically-added tolerations mean that Pods remain bound to Nodes for 5 minutes after one of these problems is detected.
+[DaemonSet](/docs/concepts/workloads/controllers/daemonset/) pods are created with
+NoExecute
+tolerations for the following taints with no tolerationSeconds
+:
+node.kubernetes.io/unreachable
+node.kubernetes.io/not-ready
+This ensures that DaemonSet pods are never evicted due to these problems.
+Taint Nodes by Condition
+The control plane, using the node [controller](/docs/concepts/architecture/controller/),
+automatically creates taints with a NoSchedule
+effect for
+[node conditions](/docs/concepts/scheduling-eviction/node-pressure-eviction/#node-conditions).
+The scheduler checks taints, not node conditions, when it makes scheduling
+decisions. This ensures that node conditions don't directly affect scheduling.
+For example, if the DiskPressure
+node condition is active, the control plane
+adds the node.kubernetes.io/disk-pressure
+taint and does not schedule new pods
+onto the affected node. If the MemoryPressure
+node condition is active, the
+control plane adds the node.kubernetes.io/memory-pressure
+taint.
+You can ignore node conditions for newly created pods by adding the corresponding
+Pod tolerations. The control plane also adds the node.kubernetes.io/memory-pressure
+toleration on pods that have a [QoS class](/docs/concepts/workloads/pods/pod-qos/)
+other than BestEffort
+. This is because Kubernetes treats pods in the Guaranteed
+or Burstable
+QoS classes (even pods with no memory request set) as if they are
+able to cope with memory pressure, while new BestEffort
+pods are not scheduled
+onto the affected node.
+The DaemonSet controller automatically adds the following NoSchedule
+tolerations to all daemons, to prevent DaemonSets from breaking.
+node.kubernetes.io/memory-pressure
+node.kubernetes.io/disk-pressure
+node.kubernetes.io/pid-pressure
+(1.14 or later)node.kubernetes.io/unschedulable
+(1.10 or later)node.kubernetes.io/network-unavailable
+(host network only)
+Adding these tolerations ensures backward compatibility. You can also add arbitrary tolerations to DaemonSets.
+What's next
+- Read about
+[Node-pressure Eviction](/docs/concepts/scheduling-eviction/node-pressure-eviction/)and how you can configure it - Read about
+[Pod Priority](/docs/concepts/scheduling-eviction/pod-priority-preemption/)
+[Update content/en/docs/concepts/scheduling-eviction/taint-and-toleration.md (6554ad4fe0)](https://github.com/kubernetes/website/commit/6554ad4fe0f0b8f918f0675f5d3d49e8b418350a)

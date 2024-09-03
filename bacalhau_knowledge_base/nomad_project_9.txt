@@ -1,8 +1,90 @@
 Source: nomad_project
-URL: https://www.nomadproject.io/downloads
+URL: https://www.nomadproject.io/security
 
-HashiDaysOne conference. Three cities.Find a city near youDismiss alertHashiCorp DeveloperHashiCorp Cloud PlatformTerraformPackerConsulVaultBoundaryNomadWaypointVagrantNomadInstallIntroTutorialsDocumentationAPIToolsPluginsIntegrationsSearchCommand or control keyK keySign inSign upThemeNomad HomeInstall NomadInstall NomadOperating SystemsmacOSWindowsLinuxRelease informationNext stepsResourcesTutorial LibraryCommunity Forum(opens in new tab)Support(opens in new tab)GitHub(opens in new tab)DeveloperNomadInstall Nomad1.8.3 (latest)1.8.21.8.11.8.01.7.71.7.61.7.51.7.41.7.31.7.21.7.11.7.01.6.101.6.91.6.81.6.71.6.61.6.51.6.41.6.31.6.21.6.11.6.01.5.171.5.161.5.151.5.141.5.131.5.121.5.111.5.101.5.91.5.81.5.71.5.61.5.51.5.41.5.31.5.21.5.11.5.01.4.141.4.131.4.121.4.111.4.101.4.91.4.81.4.71.4.61.4.51.4.41.4.31.4.21.4.11.4.01.3.161.3.151.3.141.3.131.3.121.3.111.3.101.3.91.3.81.3.71.3.61.3.51.3.41.3.31.3.21.3.11.3.01.2.161.2.151.2.141.2.131.2.121.2.111.2.101.2.91.2.81.2.71.2.61.2.51.2.41.2.31.2.21.2.11.2.01.1.181.1.171.1.161.1.151.1.141.1.131.1.121.1.111.1.101.1.91.1.81.1.71.1.61.1.51.1.41.1.31.1.21.1.11.1.01.0.181.0.171.0.161.0.151.0.141.0.131.0.121.0.111.0.101.0.91.0.81.0.71.0.61.0.51.0.41.0.31.0.21.0.11.0.00.12.120.12.110.12.100.12.90.12.80.12.70.12.60.12.50.12.40.12.30.12.20.12.10.12.00.11.80.11.70.11.60.11.50.11.40.11.30.11.20.11.10.11.00.10.90.10.80.10.70.10.60.10.50.10.40.10.30.10.20.10.10.10.00.9.70.9.60.9.50.9.40.9.30.9.20.9.10.9.00.8.70.8.60.8.50.8.40.8.30.8.20.8.10.8.00.7.10.7.00.6.30.6.20.6.10.6.00.5.60.5.50.5.40.5.30.5.20.5.10.5.00.4.10.4.00.3.20.3.10.3.00.2.30.2.20.2.10.2.00.1.20.1.10.1.0macOSPackage managerbrew tap hashicorp/tapbrewinstallhashicorp/tap/nomadBinary downloadAMD64Version: 1.8.3DownloadARM64Version: 1.8.3DownloadWindowsBinary downloadAMD64Version: 1.8.3DownloadLinuxPackage managerUbuntu/DebianCentOS/RHELFedoraAmazon LinuxHomebrewwget-O- https://apt.releases.hashicorp.com/gpg|sudogpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpgecho"deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com$(lsb_release -cs)main"|sudotee/etc/apt/sources.list.d/hashicorp.listsudoaptupdate&&sudoaptinstallnomadsudoyuminstall-y yum-utilssudoyum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.reposudoyum -yinstallnomadsudodnfinstall-y dnf-plugins-coresudodnf config-manager --add-repo https://rpm.releases.hashicorp.com/fedora/hashicorp.reposudodnf -yinstallnomadsudoyuminstall-y yum-utils shadow-utilssudoyum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.reposudoyum -yinstallnomadbrew tap hashicorp/tapbrewinstallhashicorp/tap/nomadBinary downloadAMD64Version: 1.8.3DownloadARM64Version: 1.8.3DownloadNoteComplete thistutorialto learn how to install and verify HashiCorp tools on any Linux distribution, and create a custom Linux container with verified HashiCorp tools..Release informationChangelogNomad Version: 1.8.3GitHub(opens in new tab)Official releasesAll officially supported HashiCorp release channels and their security guarantees.View all(opens in new tab)NoteYou can find theSHA256 checksums forNomad1.8.3online and you canverify the checksums signature filewhich has been signed usingHashiCorp's GPG key. Complete thistutorialto learn how to install and verify HashiCorp tools on any Linux distribution.Next steps3minAccess the web UIAccess the Nomad Web UI from a browser and open a specific Web UI page from the CLI.Nomad30minSet up a Nomad cluster on AWSCreate a Nomad cluster on AWS with Consul and ACLs enabled to use as a starting point for your Nomad workloads.NomadPackerTerraform4minLearn how to configure tasksUse Nomad's job specification to pass runtime configuration to your workloads
-using command line arguments, environment variables, or configuration files.Nomad15minMigrate a Java application to Nomad (Linux)Configure and deploy a Java workload from a Linux or macOS machine using
-Nomad's Java task driver.Nomad8minExpress inter-job dependencies with init tasksModel inter-service dependencies using prestart init tasks that wait for a
-service to be resolvable via DNS.ConsulNomad8minStateful workloads with Nomad host volumesConfigure and deploy a host volume to support a MySQL workload that requires
-persistent storage.NomadAbout NomadOrchestrate, deploy, and manage containers, binaries, and batch jobs in the cloud or on-prem.Featured docsInstallingUpgradingIntegrationsThemeCertificationsSystem StatusCookie ManagerTerms of UseSecurityPrivacyTrademark PolicyTrade ControlsAccessibilityGive Feedback(opens in new tab)
+Security
+Security is at the core of everything we build. We’re committed to safeguarding your data and infrastructure by investing in the necessary tools, training, and support. Learn more about how we bake security into our solutions and platform.
+Security at HashiCorp
+We know our users place a high level of trust in HashiCorp and the products we make to manage mission critical infrastructure. The security of customer data, of our products, and our services are a top priority. HashiCorp’s best-in-class security starts at the foundational level and includes internal threat models, routine internal and external security assessments, and secure software development.
+Security team
+HashiCorp has a fully staffed team of security professionals dedicated to securing, protecting and improving the security posture of the company and its products. The broader security team consists of:
+Detection & Response
+Cloud Security
+Product Security
+Corporate Information Security
+Red Team, and
+Governance, Risk and Compliance (GRC).
+Compliance program
+We have a team dedicated to our compliance program and are committed to providing our customers with all relevant security documentation to build a foundation of trust in our company and products. As of December 2020, we now have a SOC 2 Type II report, and an ISO 27001 certification covering the following Products:
+Enterprise Products
+Cloud Products
+[View certificates](/trust/compliance)
+If you have any additional questions around our security program, please email [customertrust@hashicorp.com](mailto:customertrust@hashicorp.com)
+Penetration tests
+HashiCorp hires external, reputable third parties to perform regular security assessment and penetration testing of our products. Enterprise customers can email [customertrust@hashicorp.com](mailto:customertrust@hashicorp.com) to request extracts from these reports.
+Privacy
+HashiCorp respects your privacy and is committed to protecting your Personal Information (any information that relates to an identified or identifiable individual). Our belief is that any Personal Information provided to us by you is just that: personal and private.
+We do not rent, sell or trade your Personal Information.
+Our full privacy policy is available at [https://www.hashicorp.com/privacy](/trust/privacy). To submit a data subject request please visit [privacy.hashicorp.com](http://privacy.hashicorp.com/). For any privacy related questions, please email [privacy@hashicorp.com](mailto:privacy@hashicorp.com).
+Abuse
+HashiCorp takes all abuse complaints seriously and can assist in investigation of abuse associated with HashiCorp-managed services.
+Information regarding how to report abuse is available at [https://www.hashicorp.com/abuse](/abuse).
+The Acceptable Use Policy can be found at [https://www.hashicorp.com/trust/security/aup](/trust/security/aup).
+PGP public key
+HashiCorp’s current PGP public key can be fetched from Keybase or from most keyservers with the key ID 72D7468F
+and fingerprint C874 011F 0AB4 0511 0D02 1055 3436 5D94 72D7 468F
+. It is also available at [https://www.hashicorp.com/.well-known/pgp-key.txt](/.well-known/pgp-key.txt).
+Secure communications
+The current PGP public key referenced above can be used to encrypt email to [security@hashicorp.com](mailto:security@hashicorp.com).
+Release archive checksum verification
+If you would like to verify the checksum of a HashiCorp product download (specifically, an archive from [https://releases.hashicorp.com](https://releases.hashicorp.com)), please note that only the SHA256SUM file is signed by the PGP key above. The archives themselves are not signed, but rather hashed. To verify the integrity of a particular archive:
+Download the archive, SHA256SUM, and SHA256SUM.sig files (multiple .sig files may be present, named with the associated signing PGP key ID)
+Verify the SHA256SUM file is properly signed
+Verify the SHA256SUM in the file matches the archive
+For example:
+# Import the public key as referenced above.
+curl -s https://www.hashicorp.com/.well-known/pgp-key.txt | gpg --import
+# Download the archive and signature files.
+curl -Os https://releases.hashicorp.com/vault/1.15.2/vault_1.15.2_linux_amd64.zip
+curl -Os https://releases.hashicorp.com/vault/1.15.2/vault_1.15.2_SHA256SUMS
+curl -Os https://releases.hashicorp.com/vault/1.15.2/vault_1.15.2_SHA256SUMS.sig
+# Verify the signature file is untampered.
+gpg --verify vault_1.15.2_SHA256SUMS.sig vault_1.15.2_SHA256SUMS
+# Verify the SHASUM matches the archive.
+shasum -a 256 -c vault_1.15.2_SHA256SUMS --ignore-missing
+For a more detailed tutorial on how to verify a Hashicorp product download, please see [https://developer.hashicorp.com/well-architected-framework/operational-excellence/verify-hashicorp-binary.](https://developer.hashicorp.com/well-architected-framework/operational-excellence/verify-hashicorp-binary)
+Linux package checksum verification
+HashiCorp's Linux repositories and packages, as [announced in 2020](/blog/announcing-the-hashicorp-linux-repository), are signed with a separate GPG key. This is available at [https://rpm.releases.hashicorp.com/gpg](https://rpm.releases.hashicorp.com/gpg) and [https://apt.releases.hashicorp.com/gpg](https://apt.releases.hashicorp.com/gpg), and has the fingerprint 798A EC65 4E5C 1542 8C8E 42EE AA16 FCBC A621 E701
+.
+Please note that there was a previous signing key used prior to January 23, 2023, which had the fingerprint E8A0 32E0 94D8 EB4E A189 D270 DA41 8C88 A321 9F7B
+. This certificate was revoked on April 24, 2023.
+Product binary signature verification
+HashiCorp [Authenticode](https://docs.microsoft.com/en-us/windows-hardware/drivers/install/authenticode) signs Microsoft Windows executables and [code signs](https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Introduction/Introduction.html) Apple macOS executables.
+Apple macOS
+Use Apple's codesign
+utility to verify the integrity of an Apple macOS executable and pay attention to the TeamIdentifier
+field which should match the one below.
+codesign --verify -d --verbose=2 /usr/local/bin/terraform
+Executable=/usr/local/bin/terraform
+Identifier=terraform
+...
+Authority=Developer ID Application: Hashicorp, Inc. (D38WU7D763)
+Authority=Developer ID Certification Authority
+Authority=Apple Root CA
+...
+TeamIdentifier=D38WU7D763
+...
+Microsoft Windows
+Windows binaries may be signed by certificates with thumbprints matching 7868E4F55FD7B047CD8BF93FEA8C38509CFB5939
+, 6F1DCD6FE62C173708E26E25D19656E413277816
+, or 35AB9FC834D217E9E7B1778FB1B97AF7C73792F2.
+Use Microsoft's Get-AuthenticodeSignature
+cmdlet to verify the integrity of a Microsoft Windows executable. For example:
+(Get-AuthenticodeSignature -FilePath terraform.exe).SignerCertificate | Format-List
+Subject : CN="HashiCorp, Inc.", O="HashiCorp, Inc.", L=San Francisco, S=California, C=US
+Issuer : CN=DigiCert SHA2 Assured ID Code Signing CA, OU=www.digicert.com, O=DigiCert Inc, C=US
+Thumbprint : 35AB9FC834D217E9E7B1778FB1B97AF7C73792F2
+FriendlyName :
+NotBefore : 16/01/2020 00:00:00
+NotAfter : 20/01/2023 12:00:00
+Extensions : {System.Security.Cryptography.Oid, System.Security.Cryptography.Oid, System.Security.Cryptography.Oid,
+System.Security.Cryptography.Oid...}

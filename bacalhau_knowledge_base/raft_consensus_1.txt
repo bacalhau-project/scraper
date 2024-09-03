@@ -1,4 +1,21 @@
 Source: raft_consensus
 URL: https://raft.github.io/raftscope-replay/index.html
 
-××Keyboard shortcuts/.Pause/unpause?HelpCSubmit client request to leader of highest term, if anyRRestart leader of highest term, if anyTAdjust election timers to avoid a split voteAAlign election timers to encourage a split voteLSet up log replication start scenarioBResume all serversFFork playback, discarding future×
+/ . |
+Pause/unpause |
+? |
+Help |
+C |
+Submit client request to leader of highest term, if any |
+R |
+Restart leader of highest term, if any |
+T |
+Adjust election timers to avoid a split vote |
+A |
+Align election timers to encourage a split vote |
+L |
+Set up log replication start scenario |
+B |
+Resume all servers |
+F |
+Fork playback, discarding future |

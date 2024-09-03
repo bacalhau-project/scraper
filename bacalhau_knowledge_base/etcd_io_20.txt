@@ -1,4 +1,107 @@
-URL: https://etcd.io/docs/v3.6/tutorials/writing-to-etcd/
+Source: etcd_io
+URL: https://etcd.io/docs/v3.5/metrics/
 
-etcdDocsBlogCommunityInstallPlayVersionsv3.6v3.5v3.4v3.3v3.2v3.1v2.3Versionsv3.6-DRAFTQuickstartDemoTutorialsHow to Set Up a Demo etcd ClusterReading from etcdWriting to etcdHow to get keys by prefixHow to delete keysHow to make multiple writes in a transactionHow to watch keysHow to create leaseHow to create locksHow to conduct leader election in etcd clusterHow to check Cluster statusHow to save the databaseHow to migrate etcd from v2 to v3How to Add and Remove MembersInstallFAQLibraries and toolsMetricsReporting bugsTuningDiscovery service protocolLogging conventionsGolang modulesLearningData modeletcd client designetcd learner designetcd v3 authentication designetcd APIetcd persistent storage filesetcd API guaranteesetcd versus other key-value storesGlossaryDeveloper guideDiscovery service protocolSet up a local clusterInteracting with etcdWhy gRPC gatewaygRPC naming and discoverySystem limitsetcd featuresAPI referenceAPI reference: concurrencyOperations guideAuthentication GuidesRole-based access controlAuthenticationConfiguration optionsTransport security modelClustering GuideRun etcd clusters as a Kubernetes StatefulSetRun etcd clusters inside containersFailure modesDisaster recoveryetcd gatewaygRPC proxyHardware recommendationsMaintenanceMonitoring etcdPerformanceDesign of runtime reconfigurationRuntime reconfigurationSupported platformsVersioningData CorruptionBenchmarksStorage Memory Usage BenchmarkWatch Memory Usage BenchmarkBenchmarking etcd v3Benchmarking etcd v2.2.0-rc-memoryBenchmarking etcd v2.2.0-rcBenchmarking etcd v2.2.0Benchmarking etcd v2.1.0UpgradingUpgrading etcd clusters and applicationsUpgrade etcd from 3.4 to 3.5Upgrade etcd from 3.3 to 3.4Upgrade etcd from 3.2 to 3.3Upgrade etcd from 3.1 to 3.2Upgrade etcd from 3.0 to 3.1Upgrade etcd from 2.3 to 3.0TriageIssue triage guidelinesPR managementv3.5QuickstartDemoTutorialsHow to Set Up a Demo etcd ClusterReading from etcdWriting to etcdHow to get keys by prefixHow to delete keysHow to make multiple writes in a transactionHow to watch keysHow to create leaseHow to create locksHow to conduct leader election in etcd clusterHow to check Cluster statusHow to save the databaseHow to migrate etcd from v2 to v3How to Add and Remove MembersInstallFAQLibraries and toolsMetricsReporting bugsTuningDiscovery service protocolLogging conventionsGolang modulesLearningData modeletcd client designetcd learner designetcd v3 authentication designetcd APIetcd persistent storage filesetcd API guaranteesetcd versus other key-value storesGlossaryDeveloper guideDiscovery service protocolSet up a local clusterInteracting with etcdWhy gRPC gatewaygRPC naming and discoverySystem limitsetcd featuresAPI referenceAPI reference: concurrencyOperations guideAuthentication GuidesRole-based access controlAuthenticationConfiguration optionsTransport security modelClustering GuideRun etcd clusters as a Kubernetes StatefulSetRun etcd clusters inside containersFailure modesDisaster recoveryetcd gatewaygRPC proxyHardware recommendationsMaintenanceMonitoring etcdPerformanceDesign of runtime reconfigurationRuntime reconfigurationSupported platformsVersioningData CorruptionBenchmarksStorage Memory Usage BenchmarkWatch Memory Usage BenchmarkBenchmarking etcd v3Benchmarking etcd v2.2.0-rc-memoryBenchmarking etcd v2.2.0-rcBenchmarking etcd v2.2.0Benchmarking etcd v2.1.0DowngradingDowngrading etcd clusters and applicationsDowngrade etcd from 3.5 to 3.4UpgradingUpgrading etcd clusters and applicationsUpgrade etcd from 3.4 to 3.5Upgrade etcd from 3.3 to 3.4Upgrade etcd from 3.2 to 3.3Upgrade etcd from 3.1 to 3.2Upgrade etcd from 3.0 to 3.1Upgrade etcd from 2.3 to 3.0TriageIssue triage guidelinesPR managementv3.4QuickstartOverviewDemoInstallFAQLibraries and toolsMetricsReporting bugsTuningDiscovery service protocolLogging conventionsLearningData modeletcd client designetcd learner designetcd v3 authentication designetcd3 APIetcd API guaranteesetcd versus other key-value storesGlossaryDeveloper guideDiscovery service protocolSet up a local clusterInteracting with etcdWhy gRPC gatewaygRPC naming and discoverySystem limitsetcd featuresAPI referenceAPI reference: concurrencyOperations guideConfiguration optionsRole-based access controlTransport security modelClustering GuideRun etcd clusters inside containersFailure modesDisaster recoveryetcd gatewaygRPC proxyHardware recommendationsMaintenancePerformanceDesign of runtime reconfigurationRuntime reconfigurationSupported platformsMigrate applications from using API v2 to API v3VersioningData CorruptionMonitoring etcdBenchmarksStorage Memory Usage BenchmarkWatch Memory Usage BenchmarkBenchmarking etcd v3Benchmarking etcd v2.2.0-rc-memoryBenchmarking etcd v2.2.0-rcBenchmarking etcd v2.2.0Benchmarking etcd v2.1.0UpgradingUpgrading etcd clusters and applicationsUpgrade etcd from 3.4 to 3.5Upgrade etcd from 3.3 to 3.4Upgrade etcd from 3.2 to 3.3Upgrade etcd from 3.1 to 3.2Upgrade etcd from 3.0 to 3.1Upgrade etcd from 2.3 to 3.0PlatformsAmazon Web ServicesContainer Linux with systemdFreeBSDTriageIssue Triage Guidelinesv3.3InstallLibraries and toolsMetricsBenchmarksBenchmarking etcd v2.1.0Benchmarking etcd v2.2.0Benchmarking etcd v2.2.0-rcBenchmarking etcd v2.2.0-rc-memoryBenchmarking etcd v3Storage Memory Usage BenchmarkWatch Memory Usage BenchmarkDemoDeveloper guideDiscovery service protocoletcd API Referenceetcd concurrency API ReferenceExperimental APIs and featuresgRPC naming and discoveryInteracting with etcdSet up a local clusterSystem limitsWhy gRPC gatewayDiscovery service protocoletcd v3 APIFrequently Asked Questions (FAQ)Learningetcd client architectureClient feature matrixData modeletcd v3 authentication designetcd versus other key-value storesetcd3 APIGlossaryKV API guaranteesLearnerLogging conventionsOperations guideMonitoring etcdVersioningClustering GuideConfiguration flagsDesign of runtime reconfigurationDisaster recoveryetcd gatewayFailure modesgRPC proxyHardware recommendationsMaintenanceMigrate applications from using API v2 to API v3PerformanceRole-based access controlRun etcd clusters inside containersRuntime reconfigurationSupported systemsTransport security modelPlatformsAmazon Web ServicesContainer Linux with systemdFreeBSDProduction usersReporting bugsTuningUpgradingUpgrade etcd from 2.3 to 3.0Upgrade etcd from 3.0 to 3.1Upgrade etcd from 3.1 to 3.2Upgrade etcd from 3.2 to 3.3Upgrade etcd from 3.3 to 3.4Upgrade etcd from 3.4 to 3.5Upgrading etcd clusters and applicationsv3.2BenchmarksBenchmarking etcd v2.1.0Benchmarking etcd v2.2.0Benchmarking etcd v2.2.0-rcBenchmarking etcd v2.2.0-rc-memoryBenchmarking etcd v3-demoStorage Memory Usage BenchmarkWatch Memory Usage BenchmarkData modelDemoDeveloper guideDiscovery service protocoletcd API referenceetcd concurrency API ReferenceExperimental APIs and featuresgRPC gatewaygRPC naming and discoveryInteracting with etcdSet up a local clusterSystem limitsetcd dev internalDiscovery service protocolLogging conventionsetcd operations guideAuthentication GuideClustering GuideConfiguration flagsDesign of runtime reconfigurationDisaster recoveryetcd gatewaygRPC proxyHardware recommendationsMaintenanceMigrate applications from using API v2 to API v3Monitoring etcdPerformanceRun etcd clusters inside containersRuntime reconfigurationSecurity modelSupported platformsUnderstand failuresVersioningetcd upgradesUpgrade etcd from 2.3 to 3.0Upgrade etcd from 3.0 to 3.1Upgrade etcd from 3.1 to 3.2Upgrade etcd from 3.2 to 3.3Upgrade etcd from 3.3 to 3.4Upgrading etcd clusters and applicationsetcd v3 authentication designetcd versus other key-value storesetcd3 APIFrequently Asked Questions (FAQ)GlossaryInstallKV API guaranteesLibraries and toolsMetricsPlatformsAmazon Web ServicesFreeBSDRun etcd on Container Linux with systemdProduction usersReporting bugsRFCetcd v3 APITuningv3.1Data modelDemoetcd benchmarksetcd v2.1.0-alpha benchmarksetcd v2.2.0 benchmarksetcd v2.2.0-rc benchmarksetcd v2.2.0-rc-memory benchmarksetcd v3-demo benchmarksStorage Memory Usage BenchmarkWatch Memory Usage Benchmarketcd developer guideDiscovery service protocoletcd API ReferenceExperimental APIs and featuresgRPC GatewaygRPC naming and discoveryInteracting with etcdSetup a local clusterSystem limitsetcd internal devDiscovery service protocolLogging conventionsetcd operations guideClustering GuideConfiguration flagsDesign of runtime reconfigurationDisaster recoveryetcd gatewaygRPC proxyHardware recommendationsMaintenanceMigrate applications from using API v2 to API v3Monitoring etcdPerformanceRun etcd clusters inside containersRuntime reconfigurationSecurity modelSupported platformsUnderstand failuresVersioningetcd3 APIFrequently Asked Questions (FAQ)GlossaryInstallKV API guaranteesLibraries and toolsMetricsPlatformsFreeBSDProduction usersReporting bugsRFCetcd v3 APITuningUpgrading etcd clusters and applicationsUpgrade etcd from 2.3 to 3.0Upgrade etcd from 3.0 to 3.1Upgrade etcd from 3.1 to 3.2Upgrade etcd from 3.2 to 3.3Upgrade etcd from 3.3 to 3.4Why etcdv2.3AdministrationAuthentication GuideBackward CompatibilityBenchmarksBenchmarking etcd v2.2.0etcd 2.1.0-alpha benchmarksetcd 2.2.0-rc benchmarksetcd 2.2.0-rc memory benchmarksetcd 3 demo benchmarksStorage Memory Usage BenchmarkWatch Memory Usage BenchmarkClustering GuideConfiguration FlagsDesign of Runtime ReconfigurationDevelopmentDiscovery Service ProtocolError Codeetcd APIetcd v3 APIFAQGlossaryLibraries and ToolsMembers APIMetricsMiscellaneous APIsPlatformsFreeBSProduction UsersProxyReporting BugsRunning etcd under DockerRuntime ReconfigurationSecurity ModelSnapshot MigrationTuningUpgrade etcd from 2.1 to 2.2Upgrade etcd from 2.1 to 2.2Upgrade etcd from 2.2 to 2.3v2 Auth and SecurityVersioningView page sourceEdit this pageCreate child pageCreate documentation issueCreate project issuePrerequisitesProcedureVersionsv3.6-DRAFTTutorialsWriting to etcdWriting to etcdAdding a KV pair to an etcd clusterPrerequisitesInstalletcdctlProcedureUse theputsubcommand to write a key-value pair:etcdctl --endpoints=$ENDPOINTSput foo"Hello World!"where:foois the key name"Hello World!"is the quote-delimited valueFeedbackWas this page helpful?YesNoGlad to hear it! Pleasetell us how we can improve.Sorry to hear that. Pleasetell us how we can improve.Last modified March 28, 2024:Update how-to-access-etcd (#812) (dd230ad)©
-2013–2024etcd AuthorsTerms|Privacy|Trademarks|LicenseAll Rights Reserved
+Metrics
+etcd uses [Prometheus](https://prometheus.io/) for metrics reporting. The metrics can be used for real-time monitoring and debugging. etcd does not persist its metrics; if a member restarts, the metrics will be reset.
+The simplest way to see the available metrics is to cURL the metrics endpoint /metrics
+. The format is described [here](http://prometheus.io/docs/instrumenting/exposition_formats/).
+Follow the [Prometheus getting started doc](https://prometheus.io/docs/introduction/getting_started/) to spin up a Prometheus server to collect etcd metrics.
+The naming of metrics follows the suggested [Prometheus best practices](https://prometheus.io/docs/practices/naming/). A metric name has an etcd
+or etcd_debugging
+prefix as its namespace and a subsystem prefix (for example wal
+and etcdserver
+).
+etcd namespace metrics
+The metrics under the etcd
+prefix are for monitoring and alerting. They are stable high level metrics. If there is any change of these metrics, it will be included in release notes.
+Metrics that are etcd2 related are documented in the [v2 metrics guide](/docs/v2.3/metrics/#http-requests).
+Server
+These metrics describe the status of the etcd server. In order to detect outages or problems for troubleshooting, the server metrics of every production etcd cluster should be closely monitored.
+All these metrics are prefixed with etcd_server_
+Name | Description | Type |
+---|---|---|
+has_leader | Whether or not a leader exists. 1 is existence, 0 is not. | Gauge |
+leader_changes_seen_total | The number of leader changes seen. | Counter |
+proposals_committed_total | The total number of consensus proposals committed. | Gauge |
+proposals_applied_total | The total number of consensus proposals applied. | Gauge |
+proposals_pending | The current number of pending proposals. | Gauge |
+proposals_failed_total | The total number of failed proposals seen. | Counter |
+has_leader
+indicates whether the member has a leader. If a member does not have a leader, it is
+totally unavailable. If all the members in the cluster do not have any leader, the entire cluster
+is totally unavailable.
+leader_changes_seen_total
+counts the number of leader changes the member has seen since its start. Rapid leadership changes impact the performance of etcd significantly. It also signals that the leader is unstable, perhaps due to network connectivity issues or excessive load hitting the etcd cluster.
+proposals_committed_total
+records the total number of consensus proposals committed. This gauge should increase over time if the cluster is healthy. Several healthy members of an etcd cluster may have different total committed proposals at once. This discrepancy may be due to recovering from peers after starting, lagging behind the leader, or being the leader and therefore having the most commits. It is important to monitor this metric across all the members in the cluster; a consistently large lag between a single member and its leader indicates that member is slow or unhealthy.
+proposals_applied_total
+records the total number of consensus proposals applied. The etcd server applies every committed proposal asynchronously. The difference between proposals_committed_total
+and proposals_applied_total
+should usually be small (within a few thousands even under high load). If the difference between them continues to rise, it indicates that the etcd server is overloaded. This might happen when applying expensive queries like heavy range queries or large txn operations.
+proposals_pending
+indicates how many proposals are queued to commit. Rising pending proposals suggests there is a high client load or the member cannot commit proposals.
+proposals_failed_total
+are normally related to two issues: temporary failures related to a leader election or longer downtime caused by a loss of quorum in the cluster.
+Disk
+These metrics describe the status of the disk operations.
+All these metrics are prefixed with etcd_disk_
+.
+Name | Description | Type |
+---|---|---|
+wal_fsync_duration_seconds | The latency distributions of fsync called by wal | Histogram |
+backend_commit_duration_seconds | The latency distributions of commit called by backend. | Histogram |
+A wal_fsync
+is called when etcd persists its log entries to disk before applying them.
+A backend_commit
+is called when etcd commits an incremental snapshot of its most recent changes to disk.
+High disk operation latencies (wal_fsync_duration_seconds
+or backend_commit_duration_seconds
+) often indicate disk issues. It may cause high request latency or make the cluster unstable.
+Network
+These metrics describe the status of the network.
+All these metrics are prefixed with etcd_network_
+Name | Description | Type |
+---|---|---|
+peer_sent_bytes_total | The total number of bytes sent to the peer with ID To . | Counter(To) |
+peer_received_bytes_total | The total number of bytes received from the peer with ID From . | Counter(From) |
+peer_sent_failures_total | The total number of send failures from the peer with ID To . | Counter(To) |
+peer_received_failures_total | The total number of receive failures from the peer with ID From . | Counter(From) |
+peer_round_trip_time_seconds | Round-Trip-Time histogram between peers. | Histogram(To) |
+client_grpc_sent_bytes_total | The total number of bytes sent to grpc clients. | Counter |
+client_grpc_received_bytes_total | The total number of bytes received to grpc clients. | Counter |
+peer_sent_bytes_total
+counts the total number of bytes sent to a specific peer. Usually the leader member sends more data than other members since it is responsible for transmitting replicated data.
+peer_received_bytes_total
+counts the total number of bytes received from a specific peer. Usually follower members receive data only from the leader member.
+gRPC requests
+These metrics are exposed via [go-grpc-prometheus](https://github.com/grpc-ecosystem/go-grpc-prometheus).
+etcd_debugging namespace metrics
+The metrics under the etcd_debugging
+prefix are for debugging. They are very implementation dependent and volatile. They might be changed or removed without any warning in new etcd releases. Some of the metrics might be moved to the etcd
+prefix when they become more stable.
+Snapshot
+Name | Description | Type |
+---|---|---|
+snapshot_save_total_duration_seconds | The total latency distributions of save called by snapshot | Histogram |
+Abnormally high snapshot duration (snapshot_save_total_duration_seconds
+) indicates disk issues and might cause the cluster to be unstable.
+Prometheus supplied metrics
+The Prometheus client library provides a number of metrics under the go
+and process
+namespaces. There are a few that are particularly interesting.
+Name | Description | Type |
+---|---|---|
+process_open_fds | Number of open file descriptors. | Gauge |
+process_max_fds | Maximum number of open file descriptors. | Gauge |
+Note: The process metrics, such as process_open_fds
+and process_max_fds
+, are not supported on Darwin (macOS) systems at this time.
+Heavy file descriptor (process_open_fds
+) usage (i.e., near the process’s file descriptor limit, process_max_fds
+) indicates a potential file descriptor exhaustion issue. If the file descriptors are exhausted, etcd may panic because it cannot create new WAL files.
+Generated list of metrics
+|
+Feedback
+Was this page helpful?
+Glad to hear it! Please [tell us how we can improve](https://github.com/etcd-io/website/issues/new).
+Sorry to hear that. Please [tell us how we can improve](https://github.com/etcd-io/website/issues/new).

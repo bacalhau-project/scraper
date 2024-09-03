@@ -1,38 +1,5 @@
-URL: https://grpc.io/docs/languages/objective-c/oauth2/
+Source: grpc_io
+URL: https://grpc.io/docs/languages/cpp/api/
 
-gRPCAboutMeetDocsGuidesShowcaseBlogCommunitygRPConf 2024 is happening NEXT WEEK onAug. 27th!-Register nowand get 25% off with the code GOOGLE25.DocsWhat is gRPC?IntroductionCore conceptsFAQLanguagesC# / .NETAPI (legacy)Daily builds (legacy)C++Quick startBasics tutorialAsync-API tutorialAsynchronous Callback API TutorialBest Practices for gRPC C++ API and FAQALTSAPIDartQuick startBasics tutorialAPIGoQuick startBasics tutorialALTSAPIGenerated codeJavaQuick startBasics tutorialALTSAPIGenerated codeKotlinQuick startBasics tutorialAPINodeQuick startBasics tutorialAPIObjective-CQuick startBasics tutorialOAuth2APIPHPQuick startBasics tutorialAPIDaily buildsPythonQuick startBasics tutorialALTSGenerated codeAPIDaily buildsRubyQuick startBasics tutorialAPIDaily buildsPlatformsAndroidJavaQuick startBasics tutorialAPIKotlinQuick startAPIWebQuick startBasics tutorialGuidesAuthenticationBenchmarkingCancellationCompressionCustom Backend MetricsCustom Load Balancing PoliciesCustom Name ResolutionDeadlinesDebuggingError handlingFlow ControlHealth CheckingInterceptorsKeepaliveMetadataOpenTelemetry MetricsPerformance Best PracticesReflectionRequest HedgingRetryService ConfigStatus CodesWait-for-ReadyView page sourceEdit this pageCreate child pageCreate documentation issueCreate project issueExample code and setupTry it out!Create a call with access tokenAn alternative way to provide access tokenDocsLanguagesObjective-COAuth2OAuth2ContentsExample code and setupTry it out!Create a call with access tokenAn alternative way to provide access tokenOAuth2This example demonstrates how to use OAuth2 on gRPC to make
-authenticated API calls on behalf of a user.By walking through it you’ll also learn how to use the Objective-C gRPC API to:Initialize and configure a remote call object before the RPC is started.Set request metadata elements on a call, which are semantically equivalent to
-HTTP request headers.Read response metadata from a call, which is equivalent to HTTP response
-headers and trailers.It assumes you know the basics on how to make gRPC API calls using the
-Objective-C client library, as shown inBasics tutorialand theIntroduction to gRPC, and are familiar with OAuth2 concepts likeaccess
-token.Example code and setupFor the example source, seegprc/examples/objective-c/auth_sample. To
-download the example, clone this repository by running the following commands:$ git clone -b v1.66.0 --depth1--shallow-submodules https://github.com/grpc/grpc$cdgrpc$ git submodule update --initThen change your current directory toexamples/objective-c/auth_sample:$cdexamples/objective-c/auth_sampleOur example is a simple application with two views. The first view lets a user
-sign in and out using the OAuth2 flow of Google’siOS SignIn
-library. (Google’s library
-is used in this example because the test gRPC service we are going to call
-expects Google account credentials, but neither gRPC nor the Objective-C client
-library is tied to any specific OAuth2 provider). The second view makes a gRPC
-request to the test server, using the access token obtained by the first view.NoteOAuth2 libraries need the application to register and obtain an ID from
-the identity provider (in the case of this example app, Google). The app’s XCode
-project is configured using that ID, so you shouldn’t copy this project “as is”
-for your own app: it would result in your app being identified in the consent
-screen as “gRPC-AuthSample”, and not having access to real Google services.
-Instead, configure your own XCode project following theinstructions
-here.As with the other Objective-C examples, you also should haveCocoaPodsinstalled, as well as the relevant
-tools to generate the client library code. You can obtain the latter by
-followingthese setup instructions.Try it out!To try the sample app, first have CocoaPods generate and install the client library for our .proto
-files:$ pod install(This might have to compile OpenSSL, which takes around 15 minutes if CocoaPods
-doesn’t have it yet on your computer’s cache).Finally, open the XCode workspace created by CocoaPods, and run the app.The first view,SelectUserViewController.h/m, asks you to sign in with your
-Google account, and to give the “gRPC-AuthSample” app the following permissions:View your email address.View your basic profile info.“Test scope for access to the Zoo service”.This last permission, corresponding to the scopehttps://www.googleapis.com/auth/xapi.zoodoesn’t grant any real capability:
-it’s only used for testing. You can log out at any time.The second view,MakeRPCViewController.h/m, makes a gRPC request to a test
-server athttps://grpc-test.sandbox.google.com, sending the access token along
-with the request. The test service simply validates the token and writes in its
-response which user it belongs to, and which scopes it gives access to. (The
-client application already knows those two values; it’s a way to verify that
-everything went as expected).The next sections guide you step-by-step through how the gRPC call inMakeRPCViewControlleris performed. You can see the complete code inMakeRPCViewController.m.Create a call with access tokenTo make an authenticated call, first you need to initialize aGRPCCallOptionsobject and configure
-it with the access token.GRPCMutableCallOptions*options=[[GRPCMutableCallOptions alloc] init];options.oauth2AccessToken=myAccessToken;Then you need to create and start your call with this call options object. Assume you have a proto
-service definition like this:optionobjc_class_prefix="AUTH";serviceTestService {rpcUnaryCall(Request)returns(Response);}AunaryCallWithMessage:responseHandler:callOptions:method, with which you’re already familiar, is
-generated for theAUTHTestServiceclass:- (GRPCUnaryProtoRPC*)unaryCallWithMessage:(AUTHRequest*)messageresponseHandler:(id<GRPCProtoResponseHandler>)responseHandlercallOptions:(GRPCCallOptions*)callOptions;Use this method to generated the RPC object with your request options object:GRPCUnaryProtoRPC*rpc=[clientunaryCallWithMessage:myRequestMessageresponseHandler:myResponseHandlercallOptions:options];You can then start the RPC represented by this object at any later time like this:[rpc start];An alternative way to provide access tokenRather than settingoauth2AccessTokenoption inGRPCCallOptionsbefore the RPC object is
-created, an alternative approach allows users providing access token at call start time.To use this approach, first create a class in your project that conforms toGRPCAuthorizationProtocolprotocol.@interfaceTokenProvider:NSObject<GRPCAuthorizationProtocol>...@end@implementationTokenProvider- (void)getTokenWithHandler:(void(^)(NSString*token))handler{...}@endWhen creating an RPC object, pass an instance of this class to call optionauthTokenProvider:GRPCMutableCallOptions*options=[[GRPCMutableCallOptions alloc] init];options.authTokenProvider=[[TokenProvider alloc] init];GRPCUnaryProtoCall*rpc=[clientunaryCallWithMessage:myRequestMessageresponseHandler:myResponseHandlercallOptions:options] start];[rpc start];When the call starts, it will call theTokenProviderinstance’sgetTokenWithHandler:method with
-a callbackhandlerand waits for the callback. TheTokenProviderinstance may call the handler
-at any time to provide the token for this call and resume the call process.Last modified August 14, 2022:Fix external link in OAuth2 objective-c page (#1035) (8e565ca)View page sourceEdit this pageCreate child pageCreate documentation issueCreate project issue© 2024 gRPC AuthorsTerms|Privacy|Trademarks|License|About
+The GRPC Core library is a low-level library designed to be wrapped by higher level libraries. The top-level API is provided in grpc.h. Security related functionality lives in grpc_security.h.
+Generated on Thu Aug 22 2024 20:29:49 for GRPC C++ by 1.8.17

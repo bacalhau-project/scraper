@@ -1,5 +1,46 @@
+Source: nats_io
 URL: https://nats.io/about/
 
-AboutDownloadDocumentationBlogCommunitySupportPrivacyAbout NATSNATS is a connective technology built for the ever increasingly hyper-connected world. It is a single technology that enables applications to securely communicate across any combination of cloud vendors, on-premise, edge, web and mobile, and devices.
-NATS consists of a family of open source products that are tightly integrated but can be deployed easily and independently. NATS is being used globally by thousands of companies, spanning use-cases including microservices, edge computing, mobile, IoT and can be used to augment or replace traditional messaging.The NATS Server acts as a central nervous system for building distributed applications. Official clients are available in Go, Rust, JavaScript (Node and Web), TypeScript (Deno), Python, Java, C#, C, Ruby, Elixir and a CLI in addition to 30+ community-contributed clients. Real time data streaming, highly resilient data storage and flexible data retrieval are supported throughJetStream, the next generation streaming platform built into the NATS server. Check out the full list ofNATS clients.NATS was created by Derek Collison, in response to the market need for a simple, secure, and connective technology. NATS is currently deployed in some of the largest cloud platforms, including: VMware, CloudFoundry, Baidu, Siemens, and GE. NATS is 100% free to use under the Apache-2.0 Open Source License.NATS is unique in its simplicity and performance, and as a result powers some of the largest production environments. You can learn more about NATS in ourextensive documentation.RoadmapThe purpose of the roadmap is to communicate the known set of features and changes coming in a release. Each release contains a set of strategic and high-value changes decided by the NATS maintainers. There are several sources of input for this decision making:Community, driven by GitHub and Slack interest and discussionsCustomers, solicited fromSynadia’scustomer use casesSupport, sourced from recurring challenges with existing capabilitiesOpportunity, ideated by the maintainers insight and visionWe are excited to bring these advances to the NATS community and look forward to your valuable input! Feel free to reach out on ourSlack channel, start aGitHub discussion, oremail uswith any questions, comments, or requests.2.11 ReleaseComing in 2024The following short-list of items have been committed to, but will be refined once the previous version is released.Key-value based NATS resolverMessage processing calloutEncryption key rotationKey-Value typed valuesNightly container image builds are available during development on Docker Hub under thesynadia/nats-server:nightlyrepo.Future ConsiderationsComing soon!If you have any ideas or requests, be sure to contact us using one of the methods above ☝️!Recent postsReal-time analytics from Edge to multiple factories with NATS and i-flowPosted on July 22, 2024Delegate with trustPosted on May 21, 2024Nothin' but NATS - Building NatsterPosted on March 26, 2024Guest Post: Real-time IoT monitoring with NATS JetStream, RisingWave, and SupersetPosted on February 29, 2024ResourcesIn addition to our officialDocumentation, the following resources are just a few available to learn, share, and grow your knowledge of NATS.
-If you would like to share your experience with NATS and would like help publishing you cancontact usor if you have an article published, tag us onTwitteror ping us onSlack.NATS News|Byron Ruthhas created a monthly NATS newsletter combining announcements, Slack Q&A, and updates. Additional featured NATS articles are also available.NATS by Example| Learn NATS by Example with this evolving collection of runnable, cross-client reference examples for NATS.NATS.fm Podcast| Join us as we talk all things NATS.io on everything from the concepts & patterns, to use cases and real world outcomes.SlideShare| Presentation slides from MeetUps, conferences and webinars.YouTube| NATS informational and educational video collection.Benchmark Core NATS and NATS JetStream using NATS CLISlideShare slide deckNATS JetStream for Key-Value Store Tech PreviewSlideShare slide deckNATS Persistence at the Edge, JetStream on LeafnodesSlideShare slide deckCopyright © NATS Authors 2024NATS is aCloud Native Computing Foundationincubating projectThe Linux Foundation has registered trademarks and uses trademarks.For a list of trademarks of The Linux Foundation, please seeTrademark Usage page.
+Benchmark Core NATS and NATS JetStream using NATS CLI
+[SlideShare slide deck]
+About NATS
+NATS is a connective technology built for the ever increasingly hyper-connected world. It is a single technology that enables applications to securely communicate across any combination of cloud vendors, on-premise, edge, web and mobile, and devices. NATS consists of a family of open source products that are tightly integrated but can be deployed easily and independently. NATS is being used globally by thousands of companies, spanning use-cases including microservices, edge computing, mobile, IoT and can be used to augment or replace traditional messaging.
+The NATS Server acts as a central nervous system for building distributed applications. Official clients are available in Go, Rust, JavaScript (Node and Web), TypeScript (Deno), Python, Java, C#, C, Ruby, Elixir and a CLI in addition to 30+ community-contributed clients. Real time data streaming, highly resilient data storage and flexible data retrieval are supported through
+[JetStream](https://docs.nats.io/jetstream/)
+, the next generation streaming platform built into the NATS server. Check out the full list of
+[NATS clients](/download/)
+.
+NATS was created by Derek Collison, in response to the market need for a simple, secure, and connective technology. NATS is currently deployed in some of the largest cloud platforms, including: VMware, CloudFoundry, Baidu, Siemens, and GE. NATS is 100% free to use under the Apache-2.0 Open Source License.
+NATS is unique in its simplicity and performance, and as a result powers some of the largest production environments. You can learn more about NATS in our
+[extensive documentation](https://docs.nats.io)
+.
+The purpose of the roadmap is to communicate the known set of features and changes coming in a release. Each release contains a set of strategic and high-value changes decided by the NATS maintainers. There are several sources of input for this decision making:
+We are excited to bring these advances to the NATS community and look forward to your valuable input! Feel free to reach out on our
+[Slack channel](https://slack.nats.io)
+, start a
+[GitHub discussion](https://github.com/nats-io/nats-server/discussions)
+, or
+[email us](mailto:info@nats.io)
+with any questions, comments, or requests.
+Coming in 2024
+The following short-list of items have been committed to, but will be refined once the previous version is released.
+Nightly container image builds are available during development on Docker Hub under the [ synadia/nats-server:nightly](https://hub.docker.com/r/synadia/nats-server) repo.
+Coming soon!
+If you have any ideas or requests, be sure to contact us using one of the methods above ☝️!
+Posted on July 22, 2024
+Posted on May 21, 2024
+Posted on March 26, 2024
+Posted on February 29, 2024
+In addition to our official
+[Documentation](https://docs.nats.io)
+, the following resources are just a few available to learn, share, and grow your knowledge of NATS.
+If you would like to share your experience with NATS and would like help publishing you can
+[contact us](mailto:info@nats.io)
+or if you have an article published, tag us on
+[Twitter](https://twitter.com/nats_io)
+or ping us on
+[Slack](https://slack.nats.io)
+.
+Benchmark Core NATS and NATS JetStream using NATS CLI
+NATS JetStream for Key-Value Store Tech Preview
+NATS Persistence at the Edge, JetStream on Leafnodes

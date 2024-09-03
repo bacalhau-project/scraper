@@ -1,50 +1,34 @@
 Source: grpc_io
-URL: https://grpc.io/docs/what-is-grpc/introduction
+URL: https://grpc.io/about/
 
-gRPCAboutMeetDocsGuidesShowcaseBlogCommunitygRPConf 2024 is happening NEXT WEEK onAug. 27th!-Register nowand get 25% off with the code GOOGLE25.DocsWhat is gRPC?IntroductionCore conceptsFAQLanguagesC# / .NETAPI (legacy)Daily builds (legacy)C++Quick startBasics tutorialAsync-API tutorialAsynchronous Callback API TutorialBest Practices for gRPC C++ API and FAQALTSAPIDartQuick startBasics tutorialAPIGoQuick startBasics tutorialALTSAPIGenerated codeJavaQuick startBasics tutorialALTSAPIGenerated codeKotlinQuick startBasics tutorialAPINodeQuick startBasics tutorialAPIObjective-CQuick startBasics tutorialOAuth2APIPHPQuick startBasics tutorialAPIDaily buildsPythonQuick startBasics tutorialALTSGenerated codeAPIDaily buildsRubyQuick startBasics tutorialAPIDaily buildsPlatformsAndroidJavaQuick startBasics tutorialAPIKotlinQuick startAPIWebQuick startBasics tutorialGuidesAuthenticationBenchmarkingCancellationCompressionCustom Backend MetricsCustom Load Balancing PoliciesCustom Name ResolutionDeadlinesDebuggingError handlingFlow ControlHealth CheckingInterceptorsKeepaliveMetadataOpenTelemetry MetricsPerformance Best PracticesReflectionRequest HedgingRetryService ConfigStatus CodesWait-for-ReadyView page sourceEdit this pageCreate child pageCreate documentation issueCreate project issueOverviewWorking with Protocol BuffersProtocol buffer versionsDocsWhat is gRPC?IntroductionIntroduction to gRPCAn introduction to gRPC and protocol buffers.ContentsOverviewWorking with Protocol BuffersProtocol buffer versionsIntroduction to gRPCAn introduction to gRPC and protocol buffers.This page introduces you to gRPC and protocol buffers. gRPC can use
-protocol buffers as both its Interface Definition Language (IDL) and as its underlying message
-interchange format. If you’re new to gRPC and/or protocol buffers, read this!
-If you just want to dive in and see gRPC in action first,select a languageand try itsQuick start.OverviewIn gRPC, a client application can directly call a method on a server application
-on a different machine as if it were a local object, making it easier for you to
-create distributed applications and services. As in many RPC systems, gRPC is
-based around the idea of defining a service, specifying the methods that can be
-called remotely with their parameters and return types. On the server side, the
-server implements this interface and runs a gRPC server to handle client calls.
-On the client side, the client has a stub (referred to as just a client in some
-languages) that provides the same methods as the server.gRPC clients and servers can run and talk to each other in a variety of
-environments - from servers inside Google to your own desktop - and can be
-written in any of gRPC’s supported languages. So, for example, you can easily
-create a gRPC server in Java with clients in Go, Python, or Ruby. In addition,
-the latest Google APIs will have gRPC versions of their interfaces, letting you
-easily build Google functionality into your applications.Working with Protocol BuffersBy default, gRPC usesProtocol Buffers, Google’s
-mature open source mechanism for serializing structured data (although it
-can be used with other data formats such as JSON). Here’s a quick intro to how
-it works. If you’re already familiar with protocol buffers, feel free to skip
-ahead to the next section.The first step when working with protocol buffers is to define the structure
-for the data you want to serialize in aproto file: this is an ordinary text
-file with a.protoextension. Protocol buffer data is structured asmessages, where each message is a small logical record of information
-containing a series of name-value pairs calledfields. Here’s a simple
-example:messagePerson{stringname=1;int32id=2;boolhas_ponycopter=3;}Then, once you’ve specified your data structures, you use the protocol buffer
-compilerprotocto generate data access classes in your preferred language(s)
-from your proto definition. These provide simple accessors for each field,
-likename()andset_name(), as well as methods to serialize/parse
-the whole structure to/from raw bytes. So, for instance, if your chosen
-language is C++, running the compiler on the example above will generate a
-class calledPerson. You can then use this class in your application to
-populate, serialize, and retrievePersonprotocol buffer messages.You define gRPC services
-in ordinary proto files, with RPC method parameters and return types specified as
-protocol buffer messages:// The greeter service definition.serviceGreeter {// Sends a greetingrpcSayHello (HelloRequest)returns(HelloReply) {}}// The request message containing the user's name.messageHelloRequest{stringname=1;}// The response message containing the greetingsmessageHelloReply{stringmessage=1;}gRPC usesprotocwith a special gRPC plugin to
-generate code from your proto file: you get
-generated gRPC client and server code, as well as the regular protocol buffer
-code for populating, serializing, and retrieving your message types. To learn more about protocol buffers, including how to installprotocwith the
-gRPC plugin in your chosen language, see theprotocol buffers documentation.Protocol buffer versionsWhileprotocol buffershave been available to open source users for some time,
-most examples from this site use protocol buffers version 3 (proto3), which has
-a slightly simplified syntax, some useful new features, and supports more
-languages. Proto3 is currently available in Java, C++, Dart, Python,
-Objective-C, C#, a lite-runtime (Android Java), Ruby, and JavaScript from theprotocol buffers GitHub repo, as well as a Go language generator from thegolang/protobuf official package, with more languages in development. You can
-find out more in theproto3 language guideand thereference
-documentationavailable for each language. The reference documentation also
-includes aformal specificationfor the.protofile format.In general, while you can use proto2 (the current default protocol buffers
-version), we recommend that you use proto3 with gRPC as it lets you use the
-full range of gRPC-supported languages, as well as avoiding compatibility
-issues with proto2 clients talking to proto3 servers and vice versa.Last modified July 25, 2024:Embed relevent YT videos to docs (#1325) (a732b16)View page sourceEdit this pageCreate child pageCreate documentation issueCreate project issue© 2024 gRPC AuthorsTerms|Privacy|Trademarks|License|About
+gRPC is a modern open source high performance Remote Procedure Call (RPC) framework that can run in any environment. It can efficiently connect services in and across data centers with pluggable support for load balancing, tracing, health checking and authentication. It is also applicable in last mile of distributed computing to connect devices, mobile applications and browsers to backend services.
+The main usage scenarios
+- Efficiently connecting polyglot services in microservices style architecture
+- Connecting mobile devices, browser clients to backend services
+- Generating efficient client libraries
+Core features that make it awesome
+- Idiomatic client libraries in 11 languages
+- Highly efficient on wire and with a simple service definition framework
+- Bi-directional streaming with http/2 based transport
+- Pluggable auth, tracing, load balancing and health checking
+Who’s using gRPC and why?
+Many companies are already using gRPC for connecting multiple services in their environments. The use case varies from connecting a handful of services to hundreds of services across various languages in on-prem or cloud environments. Below are details and quotes from some of our early adopters.
+Check out what people are saying below.
+![Square testimonial logo](/img/users/square-icon.png)
+![Square testimonial logo](/img/users/square-icon.png)
+At Square, we have been collaborating with Google so that we can replace all uses of our custom RPC solution to use gRPC. We decided to move to gRPC because of its open support for multiple platforms, the demonstrated performance of the protocol, and the ability to customize and adapt it to our network. Developers at Square are looking forward to being able to take advantage of writing streaming APIs and in the future, push gRPC to the edges of the network for integration with mobile clients and third party APIs.
+![Netflix testimonial logo](/img/users/netflix-logo.png)
+![Netflix testimonial logo](/img/users/netflix-logo.png)
+In our initial use of gRPC we’ve been able to extend it easily to live within our opinionated ecosystem. Further, we’ve had great success making improvements directly to gRPC through pull requests and interactions with Google’s team that manages the project. We expect to see many improvements to developer productivity, and the ability to allow development in non-JVM languages as a result of adopting gRPC.
+![Cockroach Labs testimonial logo](/img/users/cockroach-1.png)
+![Cockroach Labs testimonial logo](/img/users/cockroach-1.png)
+Our switch from a home-grown RPC system to gRPC was seamless. We quickly took advantage of the per-stream flow control to provide better scheduling of large RPCs over the same connection as small ones.
+![Cisco testimonial logo](/img/users/cisco.svg)
+With support for high performance bi-directional streaming, TLS based security, and a wide variety of programming languages, gRPC is an ideal unified transport protocol for model driven configuration and telemetry.
+![Juniper Networks testimonial logo](/img/users/juniperlogo.png)
+![Juniper Networks testimonial logo](/img/users/juniperlogo.png)
+The fact that gRPC is built on HTTP/2 transport brings us native bi-directional streaming capabilities and flexible custom-metadata in request headers. The first point is important for large payload-exchange and network-telemetry scenarios, while the latter enables us to expand and include capabilities including but not limited to various network element authentication mechanisms. In addition, the wide language binding support that gRPC/proto3 brings, enables us to provide a flexible and rapid development environment for both internal and external consumers. Last but not least, while there are a number of network communication protocols for configuration, operational state retrieval and network telemetry, gRPC provides us with a unified flexible protocol and transport to ease client/server interaction.
+The story behind gRPC
+gRPC was initially created by Google, which has used a single general-purpose RPC infrastructure called Stubby to connect the large number of microservices running within and across its data centers for over a decade. In March 2015, Google decided to build the next version of Stubby and make it open source. The result was gRPC, which is now used in many organizations outside of Google to power use cases from microservices to the “last mile” of computing (mobile, web, and Internet of Things).
+For more background on why we created gRPC, see the [gRPC Motivation and Design
+Principles](/blog/principles/) on the [gRPC blog](/blog/).

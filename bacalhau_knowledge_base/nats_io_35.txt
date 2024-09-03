@@ -1,90 +1,77 @@
-URL: https://nats.io/blog/nats-recover-quorum/#fnref:2
+Source: nats_io
+URL: https://nats.io/blog/preview-release-new-jetstream-client-api/
 
-AboutDownloadDocumentationBlogCommunitySupportPrivacyRecovering Quorum After Renaming ServersJohn Weldon— January 20, 2024Back to BlogOccasionally, a NATS cluster can lose quorum for various reasons.
-Here, we’ll look at one specific case, and how to recover from it.ContextHow To Rename Servers in a ClusterThe recommended way to rename NATS servers in a cluster is to rename one at a time.
-After each rename, the cluster will have a record of both the old name and the new name.
-The former will appear offline, and the latter should appear online.
-You should remove the record of the old name before renaming the next server, otherwise, the
-cluster may, sooner or later, end up with too many faux-offline servers, and will consider
-itself to have lost quorum.NATS Helm Chart Caveats -A Brief DiversionThevalues.yamlfile for theNATS Helm Charthas an option
-to set aserverNamePrefix, which you might be tempted to use to
-rename the servers in a helm chart deployed cluster.This setting should only be changed before the first installation.
-Once the cluster is up and running, if you change this value, and then upgrade the
-helm release, you’ll cause all of the servers in the cluster to be simultaneously renamed.
-This will double the number of recorded servers in the cluster (half with the old name, and
-half with the new name, per the changedserverNamePrefix).
-Consequently, there will not be enough servers active in the cluster to retain quorum.A Case StudyFor the sake of this article, we’ll assume a helm chart1deployed cluster of three servers.2We start by “breaking” this cluster, simply modifying theserverNamePrefixto rename the
-servers, and update the release.First Indication of TroubleLogsThe first indication of trouble is when you see thisWRNwarning andINFmessage in the logs:[WRN]Healthcheck failed:"JetStream has not established contact with a meta leader"[INF]JetStream cluster no metadata leaderEventsAnother indication is that the NATS pods fail to progress to a ready state;
-the NATS container specifically shows that it’s running, but the readiness is false.The events will show a warning with the messageReadiness probe failed: HTTP probe failed with statuscode:503NATS CLIUsing the NATS CLI, running thenats server report jetstreamwill also show an error;
-depending on the cluster state it could be any one of the following:Before Quorum is LostAt first, you’ll just see half the servers (with the old name) as being offline:$ nats server report jetstream
-╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│                                                 JetStream Summary                                                 │
-├─────────────────────┬────────────────┬─────────┬───────────┬──────────┬───────┬────────┬──────┬─────────┬─────────┤
-│ Server              │ Cluster        │ Streams │ Consumers │ Messages │ Bytes │ Memory │ File │ API Req │ API Err │
-├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
-│ x-nats-helm-kind-0  │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-│ x-nats-helm-kind-1  │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-│ x-nats-helm-kind-2* │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
-│                     │                │0│0│0│0B   │0B    │0B  │0│0│
-╰─────────────────────┴────────────────┴─────────┴───────────┴──────────┴───────┴────────┴──────┴─────────┴─────────╯
-
-╭───────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│                                        RAFT Meta Group Information                                        │
-├─────────────────────────────────────────────────────┬──────────┬────────┬─────────┬────────┬────────┬─────┤
-│ Name                                                │ ID       │ Leader │ Current │ Online │ Active │ Lag │
-├─────────────────────────────────────────────────────┼──────────┼────────┼─────────┼────────┼────────┼─────┤
-│ Server name unknown at thistime(peerID: Wp0X92Zu)│ Wp0X92Zu │        │false│false│ 0s     │0│
-│ nats-helm-kind-0                                    │ YMpQSy04 │        │false│false│ 19.53s │1│
-│ nats-helm-kind-1                                    │ MGRogjE4 │        │false│false│ 0s     │13│
-│ x-nats-helm-kind-0                                  │ svvjmHnE │        │true│true│ 526ms  │0│
-│ x-nats-helm-kind-1                                  │ XCzEfWSa │        │true│true│ 525ms  │0│
-│ x-nats-helm-kind-2                                  │ XGX0cX6V │ yes    │true│true│ 0s     │0│
-╰─────────────────────────────────────────────────────┴──────────┴────────┴─────────┴────────┴────────┴─────╯After Quorum is LostAfter the quorum is lost, but before the readiness probes cause the servers to stop responding,
-for a brief window of time you’ll see the error in the jetstream report:$ nats server report jetstream
-╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│                                                 JetStream Summary                                                │
-├────────────────────┬────────────────┬─────────┬───────────┬──────────┬───────┬────────┬──────┬─────────┬─────────┤
-│ Server             │ Cluster        │ Streams │ Consumers │ Messages │ Bytes │ Memory │ File │ API Req │ API Err │
-├────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
-│ x-nats-helm-kind-0 │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-│ x-nats-helm-kind-1 │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-│ x-nats-helm-kind-2 │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-├────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
-│                    │                │0│0│0│0B   │0B    │0B  │0│0│
-╰────────────────────┴────────────────┴─────────┴───────────┴──────────┴───────┴────────┴──────┴─────────┴─────────╯
-
-
-WARNING: No cluster meta leader found. The cluster expects6nodes but only3responded. JetStream operation require at least4up nodes.After Servers Stop RespondingFinally, the servers will possibly stop responding, giving you the general error:$ nats server report jetstream
-nats: error: nats: no servers availableforconnectioncommandterminated withexitcode1How To RecoverRegain QuorumTo recover, the cluster must first regain quorum.
-In this case, the cluster thinks that there are six nodes3in the cluster,
-so to regain quorum there needs to be a minimum of four nodes3reachable from each other.The way to do this is to add one more server, which will allow quorum to be regained.
-You can do this by scaling the stateful set:$ kubectl scale --replicas=4statefulset/nats-helm-kindWhich, once complete, should result in quorum being regained:$ nats server report jetstream
-╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│                                                 JetStream Summary                                                 │
-├─────────────────────┬────────────────┬─────────┬───────────┬──────────┬───────┬────────┬──────┬─────────┬─────────┤
-│ Server              │ Cluster        │ Streams │ Consumers │ Messages │ Bytes │ Memory │ File │ API Req │ API Err │
-├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
-│ x-nats-helm-kind-0  │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-│ x-nats-helm-kind-1  │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-│ x-nats-helm-kind-2* │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-│ x-nats-helm-kind-3  │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
-│                     │                │0│0│0│0B   │0B    │0B  │0│0│
-╰─────────────────────┴────────────────┴─────────┴───────────┴──────────┴───────┴────────┴──────┴─────────┴─────────╯
-
-╭───────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│                                        RAFT Meta Group Information                                        │
-├─────────────────────────────────────────────────────┬──────────┬────────┬─────────┬────────┬────────┬─────┤
-│ Name                                                │ ID       │ Leader │ Current │ Online │ Active │ Lag │
-├─────────────────────────────────────────────────────┼──────────┼────────┼─────────┼────────┼────────┼─────┤
-│ Server name unknown at thistime(peerID: Wp0X92Zu)│ Wp0X92Zu │        │false│false│ 0s     │0│
-│ nats-helm-kind-0                                    │ YMpQSy04 │        │false│false│ 47m27s │6│
-│ nats-helm-kind-1                                    │ MGRogjE4 │        │false│false│ 0s     │18│
-│ x-nats-helm-kind-0                                  │ svvjmHnE │        │true│true│ 461ms  │0│
-│ x-nats-helm-kind-1                                  │ XCzEfWSa │        │true│true│ 461ms  │0│
-│ x-nats-helm-kind-2                                  │ XGX0cX6V │ yes    │true│true│ 0s     │0│
-│ x-nats-helm-kind-3                                  │ G7oD67bf │        │true│true│ 461ms  │0│
-╰─────────────────────────────────────────────────────┴──────────┴────────┴─────────┴────────┴────────┴─────╯Remove Offline/Old ServersNow you can begin cleaning up the old server records.
-You can do this either with the CLI or by using NATS directly.CLIUsing the CLI4:$ nats server cluster peer-remove -f <peer ID>Using NATS DirectlyYou can also remove a peer directly by publishing to the JetStream API subjects:$ nats publish'$JS.API.SERVER.REMOVE''{"peer":"","peer_id":"YMpQSy04"}'Which will send a response message on the same channel that confirms the action:{"type":"io.nats.jetstream.api.v1.meta_server_remove_response","success":true}Remove Temporarily Added ServerScale Back Down to Three ServersNow that the number of servers is four instead of six, it’s safe to scale back down to three servers,
-and then remove the record of the server we temporarily added.$ kubectl scale --replicas=3statefulset/nats-helm-kindRemove Peer$ nats server cluster peer-remove -f G7oD67bfSuccess!Finally, the state of the cluster should be restored now, with three servers.About The AuthorJohn Weldon is a Customer Solutions Architect atSynadia Communications.The name of the helm release in this article isnats-helm-kind; it could be anything, often the default is justnats↩︎You can replicate thekindenvironment I used in this article, by referring tothisrepository.↩︎NATS Servers are also called “nodes” - sometimes interchangeably.↩︎Throughout this article I use nats-box to execute nats commands; the simple way to do it from the command line is:kubectl exec -it deployment/nats-helm-kind-box -- nats <command> <args>nats-box is deployed by default in the nats helm chart.For simplicity, I’ll just show the plain NATS command in the examples.↩︎Back to BlogCopyright © NATS Authors 2024NATS is aCloud Native Computing Foundationincubating projectThe Linux Foundation has registered trademarks and uses trademarks.For a list of trademarks of The Linux Foundation, please seeTrademark Usage page.
+[Back to Blog](/blog)
+Preview Release New JetStream Client API
+Tomasz Pietrek — June 12, 2023
+Preview Release of the New JetStream Client API
+The NATS Maintainers at Synadia are excited to announce the preview release of the latest major improvement to the NATS client libraries - the new JetStream API. This is an important milestone to continue delivering developer-friendly, flexible, and comprehensive tooling for NATS. We’ve listened to your feedback and are confident this new API will simplify JetStream-related development and adoption.
+The two-week preview period, starting June 12, 2023, is an opportunity for you to try the new API and provide feedback to refine and polish the client APIs. During the preview period, subtle breaking changes will likely be made. The client releases following the preview period will then be considered stable.
+How did we get here?
+With our first JetStream API implementation, we tried to make it closely resemble the Core NATS API, especially when it came to how users retrieved messages from streams and consumers. This led to the introduction of a Subscribe
+method on the JetStream context which implicitly managed the consumer lifecycle.
+Unfortunately, as JetStream grew in features and capabilities, this method was hiding more and more complexity, making it difficult to understand its behavior.
+Observing developer confusion and helping many people in the NATS Slack led to the decision to re-design the JetStream client API from the ground up, including method signatures, configuration options, and error handling. The goal was to focus on simplicity while still providing flexibility as well as ensuring the design and naming followed language-specific best practices.
+Another important change is the focus on Pull Consumers. This change simplifies decision-making around the NATS setup and eliminates the dilemma of choosing between Pull or Push Consumers, all without compromising API patterns available to users.
+The Anatomy of the New API
+To create an API that’s easy to grasp, yet powerful and faithful to client language idioms, we designed the API around pivotal reference points that align with NATS architecture:
+- JetStream Context
+- Streams
+- Consumers
+Let’s delve into their functionalities using the
+[Go client](https://pkg.go.dev/github.com/nats-io/nats.go@v1.26.0/jetstream)
+as an example.
+JetStream Context
+Just like in the previous JetStream API, you initiate operations by creating a JetStream Context. Note how the new API exists in a separate package that is imported.
+nc, err := nats.Connect(“demo.nats.io”)
+js, err := jetstream.New(nc)
+Like the existing API, this context provides all the management capabilities such as creating, retrieving, and deleting JetStream resources.
+Here’s how you can retrieve a stream using the new API:
+nc, err := nats.Connect(“demo.nats.io”)
+js, err := jetstream.New(nc)
+stream, err := jetstream.Stream(ctx, “STREAM”)
+That returned a Stream object.
+Stream
+Stream is now a first-class object providing a set of methods for operating on a specific stream, allowing you to manage consumers, purge streams, and fetch information about the stream, or a specific message by its sequence.
+Here’s how you retrieve a consumer:
+nc, err := nats.Connect(“demo.nats.io”)
+js, err := jetstream.New(nc)
+stream, err := jetstream.Stream(ctx, “STREAM”)
+consumer, err := stream.Consumer(ctx, “CONSUMER”)
+As shown above, you can retrieve a consumer from a stream just as you retrieved a stream from the context.
+Consumer
+Similar to the stream above, a consumer is an object providing various methods for accessing information, but also provides a set of new mechanisms for fetch messages, including:
+- next - get only next message
+- fetch - get a specified number of messages
+- consume - endless process that provides messages to the user in an optimized fashion
+The most interesting way to fetch messages is consume
+. If you think that that’s how the old Subscribe
+worked, you are right (except it does not create any consumers).
+The difference however is that it not only optimizes the process while allowing fine-grained control via options, but it also works for Pull Consumers!
+This means you no longer need to loop fetch operations for Pull Consumers. Simply call ‘consume’ on a Pull Consumer, and the client will handle the rest.
+Here is an example:
+consumer, err := stream.Consumer(ctx, “CONSUMER”)
+cons, _ := consumer.Consume(func(msg jetstream.Msg) {
+msg.Ack()
+fmt.Printf(“Received a JetStream message: %s\n”, string(msg.Data()))
+})
+defer cons.Stop()
+Those examples are based on the Go client, but thanks to Context, Stream, and Consumer orientation points and the fact that each client API follows its language idioms, you should have no issues writing the above code in your language of choice.
+Also, definitely check
+[NATS By Example](https://natsbyexample.com)
+where you can find examples in various languages along with a
+[migration guide to the new API](https://natsbyexample.com/examples/jetstream/api-migration/go)
+.
+Embrace the New JetStream API Today
+The new API preview has been released for our major clients:
+- Go
+- Nodejs/Deno/WebSocket
+- Rust
+- Java
+- .NET
+We firmly believe that this new API represents a significant step forward in simplifying and enhancing your interaction with JetStream. We encourage you to embrace the new JetStream API and to start enjoying these improvements today. Dive in, explore the new functionalities, and discover how our new API can help you build more robust and flexible applications.
+Your feedback has always been crucial to us, and we are eager to hear about your experiences with the new JetStream API. Happy coding!
+About the Author
+[Tomasz Pietrek](https://www.linkedin.com/in/tomasz-pietrek/)
+is a Software Engineer at Synadia, working on various topics around NATS, from the NATS Server and Rust Client to abstraction layers like the microservices framework and Object Store. His journey to NATS was built on a broad spectrum of roles in the technology industry, having served as Principal Architect, Tech Lead, and Solution Architect in various fields, from Fintech and Industry 4.0 to eCommerce and Telecommunications. Today, Tomasz continues his tech journey focusing on innovative solutions and growth, leveraging NATS.
+[Back to Blog](/blog)

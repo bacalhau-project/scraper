@@ -1,25 +1,45 @@
-URL: https://cassandra.apache.org/_/quickstart.html
+Source: apache_cassandra
+URL: https://cassandra.apache.org/_/ecosystem.html
 
-Get StartedCassandra BasicsQuickstartEcosystemDocumentationCommunityWelcomeDiscussionsGovernanceContributeMeet the CommunityCatalyst ProgramEventsLearnCassandra 5.0Case StudiesResourcesBlogDownload NowGet Started with Apache CassandraInterested in getting started with Cassandra? Follow these instructions.STEP 1: GET CASSANDRA USING DOCKERYouâll need to have Docker Desktop for Mac, Docker Desktop for Windows, or similar software installed on your computer.Apache Cassandra is also available as a tarball or packagedownload.docker pull cassandra:latestSTEP 2: START CASSANDRAA Docker network allows us to access the container’s ports without exposing them on the host.docker network create cassandra
-
-docker run --rm -d --name cassandra --hostname cassandra --network cassandra cassandraSTEP 3: CREATE FILESThe Cassandra Query Language (CQL) is very similar to SQL but suited for the JOINless structure of Cassandra.Create a file named data.cql and paste the following CQL script in it. This script will create a keyspace, the layer at which Cassandra replicates its data, a table to hold the data, and insert some data into that table:-- Create a keyspace
-CREATE KEYSPACE IF NOT EXISTS store WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : '1' };
-
--- Create a table
-CREATE TABLE IF NOT EXISTS store.shopping_cart (
-userid text PRIMARY KEY,
-item_count int,
-last_update_timestamp timestamp
-);
-
--- Insert some data
-INSERT INTO store.shopping_cart
-(userid, item_count, last_update_timestamp)
-VALUES ('9876', 2, toTimeStamp(now()));
-INSERT INTO store.shopping_cart
-(userid, item_count, last_update_timestamp)
-VALUES ('1234', 5, toTimeStamp(now()));STEP 4: LOAD DATA WITH CQLSHThe CQL shell, or cqlsh, is one tool to use in interacting with the database. We’ll use it to load some data into the database using the script you just saved.docker run --rm --network cassandra -v "$(pwd)/data.cql:/scripts/data.cql" -e CQLSH_HOST=cassandra -e CQLSH_PORT=9042 -e CQLVERSION=3.4.6 nuvo/docker-cqlshNote: The cassandra server itself (the first docker run command you ran) takes a few seconds to start up. The above command will throw an error if the server hasn’t finished its init sequence yet, so give it a few seconds to spin up.STEP 5: INTERACTIVE CQLSHMuch like an SQL shell, you can also of course use CQLSH to run CQL commands interactively.docker run --rm -it --network cassandra nuvo/docker-cqlsh cqlsh cassandra 9042 --cqlversion='3.4.5'This should get you a prompt like so:Connected to Test Cluster at cassandra:9042.
-[cqlsh 5.0.1 | Cassandra 4.0.4 | CQL spec 3.4.5 | Native protocol v5]
-Use HELP for help.
-cqlsh>STEP 6: READ SOME DATASELECT * FROM store.shopping_cart;STEP 7: WRITE SOME MORE DATAINSERT INTO store.shopping_cart (userid, item_count) VALUES ('4567', 20);STEP 8: CLEAN UPdocker kill cassandra
-docker network rm cassandraCONGRATULATIONS!Hey, that wasnât so hard, was it?To learn more, we suggest the following next steps:Read through theCassandra Basicsto learn main concepts and how Cassandra works at a high level.To understand Cassandra in more detail, head over to theDocs.Browse through theCase Studiesto learn how other users in our worldwide community are getting value out of Cassandra.Get started with Cassandra, fast.Quickstart GuideApache Cassandrapowers mission-critical deployments with improved performance and unparalleled levels of scale in the cloud.HomeCassandra BasicsQuickstartEcosystemDocumentationCommunityCase StudiesResourcesBlogFoundationEventsLicenseThanksSecurityPrivacySponsorshipÂ© 2009-The Apache Software Foundationunder the terms of the Apache License 2.0.  Apache, the Apache feather logo, Apache Cassandra, Cassandra, and the Cassandra logo, are either registered trademarks or trademarks of The Apache Software Foundation.
+[Adelphi](https://github.com/datastax/adelphi): Automation tool for testing open-source Cassandra using cassandra-diff, nosqlbench, and fqltool.
+[Akka-Persistence-Cassandra](https://www.lagomframework.com/documentation/1.6.x/scala/PersistentEntityCassandra.html) : [Lagom](https://github.com/lagom/lagom) focuses on ensuring that your application realizes the full potential of the Reactive Manifesto while delivering a high productivity development environment, and seamless production deployment experience.
+[Apache Ignite](https://ignite.apache.org/): Use Ignite as a traditional SQL database by leveraging JDBC drivers, ODBC drivers, or the native SQL APIs that are available for Java, C#, C++, Python, and more.
+[Astacus](https://github.com/aiven/astacus): Astacus is a clustered database backup system that is meant to work with multiple open-source cluster databases, such as M3 and Apache Cassandra.
+[AxonOps](https://axonops.com/): One-stop operation of Apache Cassandra from a single intuitive management console, enabling Site Reliability Engineers to observe, maintain, and protect their clusters.
+[Cassandra Lucene Index](https://github.com/instaclustr/cassandra-lucene-index): This is a plugin for Apache Cassandra that extends its index functionality to provide near real time search such as ElasticSearch or Solr, including full text search capabilities and free multivariable, geospatial and bitemporal search
+[Cassandra Migration](https://github.com/hhandoko/cassandra-migration): Cassandra Migration is a simple and lightweight Apache Cassandra database schema migration tool.
+[Cyanite](http://github.com/pyr/cyanite): Cyanite is a daemon which provides services to store and retrieve timeseries data.
+[DataStax Bulk Loader](https://downloads.datastax.com/#bulk-loader): Easy-to-use command line utility for loading and unloading JSON or CSV files to/from the database, counting rows in tables and identifying large partitions.
+[DOSA](https://github.com/uber-go/dosa): DOSA is a storage framework that provides a declarative object storage abstraction for applications in Golang and (soon) Java.
+[Dovecot](https://doc.dovecot.org/admin_manual/cassandra/cassandra/): is among the best performing IMAP servers while still supporting the standard mbox and Maildir formats.
+[Dropwizard-Cassandra](https://github.com/composable-systems/dropwizard-cassandra): The dropwizard-cassandra library provides useful functionality for Dropwizard apps that communicate with Cassandra clusters.
+[EmoDB](https://bazaarvoice.github.io/emodb/): EmoDB is a RESTful HTTP data store built on top of Cassandra that stores schemaless JSON objects and offers a databus that allows subscribers to watch for changes to those events. It’s designed to span multiple data centers and features massive non-blocking writes and no synchronous cross data center communication.
+[FiloDB](https://github.com/filodb/FiloDB): Distributed, Prometheus-compatible, real-time, in-memory, massively scalable, multi-schema time series/event/operational database.
+[Freestyle](https://github.com/frees-io/freestyle): Build stack-safe purely functional applications and libraries that support parallel and sequential computations where declaration is decoupled from interpretation.
+[Gocql](https://github.com/gocql/gocql): Package gocql implements a fast and robust Cassandra client for the Go programming language.
+[Grafana-Cassandra-Source](https://github.com/HadesArchitect/grafana-cassandra-source): Apache Cassandra Datasource for Grafana. This datasource is to visualise time-series data stored in Cassandra/DSE
+[Hackolade](https://hackolade.com/column-oriented.html#cassandra): Visual data modeling tool for Cassandra
+[Hazelcast-Cassandra](https://github.com/vcivelek/hazelcastdse): This is a sample implementation of Hazelcast MapStore with DSE Cassandra using DSE Object Mapper.
+[Instaclustr Esop](https://github.com/instaclustr/esop): Swiss knife for backup and restore of your node to GCP, Azure, S3, Ceph etc. Supports backup and restoration of commit logs too. Esop is embedded [in Instaclustr](https://github.com/instaclustr/icarus) Icarus sidecar so you may backup and restore your cluster remotely and on-the-fly without any disruption.
+[Instaclustr SSTable Tools](https://github.com/instaclustr/cassandra-sstable-tools): A command line tool that helps admins get summaries, metadata, partition info, and cell info for SSTables.
+[JanusGraph](https://github.com/JanusGraph/janusgraph): JanusGraph is a highly scalable graph database optimized for storing and querying large graphs with billions of vertices and edges distributed across a multi-machine cluster.
+[Java Apache Mail Enterprise Server](https://github.com/apache/james-project): Modular architecture based on a rich set of modern and efficient components which provides at the end complete, stable, secure and extendable Mail Servers running on the JVM.
+[KairosDB](https://github.com/kairosdb/kairosdb/tree/develop/src/main/java/org/kairosdb/datastore/cassandra): KairosDB is a fast distributed scalable time series database written on top of Cassandra.
+[Kong](http://github.com/Kong/kong): is a cloud-native, fast, scalable, and distributed Microservice Abstraction Layer.
+[NiFi](https://nifi.apache.org/): Apache NiFi supports powerful and scalable directed graphs of data routing, transformation, and system mediation logic.
+[Netflix Data Explorer](https://github.com/Netflix/nf-data-explorer): The Netflix Data Explorer tool allows users to explore data stored in several popular datastores.
+[NoSQLBench](https://github.com/nosqlbench/nosqlbench): Pluggable benchmarking suite for Cassandra and other distributed systems
+[OpenNMS](https://github.com/OpenNMS/opennms): OpenNMS is the world’s first enterprise grade network management application platform developed under the open source model.
+[Phantom](https://outworkers.github.io/phantom/comparison.html): The underlying engine of all other drivers. Phantom, Quill, and the Spark connector all use it underneath the hood to connect and execute queries.
+[PhpFastCach](https://github.com/PHPSocialNetwork/phpfastcache): Simple Yet Powerful PHP Caching Class: One class for many backend cache. You don’t need to rewrite your code many times again.
+[Quill](https://github.com/getquill/quill): Quill provides a Quoted Domain Specific Language (QDSL) to express queries in Scala and execute them in a target language.
+[Rebar](https://github.com/MachineAcuity/rebar): Multi-tenant SaaS boilerplate + examples for universal web application with React, Material-UI, Relay, GraphQL, JWT, Node.js, C* DB - Cassandra/Elassandra/Scylla.
+[SQLPad](https://github.com/rickbergfalk/sqlpad): A web app for writing and running SQL queries and visualizing the results.
+[Stargate](https://stargate.io/): Open source data API gateway providing REST/JSON Document API, plus CQL over gRPC, GraphQL and REST APIs. Stargate also improves Cassandra cluster and app scalability with microservice architecture. Storage, plus query coordination and API Services, are independently deployable and scalable for both APIs and native binary driver connections.
+[Stratio](https://github.com/Stratio/cassandra-lucene-index): Stratio’s Cassandra Lucene Index is a plugin for Apache Cassandra that extends its index functionality to provide near real time search such as ElasticSearch or Solr, including full text search capabilities and free multivariable, geospatial and bitemporal search.
+[Strongbox](https://strongbox.github.io/): Strongbox is an OpenSource artifact repository manager written in Java.
+[Temporal](https://github.com/temporalio/temporal): Temporal is a microservice orchestration platform which enables developers to build scalable applications without sacrificing productivity or reliability.
+[Trellis LDP](https://github.com/trellis-ldp/trellis): Trellis is an enterprise-ready linked data server built on existing Web standards that is modular, extensible and fast.
+[Wasabi](https://github.com/intuit/wasabi): Wasabi A/B Testing Service is a real-time, enterprise-grade, 100% API driven project.
+[Wikimedia RestBase](https://github.com/wikimedia/restbase): RESTBase was built to provide a low-latency & high-throughput API for Wikipedia / Wikimedia content.
+[Zeppelin](https://github.com/apache/zeppelin): Zeppelin is a web-based notebook that enables interactive data analytics.

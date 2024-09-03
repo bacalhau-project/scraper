@@ -1,4 +1,0 @@
-URL: https://www.the-paper-trail.org/post/2009-06-29-sosp-2009-program-available/
-
-Paper TrailBlogSOSP 2009 Program AvailableJune 29, 2009The accepted papers for SOSP 2009 arehere. As ever, some excellent looking papers. If you search for the titles you can often turn up drafts or even the submitted versions.The best looking sessions to me are ‘scalability’ and ‘clusters’, but there’s at least one great looking title in every session. I’ll start posting some reviews once I find some bandwidth (and have finished the computation theory series - next one on its way).Congratulations to all accepted authors!computer scienceNotesospRelated PostsOSDI '08: Corey, an operating system for many cores©  - 2023 ·Paper Trail·
-  ThemeSimplenessPowered byHugo·

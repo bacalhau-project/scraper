@@ -1,11 +1,44 @@
 Source: grpc_io
-URL: https://grpc.io/docs/languages/node/api/
+URL: https://grpc.io/docs/guides/metadata/
 
-DocumentationNamespacesgrpcgrpc.credentialsModulessrc/client_interceptorsClassesgrpc.Channelgrpc.Clientgrpc.credentials~CallCredentialsgrpc.credentials~ChannelCredentialsgrpc.Metadatagrpc.Servergrpc.ServerCredentialsgrpc~Callgrpc~ClientDuplexStreamgrpc~ClientReadableStreamgrpc~ClientUnaryCallgrpc~ClientWritableStreamgrpc~ServerDuplexStreamgrpc~ServerReadableStreamgrpc~ServerUnaryCallgrpc~ServerWritableStreamsrc/client_interceptors~EndListenersrc/client_interceptors~InterceptingCallsrc/client_interceptors~InterceptingListenersrc/client_interceptors~InterceptorConfigurationErrorsrc/client_interceptors~ListenerBuildersrc/client_interceptors~RequesterBuildersrc/client_interceptors~StatusBuilderEventsgrpc~ClientDuplexStream#metadatagrpc~ClientDuplexStream#statusgrpc~ClientReadableStream#metadatagrpc~ClientReadableStream#statusgrpc~ClientUnaryCall#event:metadatagrpc~ClientUnaryCall#event:statusgrpc~ClientWritableStream#metadatagrpc~ClientWritableStream#statusgrpc~ServerDuplexStream~event:cancelledgrpc~ServerReadableStream~event:cancelledgrpc~ServerUnaryCall~event:cancelledgrpc~ServerWritableStream~event:cancelledGlobalCancelRequesterCloseRequestercreateStatusErrorgetClientInterceptorsgetMethodTypeGetPeerRequesterInterceptorInterceptorProviderloadPackageDefinitionMessageListenerMessageRequesterMetadataListenerMetadataRequesterNextCallStatusListenerExternalsDuplexEventEmitterGoogleCredentialReadableWritableNode.js gRPC LibraryPREREQUISITESnode: This requiresnodeto be installed, version4.0or above. If you instead have thenodejsexecutable on Debian, you should install thenodejs-legacypackage.Note:If you installednodevia a package manager and the version is still less than4.0, try directly installing it fromnodejs.org.INSTALLATIONInstall the gRPC NPM packagenpm install grpcBUILD FROM SOURCEThe following command can be used to build from source when installing the package from npm:npm install grpc --build-from-sourceThe--build-from-sourceoption will work even when installing another package that depends ongrpc. To build onlygrpcfrom source, you can use the argument--build-from-source=grpc.ABOUT ELECTRONThe official electron documentation recommends tobuild all of your native packages from source. While the reasons behind this are technically good - many native extensions won't be packaged to work properly with electron - the gRPC source code is fairly difficult to build from source due to its complex nature, and we're also providing working electron pre-built binaries. Therefore, we recommend that you do not follow this model for using gRPC with electron. Also, for the same reason,electron-rebuildwill always build from source. We advise you to not use this tool if you are depending on gRPC. Please note that there's not just one way to get native extensions running in electron, and that there's never any silver bullet for anything. The following instructions try to cater about some of the most generic ways, but different edge cases might require different methodologies.The best to get gRPC to work with electron is to do this, possibly in yourpostinstallscript of yourpackage.jsonfile:npm rebuild --target=2.0.0 --runtime=electron --dist-url=https://atom.io/download/electronNote that the2.0.0above is the electron runtime version number. You will need to update this every time you go on a different version of the runtime.If you have more native dependencies than gRPC, and they work better when built from source, you can explicitely specify which extension to build the following way:npm rebuild --build-from-source=sqlite3 --target=2.0.0 --runtime=electron --dist-url=https://atom.io/download/electronThis way, if you depend on bothgrpcandsqlite3, only thesqlite3package will be rebuilt from source, leaving thegrpcpackage to use its precompiled binaries.BUILD IN GIT REPOSITORYClonethe grpc-node Git Repository.Rungit submodule update --init --recursivefrom the repository root.Runcd packages/grpc-native-core.Runnpm install --build-from-source.Note:On Windows, this might fail due tonodejs issue #4932in which case, you will see something like the following innpm install's output (towards the very beginning):..
-  Building the projects in this solution one at a time. To enable parallel build, please add the "/m" switch.
-  WINDOWS_BUILD_WARNING
-   "..\IMPORTANT: Due to https:\github.com\nodejs\node\issues\4932, to build this library on Windows, you must first remove C:\Users\jenkins\.node-gyp\4.4.0\include\node\openssl"
-   ...
-   ..To fix this, you will have to delete the folderC:\Users\<username>\.node-gyp\<node_version>\include\node\openssland retrynpm installCONFIGURE BINARIES' LOCATIONYou can configure the location from which the pre-compiled binaries are downloaded during installation.npm install --grpc_node_binary_host_mirror=https://your-url.comOr defininggrpc_node_binary_host_mirrorin your.npmrc.API DOCUMENTATIONSee theAPI Documentation.TESTINGTo run the test suite, simply runnpm testin the install location.×Search resultsCloseDocumentation generated byJSDoc 3.5.5on 2019-07-15T16:38:16-07:00
-	
-	using theDocStrap template.
+Metadata
+Explains what metadata is, how it is transmitted, and what it is used for.
+Metadata
+Overview
+Metadata is a side channel that allows clients and servers to provide information to each other that is associated with an RPC.
+gRPC metadata is a key-value pair of data that is sent with initial or final gRPC requests or responses. It is used to provide additional information about the call, such as authentication credentials, tracing information, or custom headers.
+gRPC metadata is implemented using HTTP/2 headers. The keys are ASCII
+strings, while the values can be either ASCII strings or binary data. The keys
+are case insensitive
+and must not start with the prefix grpc-
+, which is reserved for gRPC itself.
+gRPC metadata can be sent and received by both the client and the server. Headers are sent from the client to the server before the initial request and from the server to the client before the initial response of an RPC call. Trailers are sent by the server when it closes an RPC.
+gRPC metadata is useful for a variety of purposes, such as:
+- Authentication: gRPC metadata can be used to send authentication
+credentials to the server.
+This can be used to implement different authentication schemes, such as
+OAuth2
+orJWT
+using the standard HTTP Authorization header. - Tracing: gRPC metadata can be used to send tracing information to the server. This can be used to track the progress of a request through a distributed system.
+- Custom headers: gRPC metadata can be used to send custom headers to the server or from the server to the client. This can be used to implement application-specific features, such as load balancing, rate limiting or providing detailed error messages from the server to the client.
+- Internal usages: gRPC uses HTTP/2 headers and trailers, which will be integrated with the metadata specified by your application.
+See [Core Concepts](/docs/what-is-grpc/core-concepts/#metadata)
+Be Aware
+WARNING: Servers may limit the size of Request-Headers, with a default of 8 KiB suggested.
+Custom metadata must follow the “Custom-Metadata” format listed in
+[PROTOCOL-HTTP2](https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md)
+, with the exception of binary headers not needing to be base64 encoded.
+Headers
+Headers are sent before the initial request data message from the client to the server and similarly before the initial response data from the server to the client. The header includes things like authentication credentials and how to handle the RPC. Some of the headers, such as authorization, are generated by gRPC for you.
+Custom header handling is language dependent, generally through
+[interceptors](/docs/guides/interceptors/).
+Trailers
+Trailers are a special kind of header that is sent after the message data. They are used internally to communicate the outcome of an RPC. At the application level, custom trailers can be used to communicate things not directly part of the data, such as server utilization and query cost. Trailers are sent only by the server.
+For more details, please see the following gRPCs
+[proposal: G1 true binary metadata](https://github.com/grpc/proposal/blob/7c05212d14f4abef5f74f71695f95ba8dd3f7dd3/G1-true-binary-metadata.md)[proposal: L7 go metadata api](https://github.com/grpc/proposal/blob/7c05212d14f4abef5f74f71695f95ba8dd3f7dd3/L7-go-metadata-api.md)[proposal: L48 node metadata options](https://github.com/grpc/proposal/blob/7c05212d14f4abef5f74f71695f95ba8dd3f7dd3/L48-node-metadata-options.md)[proposal: L42 python metadata flags](https://github.com/grpc/proposal/blob/7c05212d14f4abef5f74f71695f95ba8dd3f7dd3/L42-python-metadata-flags.md)[proposal: L11 ruby interceptors](https://github.com/grpc/proposal/blob/7c05212d14f4abef5f74f71695f95ba8dd3f7dd3/L11-ruby-interceptors.md)
+Language Support
+Language | Examples | Notes |
+---|---|---|
+Java |
+|
+[Go Metadata](https://github.com/grpc/grpc-go/tree/master/examples/features/metadata)[Go Metadata Interceptor](https://github.com/grpc/grpc-go/tree/master/examples/features/metadata_interceptor)[Go Documentation](https://github.com/grpc/grpc-go/blob/master/Documentation/grpc-metadata.md)[C++ Metadata](https://github.com/grpc/grpc/tree/master/examples/cpp/metadata)[Node Metadata](https://github.com/grpc/grpc-node/tree/master/examples/metadata)[Python Metadata](https://github.com/grpc/grpc/tree/master/examples/python/metadata)[Use absolute paths instead of absolute URLs (#1268) (4f733b4)](https://github.com/grpc/grpc.io/commit/4f733b4438ecfacd807c943c9f757a7a55044156)

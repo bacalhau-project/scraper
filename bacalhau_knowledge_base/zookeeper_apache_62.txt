@@ -1,8 +1,47 @@
+Source: zookeeper_apache
 URL: https://zookeeper.apache.org/doc/r3.3.3/releasenotes.html
 
-Apache>Hadoop>ZooKeeperProjectWikiZooKeeper 3.3 DocumentationOverviewWelcomeOverviewGetting StartedRelease NotesDeveloperAPI DocsProgrammer's GuideJava ExampleBarrier and Queue TutorialRecipesBookKeeperGetting startedOverviewSetup guideProgrammer's guideAdmin & OpsAdministrator's GuideQuota GuideJMXObservers GuideContributorZooKeeper InternalsMiscellaneousWikiFAQMailing ListsPDFZooKeeper 3.3.3 Release NotesChanges Since ZooKeeper 3.3.2These release notes include new developer and user facing
-incompatibilities, features, and major improvements.See3.0
-release notes and migration instructionsif you are upgrading
+ZooKeeper 3.3.3 Release Notes
+These release notes include new developer and user facing
+incompatibilities, features, and major improvements.
+See [3.0
+release notes and migration instructions](http://hadoop.apache.org/zookeeper/docs/r3.0.1/releasenotes.html#migration) if you are upgrading
 from version 2 of ZooKeeper (SourceForge) to version 3 or
-later.Changes Since ZooKeeper 3.3.2Changes Since ZooKeeper 3.3.2Changes Since ZooKeeper 3.3.2IssueNotesBug[ZOOKEEPER-882]Startup loads last transaction from snapshot[ZOOKEEPER-888]c-client / zkpython: Double free corruption on node watcher[ZOOKEEPER-913]Version parser fails to parse "3.3.2-dev" from build.xml.[ZOOKEEPER-917]Leader election selected incorrect leader[ZOOKEEPER-919]Ephemeral nodes remains in one of ensemble after deliberate SIGKILL[ZOOKEEPER-921]zkPython incorrectly checks for existence of required ACL elements[ZOOKEEPER-957]zkCleanup.sh doesn't do anything[ZOOKEEPER-962]leader/follower coherence issue when follower is receiving a DIFF[ZOOKEEPER-963]Make Forrest work with JDK6[ZOOKEEPER-985]Test BookieRecoveryTest fails on trunk.Improvement[ZOOKEEPER-960]Publish BookKeeper jars into maven.New Feature[ZOOKEEPER-465]Ledger size in bytes[ZOOKEEPER-712]Bookie recoveryCopyright ©
-         2008The Apache Software Foundation.
+later.
+Changes Since ZooKeeper 3.3.2
+Changes Since ZooKeeper 3.3.2
+Changes Since ZooKeeper 3.3.2
+Issue |
+Notes |
+Bug
+| |
+[[ZOOKEEPER-882](https://issues.apache.org/jira/browse/ZOOKEEPER-882)] | Startup loads last transaction from snapshot
+|
+[[ZOOKEEPER-888](https://issues.apache.org/jira/browse/ZOOKEEPER-888)] | c-client / zkpython: Double free corruption on node watcher
+|
+[[ZOOKEEPER-913](https://issues.apache.org/jira/browse/ZOOKEEPER-913)] | Version parser fails to parse "3.3.2-dev" from build.xml.
+|
+[[ZOOKEEPER-917](https://issues.apache.org/jira/browse/ZOOKEEPER-917)] | Leader election selected incorrect leader
+|
+[[ZOOKEEPER-919](https://issues.apache.org/jira/browse/ZOOKEEPER-919)] | Ephemeral nodes remains in one of ensemble after deliberate SIGKILL
+|
+[[ZOOKEEPER-921](https://issues.apache.org/jira/browse/ZOOKEEPER-921)] | zkPython incorrectly checks for existence of required ACL elements
+|
+[[ZOOKEEPER-957](https://issues.apache.org/jira/browse/ZOOKEEPER-957)] | zkCleanup.sh doesn't do anything
+|
+[[ZOOKEEPER-962](https://issues.apache.org/jira/browse/ZOOKEEPER-962)] | leader/follower coherence issue when follower is receiving a DIFF
+|
+[[ZOOKEEPER-963](https://issues.apache.org/jira/browse/ZOOKEEPER-963)] | Make Forrest work with JDK6
+|
+[[ZOOKEEPER-985](https://issues.apache.org/jira/browse/ZOOKEEPER-985)] | Test BookieRecoveryTest fails on trunk.
+|
+Improvement
+| |
+[[ZOOKEEPER-960](https://issues.apache.org/jira/browse/ZOOKEEPER-960)] | Publish BookKeeper jars into maven.
+|
+New Feature
+| |
+[[ZOOKEEPER-465](https://issues.apache.org/jira/browse/ZOOKEEPER-465)] | Ledger size in bytes
+|
+[[ZOOKEEPER-712](https://issues.apache.org/jira/browse/ZOOKEEPER-712)] | Bookie recovery
+|

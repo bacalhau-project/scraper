@@ -1,326 +1,421 @@
-URL: https://kubernetes.io/docs/concepts/workloads/controllers/job/
+Source: kubernetes_io
+URL: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
 
-DocumentationKubernetes BlogTrainingPartnersCommunityCase StudiesVersionsRelease Informationv1.31v1.30v1.29v1.28v1.27English中文 (Chinese)Deutsch (German)Bahasa Indonesia (Indonesian)日本語 (Japanese)한국어 (Korean)DocumentationAvailable Documentation VersionsGetting startedLearning environmentProduction environmentContainer RuntimesInstalling Kubernetes with deployment toolsBootstrapping clusters with kubeadmInstalling kubeadmTroubleshooting kubeadmCreating a cluster with kubeadmCustomizing components with the kubeadm APIOptions for Highly Available TopologyCreating Highly Available Clusters with kubeadmSet up a High Availability etcd Cluster with kubeadmConfiguring each kubelet in your cluster using kubeadmDual-stack support with kubeadmTurnkey Cloud SolutionsBest practicesConsiderations for large clustersRunning in multiple zonesValidate node setupEnforcing Pod Security StandardsPKI certificates and requirementsConceptsOverviewKubernetes ComponentsObjects In KubernetesKubernetes Object ManagementObject Names and IDsLabels and SelectorsNamespacesAnnotationsField SelectorsFinalizersOwners and DependentsRecommended LabelsThe Kubernetes APICluster ArchitectureNodesCommunication between Nodes and the Control PlaneControllersLeasesCloud Controller ManagerAbout cgroup v2Container Runtime Interface (CRI)Garbage CollectionMixed Version ProxyContainersImagesContainer EnvironmentRuntime ClassContainer Lifecycle HooksWorkloadsPodsPod LifecycleInit ContainersSidecar ContainersEphemeral ContainersDisruptionsPod Quality of Service ClassesUser NamespacesDownward APIWorkload ManagementDeploymentsReplicaSetStatefulSetsDaemonSetJobsAutomatic Cleanup for Finished JobsCronJobReplicationControllerAutoscaling WorkloadsManaging WorkloadsServices, Load Balancing, and NetworkingServiceIngressIngress ControllersGateway APIEndpointSlicesNetwork PoliciesDNS for Services and PodsIPv4/IPv6 dual-stackTopology Aware RoutingNetworking on WindowsService ClusterIP allocationService Internal Traffic PolicyStorageVolumesPersistent VolumesProjected VolumesEphemeral VolumesStorage ClassesVolume Attributes ClassesDynamic Volume ProvisioningVolume SnapshotsVolume Snapshot ClassesCSI Volume CloningStorage CapacityNode-specific Volume LimitsVolume Health MonitoringWindows StorageConfigurationConfiguration Best PracticesConfigMapsSecretsLiveness, Readiness, and Startup ProbesResource Management for Pods and ContainersOrganizing Cluster Access Using kubeconfig FilesResource Management for Windows nodesSecurityCloud Native SecurityPod Security StandardsPod Security AdmissionService AccountsPod Security PoliciesSecurity For Windows NodesControlling Access to the Kubernetes APIRole Based Access Control Good PracticesGood practices for Kubernetes SecretsMulti-tenancyHardening Guide - Authentication MechanismsKubernetes API Server Bypass RisksLinux kernel security constraints for Pods and containersSecurity ChecklistPoliciesLimit RangesResource QuotasProcess ID Limits And ReservationsNode Resource ManagersScheduling, Preemption and EvictionKubernetes SchedulerAssigning Pods to NodesPod OverheadPod Scheduling ReadinessPod Topology Spread ConstraintsTaints and TolerationsScheduling FrameworkDynamic Resource AllocationScheduler Performance TuningResource Bin PackingPod Priority and PreemptionNode-pressure EvictionAPI-initiated EvictionCluster AdministrationNode ShutdownsCertificatesCluster NetworkingLogging ArchitectureMetrics For Kubernetes System ComponentsMetrics for Kubernetes Object StatesSystem LogsTraces For Kubernetes System ComponentsProxies in KubernetesAPI Priority and FairnessCluster AutoscalingInstalling AddonsCoordinated Leader ElectionWindows in KubernetesWindows containers in KubernetesGuide for Running Windows Containers in KubernetesExtending KubernetesCompute, Storage, and Networking ExtensionsNetwork PluginsDevice PluginsExtending the Kubernetes APICustom ResourcesKubernetes API Aggregation LayerOperator patternTasksInstall ToolsInstall and Set Up kubectl on LinuxInstall and Set Up kubectl on macOSInstall and Set Up kubectl on WindowsAdminister a ClusterAdministration with kubeadmCertificate Management with kubeadmConfiguring a cgroup driverReconfiguring a kubeadm clusterUpgrading kubeadm clustersUpgrading Linux nodesUpgrading Windows nodesChanging The Kubernetes Package RepositoryMigrating from dockershimChanging the Container Runtime on a Node from Docker Engine to containerdMigrate Docker Engine nodes from dockershim to cri-dockerdFind Out What Container Runtime is Used on a NodeTroubleshooting CNI plugin-related errorsCheck whether dockershim removal affects youMigrating telemetry and security agents from dockershimGenerate Certificates ManuallyManage Memory, CPU, and API ResourcesConfigure Default Memory Requests and Limits for a NamespaceConfigure Default CPU Requests and Limits for a NamespaceConfigure Minimum and Maximum Memory Constraints for a NamespaceConfigure Minimum and Maximum CPU Constraints for a NamespaceConfigure Memory and CPU Quotas for a NamespaceConfigure a Pod Quota for a NamespaceInstall a Network Policy ProviderUse Antrea for NetworkPolicyUse Calico for NetworkPolicyUse Cilium for NetworkPolicyUse Kube-router for NetworkPolicyRomana for NetworkPolicyWeave Net for NetworkPolicyAccess Clusters Using the Kubernetes APIAdvertise Extended Resources for a NodeAutoscale the DNS Service in a ClusterChange the Access Mode of a PersistentVolume to ReadWriteOncePodChange the default StorageClassSwitching from Polling to CRI Event-based Updates to Container StatusChange the Reclaim Policy of a PersistentVolumeCloud Controller Manager AdministrationConfigure a kubelet image credential providerConfigure Quotas for API ObjectsControl CPU Management Policies on the NodeControl Topology Management Policies on a nodeCustomizing DNS ServiceDebugging DNS ResolutionDeclare Network PolicyDeveloping Cloud Controller ManagerEnable Or Disable A Kubernetes APIEncrypting Confidential Data at RestDecrypt Confidential Data that is Already Encrypted at RestGuaranteed Scheduling For Critical Add-On PodsIP Masquerade Agent User GuideLimit Storage ConsumptionMigrate Replicated Control Plane To Use Cloud Controller ManagerNamespaces WalkthroughOperating etcd clusters for KubernetesReserve Compute Resources for System DaemonsRunning Kubernetes Node Components as a Non-root UserSafely Drain a NodeSecuring a ClusterSet Kubelet Parameters Via A Configuration FileShare a Cluster with NamespacesUpgrade A ClusterUse Cascading Deletion in a ClusterUsing a KMS provider for data encryptionUsing CoreDNS for Service DiscoveryUsing NodeLocal DNSCache in Kubernetes ClustersUsing sysctls in a Kubernetes ClusterUtilizing the NUMA-aware Memory ManagerVerify Signed Kubernetes ArtifactsConfigure Pods and ContainersAssign Memory Resources to Containers and PodsAssign CPU Resources to Containers and PodsConfigure GMSA for Windows Pods and containersResize CPU and Memory Resources assigned to ContainersConfigure RunAsUserName for Windows pods and containersCreate a Windows HostProcess PodConfigure Quality of Service for PodsAssign Extended Resources to a ContainerConfigure a Pod to Use a Volume for StorageConfigure a Pod to Use a PersistentVolume for StorageConfigure a Pod to Use a Projected Volume for StorageConfigure a Security Context for a Pod or ContainerConfigure Service Accounts for PodsPull an Image from a Private RegistryConfigure Liveness, Readiness and Startup ProbesAssign Pods to NodesAssign Pods to Nodes using Node AffinityConfigure Pod InitializationAttach Handlers to Container Lifecycle EventsConfigure a Pod to Use a ConfigMapShare Process Namespace between Containers in a PodUse a User Namespace With a PodUse an Image Volume With a PodCreate static PodsTranslate a Docker Compose File to Kubernetes ResourcesEnforce Pod Security Standards by Configuring the Built-in Admission ControllerEnforce Pod Security Standards with Namespace LabelsMigrate from PodSecurityPolicy to the Built-In PodSecurity Admission ControllerMonitoring, Logging, and DebuggingTroubleshooting ApplicationsDebug PodsDebug ServicesDebug a StatefulSetDetermine the Reason for Pod FailureDebug Init ContainersDebug Running PodsGet a Shell to a Running ContainerTroubleshooting ClustersTroubleshooting kubectlResource metrics pipelineTools for Monitoring ResourcesMonitor Node HealthDebugging Kubernetes nodes with crictlAuditingDebugging Kubernetes Nodes With KubectlDeveloping and debugging services locally using telepresenceWindows debugging tipsManage Kubernetes ObjectsDeclarative Management of Kubernetes Objects Using Configuration FilesDeclarative Management of Kubernetes Objects Using KustomizeManaging Kubernetes Objects Using Imperative CommandsImperative Management of Kubernetes Objects Using Configuration FilesUpdate API Objects in Place Using kubectl patchMigrate Kubernetes Objects Using Storage Version MigrationManaging SecretsManaging Secrets using kubectlManaging Secrets using Configuration FileManaging Secrets using KustomizeInject Data Into ApplicationsDefine a Command and Arguments for a ContainerDefine Dependent Environment VariablesDefine Environment Variables for a ContainerExpose Pod Information to Containers Through Environment VariablesExpose Pod Information to Containers Through FilesDistribute Credentials Securely Using SecretsRun ApplicationsRun a Stateless Application Using a DeploymentRun a Single-Instance Stateful ApplicationRun a Replicated Stateful ApplicationScale a StatefulSetDelete a StatefulSetForce Delete StatefulSet PodsHorizontal Pod AutoscalingHorizontalPodAutoscaler WalkthroughSpecifying a Disruption Budget for your ApplicationAccessing the Kubernetes API from a PodRun JobsRunning Automated Tasks with a CronJobCoarse Parallel Processing Using a Work QueueFine Parallel Processing Using a Work QueueIndexed Job for Parallel Processing with Static Work AssignmentJob with Pod-to-Pod CommunicationParallel Processing using ExpansionsHandling retriable and non-retriable pod failures with Pod failure policyAccess Applications in a ClusterDeploy and Access the Kubernetes DashboardAccessing ClustersConfigure Access to Multiple ClustersUse Port Forwarding to Access Applications in a ClusterUse a Service to Access an Application in a ClusterConnect a Frontend to a Backend Using ServicesCreate an External Load BalancerList All Container Images Running in a ClusterSet up Ingress on Minikube with the NGINX Ingress ControllerCommunicate Between Containers in the Same Pod Using a Shared VolumeConfigure DNS for a ClusterAccess Services Running on ClustersExtend KubernetesConfigure the Aggregation LayerUse Custom ResourcesExtend the Kubernetes API with CustomResourceDefinitionsVersions in CustomResourceDefinitionsSet up an Extension API ServerConfigure Multiple SchedulersUse an HTTP Proxy to Access the Kubernetes APIUse a SOCKS5 Proxy to Access the Kubernetes APISet up Konnectivity serviceTLSConfigure Certificate Rotation for the KubeletManage TLS Certificates in a ClusterManual Rotation of CA CertificatesManage Cluster DaemonsPerform a Rolling Update on a DaemonSetPerform a Rollback on a DaemonSetRunning Pods on Only Some NodesNetworkingAdding entries to Pod /etc/hosts with HostAliasesExtend Service IP RangesValidate IPv4/IPv6 dual-stackExtend kubectl with pluginsManage HugePagesSchedule GPUsTutorialsHello MinikubeLearn Kubernetes BasicsCreate a ClusterUsing Minikube to Create a ClusterDeploy an AppUsing kubectl to Create a DeploymentExplore Your AppViewing Pods and NodesExpose Your App PubliclyUsing a Service to Expose Your AppScale Your AppRunning Multiple Instances of Your AppUpdate Your AppPerforming a Rolling UpdateConfigurationExample: Configuring a Java MicroserviceExternalizing config using MicroProfile, ConfigMaps and SecretsUpdating Configuration via a ConfigMapConfiguring Redis using a ConfigMapAdopting Sidecar ContainersSecurityApply Pod Security Standards at the Cluster LevelApply Pod Security Standards at the Namespace LevelRestrict a Container's Access to Resources with AppArmorRestrict a Container's Syscalls with seccompStateless ApplicationsExposing an External IP Address to Access an Application in a ClusterExample: Deploying PHP Guestbook application with RedisStateful ApplicationsStatefulSet BasicsExample: Deploying WordPress and MySQL with Persistent VolumesExample: Deploying Cassandra with a StatefulSetRunning ZooKeeper, A Distributed System CoordinatorServicesConnecting Applications with ServicesUsing Source IPExplore Termination Behavior for Pods And Their EndpointsReferenceGlossaryAPI OverviewKubernetes API ConceptsServer-Side ApplyClient LibrariesCommon Expression Language in KubernetesKubernetes Deprecation PolicyDeprecated API Migration GuideKubernetes API health endpointsAPI Access ControlAuthenticatingAuthenticating with Bootstrap TokensAuthorizationUsing RBAC AuthorizationUsing Node AuthorizationWebhook ModeUsing ABAC AuthorizationAdmission ControllersDynamic Admission ControlManaging Service AccountsCertificates and Certificate Signing RequestsMapping PodSecurityPolicies to Pod Security StandardsKubelet authentication/authorizationTLS bootstrappingValidating Admission PolicyWell-Known Labels, Annotations and TaintsAudit AnnotationsKubernetes APIWorkload ResourcesPodBindingPodTemplateReplicationControllerReplicaSetDeploymentStatefulSetControllerRevisionDaemonSetJobCronJobHorizontalPodAutoscalerHorizontalPodAutoscalerPriorityClassPodSchedulingContext v1alpha3ResourceClaim v1alpha3ResourceClaimTemplate v1alpha3ResourceSlice v1alpha3Service ResourcesServiceEndpointsEndpointSliceIngressIngressClassConfig and Storage ResourcesConfigMapSecretCSIDriverCSINodeCSIStorageCapacityPersistentVolumeClaimPersistentVolumeStorageClassStorageVersionMigration v1alpha1VolumeVolumeAttachmentVolumeAttributesClass v1beta1Authentication ResourcesServiceAccountTokenRequestTokenReviewCertificateSigningRequestClusterTrustBundle v1alpha1SelfSubjectReviewAuthorization ResourcesLocalSubjectAccessReviewSelfSubjectAccessReviewSelfSubjectRulesReviewSubjectAccessReviewClusterRoleClusterRoleBindingRoleRoleBindingPolicy ResourcesFlowSchemaLimitRangeResourceQuotaNetworkPolicyPodDisruptionBudgetPriorityLevelConfigurationValidatingAdmissionPolicyValidatingAdmissionPolicyBindingExtend ResourcesCustomResourceDefinitionDeviceClass v1alpha3MutatingWebhookConfigurationValidatingWebhookConfigurationCluster ResourcesAPIServiceComponentStatusEventIPAddress v1beta1LeaseLeaseCandidate v1alpha1NamespaceNodeRuntimeClassServiceCIDR v1beta1Common DefinitionsDeleteOptionsLabelSelectorListMetaLocalObjectReferenceNodeSelectorRequirementObjectFieldSelectorObjectMetaObjectReferencePatchQuantityResourceFieldSelectorStatusTypedLocalObjectReferenceCommon ParametersInstrumentationService Level Indicator MetricsCRI Pod & Container MetricsNode metrics dataKubernetes Metrics ReferenceKubernetes Issues and SecurityKubernetes Issue TrackerKubernetes Security and Disclosure InformationCVE feedNode Reference InformationKubelet Checkpoint APILinux Kernel Version RequirementsArticles on dockershim Removal and on Using CRI-compatible RuntimesNode Labels Populated By The KubeletKubelet Configuration Directory MergingKubelet Device Manager API VersionsNode StatusNetworking ReferenceProtocols for ServicesPorts and ProtocolsVirtual IPs and Service ProxiesSetup toolsKubeadmkubeadm initkubeadm joinkubeadm upgradekubeadm configkubeadm resetkubeadm tokenkubeadm versionkubeadm alphakubeadm certskubeadm init phasekubeadm join phasekubeadm kubeconfigkubeadm reset phasekubeadm upgrade phaseImplementation detailsCommand line tool (kubectl)Introduction to kubectlkubectl Quick Referencekubectl referencekubectlkubectl annotatekubectl api-resourceskubectl api-versionskubectl applykubectl apply edit-last-appliedkubectl apply set-last-appliedkubectl apply view-last-appliedkubectl attachkubectl authkubectl auth can-ikubectl auth reconcilekubectl auth whoamikubectl autoscalekubectl certificatekubectl certificate approvekubectl certificate denykubectl cluster-infokubectl cluster-info dumpkubectl completionkubectl configkubectl config current-contextkubectl config delete-clusterkubectl config delete-contextkubectl config delete-userkubectl config get-clusterskubectl config get-contextskubectl config get-userskubectl config rename-contextkubectl config setkubectl config set-clusterkubectl config set-contextkubectl config set-credentialskubectl config unsetkubectl config use-contextkubectl config viewkubectl cordonkubectl cpkubectl createkubectl create clusterrolekubectl create clusterrolebindingkubectl create configmapkubectl create cronjobkubectl create deploymentkubectl create ingresskubectl create jobkubectl create namespacekubectl create poddisruptionbudgetkubectl create priorityclasskubectl create quotakubectl create rolekubectl create rolebindingkubectl create secretkubectl create secret docker-registrykubectl create secret generickubectl create secret tlskubectl create servicekubectl create service clusteripkubectl create service externalnamekubectl create service loadbalancerkubectl create service nodeportkubectl create serviceaccountkubectl create tokenkubectl debugkubectl deletekubectl describekubectl diffkubectl drainkubectl editkubectl eventskubectl execkubectl explainkubectl exposekubectl getkubectl kustomizekubectl labelkubectl logskubectl optionskubectl patchkubectl pluginkubectl plugin listkubectl port-forwardkubectl proxykubectl replacekubectl rolloutkubectl rollout historykubectl rollout pausekubectl rollout restartkubectl rollout resumekubectl rollout statuskubectl rollout undokubectl runkubectl scalekubectl setkubectl set envkubectl set imagekubectl set resourceskubectl set selectorkubectl set serviceaccountkubectl set subjectkubectl taintkubectl topkubectl top nodekubectl top podkubectl uncordonkubectl versionkubectl waitkubectl CommandskubectlJSONPath Supportkubectl for Docker Userskubectl Usage ConventionsComponent toolsFeature GatesFeature Gates (removed)kubeletkube-apiserverkube-controller-managerkube-proxykube-schedulerDebug clusterFlow controlConfiguration APIsClient Authentication (v1)Client Authentication (v1beta1)Event Rate Limit Configuration (v1alpha1)Image Policy API (v1alpha1)kube-apiserver Admission (v1)kube-apiserver Audit Configuration (v1)kube-apiserver Configuration (v1)kube-apiserver Configuration (v1alpha1)kube-apiserver Configuration (v1beta1)kube-controller-manager Configuration (v1alpha1)kube-proxy Configuration (v1alpha1)kube-scheduler Configuration (v1)kubeadm Configuration (v1beta3)kubeadm Configuration (v1beta4)kubeconfig (v1)Kubelet Configuration (v1)Kubelet Configuration (v1alpha1)Kubelet Configuration (v1beta1)Kubelet CredentialProvider (v1)WebhookAdmission Configuration (v1)External APIsKubernetes Custom Metrics (v1beta2)Kubernetes External Metrics (v1beta1)Kubernetes Metrics (v1beta1)SchedulingScheduler ConfigurationScheduling PoliciesOther ToolsMapping from dockercli to crictlContributeContribute to Kubernetes DocumentationSuggesting content improvementsContributing new contentOpening a pull requestDocumenting for a releaseBlogs and case studiesReviewing changesReviewing pull requestsFor approvers and reviewersLocalizing Kubernetes documentationParticipating in SIG DocsRoles and responsibilitiesIssue WranglersPR wranglersDocumentation style overviewContent guideStyle guideDiagram guideWriting a new topicPage content typesContent organizationCustom Hugo ShortcodesUpdating Reference DocumentationQuickstartContributing to the Upstream Kubernetes CodeGenerating Reference Documentation for the Kubernetes APIGenerating Reference Documentation for kubectl CommandsGenerating Reference Documentation for MetricsGenerating Reference Pages for Kubernetes Components and ToolsAdvanced contributingViewing Site AnalyticsDocs smoke test pageKubernetes DocumentationConceptsWorkloadsWorkload ManagementJobsJobsJobs represent one-off tasks that run to completion and then stop.A Job creates one or more Pods and will continue to retry execution of the Pods until a specified number of them successfully terminate.
-As pods successfully complete, the Job tracks the successful completions. When a specified number
-of successful completions is reached, the task (ie, Job) is complete. Deleting a Job will clean up
-the Pods it created. Suspending a Job will delete its active Pods until the Job
-is resumed again.A simple case is to create one Job object in order to reliably run one Pod to completion.
-The Job object will start a new Pod if the first Pod fails or is deleted (for example
-due to a node hardware failure or a node reboot).You can also use a Job to run multiple Pods in parallel.If you want to run a Job (either a single task, or several in parallel) on a schedule,
-seeCronJob.Running an example JobHere is an example Job config. It computes π to 2000 places and prints it out.
-It takes around 10s to complete.controllers/job.yamlapiVersion:batch/v1kind:Jobmetadata:name:pispec:template:spec:containers:-name:piimage:perl:5.34.0command:["perl","-Mbignum=bpi","-wle","print bpi(2000)"]restartPolicy:NeverbackoffLimit:4You can run the example with this command:kubectl apply -f https://kubernetes.io/examples/controllers/job.yamlThe output is similar to this:job.batch/pi createdCheck on the status of the Job withkubectl:kubectl describe job pikubectl get job pi -o yamlName:           piNamespace:      defaultSelector:       batch.kubernetes.io/controller-uid=c9948307-e56d-4b5d-8302-ae2d7b7da67cLabels:         batch.kubernetes.io/controller-uid=c9948307-e56d-4b5d-8302-ae2d7b7da67cbatch.kubernetes.io/job-name=pi...Annotations:    batch.kubernetes.io/job-tracking:""Parallelism:1Completions:1Start Time:     Mon,02Dec201915:20:11 +0200Completed At:   Mon,02Dec201915:21:16 +0200Duration:       65sPods Statuses:0Running /1Succeeded /0FailedPod Template:Labels:  batch.kubernetes.io/controller-uid=c9948307-e56d-4b5d-8302-ae2d7b7da67cbatch.kubernetes.io/job-name=piContainers:pi:Image:      perl:5.34.0Port:       <none>Host Port:  <none>Command:perl-Mbignum=bpi-wleprint bpi(2000)Environment:  <none>Mounts:       <none>Volumes:        <none>Events:Type    Reason            Age   From            Message----    ------            ----  ----            -------Normal  SuccessfulCreate  21s   job-controller  Created pod: pi-xf9p4Normal  Completed         18s   job-controller  Job completedapiVersion: batch/v1kind: Jobmetadata:annotations: batch.kubernetes.io/job-tracking:""...creationTimestamp:"2022-11-10T17:53:53Z"generation:1labels:batch.kubernetes.io/controller-uid: 863452e6-270d-420e-9b94-53a54146c223batch.kubernetes.io/job-name: piname: pinamespace: defaultresourceVersion:"4751"uid: 204fb678-040b-497f-9266-35ffa8716d14spec:backoffLimit:4completionMode: NonIndexedcompletions:1parallelism:1selector:matchLabels:batch.kubernetes.io/controller-uid: 863452e6-270d-420e-9b94-53a54146c223suspend:falsetemplate:metadata:creationTimestamp: nulllabels:batch.kubernetes.io/controller-uid: 863452e6-270d-420e-9b94-53a54146c223batch.kubernetes.io/job-name: pispec:containers:- command:- perl- -Mbignum=bpi- -wle- print bpi(2000)image: perl:5.34.0imagePullPolicy: IfNotPresentname: piresources:{}terminationMessagePath: /dev/termination-logterminationMessagePolicy: FilednsPolicy: ClusterFirstrestartPolicy: NeverschedulerName: default-schedulersecurityContext:{}terminationGracePeriodSeconds:30status:active:1ready:0startTime:"2022-11-10T17:53:57Z"uncountedTerminatedPods:{}To view completed Pods of a Job, usekubectl get pods.To list all the Pods that belong to a Job in a machine readable form, you can use a command like this:pods=$(kubectl get pods --selector=batch.kubernetes.io/job-name=pi --output=jsonpath='{.items[*].metadata.name}')echo$podsThe output is similar to this:pi-5rwd7Here, the selector is the same as the selector for the Job. The--output=jsonpathoption specifies an expression
-with the name from each Pod in the returned list.View the standard output of one of the pods:kubectl logs$podsAnother way to view the logs of a Job:kubectl logs jobs/piThe output is similar to this:3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823066470938446095505822317253594081284811174502841027019385211055596446229489549303819644288109756659334461284756482337867831652712019091456485669234603486104543266482133936072602491412737245870066063155881748815209209628292540917153643678925903600113305305488204665213841469519415116094330572703657595919530921861173819326117931051185480744623799627495673518857527248912279381830119491298336733624406566430860213949463952247371907021798609437027705392171762931767523846748184676694051320005681271452635608277857713427577896091736371787214684409012249534301465495853710507922796892589235420199561121290219608640344181598136297747713099605187072113499999983729780499510597317328160963185950244594553469083026425223082533446850352619311881710100031378387528865875332083814206171776691473035982534904287554687311595628638823537875937519577818577805321712268066130019278766111959092164201989380952572010654858632788659361533818279682303019520353018529689957736225994138912497217752834791315155748572424541506959508295331168617278558890750983817546374649393192550604009277016711390098488240128583616035637076601047101819429555961989467678374494482553797747268471040475346462080466842590694912933136770289891521047521620569660240580381501935112533824300355876402474964732639141992726042699227967823547816360093417216412199245863150302861829745557067498385054945885869269956909272107975093029553211653449872027559602364806654991198818347977535663698074265425278625518184175746728909777727938000816470600161452491921732172147723501414419735685481613611573525521334757418494684385233239073941433345477624168625189835694855620992192221842725502542568876717904946016534668049886272327917860857843838279679766814541009538837863609506800642251252051173929848960841284886269456042419652850222106611863067442786220391949450471237137869609563643719172874677646575739624138908658326459958133904780275901Writing a Job specAs with all other Kubernetes config, a Job needsapiVersion,kind, andmetadatafields.When the control plane creates new Pods for a Job, the.metadata.nameof the
-Job is part of the basis for naming those Pods. The name of a Job must be a validDNS subdomainvalue, but this can produce unexpected results for the Pod hostnames. For best compatibility,
-the name should follow the more restrictive rules for aDNS label.
-Even when the name is a DNS subdomain, the name must be no longer than 63
-characters.A Job also needs a.specsection.Job LabelsJob labels will havebatch.kubernetes.io/prefix forjob-nameandcontroller-uid.Pod TemplateThe.spec.templateis the only required field of the.spec.The.spec.templateis apod template.
-It has exactly the same schema as aPod,
-except it is nested and does not have anapiVersionorkind.In addition to required fields for a Pod, a pod template in a Job must specify appropriate
-labels (seepod selector) and an appropriate restart policy.Only aRestartPolicyequal toNeverorOnFailureis allowed.Pod selectorThe.spec.selectorfield is optional. In almost all cases you should not specify it.
-See sectionspecifying your own pod selector.Parallel execution for JobsThere are three main types of task suitable to run as a Job:Non-parallel Jobsnormally, only one Pod is started, unless the Pod fails.the Job is complete as soon as its Pod terminates successfully.Parallel Jobs with afixed completion count:specify a non-zero positive value for.spec.completions.the Job represents the overall task, and is complete when there are.spec.completionssuccessful Pods.when using.spec.completionMode="Indexed", each Pod gets a different index in the range 0 to.spec.completions-1.Parallel Jobs with awork queue:do not specify.spec.completions, default to.spec.parallelism.the Pods must coordinate amongst themselves or an external service to determine
-what each should work on. For example, a Pod might fetch a batch of up to N items from the work queue.each Pod is independently capable of determining whether or not all its peers are done,
-and thus that the entire Job is done.whenanyPod from the Job terminates with success, no new Pods are created.once at least one Pod has terminated with success and all Pods are terminated,
-then the Job is completed with success.once any Pod has exited with success, no other Pod should still be doing any work
-for this task or writing any output. They should all be in the process of exiting.For anon-parallelJob, you can leave both.spec.completionsand.spec.parallelismunset.
-When both are unset, both are defaulted to 1.For afixed completion countJob, you should set.spec.completionsto the number of completions needed.
-You can set.spec.parallelism, or leave it unset and it will default to 1.For awork queueJob, you must leave.spec.completionsunset, and set.spec.parallelismto
-a non-negative integer.For more information about how to make use of the different types of job,
-see thejob patternssection.Controlling parallelismThe requested parallelism (.spec.parallelism) can be set to any non-negative value.
-If it is unspecified, it defaults to 1.
-If it is specified as 0, then the Job is effectively paused until it is increased.Actual parallelism (number of pods running at any instant) may be more or less than requested
-parallelism, for a variety of reasons:Forfixed completion countJobs, the actual number of pods running in parallel will not exceed the number of
-remaining completions. Higher values of.spec.parallelismare effectively ignored.Forwork queueJobs, no new Pods are started after any Pod has succeeded -- remaining Pods are allowed to complete, however.If the JobControllerhas not had time to react.If the Job controller failed to create Pods for any reason (lack ofResourceQuota, lack of permission, etc.),
-then there may be fewer pods than requested.The Job controller may throttle new Pod creation due to excessive previous pod failures in the same Job.When a Pod is gracefully shut down, it takes time to stop.Completion modeFEATURE STATE:Kubernetes v1.24 [stable]Jobs withfixed completion count- that is, jobs that have non null.spec.completions- can have a completion mode that is specified in.spec.completionMode:NonIndexed(default): the Job is considered complete when there have been.spec.completionssuccessfully completed Pods. In other words, each Pod
-completion is homologous to each other. Note that Jobs that have null.spec.completionsare implicitlyNonIndexed.Indexed: the Pods of a Job get an associated completion index from 0 to.spec.completions-1. The index is available through four mechanisms:The Pod annotationbatch.kubernetes.io/job-completion-index.The Pod labelbatch.kubernetes.io/job-completion-index(for v1.28 and later). Note
-the feature gatePodIndexLabelmust be enabled to use this label, and it is enabled
-by default.As part of the Pod hostname, following the pattern$(job-name)-$(index).
-When you use an Indexed Job in combination with aService, Pods within the Job can use
-the deterministic hostnames to address each other via DNS. For more information about
-how to configure this, seeJob with Pod-to-Pod Communication.From the containerized task, in the environment variableJOB_COMPLETION_INDEX.The Job is considered complete when there is one successfully completed Pod
-for each index. For more information about how to use this mode, seeIndexed Job for Parallel Processing with Static Work Assignment.Note:Although rare, more than one Pod could be started for the same index (due to various reasons such as node failures,
-kubelet restarts, or Pod evictions). In this case, only the first Pod that completes successfully will
-count towards the completion count and update the status of the Job. The other Pods that are running
-or completed for the same index will be deleted by the Job controller once they are detected.Handling Pod and container failuresA container in a Pod may fail for a number of reasons, such as because the process in it exited with
-a non-zero exit code, or the container was killed for exceeding a memory limit, etc. If this
-happens, and the.spec.template.spec.restartPolicy = "OnFailure", then the Pod stays
-on the node, but the container is re-run. Therefore, your program needs to handle the case when it is
-restarted locally, or else specify.spec.template.spec.restartPolicy = "Never".
-Seepod lifecyclefor more information onrestartPolicy.An entire Pod can also fail, for a number of reasons, such as when the pod is kicked off the node
-(node is upgraded, rebooted, deleted, etc.), or if a container of the Pod fails and the.spec.template.spec.restartPolicy = "Never". When a Pod fails, then the Job controller
-starts a new Pod. This means that your application needs to handle the case when it is restarted in a new
-pod. In particular, it needs to handle temporary files, locks, incomplete output and the like
-caused by previous runs.By default, each pod failure is counted towards the.spec.backoffLimitlimit,
-seepod backoff failure policy. However, you can
-customize handling of pod failures by setting the Job'spod failure policy.Additionally, you can choose to count the pod failures independently for each
-index of anIndexedJob by setting the.spec.backoffLimitPerIndexfield
-(for more information, seebackoff limit per index).Note that even if you specify.spec.parallelism = 1and.spec.completions = 1and.spec.template.spec.restartPolicy = "Never", the same program may
-sometimes be started twice.If you do specify.spec.parallelismand.spec.completionsboth greater than 1, then there may be
-multiple pods running at once. Therefore, your pods must also be tolerant of concurrency.If you specify the.spec.podFailurePolicyfield, the Job controller does not consider a terminating
-Pod (a pod that has a.metadata.deletionTimestampfield set) as a failure until that Pod is
-terminal (its.status.phaseisFailedorSucceeded). However, the Job controller
-creates a replacement Pod as soon as the termination becomes apparent. Once the
-pod terminates, the Job controller evaluates.backoffLimitand.podFailurePolicyfor the relevant Job, taking this now-terminated Pod into consideration.If either of these requirements is not satisfied, the Job controller counts
-a terminating Pod as an immediate failure, even if that Pod later terminates
-withphase: "Succeeded".Pod backoff failure policyThere are situations where you want to fail a Job after some amount of retries
-due to a logical error in configuration etc.
-To do so, set.spec.backoffLimitto specify the number of retries before
-considering a Job as failed. The back-off limit is set by default to 6. Failed
-Pods associated with the Job are recreated by the Job controller with an
-exponential back-off delay (10s, 20s, 40s ...) capped at six minutes.The number of retries is calculated in two ways:The number of Pods with.status.phase = "Failed".When usingrestartPolicy = "OnFailure", the number of retries in all the
-containers of Pods with.status.phaseequal toPendingorRunning.If either of the calculations reaches the.spec.backoffLimit, the Job is
-considered failed.Note:If your job hasrestartPolicy = "OnFailure", keep in mind that your Pod running the Job
-will be terminated once the job backoff limit has been reached. This can make debugging
-the Job's executable more difficult. We suggest settingrestartPolicy = "Never"when debugging the Job or using a logging system to ensure output
-from failed Jobs is not lost inadvertently.Backoff limit per indexFEATURE STATE:Kubernetes v1.29 [beta]Note:You can only configure the backoff limit per index for anIndexedJob, if you
-have theJobBackoffLimitPerIndexfeature gateenabled in your cluster.When you run anindexedJob, you can choose to handle retries
-for pod failures independently for each index. To do so, set the.spec.backoffLimitPerIndexto specify the maximal number of pod failures
-per index.When the per-index backoff limit is exceeded for an index, Kubernetes considers the index as failed and adds it to the.status.failedIndexesfield. The succeeded indexes, those with a successfully
-executed pods, are recorded in the.status.completedIndexesfield, regardless of whether you set
-thebackoffLimitPerIndexfield.Note that a failing index does not interrupt execution of other indexes.
-Once all indexes finish for a Job where you specified a backoff limit per index,
-if at least one of those indexes did fail, the Job controller marks the overall
-Job as failed, by setting the Failed condition in the status. The Job gets
-marked as failed even if some, potentially nearly all, of the indexes were
-processed successfully.You can additionally limit the maximal number of indexes marked failed by
-setting the.spec.maxFailedIndexesfield.
-When the number of failed indexes exceeds themaxFailedIndexesfield, the
-Job controller triggers termination of all remaining running Pods for that Job.
-Once all pods are terminated, the entire Job is marked failed by the Job
-controller, by setting the Failed condition in the Job status.Here is an example manifest for a Job that defines abackoffLimitPerIndex:/controllers/job-backoff-limit-per-index-example.yamlapiVersion:batch/v1kind:Jobmetadata:name:job-backoff-limit-per-index-examplespec:completions:10parallelism:3completionMode:Indexed# required for the featurebackoffLimitPerIndex:1# maximal number of failures per indexmaxFailedIndexes:5# maximal number of failed indexes before terminating the Job executiontemplate:spec:restartPolicy:Never# required for the featurecontainers:-name:exampleimage:pythoncommand:# The jobs fails as there is at least one failed index# (all even indexes fail in here), yet all indexes# are executed as maxFailedIndexes is not exceeded.- python3- -c- |import os, sysprint("Hello world")if int(os.environ.get("JOB_COMPLETION_INDEX")) % 2 == 0:sys.exit(1)In the example above, the Job controller allows for one restart for each
-of the indexes. When the total number of failed indexes exceeds 5, then
-the entire Job is terminated.Once the job is finished, the Job status looks as follows:kubectl get -o yaml job job-backoff-limit-per-index-examplestatus:completedIndexes:1,3,5,7,9failedIndexes:0,2,4,6,8succeeded:5# 1 succeeded pod for each of 5 succeeded indexesfailed:10# 2 failed pods (1 retry) for each of 5 failed indexesconditions:-message:Job has failed indexesreason:FailedIndexesstatus:"True"type:FailureTarget-message:Job has failed indexesreason:FailedIndexesstatus:"True"type:FailedThe Job controller adds theFailureTargetJob condition to triggerJob termination and cleanup. When all of the
-Job Pods are terminated, the Job controller adds theFailedcondition
-with the same values forreasonandmessageas theFailureTargetJob
-condition. For details, seeTermination of Job Pods.Additionally, you may want to use the per-index backoff along with apod failure policy. When using
-per-index backoff, there is a newFailIndexaction available which allows you to
-avoid unnecessary retries within an index.Pod failure policyFEATURE STATE:Kubernetes v1.31 [stable]A Pod failure policy, defined with the.spec.podFailurePolicyfield, enables
-your cluster to handle Pod failures based on the container exit codes and the
-Pod conditions.In some situations, you may want to have a better control when handling Pod
-failures than the control provided by thePod backoff failure policy,
-which is based on the Job's.spec.backoffLimit. These are some examples of use cases:To optimize costs of running workloads by avoiding unnecessary Pod restarts,
-you can terminate a Job as soon as one of its Pods fails with an exit code
-indicating a software bug.To guarantee that your Job finishes even if there are disruptions, you can
-ignore Pod failures caused by disruptions (such aspreemption,API-initiated evictionortaint-based eviction) so
-that they don't count towards the.spec.backoffLimitlimit of retries.You can configure a Pod failure policy, in the.spec.podFailurePolicyfield,
-to meet the above use cases. This policy can handle Pod failures based on the
-container exit codes and the Pod conditions.Here is a manifest for a Job that defines apodFailurePolicy:/controllers/job-pod-failure-policy-example.yamlapiVersion:batch/v1kind:Jobmetadata:name:job-pod-failure-policy-examplespec:completions:12parallelism:3template:spec:restartPolicy:Nevercontainers:-name:mainimage:docker.io/library/bash:5command:["bash"]# example command simulating a bug which triggers the FailJob actionargs:- -c- echo "Hello world!" && sleep 5 && exit 42backoffLimit:6podFailurePolicy:rules:-action:FailJobonExitCodes:containerName:main# optionaloperator: In             # one of:In, NotInvalues:[42]-action: Ignore             # one of:Ignore, FailJob, CountonPodConditions:-type:DisruptionTarget# indicates Pod disruptionIn the example above, the first rule of the Pod failure policy specifies that
-the Job should be marked failed if themaincontainer fails with the 42 exit
-code. The following are the rules for themaincontainer specifically:an exit code of 0 means that the container succeededan exit code of 42 means that theentire Jobfailedany other exit code represents that the container failed, and hence the entire
-Pod. The Pod will be re-created if the total number of restarts is
-belowbackoffLimit. If thebackoffLimitis reached theentire Jobfailed.Note:Because the Pod template specifies arestartPolicy: Never,
-the kubelet does not restart themaincontainer in that particular Pod.The second rule of the Pod failure policy, specifying theIgnoreaction for
-failed Pods with conditionDisruptionTargetexcludes Pod disruptions from
-being counted towards the.spec.backoffLimitlimit of retries.Note:If the Job failed, either by the Pod failure policy or Pod backoff
-failure policy, and the Job is running multiple Pods, Kubernetes terminates all
-the Pods in that Job that are still Pending or Running.These are some requirements and semantics of the API:if you want to use a.spec.podFailurePolicyfield for a Job, you must
-also define that Job's pod template with.spec.restartPolicyset toNever.the Pod failure policy rules you specify underspec.podFailurePolicy.rulesare evaluated in order. Once a rule matches a Pod failure, the remaining rules
-are ignored. When no rule matches the Pod failure, the default
-handling applies.you may want to restrict a rule to a specific container by specifying its name
-inspec.podFailurePolicy.rules[*].onExitCodes.containerName. When not specified the rule
-applies to all containers. When specified, it should match one the container
-orinitContainernames in the Pod template.you may specify the action taken when a Pod failure policy is matched byspec.podFailurePolicy.rules[*].action. Possible values are:FailJob: use to indicate that the Pod's job should be marked as Failed and
-all running Pods should be terminated.Ignore: use to indicate that the counter towards the.spec.backoffLimitshould not be incremented and a replacement Pod should be created.Count: use to indicate that the Pod should be handled in the default way.
-The counter towards the.spec.backoffLimitshould be incremented.FailIndex: use this action along withbackoff limit per indexto avoid unnecessary retries within the index of a failed pod.Note:When you use apodFailurePolicy, the job controller only matches Pods in theFailedphase. Pods with a deletion timestamp that are not in a terminal phase
-(FailedorSucceeded) are considered still terminating. This implies that
-terminating pods retain atracking finalizeruntil they reach a terminal phase.
-Since Kubernetes 1.27, Kubelet transitions deleted pods to a terminal phase
-(see:Pod Phase). This
-ensures that deleted pods have their finalizers removed by the Job controller.Note:Starting with Kubernetes v1.28, when Pod failure policy is used, the Job controller recreates
-terminating Pods only once these Pods reach the terminalFailedphase. This behavior is similar
-topodReplacementPolicy: Failed. For more information, seePod replacement policy.When you use thepodFailurePolicy, and the Job fails due to the pod
-matching the rule with theFailJobaction, then the Job controller triggers
-the Job termination process by adding theFailureTargetcondition.
-For more details, seeJob termination and cleanup.Success policyFEATURE STATE:Kubernetes v1.31 [beta]Note:You can only configure a success policy for an Indexed Job if you have theJobSuccessPolicyfeature gateenabled in your cluster.When creating an Indexed Job, you can define when a Job can be declared as succeeded using a.spec.successPolicy,
-based on the pods that succeeded.By default, a Job succeeds when the number of succeeded Pods equals.spec.completions.
-These are some situations where you might want additional control for declaring a Job succeeded:When running simulations with different parameters,
-you might not need all the simulations to succeed for the overall Job to be successful.When following a leader-worker pattern, only the success of the leader determines the success or
-failure of a Job. Examples of this are frameworks like MPI and PyTorch etc.You can configure a success policy, in the.spec.successPolicyfield,
-to meet the above use cases. This policy can handle Job success based on the
-succeeded pods. After the Job meets the success policy, the job controller terminates the lingering Pods.
-A success policy is defined by rules. Each rule can take one of the following forms:When you specify thesucceededIndexesonly,
-once all indexes specified in thesucceededIndexessucceed, the job controller marks the Job as succeeded.
-ThesucceededIndexesmust be a list of intervals between 0 and.spec.completions-1.When you specify thesucceededCountonly,
-once the number of succeeded indexes reaches thesucceededCount, the job controller marks the Job as succeeded.When you specify bothsucceededIndexesandsucceededCount,
-once the number of succeeded indexes from the subset of indexes specified in thesucceededIndexesreaches thesucceededCount,
-the job controller marks the Job as succeeded.Note that when you specify multiple rules in the.spec.successPolicy.rules,
-the job controller evaluates the rules in order. Once the Job meets a rule, the job controller ignores remaining rules.Here is a manifest for a Job withsuccessPolicy:/controllers/job-success-policy.yamlapiVersion:batch/v1kind:Jobmetadata:name:job-successspec:parallelism:10completions:10completionMode:Indexed# Required for the success policysuccessPolicy:rules:-succeededIndexes:0,2-3succeededCount:1template:spec:containers:-name:mainimage:pythoncommand:# Provided that at least one of the Pods with 0, 2, and 3 indexes has succeeded,# the overall Job is a success.- python3- -c- |import os, sysif os.environ.get("JOB_COMPLETION_INDEX") == "2":sys.exit(0)else:sys.exit(1)restartPolicy:NeverIn the example above, bothsucceededIndexesandsucceededCounthave been specified.
-Therefore, the job controller will mark the Job as succeeded and terminate the lingering Pods
-when either of the specified indexes, 0, 2, or 3, succeed.
-The Job that meets the success policy gets theSuccessCriteriaMetcondition with aSuccessPolicyreason.
-After the removal of the lingering Pods is issued, the Job gets theCompletecondition.Note that thesucceededIndexesis represented as intervals separated by a hyphen.
-The number are listed in represented by the first and last element of the series, separated by a hyphen.Note:When you specify both a success policy and some terminating policies such as.spec.backoffLimitand.spec.podFailurePolicy,
-once the Job meets either policy, the job controller respects the terminating policy and ignores the success policy.Job termination and cleanupWhen a Job completes, no more Pods are created, but the Pods areusuallynot deleted either.
-Keeping them around allows you to still view the logs of completed pods to check for errors, warnings, or other diagnostic output.
-The job object also remains after it is completed so that you can view its status. It is up to the user to delete
-old jobs after noting their status. Delete the job withkubectl(e.g.kubectl delete jobs/piorkubectl delete -f ./job.yaml).
-When you delete the job usingkubectl, all the pods it created are deleted too.By default, a Job will run uninterrupted unless a Pod fails (restartPolicy=Never)
-or a Container exits in error (restartPolicy=OnFailure), at which point the Job defers to the.spec.backoffLimitdescribed above. Once.spec.backoffLimithas been reached the Job will
-be marked as failed and any running Pods will be terminated.Another way to terminate a Job is by setting an active deadline.
-Do this by setting the.spec.activeDeadlineSecondsfield of the Job to a number of seconds.
-TheactiveDeadlineSecondsapplies to the duration of the job, no matter how many Pods are created.
-Once a Job reachesactiveDeadlineSeconds, all of its running Pods are terminated and the Job status
-will becometype: Failedwithreason: DeadlineExceeded.Note that a Job's.spec.activeDeadlineSecondstakes precedence over its.spec.backoffLimit.
-Therefore, a Job that is retrying one or more failed Pods will not deploy additional Pods once
-it reaches the time limit specified byactiveDeadlineSeconds, even if thebackoffLimitis not yet reached.Example:apiVersion:batch/v1kind:Jobmetadata:name:pi-with-timeoutspec:backoffLimit:5activeDeadlineSeconds:100template:spec:containers:-name:piimage:perl:5.34.0command:["perl","-Mbignum=bpi","-wle","print bpi(2000)"]restartPolicy:NeverNote that both the Job spec and thePod template specwithin the Job have anactiveDeadlineSecondsfield. Ensure that you set this field at the proper level.Keep in mind that therestartPolicyapplies to the Pod, and not to the Job itself:
-there is no automatic Job restart once the Job status istype: Failed.
-That is, the Job termination mechanisms activated with.spec.activeDeadlineSecondsand.spec.backoffLimitresult in a permanent Job failure that requires manual intervention to resolve.Terminal Job conditionsA Job has two possible terminal states, each of which has a corresponding Job
-condition:Succeeded: Job conditionCompleteFailed: Job conditionFailedJobs fail for the following reasons:The number of Pod failures exceeded the specified.spec.backoffLimitin the Job
-specification. For details, seePod backoff failure policy.The Job runtime exceeded the specified.spec.activeDeadlineSecondsAn indexed Job that used.spec.backoffLimitPerIndexhas failed indexes.
-For details, seeBackoff limit per index.The number of failed indexes in the Job exceeded the specifiedspec.maxFailedIndexes. For details, seeBackoff limit per indexA failed Pod matches a rule in.spec.podFailurePolicythat has theFailJobaction. For details about how Pod failure policy rules might affect failure
-evaluation, seePod failure policy.Jobs succeed for the following reasons:The number of succeeded Pods reached the specified.spec.completionsThe criteria specified in.spec.successPolicyare met. For details, seeSuccess policy.In Kubernetes v1.31 and later the Job controller delays the addition of the
-terminal conditions,FailedorComplete, until all of the Job Pods are terminated.In Kubernetes v1.30 and earlier, the Job controller added theCompleteor theFailedJob terminal conditions as soon as the Job termination process was
-triggered and all Pod finalizers were removed. However, some Pods would still
-be running or terminating at the moment that the terminal condition was added.In Kubernetes v1.31 and later, the controller only adds the Job terminal conditionsafterall of the Pods are terminated. You can enable this behavior by using theJobManagedByor theJobPodReplacementPolicy(enabled by default)feature gates.Termination of Job podsThe Job controller adds theFailureTargetcondition or theSuccessCriteriaMetcondition to the Job to trigger Pod termination after a Job meets either the
-success or failure criteria.Factors liketerminationGracePeriodSecondsmight increase the amount of time
-from the moment that the Job controller adds theFailureTargetcondition or theSuccessCriteriaMetcondition to the moment that all of the Job Pods terminate
-and the Job controller adds aterminal condition(FailedorComplete).You can use theFailureTargetor theSuccessCriteriaMetcondition to evaluate
-whether the Job has failed or succeeded without having to wait for the controller
-to add a terminal condition.For example, you might want to decide when to create a replacement Job
-that replaces a failed Job. If you replace the failed Job when theFailureTargetcondition appears, your replacement Job runs sooner, but could result in Pods
-from the failed and the replacement Job running at the same time, using
-extra compute resources.Alternatively, if your cluster has limited resource capacity, you could choose to
-wait until theFailedcondition appears on the Job, which would delay your
-replacement Job but would ensure that you conserve resources by waiting
-until all of the failed Pods are removed.Clean up finished jobs automaticallyFinished Jobs are usually no longer needed in the system. Keeping them around in
-the system will put pressure on the API server. If the Jobs are managed directly
-by a higher level controller, such asCronJobs, the Jobs can be
-cleaned up by CronJobs based on the specified capacity-based cleanup policy.TTL mechanism for finished JobsFEATURE STATE:Kubernetes v1.23 [stable]Another way to clean up finished Jobs (eitherCompleteorFailed)
-automatically is to use a TTL mechanism provided by aTTL controllerfor
-finished resources, by specifying the.spec.ttlSecondsAfterFinishedfield of
-the Job.When the TTL controller cleans up the Job, it will delete the Job cascadingly,
-i.e. delete its dependent objects, such as Pods, together with the Job. Note
-that when the Job is deleted, its lifecycle guarantees, such as finalizers, will
-be honored.For example:apiVersion:batch/v1kind:Jobmetadata:name:pi-with-ttlspec:ttlSecondsAfterFinished:100template:spec:containers:-name:piimage:perl:5.34.0command:["perl","-Mbignum=bpi","-wle","print bpi(2000)"]restartPolicy:NeverThe Jobpi-with-ttlwill be eligible to be automatically deleted,100seconds after it finishes.If the field is set to0, the Job will be eligible to be automatically deleted
-immediately after it finishes. If the field is unset, this Job won't be cleaned
-up by the TTL controller after it finishes.Note:It is recommended to setttlSecondsAfterFinishedfield because unmanaged jobs
-(Jobs that you created directly, and not indirectly through other workload APIs
-such as CronJob) have a default deletion
-policy oforphanDependentscausing Pods created by an unmanaged Job to be left around
-after that Job is fully deleted.
-Even though thecontrol planeeventuallygarbage collectsthe Pods from a deleted Job after they either fail or complete, sometimes those
-lingering pods may cause cluster performance degradation or in worst case cause the
-cluster to go offline due to this degradation.You can useLimitRangesandResourceQuotasto place a
-cap on the amount of resources that a particular namespace can
-consume.Job patternsThe Job object can be used to process a set of independent but relatedwork items.
-These might be emails to be sent, frames to be rendered, files to be transcoded,
-ranges of keys in a NoSQL database to scan, and so on.In a complex system, there may be multiple different sets of work items. Here we are just
-considering one set of work items that the user wants to manage together — abatch job.There are several different patterns for parallel computation, each with strengths and weaknesses.
-The tradeoffs are:One Job object for each work item, versus a single Job object for all work items.
-One Job per work item creates some overhead for the user and for the system to manage
-large numbers of Job objects.
-A single Job for all work items is better for large numbers of items.Number of Pods created equals number of work items, versus each Pod can process multiple work items.
-When the number of Pods equals the number of work items, the Pods typically
-requires less modification to existing code and containers. Having each Pod
-process multiple work items is better for large numbers of items.Several approaches use a work queue. This requires running a queue service,
-and modifications to the existing program or container to make it use the work queue.
-Other approaches are easier to adapt to an existing containerised application.When the Job is associated with aheadless Service,
-you can enable the Pods within a Job to communicate with each other to
-collaborate in a computation.The tradeoffs are summarized here, with columns 2 to 4 corresponding to the above tradeoffs.
-The pattern names are also links to examples and more detailed description.PatternSingle Job objectFewer pods than work items?Use app unmodified?Queue with Pod Per Work Item✓sometimesQueue with Variable Pod Count✓✓Indexed Job with Static Work Assignment✓✓Job with Pod-to-Pod Communication✓sometimessometimesJob Template Expansion✓When you specify completions with.spec.completions, each Pod created by the Job controller
-has an identicalspec.
-This means that all pods for a task will have the same command line and the same
-image, the same volumes, and (almost) the same environment variables. These patterns
-are different ways to arrange for pods to work on different things.This table shows the required settings for.spec.parallelismand.spec.completionsfor each of the patterns.
-Here,Wis the number of work items.Pattern.spec.completions.spec.parallelismQueue with Pod Per Work ItemWanyQueue with Variable Pod CountnullanyIndexed Job with Static Work AssignmentWanyJob with Pod-to-Pod CommunicationWWJob Template Expansion1should be 1Advanced usageSuspending a JobFEATURE STATE:Kubernetes v1.24 [stable]When a Job is created, the Job controller will immediately begin creating Pods
-to satisfy the Job's requirements and will continue to do so until the Job is
-complete. However, you may want to temporarily suspend a Job's execution and
-resume it later, or start Jobs in suspended state and have a custom controller
-decide later when to start them.To suspend a Job, you can update the.spec.suspendfield of
-the Job to true; later, when you want to resume it again, update it to false.
-Creating a Job with.spec.suspendset to true will create it in the suspended
-state.When a Job is resumed from suspension, its.status.startTimefield will be
-reset to the current time. This means that the.spec.activeDeadlineSecondstimer will be stopped and reset when a Job is suspended and resumed.When you suspend a Job, any running Pods that don't have a status ofCompletedwill beterminatedwith a SIGTERM signal. The Pod's graceful termination period will be honored and
-your Pod must handle this signal in this period. This may involve saving
-progress for later or undoing changes. Pods terminated this way will not count
-towards the Job'scompletionscount.An example Job definition in the suspended state can be like so:kubectl get job myjob -o yamlapiVersion:batch/v1kind:Jobmetadata:name:myjobspec:suspend:trueparallelism:1completions:5template:spec:...You can also toggle Job suspension by patching the Job using the command line.Suspend an active Job:kubectl patch job/myjob --type=strategic --patch'{"spec":{"suspend":true}}'Resume a suspended Job:kubectl patch job/myjob --type=strategic --patch'{"spec":{"suspend":false}}'The Job's status can be used to determine if a Job is suspended or has been
-suspended in the past:kubectl get jobs/myjob -o yamlapiVersion:batch/v1kind:Job# .metadata and .spec omittedstatus:conditions:-lastProbeTime:"2021-02-05T13:14:33Z"lastTransitionTime:"2021-02-05T13:14:33Z"status:"True"type:SuspendedstartTime:"2021-02-05T13:13:48Z"The Job condition of type "Suspended" with status "True" means the Job is
-suspended; thelastTransitionTimefield can be used to determine how long the
-Job has been suspended for. If the status of that condition is "False", then the
-Job was previously suspended and is now running. If such a condition does not
-exist in the Job's status, the Job has never been stopped.Events are also created when the Job is suspended and resumed:kubectl describe jobs/myjobName:           myjob
-...
-Events:
-  Type    Reason            Age   From            Message
-  ----    ------            ----  ----            -------
-  Normal  SuccessfulCreate  12m   job-controller  Created pod: myjob-hlrpl
-  Normal  SuccessfulDelete  11m   job-controller  Deleted pod: myjob-hlrpl
-  Normal  Suspended         11m   job-controller  Job suspended
-  Normal  SuccessfulCreate  3s    job-controller  Created pod: myjob-jvb44
-  Normal  Resumed           3s    job-controller  Job resumedThe last four events, particularly the "Suspended" and "Resumed" events, are
-directly a result of toggling the.spec.suspendfield. In the time between
-these two events, we see that no Pods were created, but Pod creation restarted
-as soon as the Job was resumed.Mutable Scheduling DirectivesFEATURE STATE:Kubernetes v1.27 [stable]In most cases, a parallel job will want the pods to run with constraints,
-like all in the same zone, or all either on GPU model x or y but not a mix of both.Thesuspendfield is the first step towards achieving those semantics. Suspend allows a
-custom queue controller to decide when a job should start; However, once a job is unsuspended,
-a custom queue controller has no influence on where the pods of a job will actually land.This feature allows updating a Job's scheduling directives before it starts, which gives custom queue
-controllers the ability to influence pod placement while at the same time offloading actual
-pod-to-node assignment to kube-scheduler. This is allowed only for suspended Jobs that have never
-been unsuspended before.The fields in a Job's pod template that can be updated are node affinity, node selector,
-tolerations, labels, annotations andscheduling gates.Specifying your own Pod selectorNormally, when you create a Job object, you do not specify.spec.selector.
-The system defaulting logic adds this field when the Job is created.
-It picks a selector value that will not overlap with any other jobs.However, in some cases, you might need to override this automatically set selector.
-To do this, you can specify the.spec.selectorof the Job.Be very careful when doing this. If you specify a label selector which is not
-unique to the pods of that Job, and which matches unrelated Pods, then pods of the unrelated
-job may be deleted, or this Job may count other Pods as completing it, or one or both
-Jobs may refuse to create Pods or run to completion. If a non-unique selector is
-chosen, then other controllers (e.g. ReplicationController) and their Pods may behave
-in unpredictable ways too. Kubernetes will not stop you from making a mistake when
-specifying.spec.selector.Here is an example of a case when you might want to use this feature.Say Joboldis already running. You want existing Pods
-to keep running, but you want the rest of the Pods it creates
-to use a different pod template and for the Job to have a new name.
-You cannot update the Job because these fields are not updatable.
-Therefore, you delete Joboldbutleave its pods
-running, usingkubectl delete jobs/old --cascade=orphan.
-Before deleting it, you make a note of what selector it uses:kubectl get job old -o yamlThe output is similar to this:kind:Jobmetadata:name:old...spec:selector:matchLabels:batch.kubernetes.io/controller-uid:a8f3d00d-c6d2-11e5-9f87-42010af00002...Then you create a new Job with namenewand you explicitly specify the same selector.
-Since the existing Pods have labelbatch.kubernetes.io/controller-uid=a8f3d00d-c6d2-11e5-9f87-42010af00002,
-they are controlled by Jobnewas well.You need to specifymanualSelector: truein the new Job since you are not using
-the selector that the system normally generates for you automatically.kind:Jobmetadata:name:new...spec:manualSelector:trueselector:matchLabels:batch.kubernetes.io/controller-uid:a8f3d00d-c6d2-11e5-9f87-42010af00002...The new Job itself will have a different uid froma8f3d00d-c6d2-11e5-9f87-42010af00002. SettingmanualSelector: truetells the system that you know what you are doing and to allow this
-mismatch.Job tracking with finalizersFEATURE STATE:Kubernetes v1.26 [stable]The control plane keeps track of the Pods that belong to any Job and notices if
-any such Pod is removed from the API server. To do that, the Job controller
-creates Pods with the finalizerbatch.kubernetes.io/job-tracking. The
-controller removes the finalizer only after the Pod has been accounted for in
-the Job status, allowing the Pod to be removed by other controllers or users.Note:SeeMy pod stays terminatingif you
-observe that pods from a Job are stuck with the tracking finalizer.Elastic Indexed JobsFEATURE STATE:Kubernetes v1.31 [stable]You can scale Indexed Jobs up or down by mutating both.spec.parallelismand.spec.completionstogether such that.spec.parallelism == .spec.completions.
-When scaling down, Kubernetes removes the Pods with higher indexes.Use cases for elastic Indexed Jobs include batch workloads which require
-scaling an indexed Job, such as MPI, Horovod, Ray, and PyTorch training jobs.Delayed creation of replacement podsFEATURE STATE:Kubernetes v1.29 [beta]Note:You can only setpodReplacementPolicyon Jobs if you enable theJobPodReplacementPolicyfeature gate(enabled by default).By default, the Job controller recreates Pods as soon they either fail or are terminating (have a deletion timestamp).
-This means that, at a given time, when some of the Pods are terminating, the number of running Pods for a Job
-can be greater thanparallelismor greater than one Pod per index (if you are using an Indexed Job).You may choose to create replacement Pods only when the terminating Pod is fully terminal (hasstatus.phase: Failed).
-To do this, set the.spec.podReplacementPolicy: Failed.
-The default replacement policy depends on whether the Job has apodFailurePolicyset.
-With no Pod failure policy defined for a Job, omitting thepodReplacementPolicyfield selects theTerminatingOrFailedreplacement policy:
-the control plane creates replacement Pods immediately upon Pod deletion
-(as soon as the control plane sees that a Pod for this Job hasdeletionTimestampset).
-For Jobs with a Pod failure policy set, the defaultpodReplacementPolicyisFailed, and no other
-value is permitted.
-SeePod failure policyto learn more about Pod failure policies for Jobs.kind:Jobmetadata:name:new...spec:podReplacementPolicy:Failed...Provided your cluster has the feature gate enabled, you can inspect the.status.terminatingfield of a Job.
-The value of the field is the number of Pods owned by the Job that are currently terminating.kubectl get jobs/myjob -o yamlapiVersion:batch/v1kind:Job# .metadata and .spec omittedstatus:terminating:3# three Pods are terminating and have not yet reached the Failed phaseDelegation of managing a Job object to external controllerFEATURE STATE:Kubernetes v1.30 [alpha]Note:You can only set themanagedByfield on Jobs if you enable theJobManagedByfeature gate(disabled by default).This feature allows you to disable the built-in Job controller, for a specific
-Job, and delegate reconciliation of the Job to an external controller.You indicate the controller that reconciles the Job by setting a custom value
-for thespec.managedByfield - any value
-other thankubernetes.io/job-controller. The value of the field is immutable.Note:When using this feature, make sure the controller indicated by the field is
-installed, otherwise the Job may not be reconciled at all.Note:When developing an external Job controller be aware that your controller needs
-to operate in a fashion conformant with the definitions of the API spec and
-status fields of the Job object.Please review these in detail in theJob API.
-We also recommend that you run the e2e conformance tests for the Job object to
-verify your implementation.Finally, when developing an external Job controller make sure it does not use thebatch.kubernetes.io/job-trackingfinalizer, reserved for the built-in controller.Warning:If you are considering to disable theJobManagedByfeature gate, or to
-downgrade the cluster to a version without the feature gate enabled, check if
-there are jobs with a custom value of thespec.managedByfield. If there
-are such jobs, there is a risk that they might be reconciled by two controllers
-after the operation: the built-in Job controller and the external controller
-indicated by the field value.AlternativesBare PodsWhen the node that a Pod is running on reboots or fails, the pod is terminated
-and will not be restarted. However, a Job will create new Pods to replace terminated ones.
-For this reason, we recommend that you use a Job rather than a bare Pod, even if your application
-requires only a single Pod.Replication ControllerJobs are complementary toReplication Controllers.
-A Replication Controller manages Pods which are not expected to terminate (e.g. web servers), and a Job
-manages Pods that are expected to terminate (e.g. batch tasks).As discussed inPod Lifecycle,Jobisonlyappropriate
-for pods withRestartPolicyequal toOnFailureorNever.
-(Note: IfRestartPolicyis not set, the default value isAlways.)Single Job starts controller PodAnother pattern is for a single Job to create a Pod which then creates other Pods, acting as a sort
-of custom controller for those Pods. This allows the most flexibility, but may be somewhat
-complicated to get started with and offers less integration with Kubernetes.One example of this pattern would be a Job which starts a Pod which runs a script that in turn
-starts a Spark master controller (seespark example),
-runs a spark driver, and then cleans up.An advantage of this approach is that the overall process gets the completion guarantee of a Job
-object, but maintains complete control over what Pods are created and how work is assigned to them.What's nextLearn aboutPods.Read about different ways of running Jobs:Coarse Parallel Processing Using a Work QueueFine Parallel Processing Using a Work QueueUse anindexed Job for parallel processing with static work assignmentCreate multiple Jobs based on a template:Parallel Processing using ExpansionsFollow the links withinClean up finished jobs automaticallyto learn more about how your cluster can clean up completed and / or failed tasks.Jobis part of the Kubernetes REST API.
-Read theJobobject definition to understand the API for jobs.Read aboutCronJob, which you
-can use to define a series of Jobs that will run based on a schedule, similar to
-the UNIX toolcron.Practice how to configure handling of retriable and non-retriable pod failures
-usingpodFailurePolicy, based on the step-by-stepexamples.FeedbackWas this page helpful?YesNoThanks for the feedback. If you have a specific, answerable question about how to use Kubernetes, ask it onStack Overflow.
-Open an issue in theGitHub Repositoryif you want toreport a problemorsuggest an improvement.Last modified August 23, 2024 at 10:23 PM PST:Fix a typo in controllers/job.md (e694639ae2)Job API referenceEdit this pageCreate child pageCreate documentation issuePrint entire sectionRunning an example JobWriting a Job specJob LabelsPod TemplatePod selectorParallel execution for JobsCompletion modeHandling Pod and container failuresPod backoff failure policyBackoff limit per indexPod failure policySuccess policyJob termination and cleanupTerminal Job conditionsTermination of Job podsClean up finished jobs automaticallyTTL mechanism for finished JobsJob patternsAdvanced usageSuspending a JobMutable Scheduling DirectivesSpecifying your own Pod selectorJob tracking with finalizersElastic Indexed JobsDelayed creation of replacement podsDelegation of managing a Job object to external controllerAlternativesBare PodsReplication ControllerSingle Job starts controller PodWhat's nextDocumentationBlogTrainingPartnersCommunityCase Studies© 2024 The Kubernetes Authors | Documentation Distributed underCC BY 4.0Copyright © 2024 The Linux Foundation ®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see ourTrademark Usage pageICP license: 京ICP备17074266号-3
+Horizontal Pod Autoscaling
+In Kubernetes, a HorizontalPodAutoscaler automatically updates a workload resource (such as
+a [Deployment](/docs/concepts/workloads/controllers/deployment/) or
+[StatefulSet](/docs/concepts/workloads/controllers/statefulset/)), with the
+aim of automatically scaling the workload to match demand.
+Horizontal scaling means that the response to increased load is to deploy more
+[Pods](/docs/concepts/workloads/pods/).
+This is different from vertical scaling, which for Kubernetes would mean
+assigning more resources (for example: memory or CPU) to the Pods that are already
+running for the workload.
+If the load decreases, and the number of Pods is above the configured minimum, the HorizontalPodAutoscaler instructs the workload resource (the Deployment, StatefulSet, or other similar resource) to scale back down.
+Horizontal pod autoscaling does not apply to objects that can't be scaled (for example:
+a [DaemonSet](/docs/concepts/workloads/controllers/daemonset).)
+The HorizontalPodAutoscaler is implemented as a Kubernetes API resource and a
+[controller](/docs/concepts/architecture/controller/).
+The resource determines the behavior of the controller.
+The horizontal pod autoscaling controller, running within the Kubernetes
+[control plane](/docs/reference/glossary/?all=true#term-control-plane), periodically adjusts the
+desired scale of its target (for example, a Deployment) to match observed metrics such as average
+CPU utilization, average memory utilization, or any other custom metric you specify.
+There is [walkthrough example](/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/) of using
+horizontal pod autoscaling.
+How does a HorizontalPodAutoscaler work?
+Figure 1. HorizontalPodAutoscaler controls the scale of a Deployment and its ReplicaSet
+Kubernetes implements horizontal pod autoscaling as a control loop that runs intermittently
+(it is not a continuous process). The interval is set by the
+--horizontal-pod-autoscaler-sync-period
+parameter to the
+[ kube-controller-manager](/docs/reference/command-line-tools-reference/kube-controller-manager/)
+(and the default interval is 15 seconds).
+Once during each period, the controller manager queries the resource utilization against the
+metrics specified in each HorizontalPodAutoscaler definition. The controller manager
+finds the target resource defined by the scaleTargetRef
+,
+then selects the pods based on the target resource's .spec.selector
+labels,
+and obtains the metrics from either the resource metrics API (for per-pod resource metrics),
+or the custom metrics API (for all other metrics).
+For per-pod resource metrics (like CPU), the controller fetches the metrics from the resource metrics API for each Pod targeted by the HorizontalPodAutoscaler. Then, if a target utilization value is set, the controller calculates the utilization value as a percentage of the equivalent
+[resource request](/docs/concepts/configuration/manage-resources-containers/#requests-and-limits)on the containers in each Pod. If a target raw value is set, the raw metric values are used directly. The controller then takes the mean of the utilization or the raw value (depending on the type of target specified) across all targeted Pods, and produces a ratio used to scale the number of desired replicas.Please note that if some of the Pod's containers do not have the relevant resource request set, CPU utilization for the Pod will not be defined and the autoscaler will not take any action for that metric. See the
+[algorithm details](#algorithm-details)section below for more information about how the autoscaling algorithm works.For per-pod custom metrics, the controller functions similarly to per-pod resource metrics, except that it works with raw values, not utilization values.
+For object metrics and external metrics, a single metric is fetched, which describes the object in question. This metric is compared to the target value, to produce a ratio as above. In the
+autoscaling/v2
+API version, this value can optionally be divided by the number of Pods before the comparison is made.
+The common use for HorizontalPodAutoscaler is to configure it to fetch metrics from
+[aggregated APIs](/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/)
+(metrics.k8s.io
+, custom.metrics.k8s.io
+, or external.metrics.k8s.io
+). The metrics.k8s.io
+API is
+usually provided by an add-on named Metrics Server, which needs to be launched separately.
+For more information about resource metrics, see
+[Metrics Server](/docs/tasks/debug/debug-cluster/resource-metrics-pipeline/#metrics-server).
+[Support for metrics APIs](#support-for-metrics-apis) explains the stability guarantees and support status for these
+different APIs.
+The HorizontalPodAutoscaler controller accesses corresponding workload resources that support scaling (such as Deployments
+and StatefulSet). These resources each have a subresource named scale
+, an interface that allows you to dynamically set the
+number of replicas and examine each of their current states.
+For general information about subresources in the Kubernetes API, see
+[Kubernetes API Concepts](/docs/reference/using-api/api-concepts/).
+Algorithm details
+From the most basic perspective, the HorizontalPodAutoscaler controller operates on the ratio between desired metric value and current metric value:
+desiredReplicas = ceil[currentReplicas * ( currentMetricValue / desiredMetricValue )]
+For example, if the current metric value is 200m
+, and the desired value
+is 100m
+, the number of replicas will be doubled, since 200.0 / 100.0 == 2.0
+If the current value is instead 50m
+, you'll halve the number of
+replicas, since 50.0 / 100.0 == 0.5
+. The control plane skips any scaling
+action if the ratio is sufficiently close to 1.0 (within a globally-configurable
+tolerance, 0.1 by default).
+When a targetAverageValue
+or targetAverageUtilization
+is specified,
+the currentMetricValue
+is computed by taking the average of the given
+metric across all Pods in the HorizontalPodAutoscaler's scale target.
+Before checking the tolerance and deciding on the final values, the control
+plane also considers whether any metrics are missing, and how many Pods
+are [ Ready](/docs/concepts/workloads/pods/pod-lifecycle/#pod-conditions).
+All Pods with a deletion timestamp set (objects with a deletion timestamp are
+in the process of being shut down / removed) are ignored, and all failed Pods
+are discarded.
+If a particular Pod is missing metrics, it is set aside for later; Pods with missing metrics will be used to adjust the final scaling amount.
+When scaling on CPU, if any pod has yet to become ready (it's still initializing, or possibly is unhealthy) or the most recent metric point for the pod was before it became ready, that pod is set aside as well.
+Due to technical constraints, the HorizontalPodAutoscaler controller
+cannot exactly determine the first time a pod becomes ready when
+determining whether to set aside certain CPU metrics. Instead, it
+considers a Pod "not yet ready" if it's unready and transitioned to
+ready within a short, configurable window of time since it started.
+This value is configured with the --horizontal-pod-autoscaler-initial-readiness-delay
+flag, and its default is 30 seconds.
+Once a pod has become ready, it considers any transition to
+ready to be the first if it occurred within a longer, configurable time
+since it started. This value is configured with the
+--horizontal-pod-autoscaler-cpu-initialization-period
+flag, and its
+default is 5 minutes.
+The currentMetricValue / desiredMetricValue
+base scale ratio is then
+calculated using the remaining pods not set aside or discarded from above.
+If there were any missing metrics, the control plane recomputes the average more conservatively, assuming those pods were consuming 100% of the desired value in case of a scale down, and 0% in case of a scale up. This dampens the magnitude of any potential scale.
+Furthermore, if any not-yet-ready pods were present, and the workload would have scaled up without factoring in missing metrics or not-yet-ready pods, the controller conservatively assumes that the not-yet-ready pods are consuming 0% of the desired metric, further dampening the magnitude of a scale up.
+After factoring in the not-yet-ready pods and missing metrics, the controller recalculates the usage ratio. If the new ratio reverses the scale direction, or is within the tolerance, the controller doesn't take any scaling action. In other cases, the new ratio is used to decide any change to the number of Pods.
+Note that the original value for the average utilization is reported back via the HorizontalPodAutoscaler status, without factoring in the not-yet-ready pods or missing metrics, even when the new usage ratio is used.
+If multiple metrics are specified in a HorizontalPodAutoscaler, this
+calculation is done for each metric, and then the largest of the desired
+replica counts is chosen. If any of these metrics cannot be converted
+into a desired replica count (e.g. due to an error fetching the metrics
+from the metrics APIs) and a scale down is suggested by the metrics which
+can be fetched, scaling is skipped. This means that the HPA is still capable
+of scaling up if one or more metrics give a desiredReplicas
+greater than
+the current value.
+Finally, right before HPA scales the target, the scale recommendation is recorded. The
+controller considers all recommendations within a configurable window choosing the
+highest recommendation from within that window. This value can be configured using the
+--horizontal-pod-autoscaler-downscale-stabilization
+flag, which defaults to 5 minutes.
+This means that scaledowns will occur gradually, smoothing out the impact of rapidly
+fluctuating metric values.
+API Object
+The Horizontal Pod Autoscaler is an API resource in the Kubernetes
+autoscaling
+API group. The current stable version can be found in
+the autoscaling/v2
+API version which includes support for scaling on
+memory and custom metrics. The new fields introduced in
+autoscaling/v2
+are preserved as annotations when working with
+autoscaling/v1
+.
+When you create a HorizontalPodAutoscaler API object, make sure the name specified is a valid
+[DNS subdomain name](/docs/concepts/overview/working-with-objects/names/#dns-subdomain-names).
+More details about the API object can be found at
+[HorizontalPodAutoscaler Object](/docs/reference/generated/kubernetes-api/v1.31/#horizontalpodautoscaler-v2-autoscaling).
+Stability of workload scale
+When managing the scale of a group of replicas using the HorizontalPodAutoscaler, it is possible that the number of replicas keeps fluctuating frequently due to the dynamic nature of the metrics evaluated. This is sometimes referred to as thrashing, or flapping. It's similar to the concept of hysteresis in cybernetics.
+Autoscaling during rolling update
+Kubernetes lets you perform a rolling update on a Deployment. In that
+case, the Deployment manages the underlying ReplicaSets for you.
+When you configure autoscaling for a Deployment, you bind a
+HorizontalPodAutoscaler to a single Deployment. The HorizontalPodAutoscaler
+manages the replicas
+field of the Deployment. The deployment controller is responsible
+for setting the replicas
+of the underlying ReplicaSets so that they add up to a suitable
+number during the rollout and also afterwards.
+If you perform a rolling update of a StatefulSet that has an autoscaled number of replicas, the StatefulSet directly manages its set of Pods (there is no intermediate resource similar to ReplicaSet).
+Support for resource metrics
+Any HPA target can be scaled based on the resource usage of the pods in the scaling target.
+When defining the pod specification the resource requests like cpu
+and memory
+should
+be specified. This is used to determine the resource utilization and used by the HPA controller
+to scale the target up or down. To use resource utilization based scaling specify a metric source
+like this:
+type: Resource
+resource:
+name: cpu
+target:
+type: Utilization
+averageUtilization: 60
+With this metric the HPA controller will keep the average utilization of the pods in the scaling
+target at 60%. Utilization is the ratio between the current usage of resource to the requested
+resources of the pod. See [Algorithm](#algorithm-details) for more details about how the utilization
+is calculated and averaged.
+Note:
+Since the resource usages of all the containers are summed up the total pod utilization may not accurately represent the individual container resource usage. This could lead to situations where a single container might be running with high usage and the HPA will not scale out because the overall pod usage is still within acceptable limits.Container resource metrics
+Kubernetes v1.30 [stable]
+The HorizontalPodAutoscaler API also supports a container metric source where the HPA can track the resource usage of individual containers across a set of Pods, in order to scale the target resource. This lets you configure scaling thresholds for the containers that matter most in a particular Pod. For example, if you have a web application and a sidecar container that provides logging, you can scale based on the resource use of the web application, ignoring the sidecar container and its resource use.
+If you revise the target resource to have a new Pod specification with a different set of containers,
+you should revise the HPA spec if that newly added container should also be used for
+scaling. If the specified container in the metric source is not present or only present in a subset
+of the pods then those pods are ignored and the recommendation is recalculated. See [Algorithm](#algorithm-details)
+for more details about the calculation. To use container resources for autoscaling define a metric
+source as follows:
+type: ContainerResource
+containerResource:
+name: cpu
+container: application
+target:
+type: Utilization
+averageUtilization: 60
+In the above example the HPA controller scales the target such that the average utilization of the cpu
+in the application
+container of all the pods is 60%.
+Note:
+If you change the name of a container that a HorizontalPodAutoscaler is tracking, you can make that change in a specific order to ensure scaling remains available and effective whilst the change is being applied. Before you update the resource that defines the container (such as a Deployment), you should update the associated HPA to track both the new and old container names. This way, the HPA is able to calculate a scaling recommendation throughout the update process.
+Once you have rolled out the container name change to the workload resource, tidy up by removing the old container name from the HPA specification.
+Scaling on custom metrics
+Kubernetes v1.23 [stable]
+(the autoscaling/v2beta2
+API version previously provided this ability as a beta feature)
+Provided that you use the autoscaling/v2
+API version, you can configure a HorizontalPodAutoscaler
+to scale based on a custom metric (that is not built in to Kubernetes or any Kubernetes component).
+The HorizontalPodAutoscaler controller then queries for these custom metrics from the Kubernetes
+API.
+See [Support for metrics APIs](#support-for-metrics-apis) for the requirements.
+Scaling on multiple metrics
+Kubernetes v1.23 [stable]
+(the autoscaling/v2beta2
+API version previously provided this ability as a beta feature)
+Provided that you use the autoscaling/v2
+API version, you can specify multiple metrics for a
+HorizontalPodAutoscaler to scale on. Then, the HorizontalPodAutoscaler controller evaluates each metric,
+and proposes a new scale based on that metric. The HorizontalPodAutoscaler takes the maximum scale
+recommended for each metric and sets the workload to that size (provided that this isn't larger than the
+overall maximum that you configured).
+Support for metrics APIs
+By default, the HorizontalPodAutoscaler controller retrieves metrics from a series of APIs. In order for it to access these APIs, cluster administrators must ensure that:
+The
+[API aggregation layer](/docs/tasks/extend-kubernetes/configure-aggregation-layer/)is enabled.The corresponding APIs are registered:
+For resource metrics, this is the
+metrics.k8s.io
+[API](/docs/reference/external-api/metrics.v1beta1/), generally provided by[metrics-server](https://github.com/kubernetes-sigs/metrics-server). It can be launched as a cluster add-on.For custom metrics, this is the
+custom.metrics.k8s.io
+[API](/docs/reference/external-api/custom-metrics.v1beta2/). It's provided by "adapter" API servers provided by metrics solution vendors. Check with your metrics pipeline to see if there is a Kubernetes metrics adapter available.For external metrics, this is the
+external.metrics.k8s.io
+[API](/docs/reference/external-api/external-metrics.v1beta1/). It may be provided by the custom metrics adapters provided above.
+For more information on these different metrics paths and how they differ please see the relevant design proposals for
+[the HPA V2](https://git.k8s.io/design-proposals-archive/autoscaling/hpa-v2.md),
+[custom.metrics.k8s.io](https://git.k8s.io/design-proposals-archive/instrumentation/custom-metrics-api.md)
+and [external.metrics.k8s.io](https://git.k8s.io/design-proposals-archive/instrumentation/external-metrics-api.md).
+For examples of how to use them see
+[the walkthrough for using custom metrics](/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics)
+and [the walkthrough for using external metrics](/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects).
+Configurable scaling behavior
+Kubernetes v1.23 [stable]
+(the autoscaling/v2beta2
+API version previously provided this ability as a beta feature)
+If you use the v2
+HorizontalPodAutoscaler API, you can use the behavior
+field
+(see the [API reference](/docs/reference/kubernetes-api/workload-resources/horizontal-pod-autoscaler-v2/#HorizontalPodAutoscalerSpec))
+to configure separate scale-up and scale-down behaviors.
+You specify these behaviours by setting scaleUp
+and / or scaleDown
+under the behavior
+field.
+You can specify a stabilization window that prevents [flapping](#flapping)
+the replica count for a scaling target. Scaling policies also let you control the
+rate of change of replicas while scaling.
+Scaling policies
+One or more scaling policies can be specified in the behavior
+section of the spec.
+When multiple policies are specified the policy which allows the highest amount of
+change is the policy which is selected by default. The following example shows this behavior
+while scaling down:
+behavior:
+scaleDown:
+policies:
+- type: Pods
+value: 4
+periodSeconds: 60
+- type: Percent
+value: 10
+periodSeconds: 60
+periodSeconds
+indicates the length of time in the past for which the policy must hold true.
+The maximum value that you can set for periodSeconds
+is 1800 (half an hour).
+The first policy (Pods) allows at most 4 replicas to be scaled down in one minute. The second policy
+(Percent) allows at most 10% of the current replicas to be scaled down in one minute.
+Since by default the policy which allows the highest amount of change is selected, the second policy will only be used when the number of pod replicas is more than 40. With 40 or less replicas, the first policy will be applied. For instance if there are 80 replicas and the target has to be scaled down to 10 replicas then during the first step 8 replicas will be reduced. In the next iteration when the number of replicas is 72, 10% of the pods is 7.2 but the number is rounded up to 8. On each loop of the autoscaler controller the number of pods to be change is re-calculated based on the number of current replicas. When the number of replicas falls below 40 the first policy (Pods) is applied and 4 replicas will be reduced at a time.
+The policy selection can be changed by specifying the selectPolicy
+field for a scaling
+direction. By setting the value to Min
+which would select the policy which allows the
+smallest change in the replica count. Setting the value to Disabled
+completely disables
+scaling in that direction.
+Stabilization window
+The stabilization window is used to restrict the [flapping](#flapping) of
+replica count when the metrics used for scaling keep fluctuating. The autoscaling algorithm
+uses this window to infer a previous desired state and avoid unwanted changes to workload
+scale.
+For example, in the following example snippet, a stabilization window is specified for scaleDown
+.
+behavior:
+scaleDown:
+stabilizationWindowSeconds: 300
+When the metrics indicate that the target should be scaled down the algorithm looks into previously computed desired states, and uses the highest value from the specified interval. In the above example, all desired states from the past 5 minutes will be considered.
+This approximates a rolling maximum, and avoids having the scaling algorithm frequently remove Pods only to trigger recreating an equivalent Pod just moments later.
+Default Behavior
+To use the custom scaling not all fields have to be specified. Only values which need to be customized can be specified. These custom values are merged with default values. The default values match the existing behavior in the HPA algorithm.
+behavior:
+scaleDown:
+stabilizationWindowSeconds: 300
+policies:
+- type: Percent
+value: 100
+periodSeconds: 15
+scaleUp:
+stabilizationWindowSeconds: 0
+policies:
+- type: Percent
+value: 100
+periodSeconds: 15
+- type: Pods
+value: 4
+periodSeconds: 15
+selectPolicy: Max
+For scaling down the stabilization window is 300 seconds (or the value of the
+--horizontal-pod-autoscaler-downscale-stabilization
+flag if provided). There is only a single policy
+for scaling down which allows a 100% of the currently running replicas to be removed which
+means the scaling target can be scaled down to the minimum allowed replicas.
+For scaling up there is no stabilization window. When the metrics indicate that the target should be
+scaled up the target is scaled up immediately. There are 2 policies where 4 pods or a 100% of the currently
+running replicas may at most be added every 15 seconds till the HPA reaches its steady state.
+Example: change downscale stabilization window
+To provide a custom downscale stabilization window of 1 minute, the following behavior would be added to the HPA:
+behavior:
+scaleDown:
+stabilizationWindowSeconds: 60
+Example: limit scale down rate
+To limit the rate at which pods are removed by the HPA to 10% per minute, the following behavior would be added to the HPA:
+behavior:
+scaleDown:
+policies:
+- type: Percent
+value: 10
+periodSeconds: 60
+To ensure that no more than 5 Pods are removed per minute, you can add a second scale-down
+policy with a fixed size of 5, and set selectPolicy
+to minimum. Setting selectPolicy
+to Min
+means
+that the autoscaler chooses the policy that affects the smallest number of Pods:
+behavior:
+scaleDown:
+policies:
+- type: Percent
+value: 10
+periodSeconds: 60
+- type: Pods
+value: 5
+periodSeconds: 60
+selectPolicy: Min
+Example: disable scale down
+The selectPolicy
+value of Disabled
+turns off scaling the given direction.
+So to prevent downscaling the following policy would be used:
+behavior:
+scaleDown:
+selectPolicy: Disabled
+Support for HorizontalPodAutoscaler in kubectl
+HorizontalPodAutoscaler, like every API resource, is supported in a standard way by kubectl
+.
+You can create a new autoscaler using kubectl create
+command.
+You can list autoscalers by kubectl get hpa
+or get detailed description by kubectl describe hpa
+.
+Finally, you can delete an autoscaler using kubectl delete hpa
+.
+In addition, there is a special kubectl autoscale
+command for creating a HorizontalPodAutoscaler object.
+For instance, executing kubectl autoscale rs foo --min=2 --max=5 --cpu-percent=80
+will create an autoscaler for ReplicaSet foo, with target CPU utilization set to 80%
+and the number of replicas between 2 and 5.
+Implicit maintenance-mode deactivation
+You can implicitly deactivate the HPA for a target without the
+need to change the HPA configuration itself. If the target's desired replica count
+is set to 0, and the HPA's minimum replica count is greater than 0, the HPA
+stops adjusting the target (and sets the ScalingActive
+Condition on itself
+to false
+) until you reactivate it by manually adjusting the target's desired
+replica count or HPA's minimum replica count.
+Migrating Deployments and StatefulSets to horizontal autoscaling
+When an HPA is enabled, it is recommended that the value of spec.replicas
+of
+the Deployment and / or StatefulSet be removed from their
+[manifest(s)](/docs/reference/glossary/?all=true#term-manifest). If this isn't done, any time
+a change to that object is applied, for example via kubectl apply -f deployment.yaml
+, this will instruct Kubernetes to scale the current number of Pods
+to the value of the spec.replicas
+key. This may not be
+desired and could be troublesome when an HPA is active.
+Keep in mind that the removal of spec.replicas
+may incur a one-time
+degradation of Pod counts as the default value of this key is 1 (reference
+[Deployment Replicas](/docs/concepts/workloads/controllers/deployment/#replicas)).
+Upon the update, all Pods except 1 will begin their termination procedures. Any
+deployment application afterwards will behave as normal and respect a rolling
+update configuration as desired. You can avoid this degradation by choosing one of the following two
+methods based on how you are modifying your deployments:
+kubectl apply edit-last-applied deployment/<deployment_name>
+- In the editor, remove
+spec.replicas
+. When you save and exit the editor,kubectl
+applies the update. No changes to Pod counts happen at this step. - You can now remove
+spec.replicas
+from the manifest. If you use source code management, also commit your changes or take whatever other steps for revising the source code are appropriate for how you track updates. - From here on out you can run
+kubectl apply -f deployment.yaml
+When using the [Server-Side Apply](/docs/reference/using-api/server-side-apply/)
+you can follow the [transferring ownership](/docs/reference/using-api/server-side-apply/#transferring-ownership)
+guidelines, which cover this exact use case.
+What's next
+If you configure autoscaling in your cluster, you may also want to consider using
+[cluster autoscaling](/docs/concepts/cluster-administration/cluster-autoscaling/)
+to ensure you are running the right number of nodes.
+For more information on HorizontalPodAutoscaler:
+- Read a
+[walkthrough example](/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/)for horizontal pod autoscaling. - Read documentation for
+.kubectl autoscale
+- If you would like to write your own custom metrics adapter, check out the
+[boilerplate](https://github.com/kubernetes-sigs/custom-metrics-apiserver)to get started. - Read the
+[API reference](/docs/reference/kubernetes-api/workload-resources/horizontal-pod-autoscaler-v2/)for HorizontalPodAutoscaler.
+[Add concept page about cluster autoscaling (b39e01b971)](https://github.com/kubernetes/website/commit/b39e01b971757ffcc8d74afa4cdb00737806d35a)

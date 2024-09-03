@@ -1,4 +1,29 @@
-URL: https://grpc.io/docs/
+Source: grpc_io
+URL: https://grpc.io/docs/guides/
 
-gRPCAboutMeetDocsGuidesShowcaseBlogCommunitygRPConf 2024 is happening NEXT WEEK onAug. 27th!-Register nowand get 25% off with the code GOOGLE25.DocsWhat is gRPC?IntroductionCore conceptsFAQLanguagesC# / .NETAPI (legacy)Daily builds (legacy)C++Quick startBasics tutorialAsync-API tutorialAsynchronous Callback API TutorialBest Practices for gRPC C++ API and FAQALTSAPIDartQuick startBasics tutorialAPIGoQuick startBasics tutorialALTSAPIGenerated codeJavaQuick startBasics tutorialALTSAPIGenerated codeKotlinQuick startBasics tutorialAPINodeQuick startBasics tutorialAPIObjective-CQuick startBasics tutorialOAuth2APIPHPQuick startBasics tutorialAPIDaily buildsPythonQuick startBasics tutorialALTSGenerated codeAPIDaily buildsRubyQuick startBasics tutorialAPIDaily buildsPlatformsAndroidJavaQuick startBasics tutorialAPIKotlinQuick startAPIWebQuick startBasics tutorialGuidesAuthenticationBenchmarkingCancellationCompressionCustom Backend MetricsCustom Load Balancing PoliciesCustom Name ResolutionDeadlinesDebuggingError handlingFlow ControlHealth CheckingInterceptorsKeepaliveMetadataOpenTelemetry MetricsPerformance Best PracticesReflectionRequest HedgingRetryService ConfigStatus CodesWait-for-ReadyView page sourceEdit this pageCreate child pageCreate documentation issueCreate project issueDocsDocumentationLearn about key gRPC concepts, try a quick start, find tutorials and reference
-material for all supportedlanguagesandplatforms:New to gRPC?Start with the following pages:Introduction to gRPCCore concepts, architecture and lifecycleFAQEager to see gRPC in action?Select alanguageorplatform, then choose itsQuick start.Interested ingRPC feature details?Try one of the following:Select alanguageorplatform, then chooseTutorialorAPI referenceGuidesOfficial supportThese are the officially supported gRPC language, platform and OS versions:LanguageOSCompilers / SDKC/C++Linux, MacGCC 7.3.1+, Clang 6+C/C++Windows 10+Visual Studio 2019+C#Linux, Mac.NET Core, Mono 4+C#Windows 10+.NET Core, NET 4.5+DartWindows, Linux, MacDart 2.12+GoWindows, Linux, MacGo 1.13+JavaWindows, Linux, MacJava 8+ (KitKat+ for Android)KotlinWindows, Linux, MacKotlin 1.3+Node.jsWindows, Linux, MacNode v8+Objective-CmacOS 10.10+, iOS 9.0+Xcode 12+PHPLinux, MacPHP 7.0+PythonWindows, Linux, MacPython 3.7+RubyWindows, Linux, MacRuby 2.3+Last modified November 9, 2021:Docs: move menu data into front matter (#897) (809d341)View page sourceEdit this pageCreate child pageCreate documentation issueCreate project issue© 2024 gRPC AuthorsTerms|Privacy|Trademarks|License|About
+[Authentication](/docs/guides/auth/)
+An overview of gRPC authentication, including built-in auth mechanisms, and how to plug in your own authentication systems.
+The documentation covers the following techniques:
+An overview of gRPC authentication, including built-in auth mechanisms, and how to plug in your own authentication systems.
+gRPC is designed to support high-performance open-source RPCs in many languages. This page describes performance benchmarking tools, scenarios considered by tests, and the testing infrastructure.
+Explains how and when to cancel RPCs.
+How to compress the data sent over the wire while using gRPC.
+A mechanism in the gRPC library that allows users to inject custom metrics at the gRPC server and consume at gRPC clients to make your custom load balancing algorithms.
+Explains how custom load balancing policies can help optimize load balancing under unique circumstances.
+Explains standard name resolution, the custom name resolver interface, and how to write an implementation.
+Explains how deadlines can be used to effectively deal with unreliable backends.
+Explains the debugging process of gRPC applications using grpcdebug
+How gRPC deals with errors, and gRPC error codes.
+Explains what flow control is and how you can manually control it.
+Explains how gRPC servers expose a health checking service and how client can be configured to automatically check the health of the server it is connecting to.
+Explains how interceptors can be used for implementing generic behavior that applies to many RPC methods.
+How to use HTTP/2 PING-based keepalives in gRPC.
+Explains what metadata is, how it is transmitted, and what it is used for.
+OpenTelemetry Metrics available in gRPC
+A user guide of both general and language-specific best practices to improve performance.
+Explains how reflection can be used to improve the transparency and interpretability of RPCs.
+Explains what request hedging is and how you can configure it.
+gRPC takes the stress out of failures! Get fine-grained retry control and detailed insights with OpenCensus and OpenTelemetry support.
+How the service config can be used by service owners to control client behavior.
+Explains the status codes used in gRPC.
+Explains how to configure RPCs to wait for the server to be ready before sending the request.

@@ -1,297 +1,1100 @@
-URL: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+Source: kubernetes_io
+URL: https://kubernetes.io/docs/concepts/workloads/controllers/job/
 
-DocumentationKubernetes BlogTrainingPartnersCommunityCase StudiesVersionsRelease Informationv1.31v1.30v1.29v1.28v1.27English中文 (Chinese)日本語 (Japanese)한국어 (Korean)Português (Portuguese)Español (Spanish)DocumentationAvailable Documentation VersionsGetting startedLearning environmentProduction environmentContainer RuntimesInstalling Kubernetes with deployment toolsBootstrapping clusters with kubeadmInstalling kubeadmTroubleshooting kubeadmCreating a cluster with kubeadmCustomizing components with the kubeadm APIOptions for Highly Available TopologyCreating Highly Available Clusters with kubeadmSet up a High Availability etcd Cluster with kubeadmConfiguring each kubelet in your cluster using kubeadmDual-stack support with kubeadmTurnkey Cloud SolutionsBest practicesConsiderations for large clustersRunning in multiple zonesValidate node setupEnforcing Pod Security StandardsPKI certificates and requirementsConceptsOverviewKubernetes ComponentsObjects In KubernetesKubernetes Object ManagementObject Names and IDsLabels and SelectorsNamespacesAnnotationsField SelectorsFinalizersOwners and DependentsRecommended LabelsThe Kubernetes APICluster ArchitectureNodesCommunication between Nodes and the Control PlaneControllersLeasesCloud Controller ManagerAbout cgroup v2Container Runtime Interface (CRI)Garbage CollectionMixed Version ProxyContainersImagesContainer EnvironmentRuntime ClassContainer Lifecycle HooksWorkloadsPodsPod LifecycleInit ContainersSidecar ContainersEphemeral ContainersDisruptionsPod Quality of Service ClassesUser NamespacesDownward APIWorkload ManagementDeploymentsReplicaSetStatefulSetsDaemonSetJobsAutomatic Cleanup for Finished JobsCronJobReplicationControllerAutoscaling WorkloadsManaging WorkloadsServices, Load Balancing, and NetworkingServiceIngressIngress ControllersGateway APIEndpointSlicesNetwork PoliciesDNS for Services and PodsIPv4/IPv6 dual-stackTopology Aware RoutingNetworking on WindowsService ClusterIP allocationService Internal Traffic PolicyStorageVolumesPersistent VolumesProjected VolumesEphemeral VolumesStorage ClassesVolume Attributes ClassesDynamic Volume ProvisioningVolume SnapshotsVolume Snapshot ClassesCSI Volume CloningStorage CapacityNode-specific Volume LimitsVolume Health MonitoringWindows StorageConfigurationConfiguration Best PracticesConfigMapsSecretsLiveness, Readiness, and Startup ProbesResource Management for Pods and ContainersOrganizing Cluster Access Using kubeconfig FilesResource Management for Windows nodesSecurityCloud Native SecurityPod Security StandardsPod Security AdmissionService AccountsPod Security PoliciesSecurity For Windows NodesControlling Access to the Kubernetes APIRole Based Access Control Good PracticesGood practices for Kubernetes SecretsMulti-tenancyHardening Guide - Authentication MechanismsKubernetes API Server Bypass RisksLinux kernel security constraints for Pods and containersSecurity ChecklistPoliciesLimit RangesResource QuotasProcess ID Limits And ReservationsNode Resource ManagersScheduling, Preemption and EvictionKubernetes SchedulerAssigning Pods to NodesPod OverheadPod Scheduling ReadinessPod Topology Spread ConstraintsTaints and TolerationsScheduling FrameworkDynamic Resource AllocationScheduler Performance TuningResource Bin PackingPod Priority and PreemptionNode-pressure EvictionAPI-initiated EvictionCluster AdministrationNode ShutdownsCertificatesCluster NetworkingLogging ArchitectureMetrics For Kubernetes System ComponentsMetrics for Kubernetes Object StatesSystem LogsTraces For Kubernetes System ComponentsProxies in KubernetesAPI Priority and FairnessCluster AutoscalingInstalling AddonsCoordinated Leader ElectionWindows in KubernetesWindows containers in KubernetesGuide for Running Windows Containers in KubernetesExtending KubernetesCompute, Storage, and Networking ExtensionsNetwork PluginsDevice PluginsExtending the Kubernetes APICustom ResourcesKubernetes API Aggregation LayerOperator patternTasksInstall ToolsInstall and Set Up kubectl on LinuxInstall and Set Up kubectl on macOSInstall and Set Up kubectl on WindowsAdminister a ClusterAdministration with kubeadmCertificate Management with kubeadmConfiguring a cgroup driverReconfiguring a kubeadm clusterUpgrading kubeadm clustersUpgrading Linux nodesUpgrading Windows nodesChanging The Kubernetes Package RepositoryMigrating from dockershimChanging the Container Runtime on a Node from Docker Engine to containerdMigrate Docker Engine nodes from dockershim to cri-dockerdFind Out What Container Runtime is Used on a NodeTroubleshooting CNI plugin-related errorsCheck whether dockershim removal affects youMigrating telemetry and security agents from dockershimGenerate Certificates ManuallyManage Memory, CPU, and API ResourcesConfigure Default Memory Requests and Limits for a NamespaceConfigure Default CPU Requests and Limits for a NamespaceConfigure Minimum and Maximum Memory Constraints for a NamespaceConfigure Minimum and Maximum CPU Constraints for a NamespaceConfigure Memory and CPU Quotas for a NamespaceConfigure a Pod Quota for a NamespaceInstall a Network Policy ProviderUse Antrea for NetworkPolicyUse Calico for NetworkPolicyUse Cilium for NetworkPolicyUse Kube-router for NetworkPolicyRomana for NetworkPolicyWeave Net for NetworkPolicyAccess Clusters Using the Kubernetes APIAdvertise Extended Resources for a NodeAutoscale the DNS Service in a ClusterChange the Access Mode of a PersistentVolume to ReadWriteOncePodChange the default StorageClassSwitching from Polling to CRI Event-based Updates to Container StatusChange the Reclaim Policy of a PersistentVolumeCloud Controller Manager AdministrationConfigure a kubelet image credential providerConfigure Quotas for API ObjectsControl CPU Management Policies on the NodeControl Topology Management Policies on a nodeCustomizing DNS ServiceDebugging DNS ResolutionDeclare Network PolicyDeveloping Cloud Controller ManagerEnable Or Disable A Kubernetes APIEncrypting Confidential Data at RestDecrypt Confidential Data that is Already Encrypted at RestGuaranteed Scheduling For Critical Add-On PodsIP Masquerade Agent User GuideLimit Storage ConsumptionMigrate Replicated Control Plane To Use Cloud Controller ManagerNamespaces WalkthroughOperating etcd clusters for KubernetesReserve Compute Resources for System DaemonsRunning Kubernetes Node Components as a Non-root UserSafely Drain a NodeSecuring a ClusterSet Kubelet Parameters Via A Configuration FileShare a Cluster with NamespacesUpgrade A ClusterUse Cascading Deletion in a ClusterUsing a KMS provider for data encryptionUsing CoreDNS for Service DiscoveryUsing NodeLocal DNSCache in Kubernetes ClustersUsing sysctls in a Kubernetes ClusterUtilizing the NUMA-aware Memory ManagerVerify Signed Kubernetes ArtifactsConfigure Pods and ContainersAssign Memory Resources to Containers and PodsAssign CPU Resources to Containers and PodsConfigure GMSA for Windows Pods and containersResize CPU and Memory Resources assigned to ContainersConfigure RunAsUserName for Windows pods and containersCreate a Windows HostProcess PodConfigure Quality of Service for PodsAssign Extended Resources to a ContainerConfigure a Pod to Use a Volume for StorageConfigure a Pod to Use a PersistentVolume for StorageConfigure a Pod to Use a Projected Volume for StorageConfigure a Security Context for a Pod or ContainerConfigure Service Accounts for PodsPull an Image from a Private RegistryConfigure Liveness, Readiness and Startup ProbesAssign Pods to NodesAssign Pods to Nodes using Node AffinityConfigure Pod InitializationAttach Handlers to Container Lifecycle EventsConfigure a Pod to Use a ConfigMapShare Process Namespace between Containers in a PodUse a User Namespace With a PodUse an Image Volume With a PodCreate static PodsTranslate a Docker Compose File to Kubernetes ResourcesEnforce Pod Security Standards by Configuring the Built-in Admission ControllerEnforce Pod Security Standards with Namespace LabelsMigrate from PodSecurityPolicy to the Built-In PodSecurity Admission ControllerMonitoring, Logging, and DebuggingTroubleshooting ApplicationsDebug PodsDebug ServicesDebug a StatefulSetDetermine the Reason for Pod FailureDebug Init ContainersDebug Running PodsGet a Shell to a Running ContainerTroubleshooting ClustersTroubleshooting kubectlResource metrics pipelineTools for Monitoring ResourcesMonitor Node HealthDebugging Kubernetes nodes with crictlAuditingDebugging Kubernetes Nodes With KubectlDeveloping and debugging services locally using telepresenceWindows debugging tipsManage Kubernetes ObjectsDeclarative Management of Kubernetes Objects Using Configuration FilesDeclarative Management of Kubernetes Objects Using KustomizeManaging Kubernetes Objects Using Imperative CommandsImperative Management of Kubernetes Objects Using Configuration FilesUpdate API Objects in Place Using kubectl patchMigrate Kubernetes Objects Using Storage Version MigrationManaging SecretsManaging Secrets using kubectlManaging Secrets using Configuration FileManaging Secrets using KustomizeInject Data Into ApplicationsDefine a Command and Arguments for a ContainerDefine Dependent Environment VariablesDefine Environment Variables for a ContainerExpose Pod Information to Containers Through Environment VariablesExpose Pod Information to Containers Through FilesDistribute Credentials Securely Using SecretsRun ApplicationsRun a Stateless Application Using a DeploymentRun a Single-Instance Stateful ApplicationRun a Replicated Stateful ApplicationScale a StatefulSetDelete a StatefulSetForce Delete StatefulSet PodsHorizontal Pod AutoscalingHorizontalPodAutoscaler WalkthroughSpecifying a Disruption Budget for your ApplicationAccessing the Kubernetes API from a PodRun JobsRunning Automated Tasks with a CronJobCoarse Parallel Processing Using a Work QueueFine Parallel Processing Using a Work QueueIndexed Job for Parallel Processing with Static Work AssignmentJob with Pod-to-Pod CommunicationParallel Processing using ExpansionsHandling retriable and non-retriable pod failures with Pod failure policyAccess Applications in a ClusterDeploy and Access the Kubernetes DashboardAccessing ClustersConfigure Access to Multiple ClustersUse Port Forwarding to Access Applications in a ClusterUse a Service to Access an Application in a ClusterConnect a Frontend to a Backend Using ServicesCreate an External Load BalancerList All Container Images Running in a ClusterSet up Ingress on Minikube with the NGINX Ingress ControllerCommunicate Between Containers in the Same Pod Using a Shared VolumeConfigure DNS for a ClusterAccess Services Running on ClustersExtend KubernetesConfigure the Aggregation LayerUse Custom ResourcesExtend the Kubernetes API with CustomResourceDefinitionsVersions in CustomResourceDefinitionsSet up an Extension API ServerConfigure Multiple SchedulersUse an HTTP Proxy to Access the Kubernetes APIUse a SOCKS5 Proxy to Access the Kubernetes APISet up Konnectivity serviceTLSConfigure Certificate Rotation for the KubeletManage TLS Certificates in a ClusterManual Rotation of CA CertificatesManage Cluster DaemonsPerform a Rolling Update on a DaemonSetPerform a Rollback on a DaemonSetRunning Pods on Only Some NodesNetworkingAdding entries to Pod /etc/hosts with HostAliasesExtend Service IP RangesValidate IPv4/IPv6 dual-stackExtend kubectl with pluginsManage HugePagesSchedule GPUsTutorialsHello MinikubeLearn Kubernetes BasicsCreate a ClusterUsing Minikube to Create a ClusterDeploy an AppUsing kubectl to Create a DeploymentExplore Your AppViewing Pods and NodesExpose Your App PubliclyUsing a Service to Expose Your AppScale Your AppRunning Multiple Instances of Your AppUpdate Your AppPerforming a Rolling UpdateConfigurationExample: Configuring a Java MicroserviceExternalizing config using MicroProfile, ConfigMaps and SecretsUpdating Configuration via a ConfigMapConfiguring Redis using a ConfigMapAdopting Sidecar ContainersSecurityApply Pod Security Standards at the Cluster LevelApply Pod Security Standards at the Namespace LevelRestrict a Container's Access to Resources with AppArmorRestrict a Container's Syscalls with seccompStateless ApplicationsExposing an External IP Address to Access an Application in a ClusterExample: Deploying PHP Guestbook application with RedisStateful ApplicationsStatefulSet BasicsExample: Deploying WordPress and MySQL with Persistent VolumesExample: Deploying Cassandra with a StatefulSetRunning ZooKeeper, A Distributed System CoordinatorServicesConnecting Applications with ServicesUsing Source IPExplore Termination Behavior for Pods And Their EndpointsReferenceGlossaryAPI OverviewKubernetes API ConceptsServer-Side ApplyClient LibrariesCommon Expression Language in KubernetesKubernetes Deprecation PolicyDeprecated API Migration GuideKubernetes API health endpointsAPI Access ControlAuthenticatingAuthenticating with Bootstrap TokensAuthorizationUsing RBAC AuthorizationUsing Node AuthorizationWebhook ModeUsing ABAC AuthorizationAdmission ControllersDynamic Admission ControlManaging Service AccountsCertificates and Certificate Signing RequestsMapping PodSecurityPolicies to Pod Security StandardsKubelet authentication/authorizationTLS bootstrappingValidating Admission PolicyWell-Known Labels, Annotations and TaintsAudit AnnotationsKubernetes APIWorkload ResourcesPodBindingPodTemplateReplicationControllerReplicaSetDeploymentStatefulSetControllerRevisionDaemonSetJobCronJobHorizontalPodAutoscalerHorizontalPodAutoscalerPriorityClassPodSchedulingContext v1alpha3ResourceClaim v1alpha3ResourceClaimTemplate v1alpha3ResourceSlice v1alpha3Service ResourcesServiceEndpointsEndpointSliceIngressIngressClassConfig and Storage ResourcesConfigMapSecretCSIDriverCSINodeCSIStorageCapacityPersistentVolumeClaimPersistentVolumeStorageClassStorageVersionMigration v1alpha1VolumeVolumeAttachmentVolumeAttributesClass v1beta1Authentication ResourcesServiceAccountTokenRequestTokenReviewCertificateSigningRequestClusterTrustBundle v1alpha1SelfSubjectReviewAuthorization ResourcesLocalSubjectAccessReviewSelfSubjectAccessReviewSelfSubjectRulesReviewSubjectAccessReviewClusterRoleClusterRoleBindingRoleRoleBindingPolicy ResourcesFlowSchemaLimitRangeResourceQuotaNetworkPolicyPodDisruptionBudgetPriorityLevelConfigurationValidatingAdmissionPolicyValidatingAdmissionPolicyBindingExtend ResourcesCustomResourceDefinitionDeviceClass v1alpha3MutatingWebhookConfigurationValidatingWebhookConfigurationCluster ResourcesAPIServiceComponentStatusEventIPAddress v1beta1LeaseLeaseCandidate v1alpha1NamespaceNodeRuntimeClassServiceCIDR v1beta1Common DefinitionsDeleteOptionsLabelSelectorListMetaLocalObjectReferenceNodeSelectorRequirementObjectFieldSelectorObjectMetaObjectReferencePatchQuantityResourceFieldSelectorStatusTypedLocalObjectReferenceCommon ParametersInstrumentationService Level Indicator MetricsCRI Pod & Container MetricsNode metrics dataKubernetes Metrics ReferenceKubernetes Issues and SecurityKubernetes Issue TrackerKubernetes Security and Disclosure InformationCVE feedNode Reference InformationKubelet Checkpoint APILinux Kernel Version RequirementsArticles on dockershim Removal and on Using CRI-compatible RuntimesNode Labels Populated By The KubeletKubelet Configuration Directory MergingKubelet Device Manager API VersionsNode StatusNetworking ReferenceProtocols for ServicesPorts and ProtocolsVirtual IPs and Service ProxiesSetup toolsKubeadmkubeadm initkubeadm joinkubeadm upgradekubeadm configkubeadm resetkubeadm tokenkubeadm versionkubeadm alphakubeadm certskubeadm init phasekubeadm join phasekubeadm kubeconfigkubeadm reset phasekubeadm upgrade phaseImplementation detailsCommand line tool (kubectl)Introduction to kubectlkubectl Quick Referencekubectl referencekubectlkubectl annotatekubectl api-resourceskubectl api-versionskubectl applykubectl apply edit-last-appliedkubectl apply set-last-appliedkubectl apply view-last-appliedkubectl attachkubectl authkubectl auth can-ikubectl auth reconcilekubectl auth whoamikubectl autoscalekubectl certificatekubectl certificate approvekubectl certificate denykubectl cluster-infokubectl cluster-info dumpkubectl completionkubectl configkubectl config current-contextkubectl config delete-clusterkubectl config delete-contextkubectl config delete-userkubectl config get-clusterskubectl config get-contextskubectl config get-userskubectl config rename-contextkubectl config setkubectl config set-clusterkubectl config set-contextkubectl config set-credentialskubectl config unsetkubectl config use-contextkubectl config viewkubectl cordonkubectl cpkubectl createkubectl create clusterrolekubectl create clusterrolebindingkubectl create configmapkubectl create cronjobkubectl create deploymentkubectl create ingresskubectl create jobkubectl create namespacekubectl create poddisruptionbudgetkubectl create priorityclasskubectl create quotakubectl create rolekubectl create rolebindingkubectl create secretkubectl create secret docker-registrykubectl create secret generickubectl create secret tlskubectl create servicekubectl create service clusteripkubectl create service externalnamekubectl create service loadbalancerkubectl create service nodeportkubectl create serviceaccountkubectl create tokenkubectl debugkubectl deletekubectl describekubectl diffkubectl drainkubectl editkubectl eventskubectl execkubectl explainkubectl exposekubectl getkubectl kustomizekubectl labelkubectl logskubectl optionskubectl patchkubectl pluginkubectl plugin listkubectl port-forwardkubectl proxykubectl replacekubectl rolloutkubectl rollout historykubectl rollout pausekubectl rollout restartkubectl rollout resumekubectl rollout statuskubectl rollout undokubectl runkubectl scalekubectl setkubectl set envkubectl set imagekubectl set resourceskubectl set selectorkubectl set serviceaccountkubectl set subjectkubectl taintkubectl topkubectl top nodekubectl top podkubectl uncordonkubectl versionkubectl waitkubectl CommandskubectlJSONPath Supportkubectl for Docker Userskubectl Usage ConventionsComponent toolsFeature GatesFeature Gates (removed)kubeletkube-apiserverkube-controller-managerkube-proxykube-schedulerDebug clusterFlow controlConfiguration APIsClient Authentication (v1)Client Authentication (v1beta1)Event Rate Limit Configuration (v1alpha1)Image Policy API (v1alpha1)kube-apiserver Admission (v1)kube-apiserver Audit Configuration (v1)kube-apiserver Configuration (v1)kube-apiserver Configuration (v1alpha1)kube-apiserver Configuration (v1beta1)kube-controller-manager Configuration (v1alpha1)kube-proxy Configuration (v1alpha1)kube-scheduler Configuration (v1)kubeadm Configuration (v1beta3)kubeadm Configuration (v1beta4)kubeconfig (v1)Kubelet Configuration (v1)Kubelet Configuration (v1alpha1)Kubelet Configuration (v1beta1)Kubelet CredentialProvider (v1)WebhookAdmission Configuration (v1)External APIsKubernetes Custom Metrics (v1beta2)Kubernetes External Metrics (v1beta1)Kubernetes Metrics (v1beta1)SchedulingScheduler ConfigurationScheduling PoliciesOther ToolsMapping from dockercli to crictlContributeContribute to Kubernetes DocumentationSuggesting content improvementsContributing new contentOpening a pull requestDocumenting for a releaseBlogs and case studiesReviewing changesReviewing pull requestsFor approvers and reviewersLocalizing Kubernetes documentationParticipating in SIG DocsRoles and responsibilitiesIssue WranglersPR wranglersDocumentation style overviewContent guideStyle guideDiagram guideWriting a new topicPage content typesContent organizationCustom Hugo ShortcodesUpdating Reference DocumentationQuickstartContributing to the Upstream Kubernetes CodeGenerating Reference Documentation for the Kubernetes APIGenerating Reference Documentation for kubectl CommandsGenerating Reference Documentation for MetricsGenerating Reference Pages for Kubernetes Components and ToolsAdvanced contributingViewing Site AnalyticsDocs smoke test pageKubernetes DocumentationConceptsConfigurationResource Management for Pods and ContainersResource Management for Pods and ContainersWhen you specify aPod, you can optionally specify how much of each resource acontainerneeds. The most common resources to specify are CPU and memory
-(RAM); there are others.When you specify the resourcerequestfor containers in a Pod, thekube-scheduleruses this information to decide which node to place the Pod on.
-When you specify a resourcelimitfor a container, thekubeletenforces those
-limits so that the running container is not allowed to use more of that resource
-than the limit you set. The kubelet also reserves at least therequestamount of
-that system resource specifically for that container to use.Requests and limitsIf the node where a Pod is running has enough of a resource available, it's possible (and
-allowed) for a container to use more resource than itsrequestfor that resource specifies.
-However, a container is not allowed to use more than its resourcelimit.For example, if you set amemoryrequest of 256 MiB for a container, and that container is in
-a Pod scheduled to a Node with 8GiB of memory and no other Pods, then the container can try to use
-more RAM.If you set amemorylimit of 4GiB for that container, the kubelet (andcontainer runtime) enforce the limit.
-The runtime prevents the container from using more than the configured resource limit. For example:
-when a process in the container tries to consume more than the allowed amount of memory,
-the system kernel terminates the process that attempted the allocation, with an out of memory
-(OOM) error.Limits can be implemented either reactively (the system intervenes once it sees a violation)
-or by enforcement (the system prevents the container from ever exceeding the limit). Different
-runtimes can have different ways to implement the same restrictions.Note:If you specify a limit for a resource, but do not specify any request, and no admission-time
-mechanism has applied a default request for that resource, then Kubernetes copies the limit
-you specified and uses it as the requested value for the resource.Resource typesCPUandmemoryare each aresource type. A resource type has a base unit.
-CPU represents compute processing and is specified in units ofKubernetes CPUs.
-Memory is specified in units of bytes.
-For Linux workloads, you can specifyhuge pageresources.
-Huge pages are a Linux-specific feature where the node kernel allocates blocks of memory
-that are much larger than the default page size.For example, on a system where the default page size is 4KiB, you could specify a limit,hugepages-2Mi: 80Mi. If the container tries allocating over 40 2MiB huge pages (a
-total of 80 MiB), that allocation fails.Note:You cannot overcommithugepages-*resources.
-This is different from thememoryandcpuresources.CPU and memory are collectively referred to ascompute resources, orresources. Compute
-resources are measurable quantities that can be requested, allocated, and
-consumed. They are distinct fromAPI resources. API resources, such as Pods andServicesare objects that can be read and modified
-through the Kubernetes API server.Resource requests and limits of Pod and containerFor each container, you can specify resource limits and requests,
-including the following:spec.containers[].resources.limits.cpuspec.containers[].resources.limits.memoryspec.containers[].resources.limits.hugepages-<size>spec.containers[].resources.requests.cpuspec.containers[].resources.requests.memoryspec.containers[].resources.requests.hugepages-<size>Although you can only specify requests and limits for individual containers,
-it is also useful to think about the overall resource requests and limits for
-a Pod.
-For a particular resource, aPod resource request/limitis the sum of the
-resource requests/limits of that type for each container in the Pod.Resource units in KubernetesCPU resource unitsLimits and requests for CPU resources are measured incpuunits.
-In Kubernetes, 1 CPU unit is equivalent to1 physical CPU core,
-or1 virtual core, depending on whether the node is a physical host
-or a virtual machine running inside a physical machine.Fractional requests are allowed. When you define a container withspec.containers[].resources.requests.cpuset to0.5, you are requesting half
-as much CPU time compared to if you asked for1.0CPU.
-For CPU resource units, thequantityexpression0.1is equivalent to the
-expression100m, which can be read as "one hundred millicpu". Some people say
-"one hundred millicores", and this is understood to mean the same thing.CPU resource is always specified as an absolute amount of resource, never as a relative amount. For example,500mCPU represents the roughly same amount of computing power whether that container
-runs on a single-core, dual-core, or 48-core machine.Note:Kubernetes doesn't allow you to specify CPU resources with a precision finer than1mor0.001CPU. To avoid accidentally using an invalid CPU quantity, it's useful to specify CPU units using the milliCPU form
-instead of the decimal form when using less than 1 CPU unit.For example, you have a Pod that uses5mor0.005CPU and would like to decrease
-its CPU resources. By using the decimal form, it's harder to spot that0.0005CPU
-is an invalid value, while by using the milliCPU form, it's easier to spot that0.5mis an invalid value.Memory resource unitsLimits and requests formemoryare measured in bytes. You can express memory as
-a plain integer or as a fixed-point number using one of thesequantitysuffixes:
-E, P, T, G, M, k. You can also use the power-of-two equivalents: Ei, Pi, Ti, Gi,
-Mi, Ki. For example, the following represent roughly the same value:128974848, 129e6, 129M,  128974848000m, 123MiPay attention to the case of the suffixes. If you request400mof memory, this is a request
-for 0.4 bytes. Someone who types that probably meant to ask for 400 mebibytes (400Mi)
-or 400 megabytes (400M).Container resources exampleThe following Pod has two containers. Both containers are defined with a request for
-0.25 CPU
-and 64MiB (226bytes) of memory. Each container has a limit of 0.5
-CPU and 128MiB of memory. You can say the Pod has a request of 0.5 CPU and 128
-MiB of memory, and a limit of 1 CPU and 256MiB of memory.---apiVersion:v1kind:Podmetadata:name:frontendspec:containers:-name:appimage:images.my-company.example/app:v4resources:requests:memory:"64Mi"cpu:"250m"limits:memory:"128Mi"cpu:"500m"-name:log-aggregatorimage:images.my-company.example/log-aggregator:v6resources:requests:memory:"64Mi"cpu:"250m"limits:memory:"128Mi"cpu:"500m"How Pods with resource requests are scheduledWhen you create a Pod, the Kubernetes scheduler selects a node for the Pod to
-run on. Each node has a maximum capacity for each of the resource types: the
-amount of CPU and memory it can provide for Pods. The scheduler ensures that,
-for each resource type, the sum of the resource requests of the scheduled
-containers is less than the capacity of the node.
-Note that although actual memory
-or CPU resource usage on nodes is very low, the scheduler still refuses to place
-a Pod on a node if the capacity check fails. This protects against a resource
-shortage on a node when resource usage later increases, for example, during a
-daily peak in request rate.How Kubernetes applies resource requests and limitsWhen the kubelet starts a container as part of a Pod, the kubelet passes that container's
-requests and limits for memory and CPU to the container runtime.On Linux, the container runtime typically configures
-kernelcgroupsthat apply and enforce the
-limits you defined.The CPU limit defines a hard ceiling on how much CPU time that the container can use.
-During each scheduling interval (time slice), the Linux kernel checks to see if this
-limit is exceeded; if so, the kernel waits before allowing that cgroup to resume execution.The CPU request typically defines a weighting. If several different containers (cgroups)
-want to run on a contended system, workloads with larger CPU requests are allocated more
-CPU time than workloads with small requests.The memory request is mainly used during (Kubernetes) Pod scheduling. On a node that uses
-cgroups v2, the container runtime might use the memory request as a hint to setmemory.minandmemory.low.The memory limit defines a memory limit for that cgroup. If the container tries to
-allocate more memory than this limit, the Linux kernel out-of-memory subsystem activates
-and, typically, intervenes by stopping one of the processes in the container that tried
-to allocate memory. If that process is the container's PID 1, and the container is marked
-as restartable, Kubernetes restarts the container.The memory limit for the Pod or container can also apply to pages in memory backed
-volumes, such as anemptyDir. The kubelet trackstmpfsemptyDir volumes as container
-memory use, rather than as local ephemeral storage.　When using memory backedemptyDir,
-be sure to check the notesbelow.If a container exceeds its memory request and the node that it runs on becomes short of
-memory overall, it is likely that the Pod the container belongs to will beevicted.A container might or might not be allowed to exceed its CPU limit for extended periods of time.
-However, container runtimes don't terminate Pods or containers for excessive CPU usage.To determine whether a container cannot be scheduled or is being killed due to resource limits,
-see theTroubleshootingsection.Monitoring compute & memory resource usageThe kubelet reports the resource usage of a Pod as part of the Podstatus.If optionaltools for monitoringare available in your cluster, then Pod resource usage can be retrieved either
-from theMetrics APIdirectly or from your monitoring tools.Considerations for memory backedemptyDirvolumesCaution:If you do not specify asizeLimitfor anemptyDirvolume, that volume may
-consume up to that pod's memory limit (Pod.spec.containers[].resources.limits.memory).
-If you do not set a memory limit, the pod has no upper bound on memory consumption,
-and can consume all available memory on the node. Kubernetes schedules pods based
-on resource requests (Pod.spec.containers[].resources.requests) and will not
-consider memory usage above the request when deciding if another pod can fit on
-a given node. This can result in a denial of service and cause the OS to do
-out-of-memory (OOM) handling. It is possible to create any number ofemptyDirs
-that could potentially consume all available memory on the node, making OOM
-more likely.From the perspective of memory management, there are some similarities between
-when a process uses memory as a work area and when using memory-backedemptyDir. But when using memory as a volume like memory-backedemptyDir,
-there are additional points below that you should be careful of.Files stored on a memory-backed volume are almost entirely managed by the
-user application. Unlike when used as a work area for a process, you can not
-rely on things like language-level garbage collection.The purpose of writing files to a volume is to save data or pass it between
-applications. Neither Kubernetes nor the OS may automatically delete files
-from a volume, so memory used by those files can not be reclaimed when the
-system or the pod are under memory pressure.A memory-backedemptyDiris useful because of its performance, but memory
-is generally much smaller in size and much higher in cost than other storage
-media, such as disks or SSDs. Using large amounts of memory foremptyDirvolumes may affect the normal operation of your pod or of the whole node,
-so should be used carefully.If you are administering a cluster or namespace, you can also setResourceQuotathat limits memory use;
-you may also want to define aLimitRangefor additional enforcement.
-If you specify aspec.containers[].resources.limits.memoryfor each Pod,
-then the maximum size of anemptyDirvolume will be the pod's memory limit.As an alternative, a cluster administrator can enforce size limits foremptyDirvolumes in new Pods using a policy mechanism such asValidationAdmissionPolicy.Local ephemeral storageFEATURE STATE:Kubernetes v1.25 [stable]Nodes have local ephemeral storage, backed by
-locally-attached writeable devices or, sometimes, by RAM.
-"Ephemeral" means that there is no long-term guarantee about durability.Pods use ephemeral local storage for scratch space, caching, and for logs.
-The kubelet can provide scratch space to Pods using local ephemeral storage to
-mountemptyDirvolumesinto containers.The kubelet also uses this kind of storage to holdnode-level container logs,
-container images, and the writable layers of running containers.Caution:If a node fails, the data in its ephemeral storage can be lost.
-Your applications cannot expect any performance SLAs (disk IOPS for example)
-from local ephemeral storage.Note:To make the resource quota work on ephemeral-storage, two things need to be done:An admin sets the resource quota for ephemeral-storage in a namespace.A user needs to specify limits for the ephemeral-storage resource in the Pod spec.If the user doesn't specify the ephemeral-storage resource limit in the Pod spec,
-the resource quota is not enforced on ephemeral-storage.Kubernetes lets you track, reserve and limit the amount
-of ephemeral local storage a Pod can consume.Configurations for local ephemeral storageKubernetes supports two ways to configure local ephemeral storage on a node:Single filesystemTwo filesystemsIn this configuration, you place all different kinds of ephemeral local data
-(emptyDirvolumes, writeable layers, container images, logs) into one filesystem.
-The most effective way to configure the kubelet means dedicating this filesystem
-to Kubernetes (kubelet) data.The kubelet also writesnode-level container logsand treats these similarly to ephemeral local storage.The kubelet writes logs to files inside its configured log directory (/var/logby default); and has a base directory for other locally stored data
-(/var/lib/kubeletby default).Typically, both/var/lib/kubeletand/var/logare on the system root filesystem,
-and the kubelet is designed with that layout in mind.Your node can have as many other filesystems, not used for Kubernetes,
-as you like.You have a filesystem on the node that you're using for ephemeral data that
-comes from running Pods: logs, andemptyDirvolumes. You can use this filesystem
-for other data (for example: system logs not related to Kubernetes); it can even
-be the root filesystem.The kubelet also writesnode-level container logsinto the first filesystem, and treats these similarly to ephemeral local storage.You also use a separate filesystem, backed by a different logical storage device.
-In this configuration, the directory where you tell the kubelet to place
-container image layers and writeable layers is on this second filesystem.The first filesystem does not hold any image layers or writeable layers.Your node can have as many other filesystems, not used for Kubernetes,
-as you like.The kubelet can measure how much local storage it is using. It does this provided
-that you have set up the node using one of the supported configurations for local
-ephemeral storage.If you have a different configuration, then the kubelet does not apply resource
-limits for ephemeral local storage.Note:The kubelet trackstmpfsemptyDir volumes as container memory use, rather
-than as local ephemeral storage.Note:The kubelet will only track the root filesystem for ephemeral storage. OS layouts that mount a separate disk to/var/lib/kubeletor/var/lib/containerswill not report ephemeral storage correctly.Setting requests and limits for local ephemeral storageYou can specifyephemeral-storagefor managing local ephemeral storage. Each
-container of a Pod can specify either or both of the following:spec.containers[].resources.limits.ephemeral-storagespec.containers[].resources.requests.ephemeral-storageLimits and requests forephemeral-storageare measured in byte quantities.
-You can express storage as a plain integer or as a fixed-point number using one of these suffixes:
-E, P, T, G, M, k. You can also use the power-of-two equivalents: Ei, Pi, Ti, Gi,
-Mi, Ki. For example, the following quantities all represent roughly the same value:128974848129e6129M123MiPay attention to the case of the suffixes. If you request400mof ephemeral-storage, this is a request
-for 0.4 bytes. Someone who types that probably meant to ask for 400 mebibytes (400Mi)
-or 400 megabytes (400M).In the following example, the Pod has two containers. Each container has a request of
-2GiB of local ephemeral storage. Each container has a limit of 4GiB of local ephemeral
-storage. Therefore, the Pod has a request of 4GiB of local ephemeral storage, and
-a limit of 8GiB of local ephemeral storage. 500Mi of that limit could be
-consumed by theemptyDirvolume.apiVersion:v1kind:Podmetadata:name:frontendspec:containers:-name:appimage:images.my-company.example/app:v4resources:requests:ephemeral-storage:"2Gi"limits:ephemeral-storage:"4Gi"volumeMounts:-name:ephemeralmountPath:"/tmp"-name:log-aggregatorimage:images.my-company.example/log-aggregator:v6resources:requests:ephemeral-storage:"2Gi"limits:ephemeral-storage:"4Gi"volumeMounts:-name:ephemeralmountPath:"/tmp"volumes:-name:ephemeralemptyDir:sizeLimit:500MiHow Pods with ephemeral-storage requests are scheduledWhen you create a Pod, the Kubernetes scheduler selects a node for the Pod to
-run on. Each node has a maximum amount of local ephemeral storage it can provide for Pods.
-For more information, seeNode Allocatable.The scheduler ensures that the sum of the resource requests of the scheduled containers is less than the capacity of the node.Ephemeral storage consumption managementIf the kubelet is managing local ephemeral storage as a resource, then the
-kubelet measures storage use in:emptyDirvolumes, excepttmpfsemptyDirvolumesdirectories holding node-level logswriteable container layersIf a Pod is using more ephemeral storage than you allow it to, the kubelet
-sets an eviction signal that triggers Pod eviction.For container-level isolation, if a container's writable layer and log
-usage exceeds its storage limit, the kubelet marks the Pod for eviction.For pod-level isolation the kubelet works out an overall Pod storage limit by
-summing the limits for the containers in that Pod. In this case, if the sum of
-the local ephemeral storage usage from all containers and also the Pod'semptyDirvolumes exceeds the overall Pod storage limit, then the kubelet also marks the Pod
-for eviction.Caution:If the kubelet is not measuring local ephemeral storage, then a Pod
-that exceeds its local storage limit will not be evicted for breaching
-local storage resource limits.However, if the filesystem space for writeable container layers, node-level logs,
-oremptyDirvolumes falls low, the nodetaintsitself as short on local storage
-and this taint triggers eviction for any Pods that don't specifically tolerate the taint.See the supportedconfigurationsfor ephemeral local storage.The kubelet supports different ways to measure Pod storage use:Periodic scanningFilesystem project quotaThe kubelet performs regular, scheduled checks that scan eachemptyDirvolume, container log directory, and writeable container layer.The scan measures how much space is used.Note:In this mode, the kubelet does not track open file descriptors
-for deleted files.If you (or a container) create a file inside anemptyDirvolume,
-something then opens that file, and you delete the file while it is
-still open, then the inode for the deleted file stays until you close
-that file but the kubelet does not categorize the space as in use.<div class="feature-state-notice feature-beta" title="Feature Gate: LocalStorageCapacityIsolationFSQuotaMonitoring">
-        <span class="feature-state-name">FEATURE STATE:</span> <code>Kubernetes v1.31 [beta]</code>
-      </div>Project quotas are an operating-system level feature for managing
-storage use on filesystems. With Kubernetes, you can enable project
-quotas for monitoring storage use. Make sure that the filesystem
-backing theemptyDirvolumes, on the node, provides project quota support.
-For example, XFS and ext4fs offer project quotas.Note:Project quotas let you monitor storage use; they do not enforce limits.Kubernetes uses project IDs starting from1048576. The IDs in use are
-registered in/etc/projectsand/etc/projid. If project IDs in
-this range are used for other purposes on the system, those project
-IDs must be registered in/etc/projectsand/etc/projidso that
-Kubernetes does not use them.Quotas are faster and more accurate than directory scanning. When a
-directory is assigned to a project, all files created under a
-directory are created in that project, and the kernel merely has to
-keep track of how many blocks are in use by files in that project.
-If a file is created and deleted, but has an open file descriptor,
-it continues to consume space. Quota tracking records that space accurately
-whereas directory scans overlook the storage used by deleted files.To use quotas to track a pod's resource usage, the pod must be in
-a user namespace. Within user namespaces, the kernel restricts changes
-to projectIDs on the filesystem, ensuring the reliability of storage
-metrics calculated by quotas.If you want to use project quotas, you should:Enable theLocalStorageCapacityIsolationFSQuotaMonitoring=truefeature gateusing thefeatureGatesfield in thekubelet configuration.Ensure theUserNamespacesSupportfeature gateis enabled, and that the kernel, CRI implementation and OCI runtime support user namespaces.Ensure that the root filesystem (or optional runtime filesystem)
-has project quotas enabled. All XFS filesystems support project quotas.
-For ext4 filesystems, you need to enable the project quota tracking feature
-while the filesystem is not mounted.# For ext4, with /dev/block-device not mountedsudo tune2fs -O project -Q prjquota /dev/block-deviceEnsure that the root filesystem (or optional runtime filesystem) is
-mounted with project quotas enabled. For both XFS and ext4fs, the
-mount option is namedprjquota.If you don't want to use project quotas, you should:Disable theLocalStorageCapacityIsolationFSQuotaMonitoringfeature gateusing thefeatureGatesfield in thekubelet configuration.Extended resourcesExtended resources are fully-qualified resource names outside thekubernetes.iodomain. They allow cluster operators to advertise and users to
-consume the non-Kubernetes-built-in resources.There are two steps required to use Extended Resources. First, the cluster
-operator must advertise an Extended Resource. Second, users must request the
-Extended Resource in Pods.Managing extended resourcesNode-level extended resourcesNode-level extended resources are tied to nodes.Device plugin managed resourcesSeeDevice
-Pluginfor how to advertise device plugin managed resources on each node.Other resourcesTo advertise a new node-level extended resource, the cluster operator can
-submit aPATCHHTTP request to the API server to specify the available
-quantity in thestatus.capacityfor a node in the cluster. After this
-operation, the node'sstatus.capacitywill include a new resource. Thestatus.allocatablefield is updated automatically with the new resource
-asynchronously by the kubelet.Because the scheduler uses the node'sstatus.allocatablevalue when
-evaluating Pod fitness, the scheduler only takes account of the new value after
-that asynchronous update. There may be a short delay between patching the
-node capacity with a new resource and the time when the first Pod that requests
-the resource can be scheduled on that node.Example:Here is an example showing how to usecurlto form an HTTP request that
-advertises five "example.com/foo" resources on nodek8s-node-1whose master
-isk8s-master.curl --header"Content-Type: application/json-patch+json"\--request PATCH\--data'[{"op": "add", "path": "/status/capacity/example.com~1foo", "value": "5"}]'\http://k8s-master:8080/api/v1/nodes/k8s-node-1/statusNote:In the preceding request,~1is the encoding for the character/in the patch path. The operation path value in JSON-Patch is interpreted as a
-JSON-Pointer. For more details, seeIETF RFC 6901, section 3.Cluster-level extended resourcesCluster-level extended resources are not tied to nodes. They are usually managed
-by scheduler extenders, which handle the resource consumption and resource quota.You can specify the extended resources that are handled by scheduler extenders
-inscheduler configurationExample:The following configuration for a scheduler policy indicates that the
-cluster-level extended resource "example.com/foo" is handled by the scheduler
-extender.The scheduler sends a Pod to the scheduler extender only if the Pod requests
-"example.com/foo".TheignoredBySchedulerfield specifies that the scheduler does not check
-the "example.com/foo" resource in itsPodFitsResourcespredicate.{"kind":"Policy","apiVersion":"v1","extenders": [{"urlPrefix":"<extender-endpoint>","bindVerb":"bind","managedResources": [{"name":"example.com/foo","ignoredByScheduler":true}]}]}Consuming extended resourcesUsers can consume extended resources in Pod specs like CPU and memory.
-The scheduler takes care of the resource accounting so that no more than the
-available amount is simultaneously allocated to Pods.The API server restricts quantities of extended resources to whole numbers.
-Examples ofvalidquantities are3,3000mand3Ki. Examples ofinvalidquantities are0.5and1500m(because1500mwould result in1.5).Note:Extended resources replace Opaque Integer Resources.
-Users can use any domain name prefix other thankubernetes.iowhich is reserved.To consume an extended resource in a Pod, include the resource name as a key
-in thespec.containers[].resources.limitsmap in the container spec.Note:Extended resources cannot be overcommitted, so request and limit
-must be equal if both are present in a container spec.A Pod is scheduled only if all of the resource requests are satisfied, including
-CPU, memory and any extended resources. The Pod remains in thePENDINGstate
-as long as the resource request cannot be satisfied.Example:The Pod below requests 2 CPUs and 1 "example.com/foo" (an extended resource).apiVersion:v1kind:Podmetadata:name:my-podspec:containers:-name:my-containerimage:myimageresources:requests:cpu:2example.com/foo:1limits:example.com/foo:1PID limitingProcess ID (PID) limits allow for the configuration of a kubelet
-to limit the number of PIDs that a given Pod can consume. SeePID Limitingfor information.TroubleshootingMy Pods are pending with event messageFailedSchedulingIf the scheduler cannot find any node where a Pod can fit, the Pod remains
-unscheduled until a place can be found. AnEventis produced
-each time the scheduler fails to find a place for the Pod. You can usekubectlto view the events for a Pod; for example:kubectl describe pod frontend | grep -A9999999999EventsEvents:
-  Type     Reason            Age   From               Message
-  ----     ------            ----  ----               -------
-  Warning  FailedScheduling  23s   default-scheduler  0/42 nodes available: insufficient cpuIn the preceding example, the Pod named "frontend" fails to be scheduled due to
-insufficient CPU resource on any node. Similar error messages can also suggest
-failure due to insufficient memory (PodExceedsFreeMemory). In general, if a Pod
-is pending with a message of this type, there are several things to try:Add more nodes to the cluster.Terminate unneeded Pods to make room for pending Pods.Check that the Pod is not larger than all the nodes. For example, if all the
-nodes have a capacity ofcpu: 1, then a Pod with a request ofcpu: 1.1will
-never be scheduled.Check for node taints. If most of your nodes are tainted, and the new Pod does
-not tolerate that taint, the scheduler only considers placements onto the
-remaining nodes that don't have that taint.You can check node capacities and amounts allocated with thekubectl describe nodescommand. For example:kubectl describe nodes e2e-test-node-pool-4lw4Name:            e2e-test-node-pool-4lw4
-[ ... lines removed for clarity ...]
-Capacity:
- cpu:                               2
- memory:                            7679792Ki
- pods:                              110
-Allocatable:
- cpu:                               1800m
- memory:                            7474992Ki
- pods:                              110
-[ ... lines removed for clarity ...]
-Non-terminated Pods:        (5 in total)
-  Namespace    Name                                  CPU Requests  CPU Limits  Memory Requests  Memory Limits
-  ---------    ----                                  ------------  ----------  ---------------  -------------
-  kube-system  fluentd-gcp-v1.38-28bv1               100m (5%)     0 (0%)      200Mi (2%)       200Mi (2%)
-  kube-system  kube-dns-3297075139-61lj3             260m (13%)    0 (0%)      100Mi (1%)       170Mi (2%)
-  kube-system  kube-proxy-e2e-test-...               100m (5%)     0 (0%)      0 (0%)           0 (0%)
-  kube-system  monitoring-influxdb-grafana-v4-z1m12  200m (10%)    200m (10%)  600Mi (8%)       600Mi (8%)
-  kube-system  node-problem-detector-v0.1-fj7m3      20m (1%)      200m (10%)  20Mi (0%)        100Mi (1%)
-Allocated resources:
-  (Total limits may be over 100 percent, i.e., overcommitted.)
-  CPU Requests    CPU Limits    Memory Requests    Memory Limits
-  ------------    ----------    ---------------    -------------
-  680m (34%)      400m (20%)    920Mi (11%)        1070Mi (13%)In the preceding output, you can see that if a Pod requests more than 1.120 CPUs
-or more than 6.23Gi of memory, that Pod will not fit on the node.By looking at the “Pods” section, you can see which Pods are taking up space on
-the node.The amount of resources available to Pods is less than the node capacity because
-system daemons use a portion of the available resources. Within the Kubernetes API,
-each Node has a.status.allocatablefield
-(seeNodeStatusfor details).The.status.allocatablefield describes the amount of resources that are available
-to Pods on that node (for example: 15 virtual CPUs and 7538 MiB of memory).
-For more information on node allocatable resources in Kubernetes, seeReserve Compute Resources for System Daemons.You can configureresource quotasto limit the total amount of resources that a namespace can consume.
-Kubernetes enforces quotas for objects in particular namespace when there is a
-ResourceQuota in that namespace.
-For example, if you assign specific namespaces to different teams, you
-can add ResourceQuotas into those namespaces. Setting resource quotas helps to
-prevent one team from using so much of any resource that this over-use affects other teams.You should also consider what access you grant to that namespace:fullwrite access to a namespace allows someone with that access to remove any
-resource, including a configured ResourceQuota.My container is terminatedYour container might get terminated because it is resource-starved. To check
-whether a container is being killed because it is hitting a resource limit, callkubectl describe podon the Pod of interest:kubectl describe pod simmemleak-hra99The output is similar to:Name:                           simmemleak-hra99
-Namespace:                      default
-Image(s):                       saadali/simmemleak
-Node:                           kubernetes-node-tf0f/10.240.216.66
-Labels:                         name=simmemleak
-Status:                         Running
-Reason:
-Message:
-IP:                             10.244.2.75
+Jobs
+A Job creates one or more Pods and will continue to retry execution of the Pods until a specified number of them successfully terminate. As pods successfully complete, the Job tracks the successful completions. When a specified number of successful completions is reached, the task (ie, Job) is complete. Deleting a Job will clean up the Pods it created. Suspending a Job will delete its active Pods until the Job is resumed again.
+A simple case is to create one Job object in order to reliably run one Pod to completion. The Job object will start a new Pod if the first Pod fails or is deleted (for example due to a node hardware failure or a node reboot).
+You can also use a Job to run multiple Pods in parallel.
+If you want to run a Job (either a single task, or several in parallel) on a schedule,
+see [CronJob](/docs/concepts/workloads/controllers/cron-jobs/).
+Running an example Job
+Here is an example Job config. It computes π to 2000 places and prints it out. It takes around 10s to complete.
+apiVersion: batch/v1
+kind: Job
+metadata:
+name: pi
+spec:
+template:
+spec:
+containers:
+- name: pi
+image: perl:5.34.0
+command: ["perl", "-Mbignum=bpi", "-wle", "print bpi(2000)"]
+restartPolicy: Never
+backoffLimit: 4
+You can run the example with this command:
+kubectl apply -f https://kubernetes.io/examples/controllers/job.yaml
+The output is similar to this:
+job.batch/pi created
+Check on the status of the Job with kubectl
+:
+Name: pi
+Namespace: default
+Selector: batch.kubernetes.io/controller-uid=c9948307-e56d-4b5d-8302-ae2d7b7da67c
+Labels: batch.kubernetes.io/controller-uid=c9948307-e56d-4b5d-8302-ae2d7b7da67c
+batch.kubernetes.io/job-name=pi
+...
+Annotations: batch.kubernetes.io/job-tracking: ""
+Parallelism: 1
+Completions: 1
+Start Time: Mon, 02 Dec 2019 15:20:11 +0200
+Completed At: Mon, 02 Dec 2019 15:21:16 +0200
+Duration: 65s
+Pods Statuses: 0 Running / 1 Succeeded / 0 Failed
+Pod Template:
+Labels: batch.kubernetes.io/controller-uid=c9948307-e56d-4b5d-8302-ae2d7b7da67c
+batch.kubernetes.io/job-name=pi
 Containers:
-  simmemleak:
-    Image:  saadali/simmemleak:latest
-    Limits:
-      cpu:          100m
-      memory:       50Mi
-    State:          Running
-      Started:      Tue, 07 Jul 2019 12:54:41 -0700
-    Last State:     Terminated
-      Reason:       OOMKilled
-      Exit Code:    137
-      Started:      Fri, 07 Jul 2019 12:54:30 -0700
-      Finished:     Fri, 07 Jul 2019 12:54:33 -0700
-    Ready:          False
-    Restart Count:  5
-Conditions:
-  Type      Status
-  Ready     False
+pi:
+Image: perl:5.34.0
+Port: <none>
+Host Port: <none>
+Command:
+perl
+-Mbignum=bpi
+-wle
+print bpi(2000)
+Environment: <none>
+Mounts: <none>
+Volumes: <none>
 Events:
-  Type    Reason     Age   From               Message
-  ----    ------     ----  ----               -------
-  Normal  Scheduled  42s   default-scheduler  Successfully assigned simmemleak-hra99 to kubernetes-node-tf0f
-  Normal  Pulled     41s   kubelet            Container image "saadali/simmemleak:latest" already present on machine
-  Normal  Created    41s   kubelet            Created container simmemleak
-  Normal  Started    40s   kubelet            Started container simmemleak
-  Normal  Killing    32s   kubelet            Killing container with id ead3fb35-5cf5-44ed-9ae1-488115be66c6: Need to kill PodIn the preceding example, theRestart Count: 5indicates that thesimmemleakcontainer in the Pod was terminated and restarted five times (so far).
-TheOOMKilledreason shows that the container tried to use more memory than its limit.Your next step might be to check the application code for a memory leak. If you
-find that the application is behaving how you expect, consider setting a higher
-memory limit (and possibly request) for that container.What's nextGet hands-on experienceassigning Memory resources to containers and Pods.Get hands-on experienceassigning CPU resources to containers and Pods.Read how the API reference defines acontainerand itsresource requirementsRead aboutproject quotasin XFSRead more about thekube-scheduler configuration reference (v1)Read more aboutQuality of Service classes for PodsFeedbackWas this page helpful?YesNoThanks for the feedback. If you have a specific, answerable question about how to use Kubernetes, ask it onStack Overflow.
-Open an issue in theGitHub Repositoryif you want toreport a problemorsuggest an improvement.Last modified August 21, 2024 at 1:18 PM PST:Amend upstream contribution and resource management documentation (f4f6990dcc)Edit this pageCreate child pageCreate documentation issuePrint entire sectionRequests and limitsResource typesResource requests and limits of Pod and containerResource units in KubernetesCPU resource unitsMemory resource unitsContainer resources exampleHow Pods with resource requests are scheduledHow Kubernetes applies resource requests and limitsMonitoring compute & memory resource usageConsiderations for memory backedemptyDirvolumesLocal ephemeral storageConfigurations for local ephemeral storageSetting requests and limits for local ephemeral storageHow Pods with ephemeral-storage requests are scheduledEphemeral storage consumption managementExtended resourcesManaging extended resourcesConsuming extended resourcesPID limitingTroubleshootingMy Pods are pending with event messageFailedSchedulingMy container is terminatedWhat's nextDocumentationBlogTrainingPartnersCommunityCase Studies© 2024 The Kubernetes Authors | Documentation Distributed underCC BY 4.0Copyright © 2024 The Linux Foundation ®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see ourTrademark Usage pageICP license: 京ICP备17074266号-3
+Type Reason Age From Message
+---- ------ ---- ---- -------
+Normal SuccessfulCreate 21s job-controller Created pod: pi-xf9p4
+Normal Completed 18s job-controller Job completed
+apiVersion: batch/v1
+kind: Job
+metadata:
+annotations: batch.kubernetes.io/job-tracking: ""
+...
+creationTimestamp: "2022-11-10T17:53:53Z"
+generation: 1
+labels:
+batch.kubernetes.io/controller-uid: 863452e6-270d-420e-9b94-53a54146c223
+batch.kubernetes.io/job-name: pi
+name: pi
+namespace: default
+resourceVersion: "4751"
+uid: 204fb678-040b-497f-9266-35ffa8716d14
+spec:
+backoffLimit: 4
+completionMode: NonIndexed
+completions: 1
+parallelism: 1
+selector:
+matchLabels:
+batch.kubernetes.io/controller-uid: 863452e6-270d-420e-9b94-53a54146c223
+suspend: false
+template:
+metadata:
+creationTimestamp: null
+labels:
+batch.kubernetes.io/controller-uid: 863452e6-270d-420e-9b94-53a54146c223
+batch.kubernetes.io/job-name: pi
+spec:
+containers:
+- command:
+- perl
+- -Mbignum=bpi
+- -wle
+- print bpi(2000)
+image: perl:5.34.0
+imagePullPolicy: IfNotPresent
+name: pi
+resources: {}
+terminationMessagePath: /dev/termination-log
+terminationMessagePolicy: File
+dnsPolicy: ClusterFirst
+restartPolicy: Never
+schedulerName: default-scheduler
+securityContext: {}
+terminationGracePeriodSeconds: 30
+status:
+active: 1
+ready: 0
+startTime: "2022-11-10T17:53:57Z"
+uncountedTerminatedPods: {}
+To view completed Pods of a Job, use kubectl get pods
+.
+To list all the Pods that belong to a Job in a machine readable form, you can use a command like this:
+pods=$(kubectl get pods --selector=batch.kubernetes.io/job-name=pi --output=jsonpath='{.items[*].metadata.name}')
+echo $pods
+The output is similar to this:
+pi-5rwd7
+Here, the selector is the same as the selector for the Job. The --output=jsonpath
+option specifies an expression
+with the name from each Pod in the returned list.
+View the standard output of one of the pods:
+kubectl logs $pods
+Another way to view the logs of a Job:
+kubectl logs jobs/pi
+The output is similar to this:
+3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823066470938446095505822317253594081284811174502841027019385211055596446229489549303819644288109756659334461284756482337867831652712019091456485669234603486104543266482133936072602491412737245870066063155881748815209209628292540917153643678925903600113305305488204665213841469519415116094330572703657595919530921861173819326117931051185480744623799627495673518857527248912279381830119491298336733624406566430860213949463952247371907021798609437027705392171762931767523846748184676694051320005681271452635608277857713427577896091736371787214684409012249534301465495853710507922796892589235420199561121290219608640344181598136297747713099605187072113499999983729780499510597317328160963185950244594553469083026425223082533446850352619311881710100031378387528865875332083814206171776691473035982534904287554687311595628638823537875937519577818577805321712268066130019278766111959092164201989380952572010654858632788659361533818279682303019520353018529689957736225994138912497217752834791315155748572424541506959508295331168617278558890750983817546374649393192550604009277016711390098488240128583616035637076601047101819429555961989467678374494482553797747268471040475346462080466842590694912933136770289891521047521620569660240580381501935112533824300355876402474964732639141992726042699227967823547816360093417216412199245863150302861829745557067498385054945885869269956909272107975093029553211653449872027559602364806654991198818347977535663698074265425278625518184175746728909777727938000816470600161452491921732172147723501414419735685481613611573525521334757418494684385233239073941433345477624168625189835694855620992192221842725502542568876717904946016534668049886272327917860857843838279679766814541009538837863609506800642251252051173929848960841284886269456042419652850222106611863067442786220391949450471237137869609563643719172874677646575739624138908658326459958133904780275901
+Writing a Job spec
+As with all other Kubernetes config, a Job needs apiVersion
+, kind
+, and metadata
+fields.
+When the control plane creates new Pods for a Job, the .metadata.name
+of the
+Job is part of the basis for naming those Pods. The name of a Job must be a valid
+[DNS subdomain](/docs/concepts/overview/working-with-objects/names/#dns-subdomain-names)
+value, but this can produce unexpected results for the Pod hostnames. For best compatibility,
+the name should follow the more restrictive rules for a
+[DNS label](/docs/concepts/overview/working-with-objects/names/#dns-label-names).
+Even when the name is a DNS subdomain, the name must be no longer than 63
+characters.
+A Job also needs a [ .spec section](https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status).
+Job Labels
+Job labels will have batch.kubernetes.io/
+prefix for job-name
+and controller-uid
+.
+Pod Template
+The .spec.template
+is the only required field of the .spec
+.
+The .spec.template
+is a [pod template](/docs/concepts/workloads/pods/#pod-templates).
+It has exactly the same schema as a [Pod](/docs/concepts/workloads/pods/),
+except it is nested and does not have an apiVersion
+or kind
+.
+In addition to required fields for a Pod, a pod template in a Job must specify appropriate
+labels (see [pod selector](#pod-selector)) and an appropriate restart policy.
+Only a [ RestartPolicy](/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy)
+equal to
+Never
+or OnFailure
+is allowed.Pod selector
+The .spec.selector
+field is optional. In almost all cases you should not specify it.
+See section [specifying your own pod selector](#specifying-your-own-pod-selector).
+Parallel execution for Jobs
+There are three main types of task suitable to run as a Job:
+- Non-parallel Jobs
+- normally, only one Pod is started, unless the Pod fails.
+- the Job is complete as soon as its Pod terminates successfully.
+- Parallel Jobs with a fixed completion count:
+- specify a non-zero positive value for
+.spec.completions
+. - the Job represents the overall task, and is complete when there are
+.spec.completions
+successful Pods. - when using
+.spec.completionMode="Indexed"
+, each Pod gets a different index in the range 0 to.spec.completions-1
+.
+- specify a non-zero positive value for
+- Parallel Jobs with a work queue:
+- do not specify
+.spec.completions
+, default to.spec.parallelism
+. - the Pods must coordinate amongst themselves or an external service to determine what each should work on. For example, a Pod might fetch a batch of up to N items from the work queue.
+- each Pod is independently capable of determining whether or not all its peers are done, and thus that the entire Job is done.
+- when any Pod from the Job terminates with success, no new Pods are created.
+- once at least one Pod has terminated with success and all Pods are terminated, then the Job is completed with success.
+- once any Pod has exited with success, no other Pod should still be doing any work for this task or writing any output. They should all be in the process of exiting.
+- do not specify
+For a non-parallel Job, you can leave both .spec.completions
+and .spec.parallelism
+unset.
+When both are unset, both are defaulted to 1.
+For a fixed completion count Job, you should set .spec.completions
+to the number of completions needed.
+You can set .spec.parallelism
+, or leave it unset and it will default to 1.
+For a work queue Job, you must leave .spec.completions
+unset, and set .spec.parallelism
+to
+a non-negative integer.
+For more information about how to make use of the different types of job,
+see the [job patterns](#job-patterns) section.
+Controlling parallelism
+The requested parallelism (.spec.parallelism
+) can be set to any non-negative value.
+If it is unspecified, it defaults to 1.
+If it is specified as 0, then the Job is effectively paused until it is increased.
+Actual parallelism (number of pods running at any instant) may be more or less than requested parallelism, for a variety of reasons:
+- For fixed completion count Jobs, the actual number of pods running in parallel will not exceed the number of
+remaining completions. Higher values of
+.spec.parallelism
+are effectively ignored. - For work queue Jobs, no new Pods are started after any Pod has succeeded -- remaining Pods are allowed to complete, however.
+- If the Job
+[Controller](/docs/concepts/architecture/controller/)has not had time to react. - If the Job controller failed to create Pods for any reason (lack of
+ResourceQuota
+, lack of permission, etc.), then there may be fewer pods than requested. - The Job controller may throttle new Pod creation due to excessive previous pod failures in the same Job.
+- When a Pod is gracefully shut down, it takes time to stop.
+Completion mode
+Kubernetes v1.24 [stable]
+Jobs with fixed completion count - that is, jobs that have non null
+.spec.completions
+- can have a completion mode that is specified in .spec.completionMode
+:
+NonIndexed
+(default): the Job is considered complete when there have been.spec.completions
+successfully completed Pods. In other words, each Pod completion is homologous to each other. Note that Jobs that have null.spec.completions
+are implicitlyNonIndexed
+.Indexed
+: the Pods of a Job get an associated completion index from 0 to.spec.completions-1
+. The index is available through four mechanisms:- The Pod annotation
+batch.kubernetes.io/job-completion-index
+. - The Pod label
+batch.kubernetes.io/job-completion-index
+(for v1.28 and later). Note the feature gatePodIndexLabel
+must be enabled to use this label, and it is enabled by default. - As part of the Pod hostname, following the pattern
+$(job-name)-$(index)
+. When you use an Indexed Job in combination with a[Service](/docs/concepts/services-networking/service/), Pods within the Job can use the deterministic hostnames to address each other via DNS. For more information about how to configure this, see[Job with Pod-to-Pod Communication](/docs/tasks/job/job-with-pod-to-pod-communication/). - From the containerized task, in the environment variable
+JOB_COMPLETION_INDEX
+.
+The Job is considered complete when there is one successfully completed Pod for each index. For more information about how to use this mode, see
+[Indexed Job for Parallel Processing with Static Work Assignment](/docs/tasks/job/indexed-parallel-processing-static/).- The Pod annotation
+Note:
+Although rare, more than one Pod could be started for the same index (due to various reasons such as node failures, kubelet restarts, or Pod evictions). In this case, only the first Pod that completes successfully will count towards the completion count and update the status of the Job. The other Pods that are running or completed for the same index will be deleted by the Job controller once they are detected.Handling Pod and container failures
+A container in a Pod may fail for a number of reasons, such as because the process in it exited with
+a non-zero exit code, or the container was killed for exceeding a memory limit, etc. If this
+happens, and the .spec.template.spec.restartPolicy = "OnFailure"
+, then the Pod stays
+on the node, but the container is re-run. Therefore, your program needs to handle the case when it is
+restarted locally, or else specify .spec.template.spec.restartPolicy = "Never"
+.
+See [pod lifecycle](/docs/concepts/workloads/pods/pod-lifecycle/#example-states) for more information on restartPolicy
+.
+An entire Pod can also fail, for a number of reasons, such as when the pod is kicked off the node
+(node is upgraded, rebooted, deleted, etc.), or if a container of the Pod fails and the
+.spec.template.spec.restartPolicy = "Never"
+. When a Pod fails, then the Job controller
+starts a new Pod. This means that your application needs to handle the case when it is restarted in a new
+pod. In particular, it needs to handle temporary files, locks, incomplete output and the like
+caused by previous runs.
+By default, each pod failure is counted towards the .spec.backoffLimit
+limit,
+see [pod backoff failure policy](#pod-backoff-failure-policy). However, you can
+customize handling of pod failures by setting the Job's [pod failure policy](#pod-failure-policy).
+Additionally, you can choose to count the pod failures independently for each
+index of an [Indexed](#completion-mode) Job by setting the .spec.backoffLimitPerIndex
+field
+(for more information, see [backoff limit per index](#backoff-limit-per-index)).
+Note that even if you specify .spec.parallelism = 1
+and .spec.completions = 1
+and
+.spec.template.spec.restartPolicy = "Never"
+, the same program may
+sometimes be started twice.
+If you do specify .spec.parallelism
+and .spec.completions
+both greater than 1, then there may be
+multiple pods running at once. Therefore, your pods must also be tolerant of concurrency.
+If you specify the .spec.podFailurePolicy
+field, the Job controller does not consider a terminating
+Pod (a pod that has a .metadata.deletionTimestamp
+field set) as a failure until that Pod is
+terminal (its .status.phase
+is Failed
+or Succeeded
+). However, the Job controller
+creates a replacement Pod as soon as the termination becomes apparent. Once the
+pod terminates, the Job controller evaluates .backoffLimit
+and .podFailurePolicy
+for the relevant Job, taking this now-terminated Pod into consideration.
+If either of these requirements is not satisfied, the Job controller counts
+a terminating Pod as an immediate failure, even if that Pod later terminates
+with phase: "Succeeded"
+.
+Pod backoff failure policy
+There are situations where you want to fail a Job after some amount of retries
+due to a logical error in configuration etc.
+To do so, set .spec.backoffLimit
+to specify the number of retries before
+considering a Job as failed. The back-off limit is set by default to 6. Failed
+Pods associated with the Job are recreated by the Job controller with an
+exponential back-off delay (10s, 20s, 40s ...) capped at six minutes.
+The number of retries is calculated in two ways:
+- The number of Pods with
+.status.phase = "Failed"
+. - When using
+restartPolicy = "OnFailure"
+, the number of retries in all the containers of Pods with.status.phase
+equal toPending
+orRunning
+.
+If either of the calculations reaches the .spec.backoffLimit
+, the Job is
+considered failed.
+Note:
+If your job hasrestartPolicy = "OnFailure"
+, keep in mind that your Pod running the Job
+will be terminated once the job backoff limit has been reached. This can make debugging
+the Job's executable more difficult. We suggest setting
+restartPolicy = "Never"
+when debugging the Job or using a logging system to ensure output
+from failed Jobs is not lost inadvertently.Backoff limit per index
+Kubernetes v1.29 [beta]
+Note:
+You can only configure the backoff limit per index for an[Indexed](#completion-mode)Job, if you have the
+JobBackoffLimitPerIndex
+[feature gate](/docs/reference/command-line-tools-reference/feature-gates/)enabled in your cluster.
+When you run an [indexed](#completion-mode) Job, you can choose to handle retries
+for pod failures independently for each index. To do so, set the
+.spec.backoffLimitPerIndex
+to specify the maximal number of pod failures
+per index.
+When the per-index backoff limit is exceeded for an index, Kubernetes considers the index as failed and adds it to the
+.status.failedIndexes
+field. The succeeded indexes, those with a successfully
+executed pods, are recorded in the .status.completedIndexes
+field, regardless of whether you set
+the backoffLimitPerIndex
+field.
+Note that a failing index does not interrupt execution of other indexes. Once all indexes finish for a Job where you specified a backoff limit per index, if at least one of those indexes did fail, the Job controller marks the overall Job as failed, by setting the Failed condition in the status. The Job gets marked as failed even if some, potentially nearly all, of the indexes were processed successfully.
+You can additionally limit the maximal number of indexes marked failed by
+setting the .spec.maxFailedIndexes
+field.
+When the number of failed indexes exceeds the maxFailedIndexes
+field, the
+Job controller triggers termination of all remaining running Pods for that Job.
+Once all pods are terminated, the entire Job is marked failed by the Job
+controller, by setting the Failed condition in the Job status.
+Here is an example manifest for a Job that defines a backoffLimitPerIndex
+:
+apiVersion: batch/v1
+kind: Job
+metadata:
+name: job-backoff-limit-per-index-example
+spec:
+completions: 10
+parallelism: 3
+completionMode: Indexed # required for the feature
+backoffLimitPerIndex: 1 # maximal number of failures per index
+maxFailedIndexes: 5 # maximal number of failed indexes before terminating the Job execution
+template:
+spec:
+restartPolicy: Never # required for the feature
+containers:
+- name: example
+image: python
+command: # The jobs fails as there is at least one failed index
+# (all even indexes fail in here), yet all indexes
+# are executed as maxFailedIndexes is not exceeded.
+- python3
+- -c
+- |
+import os, sys
+print("Hello world")
+if int(os.environ.get("JOB_COMPLETION_INDEX")) % 2 == 0:
+sys.exit(1)
+In the example above, the Job controller allows for one restart for each of the indexes. When the total number of failed indexes exceeds 5, then the entire Job is terminated.
+Once the job is finished, the Job status looks as follows:
+kubectl get -o yaml job job-backoff-limit-per-index-example
+status:
+completedIndexes: 1,3,5,7,9
+failedIndexes: 0,2,4,6,8
+succeeded: 5 # 1 succeeded pod for each of 5 succeeded indexes
+failed: 10 # 2 failed pods (1 retry) for each of 5 failed indexes
+conditions:
+- message: Job has failed indexes
+reason: FailedIndexes
+status: "True"
+type: FailureTarget
+- message: Job has failed indexes
+reason: FailedIndexes
+status: "True"
+type: Failed
+The Job controller adds the FailureTarget
+Job condition to trigger
+[Job termination and cleanup](#job-termination-and-cleanup). When all of the
+Job Pods are terminated, the Job controller adds the Failed
+condition
+with the same values for reason
+and message
+as the FailureTarget
+Job
+condition. For details, see [Termination of Job Pods](#termination-of-job-pods).
+Additionally, you may want to use the per-index backoff along with a
+[pod failure policy](#pod-failure-policy). When using
+per-index backoff, there is a new FailIndex
+action available which allows you to
+avoid unnecessary retries within an index.
+Pod failure policy
+Kubernetes v1.31 [stable]
+A Pod failure policy, defined with the .spec.podFailurePolicy
+field, enables
+your cluster to handle Pod failures based on the container exit codes and the
+Pod conditions.
+In some situations, you may want to have a better control when handling Pod
+failures than the control provided by the [Pod backoff failure policy](#pod-backoff-failure-policy),
+which is based on the Job's .spec.backoffLimit
+. These are some examples of use cases:
+- To optimize costs of running workloads by avoiding unnecessary Pod restarts, you can terminate a Job as soon as one of its Pods fails with an exit code indicating a software bug.
+- To guarantee that your Job finishes even if there are disruptions, you can
+ignore Pod failures caused by disruptions (such as
+[preemption](/docs/concepts/scheduling-eviction/pod-priority-preemption/#preemption),[API-initiated eviction](/docs/concepts/scheduling-eviction/api-eviction/)or[taint](/docs/concepts/scheduling-eviction/taint-and-toleration/)-based eviction) so that they don't count towards the.spec.backoffLimit
+limit of retries.
+You can configure a Pod failure policy, in the .spec.podFailurePolicy
+field,
+to meet the above use cases. This policy can handle Pod failures based on the
+container exit codes and the Pod conditions.
+Here is a manifest for a Job that defines a podFailurePolicy
+:
+apiVersion: batch/v1
+kind: Job
+metadata:
+name: job-pod-failure-policy-example
+spec:
+completions: 12
+parallelism: 3
+template:
+spec:
+restartPolicy: Never
+containers:
+- name: main
+image: docker.io/library/bash:5
+command: ["bash"] # example command simulating a bug which triggers the FailJob action
+args:
+- -c
+- echo "Hello world!" && sleep 5 && exit 42
+backoffLimit: 6
+podFailurePolicy:
+rules:
+- action: FailJob
+onExitCodes:
+containerName: main # optional
+operator: In # one of: In, NotIn
+values: [42]
+- action: Ignore # one of: Ignore, FailJob, Count
+onPodConditions:
+- type: DisruptionTarget # indicates Pod disruption
+In the example above, the first rule of the Pod failure policy specifies that
+the Job should be marked failed if the main
+container fails with the 42 exit
+code. The following are the rules for the main
+container specifically:
+- an exit code of 0 means that the container succeeded
+- an exit code of 42 means that the entire Job failed
+- any other exit code represents that the container failed, and hence the entire
+Pod. The Pod will be re-created if the total number of restarts is
+below
+backoffLimit
+. If thebackoffLimit
+is reached the entire Job failed.
+Note:
+Because the Pod template specifies arestartPolicy: Never
+,
+the kubelet does not restart the main
+container in that particular Pod.The second rule of the Pod failure policy, specifying the Ignore
+action for
+failed Pods with condition DisruptionTarget
+excludes Pod disruptions from
+being counted towards the .spec.backoffLimit
+limit of retries.
+Note:
+If the Job failed, either by the Pod failure policy or Pod backoff failure policy, and the Job is running multiple Pods, Kubernetes terminates all the Pods in that Job that are still Pending or Running.These are some requirements and semantics of the API:
+- if you want to use a
+.spec.podFailurePolicy
+field for a Job, you must also define that Job's pod template with.spec.restartPolicy
+set toNever
+. - the Pod failure policy rules you specify under
+spec.podFailurePolicy.rules
+are evaluated in order. Once a rule matches a Pod failure, the remaining rules are ignored. When no rule matches the Pod failure, the default handling applies. - you may want to restrict a rule to a specific container by specifying its name
+in
+spec.podFailurePolicy.rules[*].onExitCodes.containerName
+. When not specified the rule applies to all containers. When specified, it should match one the container orinitContainer
+names in the Pod template. - you may specify the action taken when a Pod failure policy is matched by
+spec.podFailurePolicy.rules[*].action
+. Possible values are:FailJob
+: use to indicate that the Pod's job should be marked as Failed and all running Pods should be terminated.Ignore
+: use to indicate that the counter towards the.spec.backoffLimit
+should not be incremented and a replacement Pod should be created.Count
+: use to indicate that the Pod should be handled in the default way. The counter towards the.spec.backoffLimit
+should be incremented.FailIndex
+: use this action along with[backoff limit per index](#backoff-limit-per-index)to avoid unnecessary retries within the index of a failed pod.
+Note:
+When you use apodFailurePolicy
+, the job controller only matches Pods in the
+Failed
+phase. Pods with a deletion timestamp that are not in a terminal phase
+(Failed
+or Succeeded
+) are considered still terminating. This implies that
+terminating pods retain a [tracking finalizer](#job-tracking-with-finalizers)until they reach a terminal phase. Since Kubernetes 1.27, Kubelet transitions deleted pods to a terminal phase (see:
+[Pod Phase](/docs/concepts/workloads/pods/pod-lifecycle/#pod-phase)). This ensures that deleted pods have their finalizers removed by the Job controller.
+Note:
+Starting with Kubernetes v1.28, when Pod failure policy is used, the Job controller recreates terminating Pods only once these Pods reach the terminalFailed
+phase. This behavior is similar
+to podReplacementPolicy: Failed
+. For more information, see [Pod replacement policy](#pod-replacement-policy).
+When you use the podFailurePolicy
+, and the Job fails due to the pod
+matching the rule with the FailJob
+action, then the Job controller triggers
+the Job termination process by adding the FailureTarget
+condition.
+For more details, see [Job termination and cleanup](#job-termination-and-cleanup).
+Success policy
+Kubernetes v1.31 [beta]
+Note:
+You can only configure a success policy for an Indexed Job if you have theJobSuccessPolicy
+[feature gate](/docs/reference/command-line-tools-reference/feature-gates/)enabled in your cluster.
+When creating an Indexed Job, you can define when a Job can be declared as succeeded using a .spec.successPolicy
+,
+based on the pods that succeeded.
+By default, a Job succeeds when the number of succeeded Pods equals .spec.completions
+.
+These are some situations where you might want additional control for declaring a Job succeeded:
+- When running simulations with different parameters, you might not need all the simulations to succeed for the overall Job to be successful.
+- When following a leader-worker pattern, only the success of the leader determines the success or failure of a Job. Examples of this are frameworks like MPI and PyTorch etc.
+You can configure a success policy, in the .spec.successPolicy
+field,
+to meet the above use cases. This policy can handle Job success based on the
+succeeded pods. After the Job meets the success policy, the job controller terminates the lingering Pods.
+A success policy is defined by rules. Each rule can take one of the following forms:
+- When you specify the
+succeededIndexes
+only, once all indexes specified in thesucceededIndexes
+succeed, the job controller marks the Job as succeeded. ThesucceededIndexes
+must be a list of intervals between 0 and.spec.completions-1
+. - When you specify the
+succeededCount
+only, once the number of succeeded indexes reaches thesucceededCount
+, the job controller marks the Job as succeeded. - When you specify both
+succeededIndexes
+andsucceededCount
+, once the number of succeeded indexes from the subset of indexes specified in thesucceededIndexes
+reaches thesucceededCount
+, the job controller marks the Job as succeeded.
+Note that when you specify multiple rules in the .spec.successPolicy.rules
+,
+the job controller evaluates the rules in order. Once the Job meets a rule, the job controller ignores remaining rules.
+Here is a manifest for a Job with successPolicy
+:
+apiVersion: batch/v1
+kind: Job
+metadata:
+name: job-success
+spec:
+parallelism: 10
+completions: 10
+completionMode: Indexed # Required for the success policy
+successPolicy:
+rules:
+- succeededIndexes: 0,2-3
+succeededCount: 1
+template:
+spec:
+containers:
+- name: main
+image: python
+command: # Provided that at least one of the Pods with 0, 2, and 3 indexes has succeeded,
+# the overall Job is a success.
+- python3
+- -c
+- |
+import os, sys
+if os.environ.get("JOB_COMPLETION_INDEX") == "2":
+sys.exit(0)
+else:
+sys.exit(1)
+restartPolicy: Never
+In the example above, both succeededIndexes
+and succeededCount
+have been specified.
+Therefore, the job controller will mark the Job as succeeded and terminate the lingering Pods
+when either of the specified indexes, 0, 2, or 3, succeed.
+The Job that meets the success policy gets the SuccessCriteriaMet
+condition with a SuccessPolicy
+reason.
+After the removal of the lingering Pods is issued, the Job gets the Complete
+condition.
+Note that the succeededIndexes
+is represented as intervals separated by a hyphen.
+The number are listed in represented by the first and last element of the series, separated by a hyphen.
+Note:
+When you specify both a success policy and some terminating policies such as.spec.backoffLimit
+and .spec.podFailurePolicy
+,
+once the Job meets either policy, the job controller respects the terminating policy and ignores the success policy.Job termination and cleanup
+When a Job completes, no more Pods are created, but the Pods are [usually](#pod-backoff-failure-policy) not deleted either.
+Keeping them around allows you to still view the logs of completed pods to check for errors, warnings, or other diagnostic output.
+The job object also remains after it is completed so that you can view its status. It is up to the user to delete
+old jobs after noting their status. Delete the job with kubectl
+(e.g. kubectl delete jobs/pi
+or kubectl delete -f ./job.yaml
+).
+When you delete the job using kubectl
+, all the pods it created are deleted too.
+By default, a Job will run uninterrupted unless a Pod fails (restartPolicy=Never
+)
+or a Container exits in error (restartPolicy=OnFailure
+), at which point the Job defers to the
+.spec.backoffLimit
+described above. Once .spec.backoffLimit
+has been reached the Job will
+be marked as failed and any running Pods will be terminated.
+Another way to terminate a Job is by setting an active deadline.
+Do this by setting the .spec.activeDeadlineSeconds
+field of the Job to a number of seconds.
+The activeDeadlineSeconds
+applies to the duration of the job, no matter how many Pods are created.
+Once a Job reaches activeDeadlineSeconds
+, all of its running Pods are terminated and the Job status
+will become type: Failed
+with reason: DeadlineExceeded
+.
+Note that a Job's .spec.activeDeadlineSeconds
+takes precedence over its .spec.backoffLimit
+.
+Therefore, a Job that is retrying one or more failed Pods will not deploy additional Pods once
+it reaches the time limit specified by activeDeadlineSeconds
+, even if the backoffLimit
+is not yet reached.
+Example:
+apiVersion: batch/v1
+kind: Job
+metadata:
+name: pi-with-timeout
+spec:
+backoffLimit: 5
+activeDeadlineSeconds: 100
+template:
+spec:
+containers:
+- name: pi
+image: perl:5.34.0
+command: ["perl", "-Mbignum=bpi", "-wle", "print bpi(2000)"]
+restartPolicy: Never
+Note that both the Job spec and the [Pod template spec](/docs/concepts/workloads/pods/init-containers/#detailed-behavior)
+within the Job have an activeDeadlineSeconds
+field. Ensure that you set this field at the proper level.
+Keep in mind that the restartPolicy
+applies to the Pod, and not to the Job itself:
+there is no automatic Job restart once the Job status is type: Failed
+.
+That is, the Job termination mechanisms activated with .spec.activeDeadlineSeconds
+and .spec.backoffLimit
+result in a permanent Job failure that requires manual intervention to resolve.
+Terminal Job conditions
+A Job has two possible terminal states, each of which has a corresponding Job condition:
+- Succeeded: Job condition
+Complete
+- Failed: Job condition
+Failed
+Jobs fail for the following reasons:
+- The number of Pod failures exceeded the specified
+.spec.backoffLimit
+in the Job specification. For details, see[Pod backoff failure policy](#pod-backoff-failure-policy). - The Job runtime exceeded the specified
+.spec.activeDeadlineSeconds
+- An indexed Job that used
+.spec.backoffLimitPerIndex
+has failed indexes. For details, see[Backoff limit per index](#backoff-limit-per-index). - The number of failed indexes in the Job exceeded the specified
+spec.maxFailedIndexes
+. For details, see[Backoff limit per index](#backoff-limit-per-index) - A failed Pod matches a rule in
+.spec.podFailurePolicy
+that has theFailJob
+action. For details about how Pod failure policy rules might affect failure evaluation, see[Pod failure policy](#pod-failure-policy).
+Jobs succeed for the following reasons:
+- The number of succeeded Pods reached the specified
+.spec.completions
+- The criteria specified in
+.spec.successPolicy
+are met. For details, see[Success policy](#success-policy).
+In Kubernetes v1.31 and later the Job controller delays the addition of the
+terminal conditions,Failed
+or Complete
+, until all of the Job Pods are terminated.
+In Kubernetes v1.30 and earlier, the Job controller added the Complete
+or the
+Failed
+Job terminal conditions as soon as the Job termination process was
+triggered and all Pod finalizers were removed. However, some Pods would still
+be running or terminating at the moment that the terminal condition was added.
+In Kubernetes v1.31 and later, the controller only adds the Job terminal conditions
+after all of the Pods are terminated. You can enable this behavior by using the
+JobManagedBy
+or the JobPodReplacementPolicy
+(enabled by default)
+[feature gates](/docs/reference/command-line-tools-reference/feature-gates/).
+Termination of Job pods
+The Job controller adds the FailureTarget
+condition or the SuccessCriteriaMet
+condition to the Job to trigger Pod termination after a Job meets either the
+success or failure criteria.
+Factors like terminationGracePeriodSeconds
+might increase the amount of time
+from the moment that the Job controller adds the FailureTarget
+condition or the
+SuccessCriteriaMet
+condition to the moment that all of the Job Pods terminate
+and the Job controller adds a [terminal condition](#terminal-job-conditions)
+(Failed
+or Complete
+).
+You can use the FailureTarget
+or the SuccessCriteriaMet
+condition to evaluate
+whether the Job has failed or succeeded without having to wait for the controller
+to add a terminal condition.
+For example, you might want to decide when to create a replacement Job
+that replaces a failed Job. If you replace the failed Job when the FailureTarget
+condition appears, your replacement Job runs sooner, but could result in Pods
+from the failed and the replacement Job running at the same time, using
+extra compute resources.
+Alternatively, if your cluster has limited resource capacity, you could choose to
+wait until the Failed
+condition appears on the Job, which would delay your
+replacement Job but would ensure that you conserve resources by waiting
+until all of the failed Pods are removed.
+Clean up finished jobs automatically
+Finished Jobs are usually no longer needed in the system. Keeping them around in
+the system will put pressure on the API server. If the Jobs are managed directly
+by a higher level controller, such as
+[CronJobs](/docs/concepts/workloads/controllers/cron-jobs/), the Jobs can be
+cleaned up by CronJobs based on the specified capacity-based cleanup policy.
+TTL mechanism for finished Jobs
+Kubernetes v1.23 [stable]
+Another way to clean up finished Jobs (either Complete
+or Failed
+)
+automatically is to use a TTL mechanism provided by a
+[TTL controller](/docs/concepts/workloads/controllers/ttlafterfinished/) for
+finished resources, by specifying the .spec.ttlSecondsAfterFinished
+field of
+the Job.
+When the TTL controller cleans up the Job, it will delete the Job cascadingly, i.e. delete its dependent objects, such as Pods, together with the Job. Note that when the Job is deleted, its lifecycle guarantees, such as finalizers, will be honored.
+For example:
+apiVersion: batch/v1
+kind: Job
+metadata:
+name: pi-with-ttl
+spec:
+ttlSecondsAfterFinished: 100
+template:
+spec:
+containers:
+- name: pi
+image: perl:5.34.0
+command: ["perl", "-Mbignum=bpi", "-wle", "print bpi(2000)"]
+restartPolicy: Never
+The Job pi-with-ttl
+will be eligible to be automatically deleted, 100
+seconds after it finishes.
+If the field is set to 0
+, the Job will be eligible to be automatically deleted
+immediately after it finishes. If the field is unset, this Job won't be cleaned
+up by the TTL controller after it finishes.
+Note:
+It is recommended to set ttlSecondsAfterFinished
+field because unmanaged jobs
+(Jobs that you created directly, and not indirectly through other workload APIs
+such as CronJob) have a default deletion
+policy of orphanDependents
+causing Pods created by an unmanaged Job to be left around
+after that Job is fully deleted.
+Even though the [control plane](/docs/reference/glossary/?all=true#term-control-plane) eventually
+[garbage collects](/docs/concepts/workloads/pods/pod-lifecycle/#pod-garbage-collection)
+the Pods from a deleted Job after they either fail or complete, sometimes those
+lingering pods may cause cluster performance degradation or in worst case cause the
+cluster to go offline due to this degradation.
+You can use [LimitRanges](/docs/concepts/policy/limit-range/) and
+[ResourceQuotas](/docs/concepts/policy/resource-quotas/) to place a
+cap on the amount of resources that a particular namespace can
+consume.
+Job patterns
+The Job object can be used to process a set of independent but related work items. These might be emails to be sent, frames to be rendered, files to be transcoded, ranges of keys in a NoSQL database to scan, and so on.
+In a complex system, there may be multiple different sets of work items. Here we are just considering one set of work items that the user wants to manage together — a batch job.
+There are several different patterns for parallel computation, each with strengths and weaknesses. The tradeoffs are:
+- One Job object for each work item, versus a single Job object for all work items. One Job per work item creates some overhead for the user and for the system to manage large numbers of Job objects. A single Job for all work items is better for large numbers of items.
+- Number of Pods created equals number of work items, versus each Pod can process multiple work items. When the number of Pods equals the number of work items, the Pods typically requires less modification to existing code and containers. Having each Pod process multiple work items is better for large numbers of items.
+- Several approaches use a work queue. This requires running a queue service, and modifications to the existing program or container to make it use the work queue. Other approaches are easier to adapt to an existing containerised application.
+- When the Job is associated with a
+[headless Service](/docs/concepts/services-networking/service/#headless-services), you can enable the Pods within a Job to communicate with each other to collaborate in a computation.
+The tradeoffs are summarized here, with columns 2 to 4 corresponding to the above tradeoffs. The pattern names are also links to examples and more detailed description.
+Pattern | Single Job object | Fewer pods than work items? | Use app unmodified? |
+---|---|---|---|
+|
+[Queue with Variable Pod Count](/docs/tasks/job/fine-parallel-processing-work-queue/)[Indexed Job with Static Work Assignment](/docs/tasks/job/indexed-parallel-processing-static/)[Job with Pod-to-Pod Communication](/docs/tasks/job/job-with-pod-to-pod-communication/)[Job Template Expansion](/docs/tasks/job/parallel-processing-expansion/)When you specify completions with .spec.completions
+, each Pod created by the Job controller
+has an identical [ spec](https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status).
+This means that all pods for a task will have the same command line and the same
+image, the same volumes, and (almost) the same environment variables. These patterns
+are different ways to arrange for pods to work on different things.
+This table shows the required settings for .spec.parallelism
+and .spec.completions
+for each of the patterns.
+Here, W
+is the number of work items.
+Pattern | .spec.completions | .spec.parallelism |
+---|---|---|
+|
+[Queue with Variable Pod Count](/docs/tasks/job/fine-parallel-processing-work-queue/)[Indexed Job with Static Work Assignment](/docs/tasks/job/indexed-parallel-processing-static/)[Job with Pod-to-Pod Communication](/docs/tasks/job/job-with-pod-to-pod-communication/)[Job Template Expansion](/docs/tasks/job/parallel-processing-expansion/)Advanced usage
+Suspending a Job
+Kubernetes v1.24 [stable]
+When a Job is created, the Job controller will immediately begin creating Pods to satisfy the Job's requirements and will continue to do so until the Job is complete. However, you may want to temporarily suspend a Job's execution and resume it later, or start Jobs in suspended state and have a custom controller decide later when to start them.
+To suspend a Job, you can update the .spec.suspend
+field of
+the Job to true; later, when you want to resume it again, update it to false.
+Creating a Job with .spec.suspend
+set to true will create it in the suspended
+state.
+When a Job is resumed from suspension, its .status.startTime
+field will be
+reset to the current time. This means that the .spec.activeDeadlineSeconds
+timer will be stopped and reset when a Job is suspended and resumed.
+When you suspend a Job, any running Pods that don't have a status of Completed
+will be [terminated](/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination)
+with a SIGTERM signal. The Pod's graceful termination period will be honored and
+your Pod must handle this signal in this period. This may involve saving
+progress for later or undoing changes. Pods terminated this way will not count
+towards the Job's completions
+count.
+An example Job definition in the suspended state can be like so:
+kubectl get job myjob -o yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+name: myjob
+spec:
+suspend: true
+parallelism: 1
+completions: 5
+template:
+spec:
+...
+You can also toggle Job suspension by patching the Job using the command line.
+Suspend an active Job:
+kubectl patch job/myjob --type=strategic --patch '{"spec":{"suspend":true}}'
+Resume a suspended Job:
+kubectl patch job/myjob --type=strategic --patch '{"spec":{"suspend":false}}'
+The Job's status can be used to determine if a Job is suspended or has been suspended in the past:
+kubectl get jobs/myjob -o yaml
+apiVersion: batch/v1
+kind: Job
+# .metadata and .spec omitted
+status:
+conditions:
+- lastProbeTime: "2021-02-05T13:14:33Z"
+lastTransitionTime: "2021-02-05T13:14:33Z"
+status: "True"
+type: Suspended
+startTime: "2021-02-05T13:13:48Z"
+The Job condition of type "Suspended" with status "True" means the Job is
+suspended; the lastTransitionTime
+field can be used to determine how long the
+Job has been suspended for. If the status of that condition is "False", then the
+Job was previously suspended and is now running. If such a condition does not
+exist in the Job's status, the Job has never been stopped.
+Events are also created when the Job is suspended and resumed:
+kubectl describe jobs/myjob
+Name: myjob
+...
+Events:
+Type Reason Age From Message
+---- ------ ---- ---- -------
+Normal SuccessfulCreate 12m job-controller Created pod: myjob-hlrpl
+Normal SuccessfulDelete 11m job-controller Deleted pod: myjob-hlrpl
+Normal Suspended 11m job-controller Job suspended
+Normal SuccessfulCreate 3s job-controller Created pod: myjob-jvb44
+Normal Resumed 3s job-controller Job resumed
+The last four events, particularly the "Suspended" and "Resumed" events, are
+directly a result of toggling the .spec.suspend
+field. In the time between
+these two events, we see that no Pods were created, but Pod creation restarted
+as soon as the Job was resumed.
+Mutable Scheduling Directives
+Kubernetes v1.27 [stable]
+In most cases, a parallel job will want the pods to run with constraints, like all in the same zone, or all either on GPU model x or y but not a mix of both.
+The [suspend](#suspending-a-job) field is the first step towards achieving those semantics. Suspend allows a
+custom queue controller to decide when a job should start; However, once a job is unsuspended,
+a custom queue controller has no influence on where the pods of a job will actually land.
+This feature allows updating a Job's scheduling directives before it starts, which gives custom queue controllers the ability to influence pod placement while at the same time offloading actual pod-to-node assignment to kube-scheduler. This is allowed only for suspended Jobs that have never been unsuspended before.
+The fields in a Job's pod template that can be updated are node affinity, node selector,
+tolerations, labels, annotations and [scheduling gates](/docs/concepts/scheduling-eviction/pod-scheduling-readiness/).
+Specifying your own Pod selector
+Normally, when you create a Job object, you do not specify .spec.selector
+.
+The system defaulting logic adds this field when the Job is created.
+It picks a selector value that will not overlap with any other jobs.
+However, in some cases, you might need to override this automatically set selector.
+To do this, you can specify the .spec.selector
+of the Job.
+Be very careful when doing this. If you specify a label selector which is not
+unique to the pods of that Job, and which matches unrelated Pods, then pods of the unrelated
+job may be deleted, or this Job may count other Pods as completing it, or one or both
+Jobs may refuse to create Pods or run to completion. If a non-unique selector is
+chosen, then other controllers (e.g. ReplicationController) and their Pods may behave
+in unpredictable ways too. Kubernetes will not stop you from making a mistake when
+specifying .spec.selector
+.
+Here is an example of a case when you might want to use this feature.
+Say Job old
+is already running. You want existing Pods
+to keep running, but you want the rest of the Pods it creates
+to use a different pod template and for the Job to have a new name.
+You cannot update the Job because these fields are not updatable.
+Therefore, you delete Job old
+but leave its pods
+running, using kubectl delete jobs/old --cascade=orphan
+.
+Before deleting it, you make a note of what selector it uses:
+kubectl get job old -o yaml
+The output is similar to this:
+kind: Job
+metadata:
+name: old
+...
+spec:
+selector:
+matchLabels:
+batch.kubernetes.io/controller-uid: a8f3d00d-c6d2-11e5-9f87-42010af00002
+...
+Then you create a new Job with name new
+and you explicitly specify the same selector.
+Since the existing Pods have label batch.kubernetes.io/controller-uid=a8f3d00d-c6d2-11e5-9f87-42010af00002
+,
+they are controlled by Job new
+as well.
+You need to specify manualSelector: true
+in the new Job since you are not using
+the selector that the system normally generates for you automatically.
+kind: Job
+metadata:
+name: new
+...
+spec:
+manualSelector: true
+selector:
+matchLabels:
+batch.kubernetes.io/controller-uid: a8f3d00d-c6d2-11e5-9f87-42010af00002
+...
+The new Job itself will have a different uid from a8f3d00d-c6d2-11e5-9f87-42010af00002
+. Setting
+manualSelector: true
+tells the system that you know what you are doing and to allow this
+mismatch.
+Job tracking with finalizers
+Kubernetes v1.26 [stable]
+The control plane keeps track of the Pods that belong to any Job and notices if
+any such Pod is removed from the API server. To do that, the Job controller
+creates Pods with the finalizer batch.kubernetes.io/job-tracking
+. The
+controller removes the finalizer only after the Pod has been accounted for in
+the Job status, allowing the Pod to be removed by other controllers or users.
+Note:
+See[My pod stays terminating](/docs/tasks/debug/debug-application/debug-pods/)if you observe that pods from a Job are stuck with the tracking finalizer.
+Elastic Indexed Jobs
+Kubernetes v1.31 [stable]
+You can scale Indexed Jobs up or down by mutating both .spec.parallelism
+and .spec.completions
+together such that .spec.parallelism == .spec.completions
+.
+When scaling down, Kubernetes removes the Pods with higher indexes.
+Use cases for elastic Indexed Jobs include batch workloads which require scaling an indexed Job, such as MPI, Horovod, Ray, and PyTorch training jobs.
+Delayed creation of replacement pods
+Kubernetes v1.29 [beta]
+Note:
+You can only setpodReplacementPolicy
+on Jobs if you enable the JobPodReplacementPolicy
+[feature gate](/docs/reference/command-line-tools-reference/feature-gates/)(enabled by default).
+By default, the Job controller recreates Pods as soon they either fail or are terminating (have a deletion timestamp).
+This means that, at a given time, when some of the Pods are terminating, the number of running Pods for a Job
+can be greater than parallelism
+or greater than one Pod per index (if you are using an Indexed Job).
+You may choose to create replacement Pods only when the terminating Pod is fully terminal (has status.phase: Failed
+).
+To do this, set the .spec.podReplacementPolicy: Failed
+.
+The default replacement policy depends on whether the Job has a podFailurePolicy
+set.
+With no Pod failure policy defined for a Job, omitting the podReplacementPolicy
+field selects the
+TerminatingOrFailed
+replacement policy:
+the control plane creates replacement Pods immediately upon Pod deletion
+(as soon as the control plane sees that a Pod for this Job has deletionTimestamp
+set).
+For Jobs with a Pod failure policy set, the default podReplacementPolicy
+is Failed
+, and no other
+value is permitted.
+See [Pod failure policy](#pod-failure-policy) to learn more about Pod failure policies for Jobs.
+kind: Job
+metadata:
+name: new
+...
+spec:
+podReplacementPolicy: Failed
+...
+Provided your cluster has the feature gate enabled, you can inspect the .status.terminating
+field of a Job.
+The value of the field is the number of Pods owned by the Job that are currently terminating.
+kubectl get jobs/myjob -o yaml
+apiVersion: batch/v1
+kind: Job
+# .metadata and .spec omitted
+status:
+terminating: 3 # three Pods are terminating and have not yet reached the Failed phase
+Delegation of managing a Job object to external controller
+Kubernetes v1.30 [alpha]
+Note:
+You can only set themanagedBy
+field on Jobs if you enable the JobManagedBy
+[feature gate](/docs/reference/command-line-tools-reference/feature-gates/)(disabled by default).
+This feature allows you to disable the built-in Job controller, for a specific Job, and delegate reconciliation of the Job to an external controller.
+You indicate the controller that reconciles the Job by setting a custom value
+for the spec.managedBy
+field - any value
+other than kubernetes.io/job-controller
+. The value of the field is immutable.
+Note:
+When using this feature, make sure the controller indicated by the field is installed, otherwise the Job may not be reconciled at all.Note:
+When developing an external Job controller be aware that your controller needs to operate in a fashion conformant with the definitions of the API spec and status fields of the Job object.
+Please review these in detail in the [Job API](/docs/reference/kubernetes-api/workload-resources/job-v1/).
+We also recommend that you run the e2e conformance tests for the Job object to
+verify your implementation.
+Finally, when developing an external Job controller make sure it does not use the
+batch.kubernetes.io/job-tracking
+finalizer, reserved for the built-in controller.
+Warning:
+If you are considering to disable theJobManagedBy
+feature gate, or to
+downgrade the cluster to a version without the feature gate enabled, check if
+there are jobs with a custom value of the spec.managedBy
+field. If there
+are such jobs, there is a risk that they might be reconciled by two controllers
+after the operation: the built-in Job controller and the external controller
+indicated by the field value.Alternatives
+Bare Pods
+When the node that a Pod is running on reboots or fails, the pod is terminated and will not be restarted. However, a Job will create new Pods to replace terminated ones. For this reason, we recommend that you use a Job rather than a bare Pod, even if your application requires only a single Pod.
+Replication Controller
+Jobs are complementary to [Replication Controllers](/docs/concepts/workloads/controllers/replicationcontroller/).
+A Replication Controller manages Pods which are not expected to terminate (e.g. web servers), and a Job
+manages Pods that are expected to terminate (e.g. batch tasks).
+As discussed in [Pod Lifecycle](/docs/concepts/workloads/pods/pod-lifecycle/), Job
+is only appropriate
+for pods with RestartPolicy
+equal to OnFailure
+or Never
+.
+(Note: If RestartPolicy
+is not set, the default value is Always
+.)
+Single Job starts controller Pod
+Another pattern is for a single Job to create a Pod which then creates other Pods, acting as a sort of custom controller for those Pods. This allows the most flexibility, but may be somewhat complicated to get started with and offers less integration with Kubernetes.
+One example of this pattern would be a Job which starts a Pod which runs a script that in turn
+starts a Spark master controller (see [spark example](https://github.com/kubernetes/examples/tree/master/staging/spark/README.md)),
+runs a spark driver, and then cleans up.
+An advantage of this approach is that the overall process gets the completion guarantee of a Job object, but maintains complete control over what Pods are created and how work is assigned to them.
+What's next
+- Learn about
+[Pods](/docs/concepts/workloads/pods/). - Read about different ways of running Jobs:
+[Coarse Parallel Processing Using a Work Queue](/docs/tasks/job/coarse-parallel-processing-work-queue/)[Fine Parallel Processing Using a Work Queue](/docs/tasks/job/fine-parallel-processing-work-queue/)- Use an
+[indexed Job for parallel processing with static work assignment](/docs/tasks/job/indexed-parallel-processing-static/) - Create multiple Jobs based on a template:
+[Parallel Processing using Expansions](/docs/tasks/job/parallel-processing-expansion/)
+- Follow the links within
+[Clean up finished jobs automatically](#clean-up-finished-jobs-automatically)to learn more about how your cluster can clean up completed and / or failed tasks. Job
+is part of the Kubernetes REST API. Read the[Job](/docs/reference/kubernetes-api/workload-resources/job-v1/)object definition to understand the API for jobs.- Read about
+, which you can use to define a series of Jobs that will run based on a schedule, similar to the UNIX toolCronJob
+cron
+. - Practice how to configure handling of retriable and non-retriable pod failures
+using
+podFailurePolicy
+, based on the step-by-step[examples](/docs/tasks/job/pod-failure-policy/).
+[Fix a typo in controllers/job.md (e694639ae2)](https://github.com/kubernetes/website/commit/e694639ae2240257f80b0491688bccf6cf019998)

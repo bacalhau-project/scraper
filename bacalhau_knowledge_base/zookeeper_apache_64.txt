@@ -1,3 +1,47 @@
-URL: https://zookeeper.apache.org/doc/r3.3.1/releasenotes.html
+Source: zookeeper_apache
+URL: https://zookeeper.apache.org/doc/r3.2.2/releasenotes.html
 
-Not FoundThe requested URL was not found on this server.
+ZooKeeper 3.2.2 Release Notes
+These release notes include new developer and user facing
+incompatibilities, features, and major improvements.
+Note that there is a user visible semantic change to an existing API in the 3.2.0 release:
+[ZOOKEEPER-444](https://issues.apache.org/jira/browse/ZOOKEEPER-444)
+"perms definition for PERMS_ALL differ in C and java", a bug fix which required a change to the JAVA
+definition of ALL to include ADMIN.
+See [3.0
+release notes and migration instructions](http://hadoop.apache.org/zookeeper/docs/r3.0.1/releasenotes.html#migration) if you are upgrading
+from version 2 of ZooKeeper (SourceForge) to version 3 or
+later.
+Changes Since ZooKeeper 3.2.1
+Changes Since ZooKeeper 3.2.1
+Changes Since ZooKeeper 3.2.1
+Issue |
+Notes |
+Bug |
+|
+[ZOOKEEPER-582](https://issues.apache.org/jira/browse/ZOOKEEPER-582) | ZooKeeper can revert to old data when a snapshot is created outside of normal processing
+|
+[ZOOKEEPER-562](https://issues.apache.org/jira/browse/ZOOKEEPER-562) | c client can flood server with pings if tcp send queue filled
+|
+[ZOOKEEPER-538](https://issues.apache.org/jira/browse/ZOOKEEPER-538) | zookeeper.async causes python to segfault
+|
+[ZOOKEEPER-547](https://issues.apache.org/jira/browse/ZOOKEEPER-547) | Sanity check in QuorumCnxn Manager and quorum communication port.
+|
+[ZOOKEEPER-420](https://issues.apache.org/jira/browse/ZOOKEEPER-420) | build/test should not require install in zkpython
+|
+[ZOOKEEPER-576](https://issues.apache.org/jira/browse/ZOOKEEPER-576) | docs need to be updated for session moved exception and how to handle it
+|
+[ZOOKEEPER-554](https://issues.apache.org/jira/browse/ZOOKEEPER-554) | zkpython can segfault when statting a deleted node
+|
+[ZOOKEEPER-541](https://issues.apache.org/jira/browse/ZOOKEEPER-541) | zkpython limited to 256 handles
+|
+[ZOOKEEPER-510](https://issues.apache.org/jira/browse/ZOOKEEPER-510) | zkpython lumps all exceptions as IOError, needs specialized exceptions for KeeperException types
+|
+[ZOOKEEPER-540](https://issues.apache.org/jira/browse/ZOOKEEPER-540) | zkpython needs better tracking of handle validity
+|
+[ZOOKEEPER-585](https://issues.apache.org/jira/browse/ZOOKEEPER-585) | Update README for zkpython in 3.2.2
+|
+[ZOOKEEPER-597](https://issues.apache.org/jira/browse/ZOOKEEPER-597) | ASyncHammerTest is failing intermittently on hudson trunk.
+|
+[ZOOKEEPER-611](https://issues.apache.org/jira/browse/ZOOKEEPER-611) | hudson build failiure.
+|

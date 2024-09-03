@@ -1,36 +1,911 @@
-URL: https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/TransparentEncryption.html
+Source: apache_hadoop
+URL: http://hadoop.apache.org/docs/r3.3.5/hadoop-project-dist/hadoop-hdfs/WebHDFS.html
 
-Wiki|git|Apache Hadoop| Last Published: 2024-03-04
-               | Version: 3.4.0GeneralOverviewSingle Node SetupCluster SetupCommands ReferenceFileSystem ShellCompatibility SpecificationDownstream Developer's GuideAdmin Compatibility GuideInterface ClassificationFileSystem SpecificationCommonCLI Mini ClusterFair Call QueueNative LibrariesProxy UserRack AwarenessSecure ModeService Level AuthorizationHTTP AuthenticationCredential Provider APIHadoop KMSTracingUnix Shell GuideRegistryAsync ProfilerHDFSArchitectureUser GuideCommands ReferenceNameNode HA With QJMNameNode HA With NFSObserver NameNodeFederationViewFsViewFsOverloadSchemeSnapshotsEdits ViewerImage ViewerPermissions and HDFSQuotas and HDFSlibhdfs (C API)WebHDFS (REST API)HttpFSShort Circuit Local ReadsCentralized Cache ManagementNFS GatewayRolling UpgradeExtended AttributesTransparent EncryptionMultihomingStorage PoliciesMemory Storage SupportSynthetic Load GeneratorErasure CodingDisk BalancerUpgrade DomainDataNode AdminRouter FederationProvided StorageMapReduceTutorialCommands ReferenceCompatibility with 1.xEncrypted ShufflePluggable Shuffle/SortDistributed Cache DeploySupport for YARN Shared CacheMapReduce REST APIsMR Application MasterMR History ServerYARNArchitectureCommands ReferenceCapacity SchedulerFair SchedulerResourceManager RestartResourceManager HAResource ModelNode LabelsNode AttributesWeb Application ProxyTimeline ServerTimeline Service V.2Writing YARN ApplicationsYARN Application SecurityNodeManagerRunning Applications in Docker ContainersRunning Applications in runC ContainersUsing CGroupsSecure ContainersReservation SystemGraceful DecommissionOpportunistic ContainersYARN FederationShared CacheUsing GPUUsing FPGAPlacement ConstraintsYARN UI2YARN REST APIsIntroductionResource ManagerNode ManagerTimeline ServerTimeline Service V.2YARN ServiceOverviewQuickStartConceptsYarn Service APIService DiscoverySystem ServicesHadoop Compatible File SystemsAliyun OSSAmazon S3Azure Blob StorageAzure Data Lake StorageTencent COSHuaweicloud OBSAuthOverviewExamplesConfigurationBuildingToolsHadoop StreamingHadoop ArchivesHadoop Archive LogsDistCpHDFS Federation BalanceGridMixRumenResource Estimator ServiceScheduler Load SimulatorHadoop BenchmarkingDynamometerReferenceChangelog and Release NotesJava API docsUnix Shell APIMetricsConfigurationcore-default.xmlhdfs-default.xmlhdfs-rbf-default.xmlmapred-default.xmlyarn-default.xmlkms-default.xmlhttpfs-default.xmlDeprecated PropertiesTransparent Encryption in HDFSOverviewBackgroundUse CasesArchitectureOverviewAccessing data within an encryption zoneKey Management Server, KeyProvider, EDEKsConfigurationConfiguring the cluster KeyProviderSelecting an encryption algorithm and codecNamenode configurationcrypto command-line interfacecreateZonelistZonesprovisionTrashgetFileEncryptionInforeencryptZonelistReencryptionStatusExample usageDistcp considerationsRunning as the superuserCopying into encrypted locationsRename and Trash considerationsAttack vectorsHardware access exploitsRoot access exploitsHDFS admin exploitsRogue user exploitsOverviewHDFS implementstransparent,end-to-endencryption. Once configured, data read from and written to special HDFS directories istransparentlyencrypted and decrypted without requiring changes to user application code. This encryption is alsoend-to-end, which means the data can only be encrypted and decrypted by the client. HDFS never stores or has access to unencrypted data or unencrypted data encryption keys. This satisfies two typical requirements for encryption:at-rest encryption(meaning data on persistent media, such as a disk) as well asin-transit encryption(e.g. when data is travelling over the network).BackgroundEncryption can be done at different layers in a traditional data management software/hardware stack. Choosing to encrypt at a given layer comes with different advantages and disadvantages.Application-level encryption. This is the most secure and most flexible approach. The application has ultimate control over what is encrypted and can precisely reflect the requirements of the user. However, writing applications to do this is hard. This is also not an option for customers of existing applications that do not support encryption.Database-level encryption. Similar to application-level encryption in terms of its properties. Most database vendors offer some form of encryption. However, there can be performance issues. One example is that indexes cannot be encrypted.Filesystem-level encryption. This option offers high performance, application transparency, and is typically easy to deploy. However, it is unable to model some application-level policies. For instance, multi-tenant applications might want to encrypt based on the end user. A database might want different encryption settings for each column stored within a single file.Disk-level encryption. Easy to deploy and high performance, but also quite inflexible. Only really protects against physical theft.HDFS-level encryption fits between database-level and filesystem-level encryption in this stack. This has a lot of positive effects. HDFS encryption is able to provide good performance and existing Hadoop applications are able to run transparently on encrypted data. HDFS also has more context than traditional filesystems when it comes to making policy decisions.HDFS-level encryption also prevents attacks at the filesystem-level and below (so-called “OS-level attacks”). The operating system and disk only interact with encrypted bytes, since the data is already encrypted by HDFS.Use CasesData encryption is required by a number of different government, financial, and regulatory entities. For example, the health-care industry has HIPAA regulations, the card payment industry has PCI DSS regulations, and the US government has FISMA regulations. Having transparent encryption built into HDFS makes it easier for organizations to comply with these regulations.Encryption can also be performed at the application-level, but by integrating it into HDFS, existing applications can operate on encrypted data without changes. This integrated architecture implies stronger encrypted file semantics and better coordination with other HDFS functions.ArchitectureOverviewFor transparent encryption, we introduce a new abstraction to HDFS: theencryption zone. An encryption zone is a special directory whose contents will be transparently encrypted upon write and transparently decrypted upon read. Each encryption zone is associated with a singleencryption zone keywhich is specified when the zone is created. Each file within an encryption zone has its own uniquedata encryption key (DEK). DEKs are never handled directly by HDFS. Instead, HDFS only ever handles anencrypted data encryption key (EDEK). Clients decrypt an EDEK, and then use the subsequent DEK to read and write data. HDFS datanodes simply see a stream of encrypted bytes.A very important use case of encryption is to “switch it on” and ensure all files across the entire filesystem are encrypted. To support this strong guarantee without losing the flexibility of using different encryption zone keys in different parts of the filesystem, HDFS allowsnested encryption zones. After an encryption zone is created (e.g. on the root directory/), a user can create more encryption zones on its descendant directories (e.g./home/alice) with different keys. The EDEK of a file will be generated using the encryption zone key from the closest ancestor encryption zone.A new cluster service is required to manage encryption keys: the Hadoop Key Management Server (KMS). In the context of HDFS encryption, the KMS performs three basic responsibilities:Providing access to stored encryption zone keysGenerating new encrypted data encryption keys for storage on the NameNodeDecrypting encrypted data encryption keys for use by HDFS clientsThe KMS will be described in more detail below.Accessing data within an encryption zoneWhen creating a new file in an encryption zone, the NameNode asks the KMS to generate a new EDEK encrypted with the encryption zone’s key. The EDEK is then stored persistently as part of the file’s metadata on the NameNode.When reading a file within an encryption zone, the NameNode provides the client with the file’s EDEK and the encryption zone key version used to encrypt the EDEK. The client then asks the KMS to decrypt the EDEK, which involves checking that the client has permission to access the encryption zone key version. Assuming that is successful, the client uses the DEK to decrypt the file’s contents.All of the above steps for the read and write path happen automatically through interactions between the DFSClient, the NameNode, and the KMS.Access to encrypted file data and metadata is controlled by normal HDFS filesystem permissions. This means that if HDFS is compromised (for example, by gaining unauthorized access to an HDFS superuser account), a malicious user only gains access to ciphertext and encrypted keys. However, since access to encryption zone keys is controlled by a separate set of permissions on the KMS and key store, this does not pose a security threat.Key Management Server, KeyProvider, EDEKsThe KMS is a proxy that interfaces with a backing key store on behalf of HDFS daemons and clients. Both the backing key store and the KMS implement the Hadoop KeyProvider API. See theKMS documentationfor more information.In the KeyProvider API, each encryption key has a uniquekey name. Because keys can be rolled, a key can have multiplekey versions, where each key version has its ownkey material(the actual secret bytes used during encryption and decryption). An encryption key can be fetched by either its key name, returning the latest version of the key, or by a specific key version.The KMS implements additional functionality which enables creation and decryption ofencrypted encryption keys (EEKs). Creation and decryption of EEKs happens entirely on the KMS. Importantly, the client requesting creation or decryption of an EEK never handles the EEK’s encryption key. To create a new EEK, the KMS generates a new random key, encrypts it with the specified key, and returns the EEK to the client. To decrypt an EEK, the KMS checks that the user has access to the encryption key, uses it to decrypt the EEK, and returns the decrypted encryption key.In the context of HDFS encryption, EEKs areencrypted data encryption keys (EDEKs), where adata encryption key (DEK)is what is used to encrypt and decrypt file data. Typically, the key store is configured to only allow end users access to the keys used to encrypt DEKs. This means that EDEKs can be safely stored and handled by HDFS, since the HDFS user will not have access to unencrypted encryption keys.ConfigurationA necessary prerequisite is an instance of the KMS, as well as a backing key store for the KMS. See theKMS documentationfor more information.Once a KMS has been set up and the NameNode and HDFS clients have been correctly configured, an admin can use thehadoop keyandhdfs cryptocommand-line tools to create encryption keys and set up new encryption zones. Existing data can be encrypted by copying it into the new encryption zones using tools like distcp.Configuring the cluster KeyProviderhadoop.security.key.provider.pathThe KeyProvider to use when interacting with encryption keys used when reading and writing to an encryption zone. HDFS clients will use the provider path returned from Namenode via getServerDefaults. If namenode doesn’t support returning key provider uri then client’s conf will be used.Selecting an encryption algorithm and codechadoop.security.crypto.codec.classes.EXAMPLECIPHERSUITEThe prefix for a given crypto codec, contains a comma-separated list of implementation classes for a given crypto codec (eg EXAMPLECIPHERSUITE). The first implementation will be used if available, others are fallbacks.hadoop.security.crypto.codec.classes.aes.ctr.nopaddingDefault:org.apache.hadoop.crypto.OpensslAesCtrCryptoCodec, org.apache.hadoop.crypto.JceAesCtrCryptoCodecComma-separated list of crypto codec implementations for AES/CTR/NoPadding. The first implementation will be used if available, others are fallbacks.hadoop.security.crypto.codec.classes.sm4.ctr.nopaddingDefault:org.apache.hadoop.crypto.OpensslSm4CtrCryptoCodec, org.apache.hadoop.crypto.JceSm4CtrCryptoCodecComma-separated list of crypto codec implementations for SM4/CTR/NoPadding. The first implementation will be used if available, others are fallbacks.hadoop.security.crypto.cipher.suiteDefault:AES/CTR/NoPaddingCipher suite for crypto codec, now AES/CTR/NoPadding and SM4/CTR/NoPadding are supported.hadoop.security.crypto.jce.providerDefault: NoneThe JCE provider name used in CryptoCodec.hadoop.security.crypto.buffer.sizeDefault:8192The buffer size used by CryptoInputStream and CryptoOutputStream.Namenode configurationdfs.namenode.list.encryption.zones.num.responsesDefault:100When listing encryption zones, the maximum number of zones that will be returned in a batch. Fetching the list incrementally in batches improves namenode performance.cryptocommand-line interfacecreateZoneUsage:[-createZone -keyName <keyName> -path <path>]Create a new encryption zone.pathThe path of the encryption zone to create. It must be an empty directory. A trash directory is provisioned under this path.keyNameName of the key to use for the encryption zone. Uppercase key names are unsupported.listZonesUsage:[-listZones]List all encryption zones. Requires superuser permissions.provisionTrashUsage:[-provisionTrash -path <path>]Provision a trash directory for an encryption zone.pathThe path to the root of the encryption zone.getFileEncryptionInfoUsage:[-getFileEncryptionInfo -path <path>]Get encryption information from a file. This can be used to find out whether a file is being encrypted, and the key name / key version used to encrypt it.pathThe path of the file to get encryption information.reencryptZoneUsage:[-reencryptZone <action> -path <zone>]Re-encrypts an encryption zone, by iterating through the encryption zone, and calling the KeyProvider’s reencryptEncryptedKeys interface to batch-re-encrypt all files’ EDEKs with the latest version encryption zone key in the key provider. Requires superuser permissions.Note that re-encryption does not apply to snapshots, due to snapshots’ immutable nature.actionThe re-encrypt action to perform. Must be either-startor-cancel.pathThe path to the root of the encryption zone.Re-encryption is a NameNode-only operation in HDFS, so could potentially put intensive load to the NameNode. The following configurations can be changed to control the stress on the NameNode, depending on the acceptable throughput impact to the cluster.dfs.namenode.reencrypt.batch.sizeThe number of EDEKs in a batch to be sent to the KMS for re-encryption. Each batch is processed when holding the name system read/write lock, with throttling happening between batches. See configs below.dfs.namenode.reencrypt.throttle.limit.handler.ratioRatio of read locks to be held during re-encryption. 1.0 means no throttling. 0.5 means re-encryption can hold the readlock at most 50% of its total processing time. Negative value or 0 are invalid.dfs.namenode.reencrypt.throttle.limit.updater.ratioRatio of write locks to be held during re-encryption. 1.0 means no throttling. 0.5 means re-encryption can hold the writelock at most 50% of its total processing time. Negative value or 0 are invalid.listReencryptionStatusUsage:[-listReencryptionStatus]List re-encryption information for all encryption zones. Requires superuser permissions.Example usageThese instructions assume that you are running as the normal user or HDFS superuser as is appropriate. Usesudoas needed for your environment.# As the normal user, create a new encryption key
-hadoop key create mykey
-
-# As the super user, create a new empty directory and make it an encryption zone
-hadoop fs -mkdir /zone
-hdfs crypto -createZone -keyName mykey -path /zone
-
-# chown it to the normal user
-hadoop fs -chown myuser:myuser /zone
-
-# As the normal user, put a file in, read it out
-hadoop fs -put helloWorld /zone
-hadoop fs -cat /zone/helloWorld
-
-# As the normal user, get encryption information from the file
-hdfs crypto -getFileEncryptionInfo -path /zone/helloWorld
-# console output: {cipherSuite: {name: AES/CTR/NoPadding, algorithmBlockSize: 16}, cryptoProtocolVersion: CryptoProtocolVersion{description='Encryption zones', version=1, unknownValue=null}, edek: 2010d301afbd43b58f10737ce4e93b39, iv: ade2293db2bab1a2e337f91361304cb3, keyName: mykey, ezKeyVersionName: mykey@0}Distcp considerationsRunning as the superuserOne common usecase for distcp is to replicate data between clusters for backup and disaster recovery purposes. This is typically performed by the cluster administrator, who is an HDFS superuser.To enable this same workflow when using HDFS encryption, we introduced a new virtual path prefix,/.reserved/raw/, that gives superusers direct access to the underlying block data in the filesystem. This allows superusers to distcp data without needing having access to encryption keys, and also avoids the overhead of decrypting and re-encrypting data. It also means the source and destination data will be byte-for-byte identical, which would not be true if the data was being re-encrypted with a new EDEK.When using/.reserved/rawto distcp encrypted data, it’s important to preserve extended attributes with the-pxflag. This is because encrypted file attributes (such as the EDEK) are exposed through extended attributes within/.reserved/raw, and must be preserved to be able to decrypt the file. This means that if the distcp is initiated at or above the encryption zone root, it will automatically create an encryption zone at the destination if it does not already exist. However, it’s still recommended that the admin first create identical encryption zones on the destination cluster to avoid any potential mishaps.Copying into encrypted locationsBy default, distcp compares checksums provided by the filesystem to verify that the data was successfully copied to the destination. When copying from unencrypted or encrypted location into an encrypted location, the filesystem checksums will not match since the underlying block data is different because a new EDEK will be used to encrypt at destination. In this case, specify the-skipcrccheckand-updatedistcp flags to avoid verifying checksums.Rename and Trash considerationsHDFS restricts file and directory renames across encryption zone boundaries. This includes renaming an encrypted file / directory into an unencrypted directory (e.g.,hdfs dfs mv /zone/encryptedFile /home/bob), renaming an unencrypted file or directory into an encryption zone (e.g.,hdfs dfs mv /home/bob/unEncryptedFile /zone), and renaming between two different encryption zones (e.g.,hdfs dfs mv /home/alice/zone1/foo /home/alice/zone2). In these examples,/zone,/home/alice/zone1, and/home/alice/zone2are encryption zones, while/home/bobis not. A rename is only allowed if the source and destination paths are in the same encryption zone, or both paths are unencrypted (not in any encryption zone).This restriction enhances security and eases system management significantly. All file EDEKs under an encryption zone are encrypted with the encryption zone key. Therefore, if the encryption zone key is compromised, it is important to identify all vulnerable files and re-encrypt them. This is fundamentally difficult if a file initially created in an encryption zone can be renamed to an arbitrary location in the filesystem.To comply with the above rule, each encryption zone has its own.Trashdirectory under the “zone directory”. E.g., afterhdfs dfs rm /zone/encryptedFile,encryptedFilewill be moved to/zone/.Trash, instead of the.Trashdirectory under the user’s home directory. When the entire encryption zone is deleted, the “zone directory” will be moved to the.Trashdirectory under the user’s home directory.If the encryption zone is the root directory (e.g.,/directory), the trash path of root directory is/.Trash, not the.Trashdirectory under the user’s home directory, and the behavior of renaming sub-directories or sub-files in root directory will keep consistent with the behavior in a general encryption zone, such as/zonewhich is mentioned at the top of this section.Thecryptocommand before Hadoop 2.8.0 does not provision the.Trashdirectory automatically. If an encryption zone is created before Hadoop 2.8.0, and then the cluster is upgraded to Hadoop 2.8.0 or above, the trash directory can be provisioned using-provisionTrashoption (e.g.,hdfs crypto -provisionTrash -path /zone).Attack vectorsHardware access exploitsThese exploits assume that attacker has gained physical access to hard drives from cluster machines, i.e. datanodes and namenodes.Access to swap files of processes containing data encryption keys.By itself, this does not expose cleartext, as it also requires access to encrypted block files.This can be mitigated by disabling swap, using encrypted swap, or using mlock to prevent keys from being swapped out.Access to encrypted block files.By itself, this does not expose cleartext, as it also requires access to DEKs.Root access exploitsThese exploits assume that attacker has gained root shell access to cluster machines, i.e. datanodes and namenodes. Many of these exploits cannot be addressed in HDFS, since a malicious root user has access to the in-memory state of processes holding encryption keys and cleartext. For these exploits, the only mitigation technique is carefully restricting and monitoring root shell access.Access to encrypted block files.By itself, this does not expose cleartext, as it also requires access to encryption keys.Dump memory of client processes to obtain DEKs, delegation tokens, cleartext.No mitigation.Recording network traffic to sniff encryption keys and encrypted data in transit.By itself, insufficient to read cleartext without the EDEK encryption key.Dump memory of datanode process to obtain encrypted block data.By itself, insufficient to read cleartext without the DEK.Dump memory of namenode process to obtain encrypted data encryption keys.By itself, insufficient to read cleartext without the EDEK’s encryption key and encrypted block files.HDFS admin exploitsThese exploits assume that the attacker has compromised HDFS, but does not have root orhdfsuser shell access.Access to encrypted block files.By itself, insufficient to read cleartext without the EDEK and EDEK encryption key.Access to encryption zone and encrypted file metadata (including encrypted data encryption keys), via -fetchImage.By itself, insufficient to read cleartext without EDEK encryption keys.Rogue user exploitsA rogue user can collect keys of files they have access to, and use them later to decrypt the encrypted data of those files. As the user had access to those files, they already had access to the file contents. This can be mitigated through periodic key rolling policies. ThereencryptZonecommand is usually required after key rolling, to make sure the EDEKs on existing files use the new version key.Manual steps to a complete key rolling and re-encryption are listed below. These instructions assume that you are running as the key admin or HDFS superuser as is appropriate.# As the key admin, roll the key to a new version
-hadoop key roll exposedKey
-
-# As the super user, re-encrypt the encryption zone. Possibly list zones first.
-hdfs crypto -listZones
-hdfs crypto -reencryptZone -start -path /zone
-
-# As the super user, periodically check the status of re-encryption
-hdfs crypto -listReencryptionStatus
-
-# As the super user, get encryption information from the file and double check it's encryption key version
-hdfs crypto -getFileEncryptionInfo -path /zone/helloWorld
-# console output: {cipherSuite: {name: AES/CTR/NoPadding, algorithmBlockSize: 16}, cryptoProtocolVersion: CryptoProtocolVersion{description='Encryption zones', version=2, unknownValue=null}, edek: 2010d301afbd43b58f10737ce4e93b39, iv: ade2293db2bab1a2e337f91361304cb3, keyName: exposedKey, ezKeyVersionName: exposedKey@1}©            2008-2024
-              Apache Software Foundation
-            
-                          -Privacy Policy.
-        Apache Maven, Maven, Apache, the Apache feather logo, and the Apache Maven project logos are trademarks of The Apache Software Foundation.
+Monospaced |
+Used for commands, HTTP request and responses and code blocks. |
+---|---|
+<Monospaced> |
+User entered values. |
+[Monospaced] |
+Optional values. When the value is not specified, the default value is used. |
+Italics | Important phrases and words. |
+The HTTP REST API supports the complete [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html)/[FileContext](../../api/org/apache/hadoop/fs/FileContext.html) interface for HDFS. The operations and the corresponding FileSystem/FileContext methods are shown in the next section. The Section [HTTP Query Parameter Dictionary](#HTTP_Query_Parameter_Dictionary) specifies the parameter details such as the defaults and the valid values.
+OPEN
+GETFILESTATUS
+LISTSTATUS
+LISTSTATUS_BATCH
+GETCONTENTSUMMARY
+GETQUOTAUSAGE
+GETFILECHECKSUM
+GETHOMEDIRECTORY
+GETDELEGATIONTOKEN
+GETTRASHROOT
+GETXATTRS
+GETXATTRS
+GETXATTRS
+LISTXATTRS
+CHECKACCESS
+GETALLSTORAGEPOLICY
+GETSTORAGEPOLICY
+GETSNAPSHOTDIFF
+GETSNAPSHOTTABLEDIRECTORYLIST
+GETFILEBLOCKLOCATIONS
+GETECPOLICY
+CREATE
+MKDIRS
+CREATESYMLINK
+RENAME
+SETREPLICATION
+SETOWNER
+SETPERMISSION
+SETTIMES
+RENEWDELEGATIONTOKEN
+CANCELDELEGATIONTOKEN
+ALLOWSNAPSHOT
+DISALLOWSNAPSHOT
+CREATESNAPSHOT
+RENAMESNAPSHOT
+SETXATTR
+REMOVEXATTR
+SETSTORAGEPOLICY
+SATISFYSTORAGEPOLICY
+ENABLEECPOLICY
+DISABLEECPOLICY
+SETECPOLICY
+APPEND
+CONCAT
+TRUNCATE
+UNSETSTORAGEPOLICY
+UNSETECPOLICY
+DELETE
+DELETESNAPSHOT
+The FileSystem scheme of WebHDFS is “webhdfs://
+”. A WebHDFS FileSystem URI has the following format.
+webhdfs://<HOST>:<HTTP_PORT>/<PATH>
+The above WebHDFS URI corresponds to the below HDFS URI.
+hdfs://<HOST>:<RPC_PORT>/<PATH>
+In the REST API, the prefix “/webhdfs/v1
+” is inserted in the path and a query is appended at the end. Therefore, the corresponding HTTP URL has the following format.
+http://<HOST>:<HTTP_PORT>/webhdfs/v1/<PATH>?op=...
+Note that if WebHDFS is secured with SSL, then the scheme should be “swebhdfs://
+”.
+swebhdfs://<HOST>:<HTTP_PORT>/<PATH>
+See also: [SSL Configurations for SWebHDFS](#SSL_Configurations_for_SWebHDFS)
+Below are the HDFS configuration options for WebHDFS.
+Property Name | Description |
+---|---|
+dfs.web.authentication.kerberos.principal |
+The HTTP Kerberos principal used by Hadoop-Auth in the HTTP endpoint. The HTTP Kerberos principal MUST start with ‘HTTP/’ per Kerberos HTTP SPNEGO specification. A value of “*” will use all HTTP principals found in the keytab. |
+dfs.web.authentication.kerberos.keytab |
+The Kerberos keytab file with the credentials for the HTTP Kerberos principal used by Hadoop-Auth in the HTTP endpoint. |
+dfs.webhdfs.socket.connect-timeout |
+How long to wait for a connection to be established before failing. Specified as a time duration, ie numerical value followed by a units symbol, eg 2m for two minutes. Defaults to 60s. |
+dfs.webhdfs.socket.read-timeout |
+How long to wait for data to arrive before failing. Defaults to 60s. |
+When security is off, the authenticated user is the username specified in the user.name
+query parameter. If the user.name
+parameter is not set, the server may either set the authenticated user to a default web user, if there is any, or return an error response.
+When security is on, authentication is performed by either Hadoop delegation token or Kerberos SPNEGO. If a token is set in the delegation
+query parameter, the authenticated user is the user encoded in the token. If the delegation
+parameter is not set, the user is authenticated by Kerberos SPNEGO.
+Below are examples using the curl
+command tool.
+Authentication when security is off:
+curl -i "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?[user.name=<USER>&]op=..."
+Authentication using Kerberos SPNEGO when security is on:
+curl -i --negotiate -u : "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=..."
+Authentication using Hadoop delegation token when security is on:
+curl -i "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?delegation=<TOKEN>&op=..."
+See also: [Authentication for Hadoop HTTP web-consoles](../hadoop-common/HttpAuthentication.html)
+Additionally, WebHDFS supports OAuth2 on the client side. The Namenode and Datanodes do not currently support clients using OAuth2 but other backends that implement the WebHDFS REST interface may.
+WebHDFS supports two type of OAuth2 code grants (user-provided refresh and access token or user provided credential) by default and provides a pluggable mechanism for implementing other OAuth2 authentications per the [OAuth2 RFC](https://tools.ietf.org/html/rfc6749), or custom authentications. When using either of the provided code grant mechanisms, the WebHDFS client will refresh the access token as necessary.
+OAuth2 should only be enabled for clients not running with Kerberos SPENGO.
+OAuth2 code grant mechanism | Description | Value of dfs.webhdfs.oauth2.access.token.provider that implements code grant |
+---|---|---|
+Authorization Code Grant | The user provides an initial access token and refresh token, which are then used to authenticate WebHDFS requests and obtain replacement access tokens, respectively. | org.apache.hadoop.hdfs.web.oauth2.ConfRefreshTokenBasedAccessTokenProvider |
+Client Credentials Grant | The user provides a credential which is used to obtain access tokens, which are then used to authenticate WebHDFS requests. | org.apache.hadoop.hdfs.web.oauth2.ConfCredentialBasedAccessTokenProvider |
+The following properties control OAuth2 authentication.
+OAuth2 related property | Description |
+---|---|
+dfs.webhdfs.oauth2.enabled |
+Boolean to enable/disable OAuth2 authentication |
+dfs.webhdfs.oauth2.access.token.provider |
+Class name of an implementation of org.apache.hadoop.hdfs.web.oauth.AccessTokenProvider. Two are provided with the code, as described above, or the user may specify a user-provided implementation. The default value for this configuration key is the ConfCredentialBasedAccessTokenProvider implementation. |
+dfs.webhdfs.oauth2.client.id |
+Client id used to obtain access token with either credential or refresh token |
+dfs.webhdfs.oauth2.refresh.url |
+URL against which to post for obtaining bearer token with either credential or refresh token |
+dfs.webhdfs.oauth2.access.token |
+(required if using ConfRefreshTokenBasedAccessTokenProvider) Initial access token with which to authenticate |
+dfs.webhdfs.oauth2.refresh.token |
+(required if using ConfRefreshTokenBasedAccessTokenProvider) Initial refresh token to use to obtain new access tokens |
+dfs.webhdfs.oauth2.refresh.token.expires.ms.since.epoch |
+(required if using ConfRefreshTokenBasedAccessTokenProvider) Access token expiration measured in milliseconds since Jan 1, 1970. Note this is a different value than provided by OAuth providers and has been munged as described in interface to be suitable for a client application |
+dfs.webhdfs.oauth2.credential |
+(required if using ConfCredentialBasedAccessTokenProvider). Credential used to obtain initial and subsequent access tokens. |
+To use SWebHDFS FileSystem (i.e. using the swebhdfs protocol), a SSL configuration file needs to be specified on the client side. This must specify 3 parameters:
+SSL property | Description |
+---|---|
+ssl.client.truststore.location |
+The local-filesystem location of the trust-store file, containing the certificate for the NameNode. |
+ssl.client.truststore.type |
+(Optional) The format of the trust-store file. |
+ssl.client.truststore.password |
+(Optional) Password for the trust-store file. |
+The following is an example SSL configuration file (ssl-client.xml):
+<configuration> <property> <name>ssl.client.truststore.location</name> <value>/work/keystore.jks</value> <description>Truststore to be used by clients. Must be specified.</description> </property> <property> <name>ssl.client.truststore.password</name> <value>changeme</value> <description>Optional. Default value is "".</description> </property> <property> <name>ssl.client.truststore.type</name> <value>jks</value> <description>Optional. Default value is "jks".</description> </property> </configuration>
+The SSL configuration file must be in the class-path of the client program and the filename needs to be specified in core-site.xml:
+<property> <name>hadoop.ssl.client.conf</name> <value>ssl-client.xml</value> <description> Resource file from which ssl client keystore information will be extracted. This file is looked up in the classpath, typically it should be in Hadoop conf/ directory. Default value is "ssl-client.xml". </description> </property>
+When the proxy user feature is enabled, a proxy user P may submit a request on behalf of another user U. The username of U must be specified in the doas
+query parameter unless a delegation token is presented in authentication. In such case, the information of both users P and U must be encoded in the delegation token.
+A proxy request when security is off:
+curl -i "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?[user.name=<USER>&]doas=<USER>&op=..."
+A proxy request using Kerberos SPNEGO when security is on:
+curl -i --negotiate -u : "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?doas=<USER>&op=..."
+A proxy request using Hadoop delegation token when security is on:
+curl -i "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?delegation=<TOKEN>&op=..."
+WebHDFS supports an optional, configurable mechanism for cross-site request forgery (CSRF) prevention. When enabled, WebHDFS HTTP requests to the NameNode or DataNode must include a custom HTTP header. Configuration properties allow adjusting which specific HTTP methods are protected and the name of the HTTP header. The value sent in the header is not relevant. Only the presence of a header by that name is required.
+Enabling CSRF prevention also sets up the WebHdfsFileSystem
+class to send the required header. This ensures that CLI commands like [ hdfs dfs](./HDFSCommands.html#dfs) and
+hadoop distcp
+webhdfs:
+URIs.Enabling CSRF prevention also sets up the NameNode web UI to send the required header. After enabling CSRF prevention and restarting the NameNode, existing users of the NameNode web UI need to refresh the browser to reload the page and find the new configuration.
+The following properties control CSRF prevention.
+Property | Description | Default Value |
+---|---|---|
+dfs.webhdfs.rest-csrf.enabled |
+If true, then enables WebHDFS protection against cross-site request forgery (CSRF). The WebHDFS client also uses this property to determine whether or not it needs to send the custom CSRF prevention header in its HTTP requests. | false |
+dfs.webhdfs.rest-csrf.custom-header |
+The name of a custom header that HTTP requests must send when protection against cross-site request forgery (CSRF) is enabled for WebHDFS by setting dfs.webhdfs.rest-csrf.enabled to true. The WebHDFS client also uses this property to determine whether or not it needs to send the custom CSRF prevention header in its HTTP requests. | X-XSRF-HEADER |
+dfs.webhdfs.rest-csrf.methods-to-ignore |
+A comma-separated list of HTTP methods that do not require HTTP requests to include a custom header when protection against cross-site request forgery (CSRF) is enabled for WebHDFS by setting dfs.webhdfs.rest-csrf.enabled to true. The WebHDFS client also uses this property to determine whether or not it needs to send the custom CSRF prevention header in its HTTP requests. | GET,OPTIONS,HEAD,TRACE |
+dfs.webhdfs.rest-csrf.browser-useragents-regex |
+A comma-separated list of regular expressions used to match against an HTTP request’s User-Agent header when protection against cross-site request forgery (CSRF) is enabled for WebHDFS by setting dfs.webhdfs.reset-csrf.enabled to true. If the incoming User-Agent matches any of these regular expressions, then the request is considered to be sent by a browser, and therefore CSRF prevention is enforced. If the request’s User-Agent does not match any of these regular expressions, then the request is considered to be sent by something other than a browser, such as scripted automation. In this case, CSRF is not a potential attack vector, so the prevention is not enforced. This helps achieve backwards-compatibility with existing automation that has not been updated to send the CSRF prevention header. | ^Mozilla.*,^Opera.* |
+dfs.datanode.httpserver.filter.handlers |
+Comma separated list of Netty servlet-style filter handlers to inject into the Datanode WebHDFS I/O path | org.apache.hadoop.hdfs.server.datanode.web.RestCsrfPreventionFilterHandler |
+The following is an example curl
+call that uses the -H
+option to include the custom header in the request.
+curl -i -L -X PUT -H 'X-XSRF-HEADER: ""' 'http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=CREATE'
+WebHDFS supports an optional, configurable retry policy for resilient copy of large files that could timeout, or copy file between HA clusters that could failover during the copy.
+The following properties control WebHDFS retry and failover policy.
+Property | Description | Default Value |
+---|---|---|
+dfs.http.client.retry.policy.enabled |
+If “true”, enable the retry policy of WebHDFS client. If “false”, retry policy is turned off. | false |
+dfs.http.client.retry.policy.spec |
+Specify a policy of multiple linear random retry for WebHDFS client, e.g. given pairs of number of retries and sleep time (n0, t0), (n1, t1), …, the first n0 retries sleep t0 milliseconds on average, the following n1 retries sleep t1 milliseconds on average, and so on. | 10000,6,60000,10 |
+dfs.http.client.failover.max.attempts |
+Specify the max number of failover attempts for WebHDFS client in case of network exception. | 15 |
+dfs.http.client.retry.max.attempts |
+Specify the max number of retry attempts for WebHDFS client, if the difference between retried attempts and failovered attempts is larger than the max number of retry attempts, there will be no more retries. | 10 |
+dfs.http.client.failover.sleep.base.millis |
+Specify the base amount of time in milliseconds upon which the exponentially increased sleep time between retries or failovers is calculated for WebHDFS client. | 500 |
+dfs.http.client.failover.sleep.max.millis |
+Specify the upper bound of sleep time in milliseconds between retries or failovers for WebHDFS client. | 15000 |
+One may control directionality of data in the WebHDFS protocol allowing only writing data from insecure networks. To enable, one must ensure dfs.datanode.httpserver.filter.handlers
+includes org.apache.hadoop.hdfs.server.datanode.web.HostRestrictingAuthorizationFilterHandler
+. Configuration of the HostRestrictingAuthorizationFilter
+is controlled via the following properties.
+Property | Description | Default Value |
+---|---|---|
+dfs.datanode.httpserver.filter.handlers |
+Comma separated list of Netty servlet-style filter handlers to inject into the Datanode WebHDFS I/O path | org.apache.hadoop.hdfs.server.datanode.web.RestCsrfPreventionFilterHandler |
+dfs.web.authentication.host.allow.rules |
+Rules allowing users to read files in the format of user,network/bits,path glob newline or | -separated. Use * for a wildcard of all users or network/bits. |
+nothing - defaults to no one may read via WebHDFS |
+Step 1: Submit a HTTP PUT request without automatically following redirects and without sending the file data.
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=CREATE [&overwrite=<true |false>][&blocksize=<LONG>][&replication=<SHORT>] [&permission=<OCTAL>][&buffersize=<INT>][&noredirect=<true|false>]"
+Usually the request is redirected to a datanode where the file data is to be written.
+HTTP/1.1 307 TEMPORARY_REDIRECT Location: http://<DATANODE>:<PORT>/webhdfs/v1/<PATH>?op=CREATE... Content-Length: 0
+However, if you do not want to be automatically redirected, you can set the noredirect flag.
+HTTP/1.1 200 OK Content-Type: application/json {"Location":"http://<DATANODE>:<PORT>/webhdfs/v1/<PATH>?op=CREATE..."}
+Step 2: Submit another HTTP PUT request using the URL in the Location
+header (or the returned response in case you specified noredirect) with the file data to be written.
+curl -i -X PUT -T <LOCAL_FILE> "http://<DATANODE>:<PORT>/webhdfs/v1/<PATH>?op=CREATE..."
+The client receives a 201 Created
+response with zero content length and the WebHDFS URI of the file in the Location
+header:
+HTTP/1.1 201 Created Location: webhdfs://<HOST>:<PORT>/<PATH> Content-Length: 0
+If no permissions are specified, the newly created file will be assigned with default 644 permission. No umask mode will be applied from server side (so “fs.permissions.umask-mode” value configuration set on Namenode side will have no effect).
+Note that the reason of having two-step create/append is for preventing clients to send out data before the redirect. This issue is addressed by the “Expect: 100-continue
+” header in HTTP/1.1; see [RFC 2616, Section 8.2.3](http://www.w3.org/Protocols/rfc2616/rfc2616-sec8.html#sec8.2.3). Unfortunately, there are software library bugs (e.g. Jetty 6 HTTP server and Java 6 HTTP client), which do not correctly implement “Expect: 100-continue
+”. The two-step create/append is a temporary workaround for the software library bugs.
+See also: [ overwrite](#Overwrite),
+blocksize
+replication
+permission
+buffersize
+curl -i -X POST "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=APPEND[&buffersize=<INT>][&noredirect=<true|false>]"
+Usually the request is redirected to a datanode where the file data is to be appended:
+HTTP/1.1 307 TEMPORARY_REDIRECT Location: http://<DATANODE>:<PORT>/webhdfs/v1/<PATH>?op=APPEND... Content-Length: 0
+However, if you do not want to be automatically redirected, you can set the noredirect flag.
+HTTP/1.1 200 OK Content-Type: application/json {"Location":"http://<DATANODE>:<PORT>/webhdfs/v1/<PATH>?op=APPEND..."}
+Location
+header (or the returned response in case you specified noredirect) with the file data to be appended.
+curl -i -X POST -T <LOCAL_FILE> "http://<DATANODE>:<PORT>/webhdfs/v1/<PATH>?op=APPEND..."
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See the note in the previous section for the description of why this operation requires two steps.
+See also: [ buffersize](#Buffer_Size),
+curl -i -X POST "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=CONCAT&sources=<PATHS>"
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [ sources](#Sources),
+curl -i -L "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=OPEN [&offset=<LONG>][&length=<LONG>][&buffersize=<INT>][&noredirect=<true|false>]"
+Usually the request is redirected to a datanode where the file data can be read:
+HTTP/1.1 307 TEMPORARY_REDIRECT Location: http://<DATANODE>:<PORT>/webhdfs/v1/<PATH>?op=OPEN... Content-Length: 0
+However if you do not want to be automatically redirected, you can set the noredirect flag.
+HTTP/1.1 200 OK Content-Type: application/json {"Location":"http://<DATANODE>:<PORT>/webhdfs/v1/<PATH>?op=OPEN..."}
+The client follows the redirect to the datanode and receives the file data:
+HTTP/1.1 200 OK Content-Type: application/octet-stream Content-Length: 22 Hello, webhdfs user!
+See also: [ offset](#Offset),
+length
+buffersize
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=MKDIRS[&permission=<OCTAL>]"
+The client receives a response with a [ boolean JSON object](#Boolean_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked {"boolean": true}
+If no permissions are specified, the newly created directory will have 755 permission as default. No umask mode will be applied from server side (so “fs.permissions.umask-mode” value configuration set on Namenode side will have no effect).
+See also: [ permission](#Permission),
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=CREATESYMLINK &destination=<PATH>[&createParent=<true |false>]"
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [ destination](#Destination),
+createParent
+curl -i -X PUT "<HOST>:<PORT>/webhdfs/v1/<PATH>?op=RENAME&destination=<PATH>"
+The client receives a response with a [ boolean JSON object](#Boolean_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked {"boolean": true}
+See also: [ destination](#Destination),
+curl -i -X DELETE "http://<host>:<port>/webhdfs/v1/<path>?op=DELETE [&recursive=<true |false>]"
+The client receives a response with a [ boolean JSON object](#Boolean_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked {"boolean": true}
+See also: [ recursive](#Recursive),
+curl -i -X POST "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=TRUNCATE&newlength=<LONG>"
+The client receives a response with a [ boolean JSON object](#Boolean_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked {"boolean": true}
+See also: [ newlength](#New_Length),
+curl -i "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=GETFILESTATUS"
+The client receives a response with a [ FileStatus JSON object](#FileStatus_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked { "FileStatus": { "accessTime" : 0, "blockSize" : 0, "group" : "supergroup", "length" : 0, //in bytes, zero for directories "modificationTime": 1320173277227, "owner" : "webuser", "pathSuffix" : "", "permission" : "777", "replication" : 0, "snapshotEnabled" : true "type" : "DIRECTORY" //enum {FILE, DIRECTORY, SYMLINK} } }
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).getFileStatus
+curl -i "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=LISTSTATUS"
+The client receives a response with a [ FileStatuses JSON object](#FileStatuses_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Content-Length: 427 { "FileStatuses": { "FileStatus": [ { "accessTime" : 1320171722771, "blockSize" : 33554432, "childrenNum" : 0, "fileId" : 16388, "group" : "supergroup", "length" : 24930, "modificationTime": 1320171722771, "owner" : "webuser", "pathSuffix" : "a.patch", "permission" : "644", "replication" : 1, "storagePolicy" : 0, "type" : "FILE" }, { "accessTime" : 0, "blockSize" : 0, "childrenNum" : 0, "fileId" : 16389, "group" : "supergroup", "length" : 0, "modificationTime": 1320895981256, "owner" : "username", "pathSuffix" : "bar", "permission" : "711", "replication" : 0, "snapshotEnabled" : true "type" : "DIRECTORY" }, ... ] } }
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).listStatus
+curl -i "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=LISTSTATUS"
+The client receives a response with a [ FileStatuses JSON object](#FileStatuses_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Content-Length: 427 { "FileStatuses": { "FileStatus": [ { "accessTime" : 1320171722771, "blockSize" : 33554432, "childrenNum" : 0, "fileId" : 16390, "group" : "supergroup", "length" : 1366, "modificationTime": 1501770633062, "owner" : "webuser", "pathSuffix" : "", "permission" : "644", "replication" : 1, "storagePolicy" : 0, "type" : "FILE" } ] } }
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).listStatus
+curl -i "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=LISTSTATUS_BATCH&startAfter=<CHILD>"
+The client receives a response with a [ DirectoryListing JSON object](#DirectoryListing_JSON_Schema), which contains a
+FileStatuses
+JSON objectHTTP/1.1 200 OK Cache-Control: no-cache Expires: Thu, 08 Sep 2016 03:40:38 GMT Date: Thu, 08 Sep 2016 03:40:38 GMT Pragma: no-cache Expires: Thu, 08 Sep 2016 03:40:38 GMT Date: Thu, 08 Sep 2016 03:40:38 GMT Pragma: no-cache Content-Type: application/json X-FRAME-OPTIONS: SAMEORIGIN Transfer-Encoding: chunked Server: Jetty(6.1.26) { "DirectoryListing": { "partialListing": { "FileStatuses": { "FileStatus": [ { "accessTime": 0, "blockSize": 0, "childrenNum": 0, "fileId": 16387, "group": "supergroup", "length": 0, "modificationTime": 1473305882563, "owner": "andrew", "pathSuffix": "bardir", "permission": "755", "replication": 0, "storagePolicy": 0, "type": "DIRECTORY" }, { "accessTime": 1473305896945, "blockSize": 1024, "childrenNum": 0, "fileId": 16388, "group": "supergroup", "length": 0, "modificationTime": 1473305896965, "owner": "andrew", "pathSuffix": "bazfile", "permission": "644", "replication": 3, "storagePolicy": 0, "type": "FILE" } ] } }, "remainingEntries": 2 } }
+If remainingEntries
+is non-zero, there are additional entries in the directory. To query the next batch, set the startAfter
+parameter to the pathSuffix
+of the last item returned in the current batch. For example:
+curl -i "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=LISTSTATUS_BATCH&startAfter=bazfile"
+Which will return the next batch of directory entries:
+HTTP/1.1 200 OK Cache-Control: no-cache Expires: Thu, 08 Sep 2016 03:43:20 GMT Date: Thu, 08 Sep 2016 03:43:20 GMT Pragma: no-cache Expires: Thu, 08 Sep 2016 03:43:20 GMT Date: Thu, 08 Sep 2016 03:43:20 GMT Pragma: no-cache Content-Type: application/json X-FRAME-OPTIONS: SAMEORIGIN Transfer-Encoding: chunked Server: Jetty(6.1.26) { "DirectoryListing": { "partialListing": { "FileStatuses": { "FileStatus": [ { "accessTime": 0, "blockSize": 0, "childrenNum": 0, "fileId": 16386, "group": "supergroup", "length": 0, "modificationTime": 1473305878951, "owner": "andrew", "pathSuffix": "foodir", "permission": "755", "replication": 0, "storagePolicy": 0, "type": "DIRECTORY" }, { "accessTime": 1473305902864, "blockSize": 1024, "childrenNum": 0, "fileId": 16389, "group": "supergroup", "length": 0, "modificationTime": 1473305902878, "owner": "andrew", "pathSuffix": "quxfile", "permission": "644", "replication": 3, "storagePolicy": 0, "type": "FILE" } ] } }, "remainingEntries": 0 } }
+Batch size is controlled by the dfs.ls.limit
+option on the NameNode.
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).listStatusIterator
+curl -i "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=GETCONTENTSUMMARY"
+The client receives a response with a [ ContentSummary JSON object](#ContentSummary_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked { "ContentSummary": { "directoryCount": 2, "ecPolicy" : "RS-6-3-1024k", "fileCount" : 1, "length" : 24930, "quota" : -1, "spaceConsumed" : 24930, "spaceQuota" : -1, "typeQuota": { "ARCHIVE": { "consumed": 500, "quota": 10000 }, "DISK": { "consumed": 500, "quota": 10000 }, "SSD": { "consumed": 500, "quota": 10000 } } } }
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).getContentSummary
+curl -i "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=GETQUOTAUSAGE"
+The client receives a response with a [ QuotaUsage JSON object](#QuotaUsage_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked { "QuotaUsage": { "fileAndDirectoryCount": 1, "quota" : 100, "spaceConsumed" : 24930, "spaceQuota" : 100000, "typeQuota": { "ARCHIVE": { "consumed": 500, "quota": 10000 }, "DISK": { "consumed": 500, "quota": 10000 }, "SSD": { "consumed": 500, "quota": 10000 } } } }
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).getQuotaUsage
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=SETQUOTA &namespacequota=<QUOTA>[&storagespacequota=<QUOTA>]"
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).setQuota
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=SETQUOTABYSTORAGETYPE &storagetype=<STORAGETYPE>&storagespacequota=<QUOTA>"
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).setQuotaByStorageType
+curl -i "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=GETFILECHECKSUM"
+Usually the request is redirected to a datanode:
+HTTP/1.1 307 TEMPORARY_REDIRECT Location: http://<DATANODE>:<PORT>/webhdfs/v1/<PATH>?op=GETFILECHECKSUM... Content-Length: 0
+However, if you do not want to be automatically redirected, you can set the noredirect flag.
+HTTP/1.1 200 OK Content-Type: application/json {"Location":"http://<DATANODE>:<PORT>/webhdfs/v1/<PATH>?op=GETFILECHECKSUM..."}
+The client follows the redirect to the datanode and receives a [ FileChecksum JSON object](#FileChecksum_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked { "FileChecksum": { "algorithm": "MD5-of-1MD5-of-512CRC32", "bytes" : "eadb10de24aa315748930df6e185c0d ...", "length" : 28 } }
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).getFileChecksum
+curl -i "http://<HOST>:<PORT>/webhdfs/v1/?op=GETHOMEDIRECTORY"
+The client receives a response with a [ Path JSON object](#Path_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked {"Path": "/user/username"}
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).getHomeDirectory
+curl -i "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=GETTRASHROOT"
+The client receives a response with a [ Path JSON object](#Path_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked {"Path": "/user/username/.Trash"}
+if the path is an encrypted zone path and user has permission of the path, the client receives a response like this:
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked {"Path": "/PATH/.Trash/username"}
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).getTrashRoot
+For more details about trash root in an encrypted zone, please refer to [Transparent Encryption Guide](./TransparentEncryption.html#Rename_and_Trash_considerations).
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=SETPERMISSION [&permission=<OCTAL>]"
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [ permission](#Permission),
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=SETOWNER [&owner=<USER>][&group=<GROUP>]"
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [ owner](#Owner),
+group
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=SETREPLICATION [&replication=<SHORT>]"
+The client receives a response with a [ boolean JSON object](#Boolean_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked {"boolean": true}
+See also: [ replication](#Replication),
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=SETTIMES [&modificationtime=<TIME>][&accesstime=<TIME>]"
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [ modificationtime](#Modification_Time),
+accesstime
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=MODIFYACLENTRIES &aclspec=<ACLSPEC>"
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).modifyAclEntries
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=REMOVEACLENTRIES &aclspec=<ACLSPEC>"
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).removeAclEntries
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=REMOVEDEFAULTACL"
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).removeDefaultAcl
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=REMOVEACL"
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).removeAcl
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=SETACL &aclspec=<ACLSPEC>"
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).setAcl
+curl -i "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=GETACLSTATUS"
+The client receives a response with a [ AclStatus JSON object](#ACL_Status_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked { "AclStatus": { "entries": [ "user:carla:rw-", "group::r-x" ], "group": "supergroup", "owner": "hadoop", "permission":"775", "stickyBit": false } }
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).getAclStatus
+curl -i "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=CHECKACCESS &fsaction=<FSACTION>
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).access
+curl -i "http://<HOST>:<PORT>/webhdfs/v1?op=GETALLSTORAGEPOLICY"
+The client receives a response with a [ BlockStoragePolicies JSON object](#BlockStoragePolicies_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked { "BlockStoragePolicies": { "BlockStoragePolicy": [ { "copyOnCreateFile": false, "creationFallbacks": [], "id": 2, "name": "COLD", "replicationFallbacks": [], "storageTypes": ["ARCHIVE"] }, { "copyOnCreateFile": false, "creationFallbacks": ["DISK","ARCHIVE"], "id": 5, "name": "WARM", "replicationFallbacks": ["DISK","ARCHIVE"], "storageTypes": ["DISK","ARCHIVE"] }, { "copyOnCreateFile": false, "creationFallbacks": [], "id": 7, "name": "HOT", "replicationFallbacks": ["ARCHIVE"], "storageTypes": ["DISK"] }, { "copyOnCreateFile": false, "creationFallbacks": ["SSD","DISK"], "id": 10,"name": "ONE_SSD", "replicationFallbacks": ["SSD","DISK"], "storageTypes": ["SSD","DISK"] }, { "copyOnCreateFile": false, "creationFallbacks": ["DISK"], "id": 12, "name": "ALL_SSD", "replicationFallbacks": ["DISK"], "storageTypes": ["SSD"] }, { "copyOnCreateFile": true, "creationFallbacks": ["DISK"], "id": 15, "name": "LAZY_PERSIST", "replicationFallbacks": ["DISK"], "storageTypes": ["RAM_DISK","DISK"] } ] } }
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).getAllStoragePolicies
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=SETSTORAGEPOLICY &storagepolicy=<policy>"
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).setStoragePolicy
+curl -i -X POST "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=UNSETSTORAGEPOLICY"
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).unsetStoragePolicy
+curl -i "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=GETSTORAGEPOLICY"
+The client receives a response with a [ BlockStoragePolicy JSON object](#BlockStoragePolicy_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked { "BlockStoragePolicy": { "copyOnCreateFile": false, "creationFallbacks": [], "id":7, "name":"HOT", "replicationFallbacks":["ARCHIVE"], "storageTypes":["DISK"] } }
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).getStoragePolicy
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=SATISFYSTORAGEPOLICY"
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [ArchivalStorage](./ArchivalStorage.html#Satisfy_Storage_Policy).satisfyStoragePolicy
+curl -i "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=GETFILEBLOCKLOCATIONS
+The client receives a response with a [ BlockLocations JSON Object](#Block_Locations_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked { "BlockLocations" : { "BlockLocation": [ { "cachedHosts" : [], "corrupt" : false, "hosts" : ["host"], "length" : 134217728, // length of this block "names" : ["host:ip"], "offset" : 0, // offset of the block in the file "storageTypes" : ["DISK"], // enum {RAM_DISK, SSD, DISK, ARCHIVE} "topologyPaths" : ["/default-rack/hostname:ip"] }, { "cachedHosts" : [], "corrupt" : false, "hosts" : ["host"], "length" : 62599364, "names" : ["host:ip"], "offset" : 134217728, "storageTypes" : ["DISK"], "topologyPaths" : ["/default-rack/hostname:ip"] }, ... ] } }
+See also: [ offset](#Offset),
+length
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=SETXATTR &xattr.name=<XATTRNAME>&xattr.value=<XATTRVALUE> &flag=<FLAG>"
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).setXAttr
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=REMOVEXATTR &xattr.name=<XATTRNAME>"
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).removeXAttr
+curl -i "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=GETXATTRS &xattr.name=<XATTRNAME>&encoding=<ENCODING>"
+The client receives a response with a [ XAttrs JSON object](#XAttrs_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked { "XAttrs": [ { "name":"XATTRNAME", "value":"XATTRVALUE" } ] }
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).getXAttr
+curl -i "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=GETXATTRS &xattr.name=<XATTRNAME1>&xattr.name=<XATTRNAME2> &encoding=<ENCODING>"
+The client receives a response with a [ XAttrs JSON object](#XAttrs_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked { "XAttrs": [ { "name":"XATTRNAME1", "value":"XATTRVALUE1" }, { "name":"XATTRNAME2", "value":"XATTRVALUE2" } ] }
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).getXAttrs
+curl -i "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=GETXATTRS &encoding=<ENCODING>"
+The client receives a response with a [ XAttrs JSON object](#XAttrs_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked { "XAttrs": [ { "name":"XATTRNAME1", "value":"XATTRVALUE1" }, { "name":"XATTRNAME2", "value":"XATTRVALUE2" }, { "name":"XATTRNAME3", "value":"XATTRVALUE3" } ] }
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).getXAttrs
+curl -i "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=LISTXATTRS"
+The client receives a response with a [ XAttrNames JSON object](#XAttrNames_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked { "XAttrNames":"[\"XATTRNAME1\",\"XATTRNAME2\",\"XATTRNAME3\"]" }
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).listXAttrs
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/?op=ENABLEECPOLICY &ecpolicy=<policy>"
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [HDFSErasureCoding](./HDFSErasureCoding.html#Administrative_commands).enablePolicy
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/?op=DISABLEECPOLICY &ecpolicy=<policy>"
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [HDFSErasureCoding](./HDFSErasureCoding.html#Administrative_commands).disablePolicy
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=SETECPOLICY &ecpolicy=<policy>"
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [HDFSErasureCoding](./HDFSErasureCoding.html#Administrative_commands).setErasureCodingPolicy
+curl -i -X GET "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=GETECPOLICY "
+The client receives a response with a [ ECPolicy JSON object](#ECPolicy_JSON_Schema):
+{ "name": "RS-10-4-1024k", "schema": { "codecName": "rs", "numDataUnits": 10, "numParityUnits": 4, "extraOptions": {} } "cellSize": 1048576, "id":5, "codecname":"rs", "numDataUnits": 10, "numParityUnits": 4, "replicationpolicy":false, "systemPolicy":true }
+See also: [HDFSErasureCoding](./HDFSErasureCoding.html#Administrative_commands).getErasureCodingPolicy
+curl -i -X POST "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=UNSETECPOLICY "
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [HDFSErasureCoding](./HDFSErasureCoding.html#Administrative_commands).unsetErasureCodingPolicy
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=ALLOWSNAPSHOT"
+The client receives a response with zero content length on success:
+HTTP/1.1 200 OK Content-Length: 0
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=DISALLOWSNAPSHOT"
+The client receives a response with zero content length on success:
+HTTP/1.1 200 OK Content-Length: 0
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=CREATESNAPSHOT[&snapshotname=<SNAPSHOTNAME>]"
+The client receives a response with a [ Path JSON object](#Path_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked {"Path": "/user/username/.snapshot/s1"}
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).createSnapshot
+curl -i -X DELETE "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=DELETESNAPSHOT&snapshotname=<SNAPSHOTNAME>"
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).deleteSnapshot
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=RENAMESNAPSHOT &oldsnapshotname=<SNAPSHOTNAME>&snapshotname=<SNAPSHOTNAME>"
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [FileSystem](../../api/org/apache/hadoop/fs/FileSystem.html).renameSnapshot
+curl -i GET "http://<HOST>:<PORT>/webhdfs/v1/<PATH>?op=GETSNAPSHOTDIFF &oldsnapshotname=<SNAPSHOTNAME>&snapshotname=<SNAPSHOTNAME>"
+The client receives a response with a [ SnapshotDiffReport JSON object](#SnapshotDiffReport_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked {"SnapshotDiffReport":{"diffList":[],"fromSnapshot":"s3","snapshotRoot":"/foo","toSnapshot":"s4"}}
+curl -i GET "http://<HOST>:<PORT>/webhdfs/v1/?user.name=<USER>&op=GETSNAPSHOTTABLEDIRECTORYLIST"
+If the USER is not the hdfs super user, the call lists only the snapshottable directories owned by the user. If the USER is the hdfs super user, the call lists all the snapshottable directories. The client receives a response with a [ SnapshottableDirectoryList JSON object](#SnapshottableDirectoryList_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked { "SnapshottableDirectoryList": [ { "dirStatus": { "accessTime":0, "blockSize":0, "childrenNum":0, "fileId":16386, "group":"hadoop", "length":0, "modificationTime":1520761889225, "owner":"random", "pathSuffix":"bar", "permission":"755", "replication":0, "storagePolicy":0, "type":"DIRECTORY" }, "parentFullPath":"/", "snapshotNumber":0, "snapshotQuota":65536 } ] }
+curl -i "http://<HOST>:<PORT>/webhdfs/v1/?op=GETDELEGATIONTOKEN [&renewer=<USER>][&service=<SERVICE>][&kind=<KIND>]"
+The client receives a response with a [ Token JSON object](#Token_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked { "Token": { "urlString": "JQAIaG9y..." } }
+See also: [ renewer](#Renewer),
+kind
+service
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/?op=RENEWDELEGATIONTOKEN&token=<TOKEN>"
+The client receives a response with a [ long JSON object](#Long_JSON_Schema):
+HTTP/1.1 200 OK Content-Type: application/json Transfer-Encoding: chunked {"long": 1320962673997} //the new expiration time
+See also: [ token](#Token),
+curl -i -X PUT "http://<HOST>:<PORT>/webhdfs/v1/?op=CANCELDELEGATIONTOKEN&token=<TOKEN>"
+The client receives a response with zero content length:
+HTTP/1.1 200 OK Content-Length: 0
+See also: [ token](#Token),
+When an operation fails, the server may throw an exception. The JSON schema of error responses is defined in [RemoteException JSON Schema](#RemoteException_JSON_Schema). The table below shows the mapping from exceptions to HTTP response codes.
+Exceptions | HTTP Response Codes |
+---|---|
+IllegalArgumentException |
+400 Bad Request |
+UnsupportedOperationException |
+400 Bad Request |
+SecurityException |
+401 Unauthorized |
+IOException |
+403 Forbidden |
+FileNotFoundException |
+404 Not Found |
+RuntimeException |
+500 Internal Server Error |
+Below are examples of exception responses.
+HTTP/1.1 400 Bad Request Content-Type: application/json Transfer-Encoding: chunked { "RemoteException": { "exception" : "IllegalArgumentException", "javaClassName": "java.lang.IllegalArgumentException", "message" : "Invalid value for webhdfs parameter \"permission\": ..." } }
+HTTP/1.1 401 Unauthorized Content-Type: application/json Transfer-Encoding: chunked { "RemoteException": { "exception" : "SecurityException", "javaClassName": "java.lang.SecurityException", "message" : "Failed to obtain user group information: ..." } }
+HTTP/1.1 403 Forbidden Content-Type: application/json Transfer-Encoding: chunked { "RemoteException": { "exception" : "AccessControlException", "javaClassName": "org.apache.hadoop.security.AccessControlException", "message" : "Permission denied: ..." } }
+HTTP/1.1 404 Not Found Content-Type: application/json Transfer-Encoding: chunked { "RemoteException": { "exception" : "FileNotFoundException", "javaClassName": "java.io.FileNotFoundException", "message" : "File does not exist: /foo/a.patch" } }
+All operations, except for [ OPEN](#Open_and_Read_a_File), either return a zero-length response or a JSON response. For
+OPEN
+Note that the default value of [ additionalProperties](http://tools.ietf.org/id/draft-zyp-json-schema-03.html#additionalProperties) is an empty schema which allows any value for additional properties. Therefore, all WebHDFS JSON responses allow any additional property. However, if additional properties are included in the responses, they are considered as optional properties in order to maintain compatibility.
+{ "name" : "AclStatus", "properties": { "AclStatus": { "type" : "object", "properties": { "entries": { "type": "array", "items": { "description": "ACL entry.", "type": "string" } }, "group": { "description": "The group owner.", "type" : "string", "required" : true }, "owner": { "description": "The user who is the owner.", "type" : "string", "required" : true }, "stickyBit": { "description": "True if the sticky bit is on.", "type" : "boolean", "required" : true } } } } }
+{ "name" : "XAttrs", "properties": { "XAttrs": { "type" : "array", "items": { "type" : "object", "properties": { "name": { "description": "XAttr name.", "type" : "string", "required" : true }, "value": { "description": "XAttr value.", "type" : "string" } } } } } }
+{ "name" : "XAttrNames", "properties": { "XAttrNames": { "description": "XAttr names.", "type" : "string", "required" : true } } }
+{ "name" : "boolean", "properties": { "boolean": { "description": "A boolean value", "type" : "boolean", "required" : true } } }
+See also: [ MKDIRS](#Make_a_Directory),
+RENAME
+DELETE
+SETREPLICATION
+{ "name" : "ContentSummary", "properties": { "ContentSummary": { "type" : "object", "properties": { "directoryCount": { "description": "The number of directories.", "type" : "integer", "required" : true }, "fileCount": { "description": "The number of files.", "type" : "integer", "required" : true }, "length": { "description": "The number of bytes used by the content.", "type" : "integer", "required" : true }, "quota": { "description": "The namespace quota of this directory.", "type" : "integer", "required" : true }, "spaceConsumed": { "description": "The disk space consumed by the content.", "type" : "integer", "required" : true }, "spaceQuota": { "description": "The disk space quota.", "type" : "integer", "required" : true }, "typeQuota": { "type" : "object", "properties": { "ARCHIVE": { "type" : "object", "properties": { "consumed": { "description": "The storage type space consumed.", "type" : "integer", "required" : true }, "quota": { "description": "The storage type quota.", "type" : "integer", "required" : true } } }, "DISK": { "type" : "object", "properties": { "consumed": { "description": "The storage type space consumed.", "type" : "integer", "required" : true }, "quota": { "description": "The storage type quota.", "type" : "integer", "required" : true } } }, "SSD": { "type" : "object", "properties": { "consumed": { "description": "The storage type space consumed.", "type" : "integer", "required" : true }, "quota": { "description": "The storage type quota.", "type" : "integer", "required" : true } } } } } } } } }
+See also: GETCONTENTSUMMARY
+{ "name" : "QuotaUsage", "properties": { "QuotaUsage": { "type" : "object", "properties": { "fileAndDirectoryCount": { "description": "The number of files and directories.", "type" : "integer", "required" : true }, "quota": { "description": "The namespace quota of this directory.", "type" : "integer", "required" : true }, "spaceConsumed": { "description": "The disk space consumed by the content.", "type" : "integer", "required" : true }, "spaceQuota": { "description": "The disk space quota.", "type" : "integer", "required" : true }, "typeQuota": { "type" : "object", "properties": { "ARCHIVE": { "type" : "object", "properties": { "consumed": { "description": "The storage type space consumed.", "type" : "integer", "required" : true }, "quota": { "description": "The storage type quota.", "type" : "integer", "required" : true } } }, "DISK": { "type" : "object", "properties": { "consumed": { "description": "The storage type space consumed.", "type" : "integer", "required" : true }, "quota": { "description": "The storage type quota.", "type" : "integer", "required" : true } } }, "SSD": { "type" : "object", "properties": { "consumed": { "description": "The storage type space consumed.", "type" : "integer", "required" : true }, "quota": { "description": "The storage type quota.", "type" : "integer", "required" : true } } } } } } } } }
+See also: GETQUOTAUSAGE
+{ "name" : "FileChecksum", "properties": { "FileChecksum": { "type" : "object", "properties": { "algorithm": { "description": "The name of the checksum algorithm.", "type" : "string", "required" : true }, "bytes": { "description": "The byte sequence of the checksum in hexadecimal.", "type" : "string", "required" : true }, "length": { "description": "The length of the bytes (not the length of the string).", "type" : "integer", "required" : true } } } } }
+{ "name" : "FileStatus", "properties": { "FileStatus": fileStatusProperties //See FileStatus Properties } }
+See also: [ FileStatus Properties](#FileStatus_Properties),
+GETFILESTATUS
+JavaScript syntax is used to define fileStatusProperties
+so that it can be referred in both FileStatus
+and FileStatuses
+JSON schemas.
+var fileStatusProperties = { "type" : "object", "properties": { "accessTime": { "description": "The access time.", "type" : "integer", "required" : true }, "blockSize": { "description": "The block size of a file.", "type" : "integer", "required" : true }, "group": { "description": "The group owner.", "type" : "string", "required" : true }, "length": { "description": "The number of bytes in a file.", "type" : "integer", "required" : true }, "modificationTime": { "description": "The modification time.", "type" : "integer", "required" : true }, "owner": { "description": "The user who is the owner.", "type" : "string", "required" : true }, "pathSuffix": { "description": "The path suffix.", "type" : "string", "required" : true }, "permission": { "description": "The permission represented as a octal string.", "type" : "string", "required" : true }, "replication": { "description": "The number of replication of a file.", "type" : "integer", "required" : true }, "symlink": //an optional property { "description": "The link target of a symlink.", "type" : "string" }, "type": { "description": "The type of the path object.", "enum" : ["FILE", "DIRECTORY", "SYMLINK"], "required" : true } } };
+A FileStatuses
+JSON object represents an array of FileStatus
+JSON objects.
+{ "name" : "FileStatuses", "properties": { "FileStatuses": { "type" : "object", "properties": { "FileStatus": { "description": "An array of FileStatus", "type" : "array", "items" : fileStatusProperties //See FileStatus Properties } } } } }
+See also: [ FileStatus Properties](#FileStatus_Properties),
+LISTSTATUS
+A DirectoryListing
+JSON object represents a batch of directory entries while iteratively listing a directory. It contains a FileStatuses
+JSON object as well as iteration information.
+{ "name" : "DirectoryListing", "properties": { "DirectoryListing": { "type" : "object", "properties": { "partialListing": { "description": "A partial directory listing", "type" : "object", // A FileStatuses object "required" : true }, "remainingEntries": { "description": "Number of remaining entries", "type" : "integer", "required" : true } } } } }
+See also: [ FileStatuses JSON Schema](#FileStatuses_JSON_Schema),
+LISTSTATUS_BATCH
+{ "name" : "long", "properties": { "long": { "description": "A long integer value", "type" : "integer", "required" : true } } }
+See also: [ RENEWDELEGATIONTOKEN](#Renew_Delegation_Token),
+{ "name" : "Path", "properties": { "Path": { "description": "The string representation a Path.", "type" : "string", "required" : true } } }
+See also: [ GETHOMEDIRECTORY](#Get_Home_Directory),
+{ "name" : "RemoteException", "properties": { "RemoteException": { "type" : "object", "properties": { "exception": { "description": "Name of the exception", "type" : "string", "required" : true }, "message": { "description": "Exception message", "type" : "string", "required" : true }, "javaClassName": //an optional property { "description": "Java class name of the exception", "type" : "string" } } } } }
+See also: [Error Responses](#Error_Responses)
+{ "name" : "Token", "properties": { "Token": tokenProperties //See Token Properties } }
+See also: [ Token Properties](#Token_Properties),
+GETDELEGATIONTOKEN
+JavaScript syntax is used to define tokenProperties
+so that it can be referred in Token
+JSON schema.
+var tokenProperties = { "type" : "object", "properties": { "urlString": { "description": "A delegation token encoded as a URL safe string.", "type" : "string", "required" : true } } }
+See also: [ Token Properties](#Token_Properties), the note in
+{ "name" : "BlockStoragePolicy", "properties": { "BlockStoragePolicy": blockStoragePolicyProperties //See BlockStoragePolicy Properties } }
+See also: [ BlockStoragePolicy Properties](#BlockStoragePolicy_Properties),
+GETSTORAGEPOLICY
+JavaScript syntax is used to define blockStoragePolicyProperties
+so that it can be referred in both BlockStoragePolicy
+and BlockStoragePolicies
+JSON schemas.
+var blockStoragePolicyProperties = { "type" : "object", "properties": { "id": { "description": "Policy ID.", "type" : "integer", "required" : true }, "name": { "description": "Policy name.", "type" : "string", "required" : true }, "storageTypes": { "description": "An array of storage types for block placement.", "type" : "array", "required" : true "items" : { "type": "string" } }, "replicationFallbacks": { "description": "An array of fallback storage types for replication.", "type" : "array", "required" : true "items" : { "type": "string" } }, "creationFallbacks": { "description": "An array of fallback storage types for file creation.", "type" : "array", "required" : true "items" : { "type": "string" } }, "copyOnCreateFile": { "description": "If set then the policy cannot be changed after file creation.", "type" : "boolean", "required" : true } } };
+{ "name": "RS-10-4-1024k", schema { "codecName": "rs", "numDataUnits": 10, "numParityUnits": 4, "extraOptions": {} } "cellSize": 1048576, "id":5, "codecname":"rs", "numDataUnits": 10, "numParityUnits": 4, "replicationpolicy":false, "systemPolicy":true }
+A BlockStoragePolicies
+JSON object represents an array of BlockStoragePolicy
+JSON objects.
+{ "name" : "BlockStoragePolicies", "properties": { "BlockStoragePolicies": { "type" : "object", "properties": { "BlockStoragePolicy": { "description": "An array of BlockStoragePolicy", "type" : "array", "items" : blockStoragePolicyProperties //See BlockStoragePolicy Properties } } } } }
+{ "name": "SnapshotDiffReport", "type": "object", "properties": { "SnapshotDiffReport": { "type" : "object", "properties" : { "diffList": { "description": "An array of DiffReportEntry", "type" : "array", "items" : diffReportEntries, "required" : true }, "fromSnapshot": { "description": "Source snapshot", "type" : "string", "required" : true }, "snapshotRoot": { "description" : "String representation of snapshot root path", "type" : "string", "required" : true }, "toSnapshot": { "description" : "Destination snapshot", "type" : "string", "required" : true } } } } }
+JavaScript syntax is used to define diffReportEntries
+so that it can be referred in SnapshotDiffReport
+JSON schema.
+var diffReportEntries = { "type": "object", "properties": { "sourcePath": { "description" : "Source path name relative to snapshot root", "type" : "string", "required" : true }, "targetPath": { "description" : "Target path relative to snapshot root used for renames", "type" : "string", "required" : true }, "type": { "description" : "Type of diff report entry", "enum" : ["CREATE", "MODIFY", "DELETE", "RENAME"], "required" : true } } }
+{ "name": "SnapshottableDirectoryList", "type": "object", "properties": { "SnapshottableDirectoryList": { "description": "An array of SnapshottableDirectoryStatus", "type" : "array", "items" : snapshottableDirectoryStatus, "required" : true } } }
+JavaScript syntax is used to define snapshottableDirectoryStatus
+so that it can be referred in SnapshottableDirectoryList
+JSON schema.
+var snapshottableDirectoryStatus = { "type": "object", "properties": { "dirStatus": fileStatusProperties, "parentFullPath": { "description" : "Full path of the parent of snapshottable directory", "type" : "string", "required" : true }, "snapshotNumber": { "description" : "Number of snapshots created on the snapshottable directory", "type" : "integer", "required" : true }, "snapshotQuota": { "description" : "Total number of snapshots allowed on the snapshottable directory", "type" : "integer", "required" : true } } }
+A BlockLocations
+JSON object represents an array of BlockLocation
+JSON objects.
+{ "name" : "BlockLocations", "properties": { "BlockLocations": { "type" : "object", "properties": { "BlockLocation": { "description": "An array of BlockLocation", "type" : "array", "items" : blockLocationProperties //See BlockLocation Properties } } } } }
+See also [ BlockLocation Properties](#BlockLocation_Properties),
+GETFILEBLOCKLOCATIONS
+{ "name" : "BlockLocation", "properties": { "BlockLocation": blockLocationProperties //See BlockLocation Properties } }
+See also [ BlockLocation Properties](#BlockLocation_Properties),
+GETFILEBLOCKLOCATIONS
+JavaScript syntax is used to define blockLocationProperties
+so that it can be referred in both BlockLocation
+and BlockLocations
+JSON schemas.
+var blockLocationProperties = { "type" : "object", "properties": { "cachedHosts": { "description": "Datanode hostnames with a cached replica", "type" : "array", "required" : "true", "items" : { "description": "A datanode hostname", "type" : "string" } }, "corrupt": { "description": "True if the block is corrupted", "type" : "boolean", "required" : "true" }, "hosts": { "description": "Datanode hostnames store the block", "type" : "array", "required" : "true", "items" : { "description": "A datanode hostname", "type" : "string" } }, "length": { "description": "Length of the block", "type" : "integer", "required" : "true" }, "names": { "description": "Datanode IP:xferPort for accessing the block", "type" : "array", "required" : "true", "items" : { "description": "DatanodeIP:xferPort", "type" : "string" } }, "offset": { "description": "Offset of the block in the file", "type" : "integer", "required" : "true" }, "storageTypes": { "description": "Storage type of each replica", "type" : "array", "required" : "true", "items" : { "description": "Storage type", "enum" : ["RAM_DISK", "SSD", "DISK", "ARCHIVE"] } }, "topologyPaths": { "description": "Datanode addresses in network topology", "type" : "array", "required" : "true", "items" : { "description": "/rack/host:ip", "type" : "string" } } } };
+Name | aclspec |
+---|---|
+Description | The ACL spec included in ACL modification operations. |
+Type | String |
+Default Value | <empty> |
+Valid Values | See
+|
+Name | xattr.name |
+---|---|
+Description | The XAttr name of a file/directory. |
+Type | String |
+Default Value | <empty> |
+Valid Values | Any string prefixed with user./trusted./system./security.. |
+Syntax | Any string prefixed with user./trusted./system./security.. |
+Name | xattr.value |
+---|---|
+Description | The XAttr value of a file/directory. |
+Type | String |
+Default Value | <empty> |
+Valid Values | An encoded value. |
+Syntax | Enclosed in double quotes or prefixed with 0x or 0s. |
+See also: [Extended Attributes](./ExtendedAttributes.html)
+Name | flag |
+---|---|
+Description | The XAttr set flag. |
+Type | String |
+Default Value | <empty> |
+Valid Values | CREATE,REPLACE. |
+Syntax | CREATE,REPLACE. |
+See also: [Extended Attributes](./ExtendedAttributes.html)
+Name | encoding | ||
+---|---|---|---|
+Description | The XAttr value encoding. | ||
+Type | String | ||
+Default Value | <empty> | ||
+Valid Values | text | hex | base64 |
+Syntax | text | hex | base64 |
+See also: [Extended Attributes](./ExtendedAttributes.html)
+Name | accesstime |
+---|---|
+Description | The access time of a file/directory. |
+Type | long |
+Default Value | -1 (means keeping it unchanged) |
+Valid Values | -1 or a timestamp |
+Syntax | Any integer. |
+See also: SETTIMES
+Name | blocksize |
+---|---|
+Description | The block size of a file. |
+Type | long |
+Default Value | Specified in the configuration. |
+Valid Values | > 0 |
+Syntax | Any integer. |
+See also: CREATE
+Name | buffersize |
+---|---|
+Description | The size of the buffer used in transferring data. |
+Type | int |
+Default Value | Specified in the configuration. |
+Valid Values | > 0 |
+Syntax | Any integer. |
+Name | createflag |
+---|---|
+Description | Enum of possible flags to process while creating a file |
+Type | enumerated strings |
+Default Value | <empty> |
+Valid Values | Legal combinations of create, overwrite, append and sync_block |
+Syntax | See note below |
+The following combinations are not valid: * append,create * create,append,overwrite
+See also: CREATE
+Name | createparent |
+---|---|
+Description | If the parent directories do not exist, should they be created? |
+Type | boolean |
+Default Value | true |
+Valid Values | true, false |
+Syntax | true |
+See also: CREATESYMLINK
+Name | delegation |
+---|---|
+Description | The delegation token used for authentication. |
+Type | String |
+Default Value | <empty> |
+Valid Values | An encoded token. |
+Syntax | See the note below. |
+Note that delegation tokens are encoded as a URL safe string; see encodeToUrlString()
+and decodeFromUrlString(String)
+in org.apache.hadoop.security.token.Token
+for the details of the encoding.
+See also: [Authentication](#Authentication)
+Name | destination |
+---|---|
+Description | The destination path. |
+Type | Path |
+Default Value | <empty> (an invalid path) |
+Valid Values | An absolute FileSystem path without scheme and authority. |
+Syntax | Any path. |
+See also: [ CREATESYMLINK](#Create_a_Symbolic_Link),
+RENAME
+Name | doas |
+---|---|
+Description | Allowing a proxy user to do as another user. |
+Type | String |
+Default Value | null |
+Valid Values | Any valid username. |
+Syntax | Any string. |
+See also: [Proxy Users](#Proxy_Users)
+Name | fsaction |
+---|---|
+Description | File system operation read/write/execute |
+Type | String |
+Default Value | null (an invalid value) |
+Valid Values | Strings matching regex pattern "[r-][w-][x-] " |
+Syntax | "[r-][w-][x-] " |
+See also: [ CHECKACCESS](#Check_access),
+Name | group |
+---|---|
+Description | The name of a group. |
+Type | String |
+Default Value | <empty> (means keeping it unchanged) |
+Valid Values | Any valid group name. |
+Syntax | Any string. |
+See also: SETOWNER
+Name | length |
+---|---|
+Description | The number of bytes to be processed. |
+Type | long |
+Default Value | null (means the entire file) |
+Valid Values | >= 0 or null |
+Syntax | Any integer. |
+See also: OPEN
+Name | modificationtime |
+---|---|
+Description | The modification time of a file/directory. |
+Type | long |
+Default Value | -1 (means keeping it unchanged) |
+Valid Values | -1 or a timestamp |
+Syntax | Any integer. |
+See also: SETTIMES
+Name | newlength |
+---|---|
+Description | The size the file is to be truncated to. |
+Type | long |
+Valid Values | >= 0 |
+Syntax | Any long. |
+Name | offset |
+---|---|
+Description | The starting byte position. |
+Type | long |
+Default Value | 0 |
+Valid Values | >= 0 |
+Syntax | Any integer. |
+See also: OPEN
+Name | oldsnapshotname |
+---|---|
+Description | The old name of the snapshot to be renamed. |
+Type | String |
+Default Value | null |
+Valid Values | An existing snapshot name. |
+Syntax | Any string. |
+See also: RENAMESNAPSHOT
+Name | op |
+---|---|
+Description | The name of the operation to be executed. |
+Type | enum |
+Default Value | null (an invalid value) |
+Valid Values | Any valid operation name. |
+Syntax | Any string. |
+See also: [Operations](#Operations)
+Name | overwrite |
+---|---|
+Description | If a file already exists, should it be overwritten? |
+Type | boolean |
+Default Value | false |
+Valid Values | true |
+Syntax | true |
+See also: CREATE
+Name | owner |
+---|---|
+Description | The username who is the owner of a file/directory. |
+Type | String |
+Default Value | <empty> (means keeping it unchanged) |
+Valid Values | Any valid username. |
+Syntax | Any string. |
+See also: SETOWNER
+Name | permission |
+---|---|
+Description | The permission of a file/directory. |
+Type | Octal |
+Default Value | 644 for files, 755 for directories |
+Valid Values | 0 - 1777 |
+Syntax | Any radix-8 integer (leading zeros may be omitted.) |
+See also: [ CREATE](#Create_and_Write_to_a_File),
+MKDIRS
+SETPERMISSION
+Name | recursive |
+---|---|
+Description | Should the operation act on the content in the subdirectories? |
+Type | boolean |
+Default Value | false |
+Valid Values | true |
+Syntax | true |
+See also: RENAME
+Name | renewer |
+---|---|
+Description | The username of the renewer of a delegation token. |
+Type | String |
+Default Value | <empty> (means the current user) |
+Valid Values | Any valid username. |
+Syntax | Any string. |
+See also: GETDELEGATIONTOKEN
+Name | replication |
+---|---|
+Description | The number of replications of a file. |
+Type | short |
+Default Value | Specified in the configuration. |
+Valid Values | > 0 |
+Syntax | Any integer. |
+See also: [ CREATE](#Create_and_Write_to_a_File),
+SETREPLICATION
+Name | snapshotname |
+---|---|
+Description | The name of the snapshot to be created/deleted. Or the new name for snapshot rename. |
+Type | String |
+Default Value | null |
+Valid Values | Any valid snapshot name. |
+Syntax | Any string. |
+See also: [ CREATESNAPSHOT](#Create_Snapshot),
+DELETESNAPSHOT
+RENAMESNAPSHOT
+Name | sources |
+---|---|
+Description | A list of source paths. |
+Type | String |
+Default Value | <empty> |
+Valid Values | A list of comma separated absolute FileSystem paths without scheme and authority. |
+Syntax | Any string. |
+See also: CONCAT
+Name | token |
+---|---|
+Description | The delegation token used for the operation. |
+Type | String |
+Default Value | <empty> |
+Valid Values | An encoded token. |
+Syntax | See the note in
+|
+See also: [ RENEWDELEGATIONTOKEN](#Renew_Delegation_Token),
+CANCELDELEGATIONTOKEN
+Name | kind |
+---|---|
+Description | The kind of the delegation token requested |
+Type | String |
+Default Value | <empty> (Server sets the default kind for the service) |
+Valid Values | A string that represents token kind e.g “HDFS_DELEGATION_TOKEN” or “WEBHDFS delegation” |
+Syntax | Any string. |
+See also: GETDELEGATIONTOKEN
+Name | service |
+---|---|
+Description | The name of the service where the token is supposed to be used, e.g. ip:port of the namenode |
+Type | String |
+Default Value | <empty> |
+Valid Values | ip:port in string format or logical name of the service |
+Syntax | Any string. |
+See also: GETDELEGATIONTOKEN
+Name | user.name |
+---|---|
+Description | The authenticated user; see
+|
+See also: [Authentication](#Authentication)
+Name | noredirect |
+---|---|
+Description | Whether the response should return an HTTP 307 redirect or HTTP 200 OK. See
+|
+See also: [Create and Write to a File](#Create_and_Write_to_a_File)
+Name | namespacequota |
+---|---|
+Description | Limit on the namespace usage, i.e., number of files/directories, under a directory. |
+Type | String |
+Default Value | Long.MAX_VALUE |
+Valid Values | > 0. |
+Syntax | Any integer. |
+See also: SETQUOTA
+Name | storagespacequota |
+---|---|
+Description | Limit on storage space usage (in bytes, including replication) under a directory. |
+Type | String |
+Default Value | Long.MAX_VALUE |
+Valid Values | > 0. |
+Syntax | Any integer. |
+See also: [ SETQUOTA](#Set_Quota),
+SETQUOTABYSTORAGETYPE
+Name | storagetype |
+---|---|
+Description | Storage type of the specific storage type quota to be modified. |
+Type | String |
+Default Value | <empty> |
+Valid Values | Any valid storage type. |
+Syntax | Any string. |
+See also: SETQUOTABYSTORAGETYPE
+Name | storagepolicy |
+---|---|
+Description | The name of the storage policy. |
+Type | String |
+Default Value | <empty> |
+Valid Values | Any valid storage policy name; see
+|
+See also: SETSTORAGEPOLICY
+Name | ecpolicy |
+---|---|
+Description | The name of the erasure coding policy. |
+Type | String |
+Default Value | <empty> |
+Valid Values | Any valid erasure coding policy name; |
+Syntax | Any string. |
+See also: [ ENABLEECPOLICY](#Enable_EC_Policy) or
+DISABLEECPOLICY
+Name | startAfter |
+---|---|
+Description | The last item returned in the liststatus batch. |
+Type | String |
+Default Value | <empty> |
+Valid Values | Any valid file/directory name. |
+Syntax | Any string. |
+See also: LISTSTATUS_BATCH

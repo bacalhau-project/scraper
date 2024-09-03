@@ -1,4 +1,49 @@
 Source: expanso_io
-URL: https://expanso.io/use-cases/#main
+URL: https://expanso.io/newsroom/2/
 
-Skip to contentWhy Expanso?Why Choose Expanso?Security and GovernanceProductBacalhauFeaturesSolutionsUse CasesDistributed Data WarehouseLog ProcessingEdge Machine LearningDistributed Fleet ManagementResourcesDocumentationGitHubBacalhau BlogEventsFAQsHelp CenterCompanyWhat We ValueWho We AreCareersNewsroomContactGitHubInstall FreeMenuWhy Expanso?Why Choose Expanso?Security and GovernanceProductBacalhauFeaturesSolutionsUse CasesDistributed Data WarehouseLog ProcessingEdge Machine LearningDistributed Fleet ManagementResourcesDocumentationGitHubBacalhau BlogEventsFAQsHelp CenterCompanyWhat We ValueWho We AreCareersNewsroomContactGitHubInstall FreeInstall FreeUse CasesExplore the transformative power of Expanso in data management, edge computing and machine learning deployment.In this section, we showcase a selection of remarkable use cases that demonstrate how Expanso can revolutionize your approach to data processing and machine learning.Log vending on deviceThe current logs are sent uncompressed, are processed and saved in the cloud. A significant portion of the log data is unimportant, resulting in unnecessary bandwidth consumption and expensive compute power usage.SolutionExpanso supports log vending on devices, eliminating the need for costly data transfers and compute to/on central servers.BenefitSave on expensive data transfer and cloud compute power costs, especially in scenarios where large volumes of logs need to be managed.Read MoreML inference on the edgeData governance frequently hinders the deployment of machine learning inference models on the edge and the model orchestration can be challenging.SolutionWith Expanso, you can effortlessly deploy machine learning models on edge devices for real-time inference.BenefitWith Expanso, you can effortlessly deploy machine learning models on edge devices for real-time inference.Read MoreCloud image search across geo locationsImplementing a cloud image search while keeping data within your premises.SolutionExpanso empowers you to train machine learning models right where your data is stored, eliminating the need for sensitive data to leave your premises.BenefitGain full control over your data, streamline data governance, enhance data security, all while harnessing the advantages of cloud-based image search capabilities.Read MoreDistributed fleet managementFleet data is hard to access, has to be centralized for any usage, has additional security risks and is therefore costly to use.SolutionBacalhau’s OSQuery integration and container execution provides a distributed SQL-like engine to query fleet data in-place and support for arbitrary, end-user specific binaries.BenefitFleet data usage while reducing the economic, security and time cost.Read MoreDistributed data warehouseManaging multiple data sources can hinder effective data utilization and often necessitates centralization.SolutionBacalhau offers a virtual data warehouse by federating queries across distributed data sources.BenefitEliminate the need for central data storage and transfers, simultaneously enhancing cost efficiency and security.Read MoreRunning jobs over irregular / unreliable network connectionsUnreliable network connections pose difficulties in data transfer and deployment of containers for software on edge devices.SolutionBacalhau employs decentralized job coordination to execute workloads robustly on unreliable edge networks.BenefitAchieve resilient deployment in challenging external conditions, making it an ideal solution for use in remote edge computing environments.Read MoreFederated learning with isolated divisionsCompanies face barriers in collaboratively training Machine Learning models across divisions separated by regulatory barriers. This hinders model development, with existing solutions either lacking global insights, leaking sensitive information, or compromising on data quality.SolutionBacalhau enables collaborative ML model training without the need to transfer raw data. Stringent data controls ensure that only the authorized insights are shared while effectively coordinating the learning process across divisions.BenefitCompanies achieve accurate ML models, minimize compliance risks, and enjoy controlled coordination for optimized learning.Read MoreShared serverSpecialized computing resources are often a tradeoff between dedicated hardware cost and coordination/permission obstacles.SolutionBacalhau offers a decentralized platform for scheduling and coordinating experiments across shared GPU/TPU hardware, without transferring private code/data.BenefitBacalhau optimizes hardware usage through sharing, accelerates research speed via scalable distributed access, and ensures data security, significantly benefiting cross-institutional collaborative efforts.Read MoreStay up to date and sign up to our blog:Visit BlogThe Compute Over Data PlatformCompanyHomeWhat We ValueWho We AreNewsroomContact UsCareersResourcesDocumentationFAQBlogSupportSocialLinkedInYouTubeSlackX ExpansoX BacalhauGitHub© Expanso Inc. All Rights Reserved 2023Privacy PolicyTrademarksTerms & ConditionsPrivacy PolicyTrademarksTerms & Conditions
+Highlighted
+![VentureBeat Logo](https://expanso.io/wp-content/uploads/2023/12/Newsroom-Preview-Pic-Website-2.avif)
+[
+VentureBeat: The end of centralized data? Samsung teams with Expanso on distributed processing ](https://expanso.io/newsroom/venturebeat-samsung-next-teams-with-expanso/)
+Read the Article on VentureBeat
+[Read More](https://expanso.io/newsroom/venturebeat-samsung-next-teams-with-expanso/)
+![](https://expanso.io/wp-content/uploads/2024/05/no-background-newsroom-samsung.avif)
+[
+Why we invested in Expanso, a distributed compute platform that reduces latency and enhances data governance capabilities ](https://expanso.io/newsroom/why-samsung-next-invested-in-expanso-a-distributed-compute-platform/)
+Read the article on the Samsung Next blog.
+[Read More](https://expanso.io/newsroom/why-samsung-next-invested-in-expanso-a-distributed-compute-platform/)
+![bacalhau v1.2](https://expanso.io/wp-content/uploads/2023/12/Newsroom-Preview-Pic-Website-3.avif)
+[
+Announcing Bacalhau 1.2 ](https://expanso.io/newsroom/bacalhau1-2/)
+We are thrilled to announce the release of Bacalhau 1.2! Following the Bacalhau 1.1 release in September 2023, we’ve explored a variety of innovative and groundbreaking use
+[Read More](https://expanso.io/newsroom/bacalhau1-2/)
+Press releases.
+[
+Expanso and Motherduck Join Forces To Deliver Distributed Data Analytics ](https://expanso.io/newsroom/expanso-and-motherduck-join-forces-to-deliver-distributed-data-analytics/)
+Motherduck and Expanso announced a partnership that will unlock the future of data analytics. The partnership combines the strengths of Bacalhau, the open source project for efficient and secure distributed computation, with Motherduck, a serverless analytics solution powered by DuckDB.
+[Read More](https://expanso.io/newsroom/expanso-and-motherduck-join-forces-to-deliver-distributed-data-analytics/)
+Headlines and features.
+![VentureBeat Logo](https://expanso.io/wp-content/uploads/2023/12/Newsroom-Preview-Pic-Website-2.avif)
+[
+Expanso Nets $7.5M to Pioneer Distributed Data Processing for Enterprises ](https://expanso.io/newsroom/expanso-seed-funding-announcement/)
+Data is the lifeblood of modern businesses but mobilizing it is far from easy. Companies have to go through a lot of steps just to make sure they are getting
+[Read More](https://expanso.io/newsroom/expanso-seed-funding-announcement/)
+![5G OI Lab Logo](https://expanso.io/wp-content/uploads/2023/09/Untitled-design-7.avif)
+[
+AT&T, Comcast, Expanso and more Join 5G Open Innovation Lab’s Innovation Ecosystem ](https://expanso.io/newsroom/att-comcast-expanso-and-more-join-5g-open-innovation-labs-innovation-ecosystem/)
+The Lab also welcomes its largest cohort to date with 17 multi-stage, global startups joining Batch #8 Fall Program September 13, 2023 08:00 AM Eastern Daylight Time BELLEVUE, Wash.–(BUSINESS WIRE)–5G
+[Read More](https://expanso.io/newsroom/att-comcast-expanso-and-more-join-5g-open-innovation-labs-innovation-ecosystem/)
+![Geekwire Logo](https://expanso.io/wp-content/uploads/2023/11/Geekwire-logo-website-Newsroom-PR-300x300.avif)
+[
+Tech Moves: Open-source software company Expanso names CEO; Highspot adds exec; and more ](https://expanso.io/newsroom/tech-moves-open-source-software-company-expanso-names-ceo-highspot/)
+Aronchick said his primary goal as Expanso CEO is to augment Bacalhau’s impact within the AI community, “to expedite the project’s development and make AI tools more accessible to a
+[Read More](https://expanso.io/newsroom/tech-moves-open-source-software-company-expanso-names-ceo-highspot/)
+![Color Swatch](https://expanso.io/wp-content/uploads/2023/11/color-swatch.png)
+Get Assets
+For permissions related to the use of Expanso (and in extension, Bacalhau) materials, please reach out to us at press@expanso.io with the details below:
+- Your name and title.
+- Company name and location.
+- Description of request.
+![Chat](https://expanso.io/wp-content/uploads/2023/11/chat-alt.png)
+Contact
+For PR inquiries contact: [press@expanso.io](mailto:press@expanso.io)

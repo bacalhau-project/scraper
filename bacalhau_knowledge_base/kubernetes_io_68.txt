@@ -1,25 +1,182 @@
-URL: https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/control-plane-flags/
+Source: kubernetes_io
+URL: https://kubernetes.io/docs/tasks/job/fine-parallel-processing-work-queue/
 
-DocumentationKubernetes BlogTrainingPartnersCommunityCase StudiesVersionsRelease Informationv1.31v1.30v1.29v1.28v1.27English中文 (Chinese)Français (French)日本語 (Japanese)한국어 (Korean)DocumentationAvailable Documentation VersionsGetting startedLearning environmentProduction environmentContainer RuntimesInstalling Kubernetes with deployment toolsBootstrapping clusters with kubeadmInstalling kubeadmTroubleshooting kubeadmCreating a cluster with kubeadmCustomizing components with the kubeadm APIOptions for Highly Available TopologyCreating Highly Available Clusters with kubeadmSet up a High Availability etcd Cluster with kubeadmConfiguring each kubelet in your cluster using kubeadmDual-stack support with kubeadmTurnkey Cloud SolutionsBest practicesConsiderations for large clustersRunning in multiple zonesValidate node setupEnforcing Pod Security StandardsPKI certificates and requirementsConceptsOverviewKubernetes ComponentsObjects In KubernetesKubernetes Object ManagementObject Names and IDsLabels and SelectorsNamespacesAnnotationsField SelectorsFinalizersOwners and DependentsRecommended LabelsThe Kubernetes APICluster ArchitectureNodesCommunication between Nodes and the Control PlaneControllersLeasesCloud Controller ManagerAbout cgroup v2Container Runtime Interface (CRI)Garbage CollectionMixed Version ProxyContainersImagesContainer EnvironmentRuntime ClassContainer Lifecycle HooksWorkloadsPodsPod LifecycleInit ContainersSidecar ContainersEphemeral ContainersDisruptionsPod Quality of Service ClassesUser NamespacesDownward APIWorkload ManagementDeploymentsReplicaSetStatefulSetsDaemonSetJobsAutomatic Cleanup for Finished JobsCronJobReplicationControllerAutoscaling WorkloadsManaging WorkloadsServices, Load Balancing, and NetworkingServiceIngressIngress ControllersGateway APIEndpointSlicesNetwork PoliciesDNS for Services and PodsIPv4/IPv6 dual-stackTopology Aware RoutingNetworking on WindowsService ClusterIP allocationService Internal Traffic PolicyStorageVolumesPersistent VolumesProjected VolumesEphemeral VolumesStorage ClassesVolume Attributes ClassesDynamic Volume ProvisioningVolume SnapshotsVolume Snapshot ClassesCSI Volume CloningStorage CapacityNode-specific Volume LimitsVolume Health MonitoringWindows StorageConfigurationConfiguration Best PracticesConfigMapsSecretsLiveness, Readiness, and Startup ProbesResource Management for Pods and ContainersOrganizing Cluster Access Using kubeconfig FilesResource Management for Windows nodesSecurityCloud Native SecurityPod Security StandardsPod Security AdmissionService AccountsPod Security PoliciesSecurity For Windows NodesControlling Access to the Kubernetes APIRole Based Access Control Good PracticesGood practices for Kubernetes SecretsMulti-tenancyHardening Guide - Authentication MechanismsKubernetes API Server Bypass RisksLinux kernel security constraints for Pods and containersSecurity ChecklistPoliciesLimit RangesResource QuotasProcess ID Limits And ReservationsNode Resource ManagersScheduling, Preemption and EvictionKubernetes SchedulerAssigning Pods to NodesPod OverheadPod Scheduling ReadinessPod Topology Spread ConstraintsTaints and TolerationsScheduling FrameworkDynamic Resource AllocationScheduler Performance TuningResource Bin PackingPod Priority and PreemptionNode-pressure EvictionAPI-initiated EvictionCluster AdministrationNode ShutdownsCertificatesCluster NetworkingLogging ArchitectureMetrics For Kubernetes System ComponentsMetrics for Kubernetes Object StatesSystem LogsTraces For Kubernetes System ComponentsProxies in KubernetesAPI Priority and FairnessCluster AutoscalingInstalling AddonsCoordinated Leader ElectionWindows in KubernetesWindows containers in KubernetesGuide for Running Windows Containers in KubernetesExtending KubernetesCompute, Storage, and Networking ExtensionsNetwork PluginsDevice PluginsExtending the Kubernetes APICustom ResourcesKubernetes API Aggregation LayerOperator patternTasksInstall ToolsInstall and Set Up kubectl on LinuxInstall and Set Up kubectl on macOSInstall and Set Up kubectl on WindowsAdminister a ClusterAdministration with kubeadmCertificate Management with kubeadmConfiguring a cgroup driverReconfiguring a kubeadm clusterUpgrading kubeadm clustersUpgrading Linux nodesUpgrading Windows nodesChanging The Kubernetes Package RepositoryMigrating from dockershimChanging the Container Runtime on a Node from Docker Engine to containerdMigrate Docker Engine nodes from dockershim to cri-dockerdFind Out What Container Runtime is Used on a NodeTroubleshooting CNI plugin-related errorsCheck whether dockershim removal affects youMigrating telemetry and security agents from dockershimGenerate Certificates ManuallyManage Memory, CPU, and API ResourcesConfigure Default Memory Requests and Limits for a NamespaceConfigure Default CPU Requests and Limits for a NamespaceConfigure Minimum and Maximum Memory Constraints for a NamespaceConfigure Minimum and Maximum CPU Constraints for a NamespaceConfigure Memory and CPU Quotas for a NamespaceConfigure a Pod Quota for a NamespaceInstall a Network Policy ProviderUse Antrea for NetworkPolicyUse Calico for NetworkPolicyUse Cilium for NetworkPolicyUse Kube-router for NetworkPolicyRomana for NetworkPolicyWeave Net for NetworkPolicyAccess Clusters Using the Kubernetes APIAdvertise Extended Resources for a NodeAutoscale the DNS Service in a ClusterChange the Access Mode of a PersistentVolume to ReadWriteOncePodChange the default StorageClassSwitching from Polling to CRI Event-based Updates to Container StatusChange the Reclaim Policy of a PersistentVolumeCloud Controller Manager AdministrationConfigure a kubelet image credential providerConfigure Quotas for API ObjectsControl CPU Management Policies on the NodeControl Topology Management Policies on a nodeCustomizing DNS ServiceDebugging DNS ResolutionDeclare Network PolicyDeveloping Cloud Controller ManagerEnable Or Disable A Kubernetes APIEncrypting Confidential Data at RestDecrypt Confidential Data that is Already Encrypted at RestGuaranteed Scheduling For Critical Add-On PodsIP Masquerade Agent User GuideLimit Storage ConsumptionMigrate Replicated Control Plane To Use Cloud Controller ManagerNamespaces WalkthroughOperating etcd clusters for KubernetesReserve Compute Resources for System DaemonsRunning Kubernetes Node Components as a Non-root UserSafely Drain a NodeSecuring a ClusterSet Kubelet Parameters Via A Configuration FileShare a Cluster with NamespacesUpgrade A ClusterUse Cascading Deletion in a ClusterUsing a KMS provider for data encryptionUsing CoreDNS for Service DiscoveryUsing NodeLocal DNSCache in Kubernetes ClustersUsing sysctls in a Kubernetes ClusterUtilizing the NUMA-aware Memory ManagerVerify Signed Kubernetes ArtifactsConfigure Pods and ContainersAssign Memory Resources to Containers and PodsAssign CPU Resources to Containers and PodsConfigure GMSA for Windows Pods and containersResize CPU and Memory Resources assigned to ContainersConfigure RunAsUserName for Windows pods and containersCreate a Windows HostProcess PodConfigure Quality of Service for PodsAssign Extended Resources to a ContainerConfigure a Pod to Use a Volume for StorageConfigure a Pod to Use a PersistentVolume for StorageConfigure a Pod to Use a Projected Volume for StorageConfigure a Security Context for a Pod or ContainerConfigure Service Accounts for PodsPull an Image from a Private RegistryConfigure Liveness, Readiness and Startup ProbesAssign Pods to NodesAssign Pods to Nodes using Node AffinityConfigure Pod InitializationAttach Handlers to Container Lifecycle EventsConfigure a Pod to Use a ConfigMapShare Process Namespace between Containers in a PodUse a User Namespace With a PodUse an Image Volume With a PodCreate static PodsTranslate a Docker Compose File to Kubernetes ResourcesEnforce Pod Security Standards by Configuring the Built-in Admission ControllerEnforce Pod Security Standards with Namespace LabelsMigrate from PodSecurityPolicy to the Built-In PodSecurity Admission ControllerMonitoring, Logging, and DebuggingTroubleshooting ApplicationsDebug PodsDebug ServicesDebug a StatefulSetDetermine the Reason for Pod FailureDebug Init ContainersDebug Running PodsGet a Shell to a Running ContainerTroubleshooting ClustersTroubleshooting kubectlResource metrics pipelineTools for Monitoring ResourcesMonitor Node HealthDebugging Kubernetes nodes with crictlAuditingDebugging Kubernetes Nodes With KubectlDeveloping and debugging services locally using telepresenceWindows debugging tipsManage Kubernetes ObjectsDeclarative Management of Kubernetes Objects Using Configuration FilesDeclarative Management of Kubernetes Objects Using KustomizeManaging Kubernetes Objects Using Imperative CommandsImperative Management of Kubernetes Objects Using Configuration FilesUpdate API Objects in Place Using kubectl patchMigrate Kubernetes Objects Using Storage Version MigrationManaging SecretsManaging Secrets using kubectlManaging Secrets using Configuration FileManaging Secrets using KustomizeInject Data Into ApplicationsDefine a Command and Arguments for a ContainerDefine Dependent Environment VariablesDefine Environment Variables for a ContainerExpose Pod Information to Containers Through Environment VariablesExpose Pod Information to Containers Through FilesDistribute Credentials Securely Using SecretsRun ApplicationsRun a Stateless Application Using a DeploymentRun a Single-Instance Stateful ApplicationRun a Replicated Stateful ApplicationScale a StatefulSetDelete a StatefulSetForce Delete StatefulSet PodsHorizontal Pod AutoscalingHorizontalPodAutoscaler WalkthroughSpecifying a Disruption Budget for your ApplicationAccessing the Kubernetes API from a PodRun JobsRunning Automated Tasks with a CronJobCoarse Parallel Processing Using a Work QueueFine Parallel Processing Using a Work QueueIndexed Job for Parallel Processing with Static Work AssignmentJob with Pod-to-Pod CommunicationParallel Processing using ExpansionsHandling retriable and non-retriable pod failures with Pod failure policyAccess Applications in a ClusterDeploy and Access the Kubernetes DashboardAccessing ClustersConfigure Access to Multiple ClustersUse Port Forwarding to Access Applications in a ClusterUse a Service to Access an Application in a ClusterConnect a Frontend to a Backend Using ServicesCreate an External Load BalancerList All Container Images Running in a ClusterSet up Ingress on Minikube with the NGINX Ingress ControllerCommunicate Between Containers in the Same Pod Using a Shared VolumeConfigure DNS for a ClusterAccess Services Running on ClustersExtend KubernetesConfigure the Aggregation LayerUse Custom ResourcesExtend the Kubernetes API with CustomResourceDefinitionsVersions in CustomResourceDefinitionsSet up an Extension API ServerConfigure Multiple SchedulersUse an HTTP Proxy to Access the Kubernetes APIUse a SOCKS5 Proxy to Access the Kubernetes APISet up Konnectivity serviceTLSConfigure Certificate Rotation for the KubeletManage TLS Certificates in a ClusterManual Rotation of CA CertificatesManage Cluster DaemonsPerform a Rolling Update on a DaemonSetPerform a Rollback on a DaemonSetRunning Pods on Only Some NodesNetworkingAdding entries to Pod /etc/hosts with HostAliasesExtend Service IP RangesValidate IPv4/IPv6 dual-stackExtend kubectl with pluginsManage HugePagesSchedule GPUsTutorialsHello MinikubeLearn Kubernetes BasicsCreate a ClusterUsing Minikube to Create a ClusterDeploy an AppUsing kubectl to Create a DeploymentExplore Your AppViewing Pods and NodesExpose Your App PubliclyUsing a Service to Expose Your AppScale Your AppRunning Multiple Instances of Your AppUpdate Your AppPerforming a Rolling UpdateConfigurationExample: Configuring a Java MicroserviceExternalizing config using MicroProfile, ConfigMaps and SecretsUpdating Configuration via a ConfigMapConfiguring Redis using a ConfigMapAdopting Sidecar ContainersSecurityApply Pod Security Standards at the Cluster LevelApply Pod Security Standards at the Namespace LevelRestrict a Container's Access to Resources with AppArmorRestrict a Container's Syscalls with seccompStateless ApplicationsExposing an External IP Address to Access an Application in a ClusterExample: Deploying PHP Guestbook application with RedisStateful ApplicationsStatefulSet BasicsExample: Deploying WordPress and MySQL with Persistent VolumesExample: Deploying Cassandra with a StatefulSetRunning ZooKeeper, A Distributed System CoordinatorServicesConnecting Applications with ServicesUsing Source IPExplore Termination Behavior for Pods And Their EndpointsReferenceGlossaryAPI OverviewKubernetes API ConceptsServer-Side ApplyClient LibrariesCommon Expression Language in KubernetesKubernetes Deprecation PolicyDeprecated API Migration GuideKubernetes API health endpointsAPI Access ControlAuthenticatingAuthenticating with Bootstrap TokensAuthorizationUsing RBAC AuthorizationUsing Node AuthorizationWebhook ModeUsing ABAC AuthorizationAdmission ControllersDynamic Admission ControlManaging Service AccountsCertificates and Certificate Signing RequestsMapping PodSecurityPolicies to Pod Security StandardsKubelet authentication/authorizationTLS bootstrappingValidating Admission PolicyWell-Known Labels, Annotations and TaintsAudit AnnotationsKubernetes APIWorkload ResourcesPodBindingPodTemplateReplicationControllerReplicaSetDeploymentStatefulSetControllerRevisionDaemonSetJobCronJobHorizontalPodAutoscalerHorizontalPodAutoscalerPriorityClassPodSchedulingContext v1alpha3ResourceClaim v1alpha3ResourceClaimTemplate v1alpha3ResourceSlice v1alpha3Service ResourcesServiceEndpointsEndpointSliceIngressIngressClassConfig and Storage ResourcesConfigMapSecretCSIDriverCSINodeCSIStorageCapacityPersistentVolumeClaimPersistentVolumeStorageClassStorageVersionMigration v1alpha1VolumeVolumeAttachmentVolumeAttributesClass v1beta1Authentication ResourcesServiceAccountTokenRequestTokenReviewCertificateSigningRequestClusterTrustBundle v1alpha1SelfSubjectReviewAuthorization ResourcesLocalSubjectAccessReviewSelfSubjectAccessReviewSelfSubjectRulesReviewSubjectAccessReviewClusterRoleClusterRoleBindingRoleRoleBindingPolicy ResourcesFlowSchemaLimitRangeResourceQuotaNetworkPolicyPodDisruptionBudgetPriorityLevelConfigurationValidatingAdmissionPolicyValidatingAdmissionPolicyBindingExtend ResourcesCustomResourceDefinitionDeviceClass v1alpha3MutatingWebhookConfigurationValidatingWebhookConfigurationCluster ResourcesAPIServiceComponentStatusEventIPAddress v1beta1LeaseLeaseCandidate v1alpha1NamespaceNodeRuntimeClassServiceCIDR v1beta1Common DefinitionsDeleteOptionsLabelSelectorListMetaLocalObjectReferenceNodeSelectorRequirementObjectFieldSelectorObjectMetaObjectReferencePatchQuantityResourceFieldSelectorStatusTypedLocalObjectReferenceCommon ParametersInstrumentationService Level Indicator MetricsCRI Pod & Container MetricsNode metrics dataKubernetes Metrics ReferenceKubernetes Issues and SecurityKubernetes Issue TrackerKubernetes Security and Disclosure InformationCVE feedNode Reference InformationKubelet Checkpoint APILinux Kernel Version RequirementsArticles on dockershim Removal and on Using CRI-compatible RuntimesNode Labels Populated By The KubeletKubelet Configuration Directory MergingKubelet Device Manager API VersionsNode StatusNetworking ReferenceProtocols for ServicesPorts and ProtocolsVirtual IPs and Service ProxiesSetup toolsKubeadmkubeadm initkubeadm joinkubeadm upgradekubeadm configkubeadm resetkubeadm tokenkubeadm versionkubeadm alphakubeadm certskubeadm init phasekubeadm join phasekubeadm kubeconfigkubeadm reset phasekubeadm upgrade phaseImplementation detailsCommand line tool (kubectl)Introduction to kubectlkubectl Quick Referencekubectl referencekubectlkubectl annotatekubectl api-resourceskubectl api-versionskubectl applykubectl apply edit-last-appliedkubectl apply set-last-appliedkubectl apply view-last-appliedkubectl attachkubectl authkubectl auth can-ikubectl auth reconcilekubectl auth whoamikubectl autoscalekubectl certificatekubectl certificate approvekubectl certificate denykubectl cluster-infokubectl cluster-info dumpkubectl completionkubectl configkubectl config current-contextkubectl config delete-clusterkubectl config delete-contextkubectl config delete-userkubectl config get-clusterskubectl config get-contextskubectl config get-userskubectl config rename-contextkubectl config setkubectl config set-clusterkubectl config set-contextkubectl config set-credentialskubectl config unsetkubectl config use-contextkubectl config viewkubectl cordonkubectl cpkubectl createkubectl create clusterrolekubectl create clusterrolebindingkubectl create configmapkubectl create cronjobkubectl create deploymentkubectl create ingresskubectl create jobkubectl create namespacekubectl create poddisruptionbudgetkubectl create priorityclasskubectl create quotakubectl create rolekubectl create rolebindingkubectl create secretkubectl create secret docker-registrykubectl create secret generickubectl create secret tlskubectl create servicekubectl create service clusteripkubectl create service externalnamekubectl create service loadbalancerkubectl create service nodeportkubectl create serviceaccountkubectl create tokenkubectl debugkubectl deletekubectl describekubectl diffkubectl drainkubectl editkubectl eventskubectl execkubectl explainkubectl exposekubectl getkubectl kustomizekubectl labelkubectl logskubectl optionskubectl patchkubectl pluginkubectl plugin listkubectl port-forwardkubectl proxykubectl replacekubectl rolloutkubectl rollout historykubectl rollout pausekubectl rollout restartkubectl rollout resumekubectl rollout statuskubectl rollout undokubectl runkubectl scalekubectl setkubectl set envkubectl set imagekubectl set resourceskubectl set selectorkubectl set serviceaccountkubectl set subjectkubectl taintkubectl topkubectl top nodekubectl top podkubectl uncordonkubectl versionkubectl waitkubectl CommandskubectlJSONPath Supportkubectl for Docker Userskubectl Usage ConventionsComponent toolsFeature GatesFeature Gates (removed)kubeletkube-apiserverkube-controller-managerkube-proxykube-schedulerDebug clusterFlow controlConfiguration APIsClient Authentication (v1)Client Authentication (v1beta1)Event Rate Limit Configuration (v1alpha1)Image Policy API (v1alpha1)kube-apiserver Admission (v1)kube-apiserver Audit Configuration (v1)kube-apiserver Configuration (v1)kube-apiserver Configuration (v1alpha1)kube-apiserver Configuration (v1beta1)kube-controller-manager Configuration (v1alpha1)kube-proxy Configuration (v1alpha1)kube-scheduler Configuration (v1)kubeadm Configuration (v1beta3)kubeadm Configuration (v1beta4)kubeconfig (v1)Kubelet Configuration (v1)Kubelet Configuration (v1alpha1)Kubelet Configuration (v1beta1)Kubelet CredentialProvider (v1)WebhookAdmission Configuration (v1)External APIsKubernetes Custom Metrics (v1beta2)Kubernetes External Metrics (v1beta1)Kubernetes Metrics (v1beta1)SchedulingScheduler ConfigurationScheduling PoliciesOther ToolsMapping from dockercli to crictlContributeContribute to Kubernetes DocumentationSuggesting content improvementsContributing new contentOpening a pull requestDocumenting for a releaseBlogs and case studiesReviewing changesReviewing pull requestsFor approvers and reviewersLocalizing Kubernetes documentationParticipating in SIG DocsRoles and responsibilitiesIssue WranglersPR wranglersDocumentation style overviewContent guideStyle guideDiagram guideWriting a new topicPage content typesContent organizationCustom Hugo ShortcodesUpdating Reference DocumentationQuickstartContributing to the Upstream Kubernetes CodeGenerating Reference Documentation for the Kubernetes APIGenerating Reference Documentation for kubectl CommandsGenerating Reference Documentation for MetricsGenerating Reference Pages for Kubernetes Components and ToolsAdvanced contributingViewing Site AnalyticsDocs smoke test pageKubernetes DocumentationGetting startedProduction environmentInstalling Kubernetes with deployment toolsBootstrapping clusters with kubeadmCustomizing components with the kubeadm APICustomizing components with the kubeadm APIThis page covers how to customize the components that kubeadm deploys. For control plane components
-you can use flags in theClusterConfigurationstructure or patches per-node. For the kubelet
-and kube-proxy you can useKubeletConfigurationandKubeProxyConfiguration, accordingly.All of these options are possible via the kubeadm configuration API.
-For more details on each field in the configuration you can navigate to ourAPI reference pages.Note:Customizing the CoreDNS deployment of kubeadm is currently not supported. You must manually
-patch thekube-system/corednsConfigMapand recreate the CoreDNSPodsafter that. Alternatively,
-you can skip the default CoreDNS deployment and deploy your own variant.
-For more details on that seeUsing init phases with kubeadm.Note:To reconfigure a cluster that has already been created seeReconfiguring a kubeadm cluster.Customizing the control plane with flags inClusterConfigurationThe kubeadmClusterConfigurationobject exposes a way for users to override the default
-flags passed to control plane components such as the APIServer, ControllerManager, Scheduler and Etcd.
-The components are defined using the following structures:apiServercontrollerManagerscheduleretcdThese structures contain a commonextraArgsfield, that consists ofname/valuepairs.
-To override a flag for a control plane component:Add the appropriateextraArgsto your configuration.Add flags to theextraArgsfield.Runkubeadm initwith--config <YOUR CONFIG YAML>.Note:You can generate aClusterConfigurationobject with default values by runningkubeadm config print init-defaultsand saving the output to a file of your choice.Note:TheClusterConfigurationobject is currently global in kubeadm clusters. This means that any flags that you add,
-will apply to all instances of the same component on different nodes. To apply individual configuration per component
-on different nodes you can usepatches.Note:Duplicate flags (keys), or passing the same flag--foomultiple times, is currently not supported.
-To workaround that you must usepatches.APIServer flagsFor details, see thereference documentation for kube-apiserver.Example usage:apiVersion:kubeadm.k8s.io/v1beta4kind:ClusterConfigurationkubernetesVersion:v1.16.0apiServer:extraArgs:-name:"enable-admission-plugins"value:"AlwaysPullImages,DefaultStorageClass"-name:"audit-log-path"value:"/home/johndoe/audit.log"ControllerManager flagsFor details, see thereference documentation for kube-controller-manager.Example usage:apiVersion:kubeadm.k8s.io/v1beta4kind:ClusterConfigurationkubernetesVersion:v1.16.0controllerManager:extraArgs:-name:"cluster-signing-key-file"value:"/home/johndoe/keys/ca.key"-name:"deployment-controller-sync-period"value:"50"Scheduler flagsFor details, see thereference documentation for kube-scheduler.Example usage:apiVersion:kubeadm.k8s.io/v1beta4kind:ClusterConfigurationkubernetesVersion:v1.16.0scheduler:extraArgs:-name:"config"value:"/etc/kubernetes/scheduler-config.yaml"extraVolumes:-name:schedulerconfighostPath:/home/johndoe/schedconfig.yamlmountPath:/etc/kubernetes/scheduler-config.yamlreadOnly:truepathType:"File"Etcd flagsFor details, see theetcd server documentation.Example usage:apiVersion:kubeadm.k8s.io/v1beta4kind:ClusterConfigurationetcd:local:extraArgs:-name:"election-timeout"value:1000Customizing with patchesFEATURE STATE:Kubernetes v1.22 [beta]Kubeadm allows you to pass a directory with patch files toInitConfigurationandJoinConfigurationon individual nodes. These patches can be used as the last customization step before component configuration
-is written to disk.You can pass this file tokubeadm initwith--config <YOUR CONFIG YAML>:apiVersion:kubeadm.k8s.io/v1beta4kind:InitConfigurationpatches:directory:/home/user/somedirNote:Forkubeadm inityou can pass a file containing both aClusterConfigurationandInitConfigurationseparated by---.You can pass this file tokubeadm joinwith--config <YOUR CONFIG YAML>:apiVersion:kubeadm.k8s.io/v1beta4kind:JoinConfigurationpatches:directory:/home/user/somedirThe directory must contain files namedtarget[suffix][+patchtype].extension.
-For example,kube-apiserver0+merge.yamlor justetcd.json.targetcan be one ofkube-apiserver,kube-controller-manager,kube-scheduler,etcdandkubeletconfiguration.suffixis an optional string that can be used to determine which patches are applied first
-alpha-numerically.patchtypecan be one ofstrategic,mergeorjsonand these must match the patching formatssupported by kubectl.
-The defaultpatchtypeisstrategic.extensionmust be eitherjsonoryaml.Note:If you are usingkubeadm upgradeto upgrade your kubeadm nodes you must again provide the same
-patches, so that the customization is preserved after upgrade. To do that you can use the--patchesflag, which must point to the same directory.kubeadm upgradecurrently does not support a configuration
-API structure that can be used for the same purpose.Customizing the kubeletTo customize the kubelet you can add aKubeletConfigurationnext to theClusterConfigurationorInitConfigurationseparated by---within the same configuration file.
-This file can then be passed tokubeadm initand kubeadm will apply the same baseKubeletConfigurationto all nodes in the cluster.For applying instance-specific configuration over the baseKubeletConfigurationyou can use thekubeletconfigurationpatch target.Alternatively, you can use kubelet flags as overrides by passing them in thenodeRegistration.kubeletExtraArgsfield supported by bothInitConfigurationandJoinConfiguration.
-Some kubelet flags are deprecated, so check their status in thekubelet reference documentationbefore using them.For additional details seeConfiguring each kubelet in your cluster using kubeadmCustomizing kube-proxyTo customize kube-proxy you can pass aKubeProxyConfigurationnext yourClusterConfigurationorInitConfigurationtokubeadm initseparated by---.For more details you can navigate to ourAPI reference pages.Note:kubeadm deploys kube-proxy as aDaemonSet, which means
-that theKubeProxyConfigurationwould apply to all instances of kube-proxy in the cluster.FeedbackWas this page helpful?YesNoThanks for the feedback. If you have a specific, answerable question about how to use Kubernetes, ask it onStack Overflow.
-Open an issue in theGitHub Repositoryif you want toreport a problemorsuggest an improvement.Last modified July 05, 2024 at 4:06 PM PST:kubeadm: use v1beta4 in all docs examples (efc1133fa4)Edit this pageCreate child pageCreate documentation issuePrint entire sectionCustomizing the control plane with flags inClusterConfigurationAPIServer flagsControllerManager flagsScheduler flagsEtcd flagsCustomizing with patchesCustomizing the kubeletCustomizing kube-proxyDocumentationBlogTrainingPartnersCommunityCase Studies© 2024 The Kubernetes Authors | Documentation Distributed underCC BY 4.0Copyright © 2024 The Linux Foundation ®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see ourTrademark Usage pageICP license: 京ICP备17074266号-3
+Fine Parallel Processing Using a Work Queue
+In this example, you will run a Kubernetes Job that runs multiple parallel tasks as worker processes, each running as a separate Pod.
+In this example, as each pod is created, it picks up one unit of work from a task queue, processes it, and repeats until the end of the queue is reached.
+Here is an overview of the steps in this example:
+- Start a storage service to hold the work queue. In this example, you will use Redis to store
+work items. In the
+[previous example](/docs/tasks/job/coarse-parallel-processing-work-queue/), you used RabbitMQ. In this example, you will use Redis and a custom work-queue client library; this is because AMQP does not provide a good way for clients to detect when a finite-length work queue is empty. In practice you would set up a store such as Redis once and reuse it for the work queues of many jobs, and other things. - Create a queue, and fill it with messages. Each message represents one task to be done. In this example, a message is an integer that we will do a lengthy computation on.
+- Start a Job that works on tasks from the queue. The Job starts several pods. Each pod takes one task from the message queue, processes it, and repeats until the end of the queue is reached.
+Before you begin
+You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. It is recommended to run this tutorial on a cluster with at least two nodes that are not acting as control plane hosts. If you do not already have a
+cluster, you can create one by using
+[minikube](https://minikube.sigs.k8s.io/docs/tutorials/multi_node/)
+or you can use one of these Kubernetes playgrounds:
+You will need a container image registry where you can upload images to run in your cluster.
+The example uses [Docker Hub](https://hub.docker.com/), but you could adapt it to a different
+container image registry.
+This task example also assumes that you have Docker installed locally. You use Docker to build container images.
+Be familiar with the basic,
+non-parallel, use of [Job](/docs/concepts/workloads/controllers/job/).
+Starting Redis
+For this example, for simplicity, you will start a single instance of Redis.
+See the [Redis Example](https://github.com/kubernetes/examples/tree/master/guestbook) for an example
+of deploying Redis scalably and redundantly.
+You could also download the following files directly:
+To start a single instance of Redis, you need to create the redis pod and redis service:
+kubectl apply -f https://k8s.io/examples/application/job/redis/redis-pod.yaml
+kubectl apply -f https://k8s.io/examples/application/job/redis/redis-service.yaml
+Filling the queue with tasks
+Now let's fill the queue with some "tasks". In this example, the tasks are strings to be printed.
+Start a temporary interactive pod for running the Redis CLI.
+kubectl run -i --tty temp --image redis --command "/bin/sh"
+Waiting for pod default/redis2-c7h78 to be running, status is Pending, pod ready: false
+Hit enter for command prompt
+Now hit enter, start the Redis CLI, and create a list with some work items in it.
+redis-cli -h redis
+redis:6379> rpush job2 "apple"
+(integer) 1
+redis:6379> rpush job2 "banana"
+(integer) 2
+redis:6379> rpush job2 "cherry"
+(integer) 3
+redis:6379> rpush job2 "date"
+(integer) 4
+redis:6379> rpush job2 "fig"
+(integer) 5
+redis:6379> rpush job2 "grape"
+(integer) 6
+redis:6379> rpush job2 "lemon"
+(integer) 7
+redis:6379> rpush job2 "melon"
+(integer) 8
+redis:6379> rpush job2 "orange"
+(integer) 9
+redis:6379> lrange job2 0 -1
+1) "apple"
+2) "banana"
+3) "cherry"
+4) "date"
+5) "fig"
+6) "grape"
+7) "lemon"
+8) "melon"
+9) "orange"
+So, the list with key job2
+will be the work queue.
+Note: if you do not have Kube DNS setup correctly, you may need to change
+the first step of the above block to redis-cli -h $REDIS_SERVICE_HOST
+.
+Create a container image
+Now you are ready to create an image that will process the work in that queue.
+You're going to use a Python worker program with a Redis client to read the messages from the message queue.
+A simple Redis work queue client library is provided,
+called rediswq.py
+([Download](/examples/application/job/redis/rediswq.py)).
+The "worker" program in each Pod of the Job uses the work queue client library to get work. Here it is:
+#!/usr/bin/env python
+import time
+import rediswq
+host="redis"
+# Uncomment next two lines if you do not have Kube-DNS working.
+# import os
+# host = os.getenv("REDIS_SERVICE_HOST")
+q = rediswq.RedisWQ(name="job2", host=host)
+print("Worker with sessionID: " + q.sessionID())
+print("Initial queue state: empty=" + str(q.empty()))
+while not q.empty():
+item = q.lease(lease_secs=10, block=True, timeout=2)
+if item is not None:
+itemstr = item.decode("utf-8")
+print("Working on " + itemstr)
+time.sleep(10) # Put your actual work here instead of sleep.
+q.complete(item)
+else:
+print("Waiting for work")
+print("Queue empty, exiting")
+You could also download [ worker.py](/examples/application/job/redis/worker.py),
+[, and](/examples/application/job/redis/rediswq.py)
+rediswq.py
+[files, then build the container image. Here's an example using Docker to do the image build:](/examples/application/job/redis/Dockerfile)
+Dockerfile
+docker build -t job-wq-2 .
+Push the image
+For the [Docker Hub](https://hub.docker.com/), tag your app image with
+your username and push to the Hub with the below commands. Replace
+<username>
+with your Hub username.
+docker tag job-wq-2 <username>/job-wq-2
+docker push <username>/job-wq-2
+You need to push to a public repository or [configure your cluster to be able to access
+your private repository](/docs/concepts/containers/images/).
+Defining a Job
+Here is a manifest for the Job you will create:
+apiVersion: batch/v1
+kind: Job
+metadata:
+name: job-wq-2
+spec:
+parallelism: 2
+template:
+metadata:
+name: job-wq-2
+spec:
+containers:
+- name: c
+image: gcr.io/myproject/job-wq-2
+restartPolicy: OnFailure
+Note:
+Be sure to edit the manifest to changegcr.io/myproject
+to your own path.In this example, each pod works on several items from the queue and then exits when there are no more items. Since the workers themselves detect when the workqueue is empty, and the Job controller does not know about the workqueue, it relies on the workers to signal when they are done working. The workers signal that the queue is empty by exiting with success. So, as soon as any worker exits with success, the controller knows the work is done, and that the Pods will exit soon. So, you need to leave the completion count of the Job unset. The job controller will wait for the other pods to complete too.
+Running the Job
+So, now run the Job:
+# this assumes you downloaded and then edited the manifest already
+kubectl apply -f ./job.yaml
+Now wait a bit, then check on the Job:
+kubectl describe jobs/job-wq-2
+Name: job-wq-2
+Namespace: default
+Selector: controller-uid=b1c7e4e3-92e1-11e7-b85e-fa163ee3c11f
+Labels: controller-uid=b1c7e4e3-92e1-11e7-b85e-fa163ee3c11f
+job-name=job-wq-2
+Annotations: <none>
+Parallelism: 2
+Completions: <unset>
+Start Time: Mon, 11 Jan 2022 17:07:59 +0000
+Pods Statuses: 1 Running / 0 Succeeded / 0 Failed
+Pod Template:
+Labels: controller-uid=b1c7e4e3-92e1-11e7-b85e-fa163ee3c11f
+job-name=job-wq-2
+Containers:
+c:
+Image: container-registry.example/exampleproject/job-wq-2
+Port:
+Environment: <none>
+Mounts: <none>
+Volumes: <none>
+Events:
+FirstSeen LastSeen Count From SubobjectPath Type Reason Message
+--------- -------- ----- ---- ------------- -------- ------ -------
+33s 33s 1 {job-controller } Normal SuccessfulCreate Created pod: job-wq-2-lglf8
+You can wait for the Job to succeed, with a timeout:
+# The check for condition name is case insensitive
+kubectl wait --for=condition=complete --timeout=300s job/job-wq-2
+kubectl logs pods/job-wq-2-7r7b2
+Worker with sessionID: bbd72d0a-9e5c-4dd6-abf6-416cc267991f
+Initial queue state: empty=False
+Working on banana
+Working on date
+Working on lemon
+As you can see, one of the pods for this Job worked on several work units.
+Alternatives
+If running a queue service or modifying your containers to use a work queue is inconvenient, you may
+want to consider one of the other
+[job patterns](/docs/concepts/workloads/controllers/job/#job-patterns).
+If you have a continuous stream of background processing work to run, then
+consider running your background workers with a ReplicaSet instead,
+and consider running a background processing library such as
+[https://github.com/resque/resque](https://github.com/resque/resque).
+[Fix documentation for parallel processing work queue tasks. (bed970676c)](https://github.com/kubernetes/website/commit/bed970676cf9a5509fea66c9dd9086ed1d59c345)

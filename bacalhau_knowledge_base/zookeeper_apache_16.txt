@@ -1,3 +1,17 @@
-URL: https://zookeeper.apache.org/git.html
+Source: zookeeper_apache
+URL: https://zookeeper.apache.org/events.html
 
-Apache ZooKeeper™ProjectNewsReleasesWikiCreditsBylawsLicensePrivacy PolicySecurityThanksDocumentationRelease 3.9.2Release 3.8.4Release 3.7.2Release 3.6.4Older VersionsDevelopersMailing ListsIRC ChannelVersion ControlIssue TrackerEventsASFApache Software FoundationHow Apache WorksSponsoring ApacheZooKeeper Version Control SystemThe ZooKeeper source code resides in the Apache Git repository:https://gitbox.apache.org/repos/asf/zookeeper.gitAll commits and releases are done on this repository.There is also a github mirror at:https://github.com/apache/zookeeperCopyright © 2010-2020The Apache Software Foundation, Licensed under theApache License, Version 2.0.Apache ZooKeeper, ZooKeeper, Apache, the Apache feather logo, and the Apache ZooKeeper project logo are trademarks of The Apache Software Foundation.
+Your ZooKeeper friends @ Facebook would like to invite you to share and learn what’s new with ZooKeeper.
+We will not only share what we at Facebook have been up to, but we have exciting talks from speakers from the ZooKeeper community lined up who are eager to share what they've been working on as well. And of course, we've got some cool swag for you :-)
+When: November 8th 2018, 5pm – 8pm (Talks: 5pm - 7pm; Networking & Happy Hour/Networking: 7pm - 8pm)
+Where: Facebook HQ - MPK 16, 1 Hacker Way, Menlo Park, CA
+Agenda
+We will have remote viewing locations in our Facebook Seattle office, and the event will also be live streamed. You can indicate how you'd like to attend on the registration page.
+Recording: [https://www.facebook.com/zkmeetup](https://www.facebook.com/zkmeetup)
+When: June 6th 2018, 6pm-8pm CEST
+Where: Cloudera Budapest Office, Széchenyi István tér 7-8, Budapest, Hungary
+Agenda:
+Abstract: "Ten years at Apache - a short history of the Apache ZooKeeper project including insights on how to use it, when to use it, when not to use it, and experiences from running in production."
+Interestingly ZooKeeper will be hitting it's 10 year anniversary at Apache while I'm in Budapest, see this: https://issues.apache.org/jira/browse/ZOOKEEPER-1
+Abstract: Experiences of a Hungarian software engineer moved to the Open Source world recently from the traditional closed-source proprietary product development. The ladder of Apache: committer, PMC members, etc. Challenges in prioritization. Does scrum work with open source? Importance of socialization: how networking helps you to be successful
+Recording: no recording

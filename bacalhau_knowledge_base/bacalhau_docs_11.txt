@@ -1,3 +1,89 @@
-URL: https://docs.bacalhau.org/getting-started/workload-onboarding
+Source: bacalhau_docs
+URL: https://docs.bacalhau.org/community/ways-to-contribute
 
-Bacalhau Docsv.1.4.0v.1.3.0v.1.3.1v.1.3.2v.1.4.0GitHubSlackContactMoreGitHubSlackContactAsk or SearchCtrl+ KWelcomeGetting StartedHow Bacalhau WorksInstallationCreate NetworkHardware SetupContainer OnboardingDocker WorkloadsWebAssembly (Wasm) WorkloadsSetting UpRunning NodesNode OnboardingGPU InstallationJob selection policyAccess ManagementNode persistenceConnect StorageConfiguration ManagementConfiguring Transport Level SecurityLimits and TimeoutsTest Network LocallyBacalhau WebUIWorkload OnboardingContainerDocker Workload OnboardingWebAssembly (Wasm) WorkloadsBacalhau Docker ImageHow To Work With Custom Containers in BacalhauPythonBuilding and Running Custom Python ContainerRunning Pandas on BacalhauRunning a Python ScriptRunning Jupyter Notebooks on BacalhauScripting Bacalhau with PythonR (language)Building and Running your Custom R Containers on BacalhauRunning a Simple R Script on BacalhauRun CUDA programs on BacalhauRunning a Prolog ScriptReading Data from Multiple S3 Buckets using BacalhauRunning Rust programs as WebAssembly (WASM)Generate Synthetic Data using Sparkov Data Generation techniqueData IngestionCopy Data from URL to Public StoragePinning DataRunning a Job over S3 dataNetworking InstructionsAccessing the Internet from JobsUtilizing NATS.io within BacalhauGPU Workloads SetupAutomatic Update CheckingMarketplace DeploymentsGoogle Cloud MarketplaceGuidesWrite a config.yamlWrite a SpecConfigExamplesData EngineeringUsing Bacalhau with DuckDBEthereum Blockchain Analysis with Ethereum-ETL and BacalhauConvert CSV To Parquet Or AvroSimple Image ProcessingOceanography - Data ConversionVideo ProcessingModel InferenceEasyOCR (Optical Character Recognition) on BacalhauRunning Inference on Dolly 2.0 Model with Hugging FaceSpeech Recognition using WhisperStable Diffusion on a GPUStable Diffusion on a CPUObject Detection with YOLOv5 on BacalhauGenerate Realistic Images using StyleGAN3 and BacalhauStable Diffusion Checkpoint InferenceRunning Inference on a Model stored on S3Model TrainingTraining Pytorch Model with BacalhauTraining Tensorflow ModelStable Diffusion Dreambooth (Finetuning)Molecular DynamicsRunning BIDS Apps on BacalhauCoresets On BacalhauGenomics Data GenerationGromacs for AnalysisMolecular Simulation with OpenMM and BacalhauReferencesJobs GuideJob SpecificationJob TypesTask SpecificationEnginesDocker Engine SpecificationWebAssembly (WASM) Engine SpecificationPublishersIPFS Publisher SpecificationLocal Publisher SpecificationS3 Publisher SpecificationSourcesIPFS Source SpecificationLocal Source SpecificationS3 Source SpecificationURL Source SpecificationNetwork SpecificationInput Source SpecificationResources SpecificationResultPath SpecificationConstraint SpecificationLabels SpecificationMeta SpecificationJob TemplatesQueuing & TimeoutsJob QueuingTimeouts SpecificationJob ResultsStateCLI GuideSingle CLI commandsAgentAgent OverviewAgent AliveAgent NodeAgent VersionConfigConfig OverviewConfig Auto-ResourcesConfig DefaultConfig ListConfig SetJobJob OverviewJob DescribeJob ExecJob ExecutionsJob HistoryJob ListJob LogsJob RunJob StopNodeNode OverviewNode ApproveNode DeleteNode ListNode DescribeNode RejectCLI Commands OverviewCommand MigrationAPI GuideBacalhau API overviewBest PracticesAgent EndpointOrchestrator EndpointMigration APINode ManagementAuthentication & AuthorizationDatabase IntegrationDebuggingDebugging Failed JobsDebugging LocallyOpen Telemetry in BacalhauRunning locally in 'devstack'Setting up Dev EnvironmentHelp & FAQBacalhau FAQsRelease NotesGlossaryIntegrationsApache Airflow Provider for BacalhauLilypadBacalhau Python SDKObservability for WebAssembly WorkloadsCommunitySocial MediaStyle GuideWays to ContributePowered by GitBookContainer OnboardingDocker WorkloadsWebAssembly (Wasm) WorkloadsPreviousHardware SetupNextDocker WorkloadsOn this pageWas this helpful?Edit on GitHubExport as PDFGet SupportExpansoSupportUse CasesDistributed ETLEdge MLDistributed Data WarehousingFlett ManagementAbout UsWho we areWhat we valueNews & BlogBlogNewsExpanso (2024). All Rights Reserved.
+Ways to Contribute
+If you want to contribute to Bacalhau and the Compute ecosystem, here is a list of things that need help and instructions for getting started.
+We appreciate any help that would improve Bacalhau. If you need more guidance, reach out to us on [Slack (#bacalhau channel)](https://bit.ly/bacalhau-project-slack) .
+Code
+You can contribute to the Bacalhau code by opening an issue with a bug report, requesting a feature, suggesting changes, and others. You can also clone the [Bacalhau code repository](https://github.com/bacalhau-project/bacalhau) and submit a pull request for an open issue.
+Documentation
+With lots of code comes the need for lots of good documentation! If writing technical documentation is your area, or you love writing, we greatly value your contribution!
+Before contributing to the Bacalhau documentation, please read through our [Style guide](/community/style-guide) and check out the [Bacalhau documentation](https://github.com/bacalhau-project/docs).
+Community
+For questions, feedback, or answers to questions that help other users, use [GitHub Discussions](https://github.com/bacalhau-project/bacalhau/discussions).
+Build with Bacalhau
+Bacalhau has an extensive list of examples and tutorials that showcase its abilities. However, this is just the tip of the iceberg; there are more use cases where Bacalhau can be implemented. If you have a specific idea you want to try out with Bacalhau, we encourage you to do that and build anything that you think is missing.
+If you are interested in contributing, please email [contribute@bacalhau.org](mailto:contribute@bacalhau.org) for more information. Include your interests so we can ensure you get to work on something fun and valuable.
+Writing guide
+This guide explains what to keep in mind when contributing to Bacalhau documentation. While the [grammar, formatting, and style guide](/community/style-guide) outlines the rules to follow, this guide helps you structure your writing properly and choose the correct tone for your audience.
+Walkthroughs
+The purpose of a walkthrough is to instruct the user how to do something. You do not need to convince the reader of something or explain a concept. Walkthroughs are a list of steps the reader must follow to achieve a process or function.
+Most of the Bacalhau documentation project documentation falls under the Walkthrough category. Walkthroughs are short, have a neutral tone, and instruct the reader on achieving a particular process or function. The instructions contain steps about where to go, what to type, and the actions to perform on the User Interface. There is little to no conceptual information within walkthroughs.
+Components
+The scope for some of the components in a walkthrough are as follows:
+Function or process
+The end goal of a walkthrough is for the reader to achieve a very particular function. Installing Bacalhau is an example. Following this walkthrough doesn’t teach the reader much about working with the decentralized web or what Bacalhau is. Still, the user would have the Bacalhau Desktop application installed on the computer by the end.
+Short length
+Walkthroughs tend to be short because they cover one particular function or process. They typically take between two and ten minutes to read. Most of the content in a walkthrough is a numbered list. Images and GIFs can help the reader understand what they should be doing.
+When a walkthrough is converted into a video, that video should be at most five minutes.
+Walkthrough structure
+Walkthroughs are split into three major sections:
+What you are about to do.
+The steps you need to do.
+Summary of what you just did and potential next steps.
+Conceptual articles
+Articles are written with the intent to inform and explain something. These articles don’t contain any steps or actions that the reader has to perform right now.
+These articles are vastly different in tone when compared to walkthroughs. Some topics and concepts can be challenging to understand, so creative writing and interesting diagrams are highly sought-after for these articles. Whatever writers can do to make a subject more understandable, the better.
+Article goals
+Use the following goals when writing conceptual articles:
+Article structure
+Articles are separated into five major sections:
+Introduction to the thing we’re about to explain.
+What the thing is.
+Why it’s essential.
+What other topics it relates to.
+Summary review of what we just read.
+Tutorials
+When writing a tutorial, you’re teaching a reader how to achieve a complex end-goal. Tutorials are a mix of walkthroughs and conceptual articles. Most tutorials will span several pages and contain multiple walkthroughs within them.
+Take the hypothetical tutorial Get up and running with Bacalhau, for example. This tutorial will likely have the following pages:
+A brief introduction to what Bacalhau is.
+Choose and install a command line client.
+Understanding storage deals.
+Import and store a file.
+Pages 1
+and 3
+are conceptual articles, describing particular design patterns and ideas to the reader. All the other pages are walkthroughs instructing the user how to perform one specific action.
+When designing a tutorial, keep in mind the walkthroughs and articles that already exist, and note down any additional content items that would need to be completed before creating the tutorial.
+Grammar and formatting
+Here are some language-specific rules that the Bacalhau documentation follows. If you use a writing service like [Grammarly](https://www.grammarly.com/), most of these rules are turned on by default.
+American English
+While Bacalhau is a global project, the fact is that American English is the most commonly used style of English used today. With that in mind, when writing content for the Bacalhau project, use American English spelling. The basic rules for converting other styles of English into American English are:
+Swap the
+s
+for az
+in words like categorize and pluralize.Remove the
+u
+from words like color and honor.Swap
+tre
+forter
+in words like center.
+The Oxford comma
+In a list of three or more items, follow each item except the last with a comma ,
+:
+References to Bacalhau
+As a proper noun, the name “Bacalhau” (capitalized) should be used only to refer to the overarching project, to the protocol, or to the project’s canonical network:
+Bacalhau has attracted contributors from around the globe!
+The Bacalhau ecosystem is thriving! I love contributing to Bacalhau's documentation!
+Consistency in the usage of these terms helps keep these various concepts distinct.
+Acronyms
+If you have to use an acronym, spell the full phrase first and include the acronym in parentheses ()
+the first time it is used in each document.
+Virtual Machine (VM), Compute over Data (CoD).
+Formatting
+How the Markdown syntax looks, and code formatting rules to follow.
+Syntax
+The Bacalhau Docs project follows the GitHub Flavoured Markdown syntax for markdown. This way, all articles display properly within GitHub itself.
+Rules
+We use the rules set out in the [VSCode Markdownlint](https://github.com/DavidAnson/vscode-markdownlint) extension. You can import these rules into any text editor like Vim or Sublime. All rules are listed [within the Markdownlint repository](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md).
+We highly recommend installing [VSCode](https://code.visualstudio.com/) with the [Markdownlint](https://github.com/DavidAnson/vscode-markdownlint) extension to help with your writing. The extension shows warnings within your markdown whenever your copy doesn’t conform to a rule.
+Last updated

@@ -1,3 +1,54 @@
-URL: http://zookeeper.apache.org/mailing_lists.html
+Source: zookeeper_apache
+URL: https://zookeeper.apache.org/doc/r3.7.1/releasenotes.html
 
-Apache ZooKeeper™ProjectNewsReleasesWikiCreditsBylawsLicensePrivacy PolicySecurityThanksDocumentationRelease 3.9.2Release 3.8.4Release 3.7.2Release 3.6.4Older VersionsDevelopersMailing ListsIRC ChannelVersion ControlIssue TrackerEventsASFApache Software FoundationHow Apache WorksSponsoring ApacheZooKeeper Mailing ListsUsersIf you use ZooKeeper, please subscribe to the ZooKeeper user mailing list.The ZooKeeper user mailing list is:user@zookeeper.apache.orgSubscribe to ListUnsubscribe from ListArchivesAlternative ArchivesOlder Archives (Hadoop, pre-TLP)Note In order to post to the list, it is necessary to first subscribe to it.DevelopersIf you'd like to contribute to ZooKeeper, please subscribe to the ZooKeeper developer mailing list.This mailing list is for general developer chat and announcements. All notifications are sent to other mailing lists (see below). The only exception are new Jira issues which will still be sent to this list.The ZooKeeper developer mailing list is :dev@zookeeper.apache.orgSubscribe to ListUnsubscribe from ListArchivesAlternative ArchivesOlder Archives (Hadoop, pre-TLP)Note In order to post to the list, it is necessary to first subscribe to it.CommitsIf you'd like to see changes made in ZooKeeper's version control system then subscribe to the ZooKeeper commit mailing list.Subscribe to ListUnsubscribe from ListArchivesAlternative ArchivesOlder Archives (Hadoop, pre-TLP)Jira NotificationsIf you'd like to see notifications mails for all changes made to Jira tickets then subscribe to the ZooKeeper issues mailing list.Note:Notifications for the creation of new issues willalsobe sent to thedevmailing list.Subscribe to ListUnsubscribe from ListArchivesAlternative ArchivesGit NotificationsIf you'd like to see notifications mails for all non-commit related Git things (e.g. Pull Request comments) then subscribe to the ZooKeeper notifications mailing list.Subscribe to ListUnsubscribe from ListArchivesAlternative ArchivesCopyright © 2010-2020The Apache Software Foundation, Licensed under theApache License, Version 2.0.Apache ZooKeeper, ZooKeeper, Apache, the Apache feather logo, and the Apache ZooKeeper project logo are trademarks of The Apache Software Foundation.
+Release Notes - ZooKeeper - Version 3.7.1
+Improvement
+Bug
+[ZOOKEEPER-1875](https://issues.apache.org/jira/browse/ZOOKEEPER-1875) - NullPointerException in ClientCnxn$EventThread.processEvent
+[ZOOKEEPER-3128](https://issues.apache.org/jira/browse/ZOOKEEPER-3128) - Get CLI Command displays Authentication error for Authorization error
+[ZOOKEEPER-3652](https://issues.apache.org/jira/browse/ZOOKEEPER-3652) - Improper synchronization in ClientCnxn
+[ZOOKEEPER-3887](https://issues.apache.org/jira/browse/ZOOKEEPER-3887) - In SSL-only server zkServer.sh status command should use secureClientPortAddress instead of clientPortAddress
+[ZOOKEEPER-3988](https://issues.apache.org/jira/browse/ZOOKEEPER-3988) - org.apache.zookeeper.server.NettyServerCnxn.receiveMessage throws NullPointerException
+[ZOOKEEPER-4194](https://issues.apache.org/jira/browse/ZOOKEEPER-4194) - ZooInspector throws NullPointerExceptions to console when node data is null
+[ZOOKEEPER-4204](https://issues.apache.org/jira/browse/ZOOKEEPER-4204) - Flaky test - RequestPathMetricsCollectorTest.testMultiThreadPerf
+[ZOOKEEPER-4247](https://issues.apache.org/jira/browse/ZOOKEEPER-4247) - NPE while processing message from restarted quorum member
+[ZOOKEEPER-4265](https://issues.apache.org/jira/browse/ZOOKEEPER-4265) - Download page broken links
+[ZOOKEEPER-4266](https://issues.apache.org/jira/browse/ZOOKEEPER-4266) - Correct ZooKeeper version in documentation header
+[ZOOKEEPER-4269](https://issues.apache.org/jira/browse/ZOOKEEPER-4269) - acceptedEpoch.tmp rename failure will cause server startup error
+[ZOOKEEPER-4272](https://issues.apache.org/jira/browse/ZOOKEEPER-4272) - Upgrade Netty library to > 4.1.60 due to security vulnerability CVE-2021-21295
+[ZOOKEEPER-4275](https://issues.apache.org/jira/browse/ZOOKEEPER-4275) - Slowness in sasl login or subject.doAs() causes zk client to falsely assume that the server did not respond, closes connection and goes to unnecessary retries
+[ZOOKEEPER-4277](https://issues.apache.org/jira/browse/ZOOKEEPER-4277) - dependency-check:check failing - jetty-server-9.4.38 CVE-2021-28165
+[ZOOKEEPER-4278](https://issues.apache.org/jira/browse/ZOOKEEPER-4278) - dependency-check:check failing - netty-transport-4.1.60.Final CVE-2021-21409
+[ZOOKEEPER-4309](https://issues.apache.org/jira/browse/ZOOKEEPER-4309) - QuorumCnxManager's ListenerHandler thread leak
+[ZOOKEEPER-4331](https://issues.apache.org/jira/browse/ZOOKEEPER-4331) - zookeeper artifact is not compatible with OSGi runtime
+[ZOOKEEPER-4337](https://issues.apache.org/jira/browse/ZOOKEEPER-4337) - CVE-2021-34429 in jetty 9.4.38.v20210224 in zookeeper 3.7.0
+[ZOOKEEPER-4342](https://issues.apache.org/jira/browse/ZOOKEEPER-4342) - Robustify C client against errors during SASL negotiation
+[ZOOKEEPER-4345](https://issues.apache.org/jira/browse/ZOOKEEPER-4345) - Avoid NoSunchMethodException caused by shaded zookeeper jar
+[ZOOKEEPER-4356](https://issues.apache.org/jira/browse/ZOOKEEPER-4356) - Code blocks do not render correctly in ZK docs site
+[ZOOKEEPER-4360](https://issues.apache.org/jira/browse/ZOOKEEPER-4360) - Avoid NPE during metrics execution if the leader is not set on a FOLLOWER node
+[ZOOKEEPER-4362](https://issues.apache.org/jira/browse/ZOOKEEPER-4362) - ZKDatabase.txnCount logged non transactional requests
+[ZOOKEEPER-4367](https://issues.apache.org/jira/browse/ZOOKEEPER-4367) - Zookeeper#Login thread leak in case of Sasl AuthFailed.
+[ZOOKEEPER-4377](https://issues.apache.org/jira/browse/ZOOKEEPER-4377) - KeeperException.create has NullPointerException when low version client requests the high version server
+[ZOOKEEPER-4452](https://issues.apache.org/jira/browse/ZOOKEEPER-4452) - Log4j 1.X CVE-2022-23302/5/7 vulnerabilities
+[ZOOKEEPER-4477](https://issues.apache.org/jira/browse/ZOOKEEPER-4477) - Single Kerberos ticket renewal failure can prevent all future renewals since Java 9
+[ZOOKEEPER-4504](https://issues.apache.org/jira/browse/ZOOKEEPER-4504) - ZKUtil#deleteRecursive causing deadlock in HDFS HA functionality
+[ZOOKEEPER-4505](https://issues.apache.org/jira/browse/ZOOKEEPER-4505) - CVE-2020-36518 - Upgrade jackson databind to 2.13.2.1
+[ZOOKEEPER-4510](https://issues.apache.org/jira/browse/ZOOKEEPER-4510) - dependency-check:check failing - reload4j-1.2.19.jar: CVE-2020-9493, CVE-2022-23307
+[ZOOKEEPER-4514](https://issues.apache.org/jira/browse/ZOOKEEPER-4514) - ClientCnxnSocketNetty throwing NPE
+[ZOOKEEPER-4515](https://issues.apache.org/jira/browse/ZOOKEEPER-4515) - ZK Cli quit command always logs error
+[ZOOKEEPER-4516](https://issues.apache.org/jira/browse/ZOOKEEPER-4516) - checkstyle:check is failing
+Test
+Task
+[ZOOKEEPER-3970](https://issues.apache.org/jira/browse/ZOOKEEPER-3970) - Enable ZooKeeperServerController to expire session
+[ZOOKEEPER-4315](https://issues.apache.org/jira/browse/ZOOKEEPER-4315) - Fix NOTICE file in the source distribution
+[ZOOKEEPER-4414](https://issues.apache.org/jira/browse/ZOOKEEPER-4414) - Update Netty to 4.1.70.Final
+[ZOOKEEPER-4429](https://issues.apache.org/jira/browse/ZOOKEEPER-4429) - Update jackson-databind to 2.13.1
+[ZOOKEEPER-4469](https://issues.apache.org/jira/browse/ZOOKEEPER-4469) - Suppress OWASP false positives related to Netty TCNative
+[ZOOKEEPER-4478](https://issues.apache.org/jira/browse/ZOOKEEPER-4478) - Suppress OWASP false positives zookeeper-jute-3.8.0-SNAPSHOT.jar: CVE-2021-29425, CVE-2021-28164, CVE-2021-34429
+[ZOOKEEPER-4479](https://issues.apache.org/jira/browse/ZOOKEEPER-4479) - Tests: C client test TestOperations.cc testTimeoutCausedByWatches1 is very flaky on CI
+[ZOOKEEPER-4482](https://issues.apache.org/jira/browse/ZOOKEEPER-4482) - Fix LICENSE FILES for commons-io and commons-cli
+Sub-task
+[ZOOKEEPER-3774](https://issues.apache.org/jira/browse/ZOOKEEPER-3774) - Close quorum socket asynchronously on the leader to avoid ping being blocked by long socket closing time
+[ZOOKEEPER-4251](https://issues.apache.org/jira/browse/ZOOKEEPER-4251) - Flaky test: org.apache.zookeeper.test.WatcherTest
+[ZOOKEEPER-4257](https://issues.apache.org/jira/browse/ZOOKEEPER-4257) - learner.asyncSending, learner.closeSocketAsync and leader.closeSocketAsync should be configurable in zoo.cfg
+[ZOOKEEPER-4270](https://issues.apache.org/jira/browse/ZOOKEEPER-4270) - Flaky test: QuorumPeerMainTest#testLeaderOutOfView

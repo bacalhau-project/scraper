@@ -1,3 +1,106 @@
-URL: https://docs.bacalhau.org/setting-up/data-ingestion/from-url
+Source: bacalhau_docs
+URL: https://docs.bacalhau.org/setting-up/workload-onboarding/python/building-and-running-custom-python-container
 
-Bacalhau Docsv.1.4.0v.1.3.0v.1.3.1v.1.3.2v.1.4.0GitHubSlackContactMoreGitHubSlackContactAsk or SearchCtrl+ KWelcomeGetting StartedHow Bacalhau WorksInstallationCreate NetworkHardware SetupContainer OnboardingDocker WorkloadsWebAssembly (Wasm) WorkloadsSetting UpRunning NodesNode OnboardingGPU InstallationJob selection policyAccess ManagementNode persistenceConnect StorageConfiguration ManagementConfiguring Transport Level SecurityLimits and TimeoutsTest Network LocallyBacalhau WebUIWorkload OnboardingContainerDocker Workload OnboardingWebAssembly (Wasm) WorkloadsBacalhau Docker ImageHow To Work With Custom Containers in BacalhauPythonBuilding and Running Custom Python ContainerRunning Pandas on BacalhauRunning a Python ScriptRunning Jupyter Notebooks on BacalhauScripting Bacalhau with PythonR (language)Building and Running your Custom R Containers on BacalhauRunning a Simple R Script on BacalhauRun CUDA programs on BacalhauRunning a Prolog ScriptReading Data from Multiple S3 Buckets using BacalhauRunning Rust programs as WebAssembly (WASM)Generate Synthetic Data using Sparkov Data Generation techniqueData IngestionCopy Data from URL to Public StoragePinning DataRunning a Job over S3 dataNetworking InstructionsAccessing the Internet from JobsUtilizing NATS.io within BacalhauGPU Workloads SetupAutomatic Update CheckingMarketplace DeploymentsGoogle Cloud MarketplaceGuidesWrite a config.yamlWrite a SpecConfigExamplesData EngineeringUsing Bacalhau with DuckDBEthereum Blockchain Analysis with Ethereum-ETL and BacalhauConvert CSV To Parquet Or AvroSimple Image ProcessingOceanography - Data ConversionVideo ProcessingModel InferenceEasyOCR (Optical Character Recognition) on BacalhauRunning Inference on Dolly 2.0 Model with Hugging FaceSpeech Recognition using WhisperStable Diffusion on a GPUStable Diffusion on a CPUObject Detection with YOLOv5 on BacalhauGenerate Realistic Images using StyleGAN3 and BacalhauStable Diffusion Checkpoint InferenceRunning Inference on a Model stored on S3Model TrainingTraining Pytorch Model with BacalhauTraining Tensorflow ModelStable Diffusion Dreambooth (Finetuning)Molecular DynamicsRunning BIDS Apps on BacalhauCoresets On BacalhauGenomics Data GenerationGromacs for AnalysisMolecular Simulation with OpenMM and BacalhauReferencesJobs GuideJob SpecificationJob TypesTask SpecificationEnginesDocker Engine SpecificationWebAssembly (WASM) Engine SpecificationPublishersIPFS Publisher SpecificationLocal Publisher SpecificationS3 Publisher SpecificationSourcesIPFS Source SpecificationLocal Source SpecificationS3 Source SpecificationURL Source SpecificationNetwork SpecificationInput Source SpecificationResources SpecificationResultPath SpecificationConstraint SpecificationLabels SpecificationMeta SpecificationJob TemplatesQueuing & TimeoutsJob QueuingTimeouts SpecificationJob ResultsStateCLI GuideSingle CLI commandsAgentAgent OverviewAgent AliveAgent NodeAgent VersionConfigConfig OverviewConfig Auto-ResourcesConfig DefaultConfig ListConfig SetJobJob OverviewJob DescribeJob ExecJob ExecutionsJob HistoryJob ListJob LogsJob RunJob StopNodeNode OverviewNode ApproveNode DeleteNode ListNode DescribeNode RejectCLI Commands OverviewCommand MigrationAPI GuideBacalhau API overviewBest PracticesAgent EndpointOrchestrator EndpointMigration APINode ManagementAuthentication & AuthorizationDatabase IntegrationDebuggingDebugging Failed JobsDebugging LocallyOpen Telemetry in BacalhauRunning locally in 'devstack'Setting up Dev EnvironmentHelp & FAQBacalhau FAQsRelease NotesGlossaryIntegrationsApache Airflow Provider for BacalhauLilypadBacalhau Python SDKObservability for WebAssembly WorkloadsCommunitySocial MediaStyle GuideWays to ContributePowered by GitBookCopy Data from URL to Public StorageTo upload a file from a URL we will use thebacalhau docker runcommand.Copybacalhaudockerrun\--id-only\--wait\--inputhttps://raw.githubusercontent.com/filecoin-project/bacalhau/main/README.md\ghcr.io/bacalhau-project/examples/upload:v1The job has been submitted and Bacalhau has printed out the related job id.Structure of the command​Let's look closely at the command above:bacalhau docker run: call to bacalhau using docker executor--input https://raw.githubusercontent.com/filecoin-project/bacalhau/main/README.md: URL path of the input data volumes downloaded from a URL source.ghcr.io/bacalhau-project/examples/upload:v1: the name and tag of the docker image we are usingThebacalhau docker runcommand takes advantage of the--inputparameter. This will download a file from a public URL and place it in the/inputsdirectory of the container (by default). Then we will use a helper container to move that data to the /outputs directory.You can find out more about thehelper container in the examples repositorywhich is designed to simplify the data uploading process.For more details, see theCLI commands guideChecking the State of Your Jobs​Job status: You can check the status of the job usingbacalhau job list, processing the json ouput with thejq:Copybacalhaujoblist$JOB_ID--output=json|jq'.[0].Status.JobState.Nodes[] | .Shards."0" | select(.RunOutput)'When the job status isPublishedorCompleted, that means the job is done, and we can get the results using the job ID.Job information: You can find out more information about your job by usingbacalhau job describe.Copybacalhaujobdescribe$JOB_IDJob download: You can download your job results directly by usingbacalhau job get. Alternatively, you can choose to create a directory to store your results. In the command below, we removed a directory in case it was present before, created it and downloaded our job output to be stored in that directory.Copyrm-rfresults&&mkdir./resultsbacalhaujobget--output-dir./results$JOB_IDViewing your Job Output​Each job result contains anoutputssubfolder andexitCode,stderrandstdoutfiles with relevant content. To view the execution logs execute following:Copyhead-n15./results/stdoutAnd to view the job execution result (README.mdfile in the example case), which was saved as a job output, execute:Copytail./results/outputs/README.mdGet the CID From the Completed Job​To get the output CID from a completed job, run the following command:Copybacalhau job list $JOB_ID --output=json | jq -r '.[0].Status.JobState.Nodes[] | .Shards."0".PublishedResults | select(.CID) | .CID'The job will upload the CID to the public storage via IPFS. We will store the CID in an environment variable so that we can reuse it later on.Use the CID in a New Bacalhau Job​Now that we have the CID, we can use it in a new job. This time we will use the--inputparameter to tell Bacalhau to use the CID we just uploaded.In this case, the only goal of our job is just to list the contents of the/inputsdirectory. You can see that the "input" data is located under/inputs/outputs/README.md.Copybacalhaudockerrun\--id-only\--wait\--inputipfs://$CID \ubuntu--\bash-c"set -x; ls -l /inputs; ls -l /inputs/outputs; cat /inputs/outputs/README.md"The job has been submitted and Bacalhau has printed out the related job id. We store that in an environment variable so that we can reuse it later on.Need Support?​For questions and feedback, please reach out in ourSlackPreviousData IngestionNextPinning DataLast updated2 months agoOn this pageChecking the State of Your Jobs​Viewing your Job Output​Get the CID From the Completed Job​Use the CID in a New Bacalhau Job​Need Support?​Was this helpful?Edit on GitHubExport as PDFGet SupportExpansoSupportUse CasesDistributed ETLEdge MLDistributed Data WarehousingFlett ManagementAbout UsWho we areWhat we valueNews & BlogBlogNewsExpanso (2024). All Rights Reserved.
+Building and Running Custom Python Container
+Introduction
+In this tutorial example, we will walk you through building your own Python container and running the container on Bacalhau.
+Prerequisites
+To get started, you need to install the Bacalhau client, see more information [here](/getting-started/installation)
+1. Sample Recommendation Dataset
+We will be using a simple recommendation script that, when given a movie ID, recommends other movies based on user ratings. Assuming you want recommendations for the movie 'Toy Story' (1995), it will suggest movies from similar categories:
+Downloading the dataset
+Download Movielens1M dataset from this link [https://files.grouplens.org/datasets/movielens/ml-1m.zip](https://files.grouplens.org/datasets/movielens/ml-1m.zip)
+In this example, we’ll be using 2 files from the MovieLens 1M dataset: ratings.dat
+and movies.dat
+. After the dataset is downloaded, extract the zip and place ratings.dat
+and movies.dat
+into a folder called input
+:
+The structure of the input directory should be
+Installing Dependencies
+To create a requirements.txt
+for the Python libraries we’ll be using, create:
+To install the dependencies, run:
+Writing the Script
+Create a new file called similar-movies.py
+and in it paste the following script
+What the similar-movies.py
+script does
+Read the files with pandas. The code uses Pandas to read data from the files
+ratings.dat
+andmovies.dat
+.Create the ratings matrix of shape (m×u) with rows as movies and columns as user
+Normalise matrix (subtract mean off). The ratings matrix is normalized by subtracting the mean off.
+Compute SVD: a singular value decomposition (SVD) of the normalized ratings matrix is performed.
+Calculate cosine similarity, sort by most similar, and return the top N.
+Select k principal components to represent the movies, a
+movie_id
+to find recommendations, and print thetop_n
+results.
+For further reading on how the script works, go to [Simple Movie Recommender Using SVD | Alyssa](https://alyssaq.github.io/2015/20150426-simple-movie-recommender-using-svd/)
+Running the Script
+Running the script similar-movies.py
+using the default values:
+You can also use other flags to set your own values.
+2. Setting Up Docker
+We will create a Dockerfile
+and add the desired configuration to the file. These commands specify how the image will be built, and what extra requirements will be included.
+We will use the python:3.8
+docker image and add our script similar-movies.py
+to copy the script to the docker image, similarly, we also add the dataset
+directory and also the requirements
+, after that run the command to install the dependencies in the image
+The final folder structure will look like this:
+See more information on how to containerize your script/app [here](https://docs.docker.com/get-started/02_our_app/)
+Build the container
+We will run docker build
+command to build the container:
+Before running the command replace:
+hub-user
+with your docker hub username, If you don’t have a docker hub account [follow these instructions to create a docker account](https://docs.docker.com/docker-id/), and use the username of the account you created
+repo-name
+with the name of the container, you can name it anything you want
+tag
+this is not required, but you can use the latest
+tag
+In our case:
+Push the container
+Next, upload the image to the registry. This can be done by using the Docker hub username
+, repo name
+or tag
+.
+In our case:
+3. Running a Bacalhau Job
+After the repo image has been pushed to Docker Hub, we can now use the container for running on Bacalhau. You can submit a Bacalhau job by running your container on Bacalhau with default or custom parameters.
+Running the Container with Default Parameters
+To submit a Bacalhau job by running your container on Bacalhau with default parameters, run the following Bacalhau command:
+Structure of the command
+bacalhau docker run
+: call to Bacalhaujsace/python-similar-movies
+: the name and of the docker image we are using-- python similar-movies.py
+: execute the Python script
+When a job is submitted, Bacalhau prints out the related job_id
+. We store that in an environment variable so that we can reuse it later on.
+Running the Container with Custom Parameters
+To submit a Bacalhau job by running your container on Bacalhau with custom parameters, run the following Bacalhau command:
+Structure of the command
+bacalhau docker run
+: call to Bacalhaujsace/python-similar-movies
+: the name of the docker image we are using-- python similar-movies.py --k 50 --id 10 --n 10
+: execute the python script. The script will use Singular Value Decomposition (SVD) and cosine similarity to find 10 movies most similar to the one with identifier 10, using 50 principal components.
+4. Checking the State of your Jobs
+Job status: You can check the status of the job using bacalhau job list
+.
+When it says Published
+or Completed
+, that means the job is done, and we can get the results.
+Job information: You can find out more information about your job by using bacalhau job describe
+.
+Job download: You can download your job results directly by using bacalhau job get
+. Alternatively, you can choose to create a directory to store your results. In the command below, we created a directory (results
+) and downloaded our job output to be stored in that directory.
+5. Viewing your Job Output
+To view the file, run the following command:
+Support
+If you have questions or need support or guidance, please reach out to the [Bacalhau team via Slack](https://bacalhauproject.slack.com/ssb/redirect) (#general channel).
+Last updated

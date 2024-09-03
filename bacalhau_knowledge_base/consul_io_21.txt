@@ -1,14 +1,36 @@
-URL: https://www.consul.io/docs/connect/observability
+Source: consul_io
+URL: https://www.consul.io/docs/k8s
 
-HashiDaysOne conference. Three cities.Find a city near youDismiss alertHashiCorp DeveloperHashiCorp Cloud PlatformTerraformPackerConsulVaultBoundaryNomadWaypointVagrantConsulInstallTutorialsDocumentationAPICLITry Cloud(opens in new tab)SearchCommand or control keyK keySign inSign upThemeConsul HomeDocumentationDocumentationWhat is Consul?Why Choose Consul?Core ConceptsGet StartedArchitectureRelease NotesUpgradeServicesService MeshOverviewHow Service Mesh WorksConfigurationConfiguration entriesProxiesService intentionsObservabilityOverviewAccess LogsMonitor service-to-service communicationUI VisualizationManage trafficConnectivity TasksDistributed TracingGatewaysCluster PeeringNomadKubernetesNative App IntegrationCertificate ManagementDevelop and DebugConsul DataplaneDynamic App ConfigurationSecurityAgentIntegrationsTroubleshootKubernetesNomadAWS ECSAWS LambdaHCP Consul DedicatedConsul EnterpriseNetwork Infrastructure AutomationResourcesTutorial LibraryCertificationsCommunity Forum(opens in new tab)Support(opens in new tab)GitHub(opens in new tab)DeveloperConsulDocumentationService MeshObservabilityv1.19.x (latest)Consulv1.18.xv1.17.xv1.16.xv1.15.xv1.14.xv1.13.xv1.12.xv1.11.xv1.10.xv1.9.xv1.8.xService Mesh Observability OverviewIn order to take advantage of the service mesh's L7 observability features you will need
-to:Deploy sidecar proxies that are capable of emitting metrics with each of your
-services. We have first class support for Envoy.Define where your proxies should send metrics that they collect.Define the protocols for each of your services.Define the upstreams for each of your services.If you are using Envoy as your sidecar proxy, you will need toenable
-gRPCon your client agents. To define the
-metrics destination and service protocol you may want to enableconfiguration
-entriesandcentralized service
-configuration.KubernetesIf you are using Kubernetes, the Helm chart can simplify much of the configuration needed to enable observability. See
-ourKubernetes observability docsfor more information.Metrics destinationFor Envoy the metrics destination can be configured in the proxy configuration
-entry'sconfigsection.kind = "proxy-defaults"name = "global"config {"envoy_dogstatsd_url": "udp://127.0.0.1:9125"}Find other possible metrics syncs in theEnvoy documentation.Service protocolYou can specify theprotocolfor all service instances in theservice-defaultsconfiguration entry. You can also override the default protocol when defining and registering proxies in a service definition file. Refer toExpose Paths Configuration Referencefor additional information.By default, proxies only provide L4 metrics.
-Defining the protocol allows proxies to handle requests at the L7
-protocol and emit L7 metrics. It also allows proxies to make per-request
-load balancing and routing decisions.Service upstreamsYou can set the upstream for each service using the proxy'supstreamssidecar parameter, which can be defined in a service'ssidecar registration.Edit this page on GitHubThemeCertificationsSystem StatusCookie ManagerTerms of UseSecurityPrivacyTrademark PolicyTrade ControlsAccessibilityGive Feedback(opens in new tab)
+Consul on Kubernetes
+Consul has many integrations with Kubernetes. You can deploy Consul
+to Kubernetes using the [Helm chart](/consul/docs/k8s/installation/install#helm-chart-installation) or [Consul K8s CLI](/consul/docs/k8s/installation/install-cli#consul-k8s-cli-installation), sync services between Consul and
+Kubernetes, run Consul Service Mesh, and more.
+This section documents the official integrations between Consul and Kubernetes.
+Use Cases
+Consul Service Mesh:
+Consul can automatically inject the [Consul Service Mesh](/consul/docs/connect)
+sidecar into pods so that they can accept and establish encrypted
+and authorized network connections with mutual TLS. And because Consul Service Mesh
+can run anywhere, pods and external services can communicate with each other over a fully encrypted connection.
+Service sync to enable Kubernetes and non-Kubernetes services to communicate: Consul can sync Kubernetes services with its own service registry. This service sync allows Kubernetes services to use Kubernetes' native service discovery capabilities to discover and connect to external services registered in Consul, and for external services to use Consul service discovery to discover and connect to Kubernetes services.
+Additional integrations: Consul can run directly on Kubernetes, so in addition to the native integrations provided by Consul itself, any other tool built for Kubernetes can leverage Consul.
+Getting Started With Consul and Kubernetes
+There are several ways to try Consul with Kubernetes in different environments.
+Tutorials
+The
+[Getting Started with Consul Service Mesh track](/consul/tutorials/get-started-kubernetes)provides guidance for installing Consul as service mesh for Kubernetes using the Helm chart, deploying services in the service mesh, and using intentions to secure service communications.The
+[Migrate to Microservices with Consul Service Mesh on Kubernetes](/consul/tutorials/microservices?utm_source=docs)collection uses an example application written by a fictional company to illustrate why and how organizations can migrate from monolith to microservices using Consul service mesh on Kubernetes. The case study in this collection should provide information valuable for understanding how to develop services that leverage Consul during any stage of your microservices journey.The
+[Consul and Minikube guide](/consul/tutorials/kubernetes/kubernetes-minikube?utm_source=docs)is a quick step-by-step guide for deploying Consul with the official Helm chart on a local instance of Minikube.Review production best practices and cloud-specific configurations for deploying Consul on managed Kubernetes runtimes.
+- The
+[Consul on Azure Kubernetes Service (AKS) tutorial](/consul/tutorials/kubernetes/kubernetes-aks-azure?utm_source=docs)is a complete step-by-step guide on how to deploy Consul on AKS. The guide also allows you to practice deploying two microservices. - The
+[Consul on Amazon Elastic Kubernetes Service (EKS) tutorial](/consul/tutorials/kubernetes/kubernetes-eks-aws?utm_source=docs)is a complete step-by-step guide on how to deploy Consul on EKS. Additionally, it provides guidance on interacting with your datacenter with the Consul UI, CLI, and API. - The
+[Consul on Google Kubernetes Engine (GKE) tutorial](/consul/tutorials/kubernetes/kubernetes-gke-google?utm_source=docs)is a complete step-by-step guide on how to deploy Consul on GKE. Additionally, it provides guidance on interacting with your datacenter with the Consul UI, CLI, and API.
+- The
+The
+[Consul and Kubernetes Reference Architecture](/consul/tutorials/kubernetes/kubernetes-reference-architecture?utm_source=docs)guide provides recommended practices for production.The
+[Consul and Kubernetes Deployment](/consul/tutorials/kubernetes/kubernetes-deployment-guide?utm_source=docs)tutorial covers the necessary steps to install and configure a new Consul cluster on Kubernetes in production.The
+[Secure Consul and Registered Services on Kubernetes](/consul/tutorials/kubernetes/kubernetes-secure-agents?utm_source=docs)tutorial covers the necessary steps to secure a Consul cluster running on Kubernetes in production.The
+[Layer 7 Observability with Consul Service Mesh](/consul/tutorials/kubernetes/kubernetes-layer7-observability)tutorial covers monitoring a Consul service mesh running on Kubernetes with Prometheus and Grafana.
+Documentation
+[Installing Consul](/consul/docs/k8s/installation/install)covers how to install Consul using the Helm chart.[Helm Chart Reference](/consul/docs/k8s/helm)describes the different options for configuring the Helm chart.
+[Edit this page on GitHub](https://github.com/hashicorp/consul/blob/main/website/content/docs/k8s/index.mdx)

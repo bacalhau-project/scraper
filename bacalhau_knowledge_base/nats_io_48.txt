@@ -1,9 +1,156 @@
-URL: https://nats.io/blog/nats-server-2.9.22-release/#delivering-stream-republished-messages-over-mqtt
+Source: nats_io
+URL: https://nats.io/contributing/#design-goals
 
-AboutDownloadDocumentationBlogCommunitySupportPrivacyNATS Server 2.9.22 ReleaseByron Ruth— September 8, 2023Back to BlogThe NATS maintainers are thrilled to announce the2.9.22 release! This brings a handful of fixes and improvements leading up to the 2.10.0 release coming later this month.We want to thank all of the people who contributed to this release through reporting issues, documentation improvements, and code contributions. As always, if you are interested in contributing, please check outall the ways you can.Before diving into 2.9.22, it is worth acknowledging that there have been three additional releases over the past three months since2.9.18. Announcement posts were not written for these releases (apologies!), so notable improvements and fixes will be rolled up into this one.The topics include:Delivering stream-republished messages over MQTTSerializing competing key-value updatesInterest propagation over leafnode connectionsClustering and stream state improvementsUpdating to Go 1.20 out-of-cyclePreparing for 2.10.0For the full list of changes, check out theGitHub releasespage.Delivering stream-republished messages over MQTTFor the uninitiated, NATSnatively supports MQTT, enabled throughminimal configuration. This makes it straightforward to drop-in NATS to replace an existing MQTT broker for clients/devices that need to use the protocol, while then taking advantage of the NATS protocol and additional capabilities.A common question that comes up is how to get messages being published to a NATS stream to MQTT clients since MQTT doesn’t have any notion of consumers. This can be achieved by configuring a stream withRePublish.For example, using the CLI, republish can be configured when a stream is created or edited later.$ nats stream add EVENTS \
-    --subjects='events.*' \
-    --republish-source='>' \
-    --republish-destination='mqtt.>'Given a message published toevents.1, once the stream receives and stores it, the server will immediately publish the message onmqtt.events.1.Any clients that are connected at the time of publish will receive the message. For MQTT clients, setting a topic subscription such asmqtt/events/+would result in receiving these republished messages.That was always the intended behavior, until it was discovered it wasnot working as expected. In 2.9.20, the fix was added to correct this behavior since this is quite a useful pattern.Relevant PRs#4303Serializing competing key-value updatesNATS key-value buckets support optimistic concurrency control for updates on a per key basis using theupdateoperation which takes the key, value, and the latest known revision for that key.As a quick example, we will create a bucket used for storing the current reading of sensors.$ nats kv add sensorsWe can perform an update on a key (thermo.1) with the initial value. The revision is0indicating the key is expected to be new (no previous revisions).$ nats kv update sensors thermo.1 'temp=5' 0
-temp=5If we attempt to do another update with a zero revision, it will be rejected since the key exists.$ nats kv update sensors thermo.1 'temp=7' 0
-nats: error: nats: wrong last sequence: 1Using the revision/sequence of1will work.$ nats kv update sensors thermo.1 'temp=7' 1
-temp=7Internally this works by clients setting theNats-Expected-Last-Subject-Sequenceheader, with the provided revision, on the message being published to the stream underlying the key-value bucket.The server will then check if the sequence matches and if it does, will accept the update, otherwise it will reject it. Since the server serializes all writes for a particular stream, there is no possibility for two concurrent updates with the same revision tobothbe accepted.Right? 🤔 Well almost.A bug was discovered in an application having multiple workers attempting to perform some task and write the output to a key. The workers were operating concurrently and independently, thus multiple workers could have picked up the same task. The intention was for whichever worker finished the task first to update the corresponding value of the key in the bucket, and the slower workers’ updates would be discarded.It turned out that this header check on the server was not pushed down into the Raft layer for replicated key-value buckets and thus, if two (or more) concurrent updates were performed on the same key, both updates could be accepted.How bad is this? It is important to note that this behavior would only be observed if the concurrent updates occurred within the window of time it takes to perform a quorum-based write. For a cluster with data-center quality networking, this could be on the order of single-digit milliseconds. However, as the latency increases, the probability for unwanted concurrent updates increases as well.Assuming this behaviorisoccurring, the second consideration for “how bad” depends on whether these concurrent updates to the same key have the same value. In the case of deterministic outputs, two concurrent updates would result in duplicate writes, but observably the same value associated with the key. This duplicate write could be observed while watching the bucket, for example.If the concurrent updatesdon’thave the same value, then the behavior essentially is last-writer-wins. If the bucket is configured to keep N historical values per key, then the first write is not lost, but would be considered an older revision. However, if the default history of 1 is used, the first update would be purged in favor of the second update.😮‍💨 If you have a replicated bucket and a use case of concurrent updates,definitelyupdate to prevent the possibility of this happening. The fix was introduced in 2.9.21.Relevant PRs#4319Interest propagation over leafnode connectionsWhen a client connection is created that subscribes to a subject, NATS automatically performssubject interest propagationacross all servers in the topology. This includes route (cluster), gateway (supercluster), and leafnode connections. This is what makes the “subscribe and publish from anywhere” possible and completely transparent for developers.While triaging flaky tests for NATS, in some cases interest was not being fully propagated across leafnode connections. The underlying issue was a race condition which resulted in missed translation ofSUBprotocol messages translated and propagated asLS+protocol messages across the leafnode connection .A second issue that was fixed involved cleaning up stale queue subscriptions across leaf connections which led to messages being sent to client connections without an active handler. As a result messages would effectively be delivered to a void.Relevant PRs#4464#4299Clustering and stream state improvementsJetStream clustering has received some particularly important bug fixes within this release, notably around the handling of streams as they change leaders and how a Raft catch-up takes place when a node has fallen behind. These kinds of scenarios can potentially be triggered during a rolling upgrade of a cluster or after unexpected interruptions.Improvements around how the catch-up timers and the log catch-up process are handled now mean that nodes should recover after downtime more smoothly. One edge-case where nodes could spin trying to catch up from a leader that can’t correctly satisfy a catch-up request has been fixed and another where the catch-up requests could be incorrectly canceled leading to the incorrect belief that an asset has been caught up when it had not, is also resolved.Various other improvements, such as those involving message block accounting, stream state and per-subject limits, have also been made, which should help reduce accounting drifts after node restarts.Relevant PRs#4249#4269#4277#4344#4357#4365#4366#4412#4413#4428#4455#4473Updating to Go 1.20 out-of-cycleHistorically, each NATS minor release series would be pinned to a Go minor series when building the binaries. For example, for the 2.8.x NATS series, the Go version used was 1.17.x. When 2.9.0 was released, the initial Go version jumped to the 1.19.x series.A new minor version of Go is released every six months and thesupport policyincludes the last two minor versions.As of August 8, 2023, Go 1.21 was released which means the 1.19.x series is no longer receiving patches, even in the case of security issues.Given this information, the server team decided to release 2.9.22 with the latest patch version of the Go 1.20. NATS 2.10.0 will then be released using Go 1.21 to get back on cycle with the latest version.Preparing for 2.10.0For critical infrastructure like NATS, zero downtime upgrades are table stakes. Although the best practice forallinfra like this is for users to thoroughly test a new release against your specific workloads, inevitably there are cases where an upgrade occurs in production followed by a decision to downgrade. This is never recommended and can cause more harm than good for most infrastructure and data systems.2.10.0 will bring on-disk storage changes as well as new configuration options for streams and consumers that are not compatible with the 2.9.x series. However, being mindful of the possibility of a blind downgrade, the 2.9.22 release bakes inawarenessof key changes that could be problematic if a downgrade occurs.The motivation for this is to make the downgrade as painless as possible in the event of a regression for your workload, as a last resort option. However, the recommendation by the NATS team is to always reach out and report these issues before resorting to a downgrade.The takeaway is that when you upgrade to 2.10.0, if a downgrade to 2.9 then occurs, it must be with the 2.9.22+ release to ensure storage format and config changes are handled appropriately.ConclusionRefer to thedownload pagefor direct links to the GitHub release page, with comprehensive release notes, and the official Docker image.If you prefer to track nightly builds on themainbranch, which follows the stable series (currently2.9.x), images are available on Docker hub:synadia/nats-server:nightly-main.As always, if you have any questions or concerns, feel free to reach out on GitHub discussions or Slack. Thanks again to all the contributors over these past four releases!About the AuthorByron Ruthis the Director of Developer Relations atSynadiaand a long-time NATS user.Back to BlogCopyright © NATS Authors 2024NATS is aCloud Native Computing Foundationincubating projectThe Linux Foundation has registered trademarks and uses trademarks.For a list of trademarks of The Linux Foundation, please seeTrademark Usage page.
+NATS Contributor Guide
+Contributing
+Do you want to contribute to NATS? Awesome! We’d love your help. To make it easier for you to contribute, we’ve provided some guidelines below to ensure that you (the contributor) know what we (the project maintainers) look for in terms of content as well as the criteria and procedures we use when reviewing your submissions.
+A Word On Governance
+NATS is governed by a small, dedicated and experienced team of maintainers. This team decides which contributions are accepted and included in releases, based largely on input and feedback from the community. In this role, our principal goal is to ensure that NATS adheres to its
+[Design Goals](#design-goals)
+while welcoming and facilitating broad contribution from the growing NATS user community.
+When discussing GitHub procedures, we’ll use the term “committers” to refer to this group.
+NATS Design Goals and Philosophy
+NATS is designed with four goals in mind:
+- Performance - achieve the highest message throughput and lowest latency possible
+- Stability - NATS is “always on.” Nothing we put in NATS should cause it to crash, and NATS should guard itself against unruly client behavior that might compromise performance or availability for all clients.
+- Simplicity - a compact, simple, and easily mastered API that requires no knowledge about the implementation of the broker (
+nats-server
+), and a broker that is lightweight, requiring minimal configuration, system resources and external dependencies. - Security - NATS supports basic security features: authentication, authorization and encryption (TLS)
+Talking to Other NATS Users and Contributors
+Venue | Description |
+---|---|
+Slack | The NATS Slack workspace is a great place to ask and answer questions about the NATS project and ecosystem and to compare notes with other users. We welcome your contribution to the discussion there, especially in sharing your experiences implementing with NATS and answering the questions of other users.
+|
+[@nats_io](https://twitter.com/nats_io))[NATS questions](https://stackoverflow.com/search?tab=newest&q=NATS.IO)and so do many other knowledgeable NATS users.[natsio](https://groups.google.com/forum/#!topic/natsio)Google group is for contributors and other people contributing to the NATS project. You can join them without a google account by sending an email to[natsio+subscribe@googlegroups.com](mailto:natsio+subscribe@googlegroups.com). After receiving the join-request message, you can simply reply to that to confirm the subscription.Contributing A Blog Post
+We’d love to highlight your NATS implementations or insights on the
+[NATS blog](/blog/)
+. If you have a submission you’d like us to consider, please contact [info@nats.io](mailto:info@nats.io). No blog experience? We’ll help!
+Here are some basic guidelines for submissions.
+- Markdown is the preferred format, although we can work with you on other formats.
+- Try to keep your submission to 3-4 paragraphs in length. Sometimes lengthy blog posts are better served as several smaller ones.
+- As context for your blog post, please share a bit about your role, and what your company/organization does before getting into your technical content.
+- Logical architecture diagrams or similar visuals are really helpful! People are visual, especially when thinking about and discussing systems architecture.
+- Sharing how you did this process before NATS, and how it works with NATS (and what the results have been) is useful to the reader. If possible, give a bit of context on where you hope to go next with your NATS deployment(s).
+The NATS website is open source; GitHub users are encouraged to fork/clone and submit their proposed blog entry as a Pull Request against [https://github.com/nats-io/nats-site/tree/main/content/blog](https://github.com/nats-io/nats-site/tree/main/content/blog) to accelerate the review cycle.
+Contributing By Testing
+We write tests for every new feature and update them for every change. We test each push and every pull request using Travis CI and other relevant CI platforms. However, there’s no such thing as too much testing! We test releases primarily on individual laptops, Docker images and Travis CI, but it’s unlikely that we hit every possible combination of environments. Please test our releases in your environment and report any issues you run into via any of the avenues described in this document (preferably GitHub Issues).
+Contributing Code
+Choosing What To Contribute
+NATS is an ambitious project with a similarly dedicated core team. Review of any proposed change can be a very time consuming task, and there will be times when our available bandwidth for PR review is limited. Therefore everyone benefits if submissions are useful, clear, easy to evaluate, and already pass basic checks.
+If you are eager to contribute, but you’re just not sure what to contribute, please check the GitHub Issues for the relevant project for open issues labeled
+[help wanted](https://github.com/issues?utf8=%E2%9C%93&q=org%3Anats-io+is%3Aopen+is%3Aissue+label%3A%22help+wanted%22)
+. You may also ask in the
+[NATS Google group](https://groups.google.com/forum/#!forum/natsio)
+or the
+[NATS Slack workspace](http://natsio.slack.com)
+. Join here if you are not a member
+[slack.nats.io](https://slack.nats.io)
+.
+Before you get started, please consider whether the proposed change is likely to be relevant, new and actionable.
+- Is it clear that code must change? In other words, has a clear problem or change been identified? As with most software projects, many issues that new users run into are rooted more in their understanding of how to use the software than in actual defects or limitations of the software.
+- Check to see if there is history behind your proposal. Search the project’s GitHub Issues and the
+[NATS Google group](https://groups.google.com/forum/#!forum/natsio)for relevant discussions. Often, the problem has been discussed before, with a resolution that doesn’t require a code change, or recording what kinds of changes will not be accepted as a resolution. If you don’t find anything in either of those places, ask in the #general channel of the[NATS Slack team](http://natsio.slack.com)to see if anyone has anything to say. - If you’re considering modifying code that is in the data path (i.e. central to message flow in the server or in the client), have you taken time to understand why the current implementation was chosen? Fixing a typo is straightforward, but the core logic and algorithms of the NATS server (
+nats-server
+) are the result of a significant amount of combined experience developing and supporting messaging solutions. That doesn’t mean they’re flawless, but please know that changes in this area will be scrutinized closely against performance and stability concerns. We suggest that If you’re uncertain why the existing code is written in a particular way, or what the impact of your proposed change(s) might be, ask questions of the NATS team via Slack or the Google group.
+Code Review Criteria
+Knowing what’s likely to be accepted or rejected and-why* is a key consideration in deciding whether and what to contribute. The criteria below are things we think about and look for in any proposed change. We have Performance, Stability, Simplicity, and Security in mind at all times.
+Simply put, changes that have many or large positives, and few negative effects or risks, are much more likely to be merged, and merged quickly. Risky and less valuable changes are very unlikely to be merged, and may be rejected outright rather than receive iterations of review.
+Pluses
+- Fixes the root cause of a bug in existing functionality
+- Adds functionality or fixes a problem needed by a large number of users
+- Simple, targeted
+- Maintains or improves consistency across supported API languages
+- Easily tested; has tests
+- Reduces complexity and lines of code
+- Change has already been discussed and is known to the committers
+Minuses
+- Non-optional new functionality that negatively affects performance
+- Band-aids a symptom of a bug only
+- Introduces complex new functionality, especially an API that needs to be supported
+- Adds complexity that only helps a niche use case
+- Adds user-space functionality that does not need to be maintained as part of NATS
+- Changes a public API or semantics (rarely allowed)
+- Adds large dependencies
+- Changes versions of existing dependencies
+- Adds a large amount of code
+- Is not modular/targeted – makes lots of modifications in one “big bang” change
+- Breaks existing tests (implying your change is not backwards compatible)
+- Code coverage decreases (implying you didn’t add sufficient tests for new/changed code)
+Contributing Code Changes and Proposing New Features
+Please review the preceding section before proposing a code change. This section documents how to do so.
+GitHub Issues
+GitHub Issues are used to describe what should be fixed or changed, and high-level approaches, while Pull Requests describe how to implement that change in the project’s source code.
+For swift consideration, we suggest that you search to see if someone has already submitted this (or a closely related) issue. Is your issue truly unique? Has it already been discussed and rejected? Is there an open issue that would cover yours with only a minor refinement?
+Defect Reports
+If you have a unique issue, please be as descriptive as possible:
+- Use a short, descriptive title that gives a clue what the Issue is about
+- Describe (if applicable) the environment you’re running on (OS, hardware, VM, Docker, etc)
+- Describe what version (if applicable) of
+nats-server
+or relevant client libraries you’re using - Give a detailed description of the problem and why you view it as a problem.
+- Whenever possible,-please* include a
+[Minimal, Complete, and Verifiable example](http://stackoverflow.com/help/mcve) - If relevant, include or attach screenshots
+- If relevant, include log output of
+nats-server
+(obtained by runningnats-server <other options> -DV
+. Trimming the log output to the relevant time period is always appreciated. - If you have a unique issue you deem may include a vulnerability that would affect a broad user base in a highly negative or impactful way, you may log such issues privately to the NATS team via email
+[info@nats.io](mailto:info@nats.io), private direct message on[NATS Slack](https://natsio.slack.com)or private direct message on[NATS Twitter](https://twitter.com/nats_io).
+Change Proposals and Feature Requests
+When submitting a new Issue for a change proposal or feature request, tell us-why* the change is necessary. State the use case (e.g. “As a _________, I need to __________") *without* assuming any particular implementation. Stating only that “NATS should… (do some new technical thing)” is about as useful as stating that your car should be a tractor :) Help us understand the real problem you’re trying to solve, in terms of the problem itself.
+Pull Requests
+Please ensure that your Pull Request references an existing GitHub Issue that describes the defect or requirement that is addressed by the Pull Request. If a relevant Issue doesn’t exist, please create one.
+We follow standard GitHub procedures for creating and processing pull requests.
+[Fork](https://help.github.com/articles/fork-a-repo/)the relevant Github repository, e.g.http://github.com/nats-io/nats-server
+if you haven’t already.- Clone your fork, create a new branch, push commits to the branch.
+- Consider whether documentation or tests need to be added or updated as part of the change, and add them as needed.
+- Run all tests to verify that the code still compiles, passes tests, and passes style checks. If style checks fail, review the relevant Code Style Guide in the project you’re working in. It’s also advisable to ensure that any checks found in
+.travis.yml
+run successfully on your local system, when possible. These often include code formatting and static analysis checks that may cause CI tests to fail. - Open a pull request against the
+main
+branch of the relevant project (e.g.nats-io/nats-server
+). (Only in special cases would the PR be opened against other branches.)- The PR title should be of the form
+[ADDED | FIXED | CHANGED | UPDATED] <description>
+ADDED
+- a new feature or content was addedFIXED
+- a defect in existing behavior was resolvedCHANGED
+- existing non-broken behavior was changedUPDATED
+- new behavior was added to an existing behavior (could also be consideredCHANGED
+, but please think about which tag you use)
+- If the pull request is still a work in progress, and so is not ready to be merged, but needs to be pushed to GitHub to facilitate review, then prepend
+[WIP]
+to the PR title, and if needed ping (/cc @user
+) the relevant reviewer(s) for advice, or contact them via Slack. - Consider identifying committers or other contributors who have worked on the code being changed. Find the file(s) in Github and click “Blame” to see a line-by-line annotation of who changed the code last. You can add @username in the PR description to ping them immediately.
+- Please state that the contribution is your original work and that you license the work to the project under the project’s open source license.
+- The PR title should be of the form
+- Travis CI will automatically build and test your changes. This should be a relatively quick process, and will report any errors as well as code coverage changes within a few minutes.
+- Watch for the results, and investigate and fix failures promptly. PRs with failing tests will not be reviewed or accepted.
+- Fixes can simply be pushed to the same branch from which you opened your pull request
+- Travis CI will automatically re-test when new commits are pushed
+- If the tests failed for reasons unrelated to the change (e.g. timing issues in Travis), the test can usually be re-run in Travis. Ask a committer if you need a test restarted, or if there are any other test failures that you believe are not related to your change(s).
+- Sometimes, other changes will be merged which conflict with your pull request’s changes. The PR can’t be merged until the conflict is resolved. This can typically be resolved with
+git pull --rebase origin main
+and resolving the conflicts by hand, then pushing the result to your branch. - Try to be responsive to the discussion rather than let days pass between replies.
+- Squash your changes to a single commit as described
+[here](http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html). - Remember to remove
+[WIP]
+from your PR title once it is ready for submission, otherwise it will be ignored.
+Review Process
+- The review process will begin only when all CI tests are green.
+- Other reviewers, including committers, may comment on the changes and suggest modifications. Changes can be added by simply pushing more commits to the same branch.
+- Lively, polite, rapid technical debate is encouraged from everyone in the community. The outcome may be a rejection of the entire change.
+- Reviewers can indicate that a change looks suitable for merging with a comment such as: “I think this patch/pull/change looks good”, or, more succinctly, “LGTM” (looks good to me).
+- Generally we require LGTMs by at least two committers in order to approve a change for merge. There may be cases where this varies depending on size/scope/complexity of the change.
+- Sometimes, other changes will be merged which conflict with your pull request’s changes. The PR can’t be merged until the conflict is resolved. This can typically be resolved with
+git pull --rebase origin main
+and resolving the conflicts by hand, then pushing the result to your branch.
+Closing Your Pull Request
+- If accepted, your pull request will be automatically closed once the change is merged into
+main
+- If your pull request is rejected, the committers will close your PR.
+- If committers have requested changes or further information from you, and you do not respond within a reasonable timeframe, your PR may be closed at our discretion.
+Code Style Guide
+NATS follows widely-adopted standards for code formatting and style in each implementation language. Please refer to the CONTRIBUTING.md
+in individual NATS projects for specifics that apply to each.
+Acknowledgements
+“If I have seen further, it is by standing on the shoulders of giants” — Sir Isaac Newton
+In preparing this guide, we gratefully borrowed ideas and words from the contribution guidelines of other popular open-source projects such as Apache Spark, Redis, and Docker. We thank them for inspiring us.

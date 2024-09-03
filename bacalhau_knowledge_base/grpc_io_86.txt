@@ -1,3 +1,66 @@
-URL: https://grpc.io/docs/platforms/android/kotlin/
+Source: grpc_io
+URL: https://grpc.io/docs/languages/python/api/
 
-gRPCAboutMeetDocsGuidesShowcaseBlogCommunitygRPConf 2024 is happening NEXT WEEK onAug. 27th!-Register nowand get 25% off with the code GOOGLE25.DocsWhat is gRPC?IntroductionCore conceptsFAQLanguagesC# / .NETAPI (legacy)Daily builds (legacy)C++Quick startBasics tutorialAsync-API tutorialAsynchronous Callback API TutorialBest Practices for gRPC C++ API and FAQALTSAPIDartQuick startBasics tutorialAPIGoQuick startBasics tutorialALTSAPIGenerated codeJavaQuick startBasics tutorialALTSAPIGenerated codeKotlinQuick startBasics tutorialAPINodeQuick startBasics tutorialAPIObjective-CQuick startBasics tutorialOAuth2APIPHPQuick startBasics tutorialAPIDaily buildsPythonQuick startBasics tutorialALTSGenerated codeAPIDaily buildsRubyQuick startBasics tutorialAPIDaily buildsPlatformsAndroidJavaQuick startBasics tutorialAPIKotlinQuick startAPIWebQuick startBasics tutorialGuidesAuthenticationBenchmarkingCancellationCompressionCustom Backend MetricsCustom Load Balancing PoliciesCustom Name ResolutionDeadlinesDebuggingError handlingFlow ControlHealth CheckingInterceptorsKeepaliveMetadataOpenTelemetry MetricsPerformance Best PracticesReflectionRequest HedgingRetryService ConfigStatus CodesWait-for-ReadyView page sourceEdit this pageCreate child pageCreate documentation issueCreate project issueDocsPlatformsAndroidKotlinKotlin for AndroidQuick startThis guide gets you started with Kotlin gRPC on Android with a simple working example.API referenceLast modified August 11, 2021:Replace use of short_title with linkTitle in page front matter (#821) (78a4d99)View page sourceEdit this pageCreate child pageCreate documentation issueCreate project issue© 2024 gRPC AuthorsTerms|Privacy|Trademarks|License|About
+Welcome to gRPC Python’s documentation![¶](#welcome-to-grpc-python-s-documentation)
+Version: 1.66.0 Release: 1.66.0
+API Reference[¶](#api-reference)
+Contents:
+[gRPC](grpc.html)[Module Contents](grpc.html#module-contents)[Version](grpc.html#version)[Create Client](grpc.html#create-client)[Create Client Credentials](grpc.html#create-client-credentials)[Create Server](grpc.html#create-server)[Create Server Credentials](grpc.html#create-server-credentials)[Local Connection Type](grpc.html#local-connection-type)[RPC Method Handlers](grpc.html#rpc-method-handlers)[Channel Ready Future](grpc.html#channel-ready-future)[Channel Connectivity](grpc.html#channel-connectivity)[gRPC Status Code](grpc.html#grpc-status-code)StatusCode
+StatusCode.OK
+StatusCode.CANCELLED
+StatusCode.UNKNOWN
+StatusCode.INVALID_ARGUMENT
+StatusCode.DEADLINE_EXCEEDED
+StatusCode.NOT_FOUND
+StatusCode.ALREADY_EXISTS
+StatusCode.PERMISSION_DENIED
+StatusCode.UNAUTHENTICATED
+StatusCode.RESOURCE_EXHAUSTED
+StatusCode.FAILED_PRECONDITION
+StatusCode.ABORTED
+StatusCode.UNIMPLEMENTED
+StatusCode.INTERNAL
+StatusCode.UNAVAILABLE
+StatusCode.DATA_LOSS
+[Channel Object](grpc.html#channel-object)[Server Object](grpc.html#server-object)[Authentication & Authorization Objects](grpc.html#authentication-authorization-objects)[gRPC Exceptions](grpc.html#grpc-exceptions)[RPC Context](grpc.html#rpc-context)[Client-Side Context](grpc.html#client-side-context)[Client-Side Interceptor](grpc.html#client-side-interceptor)[Service-Side Context](grpc.html#service-side-context)ServicerContext
+ServicerContext.abort()
+ServicerContext.abort_with_status()
+ServicerContext.auth_context()
+ServicerContext.code()
+ServicerContext.details()
+ServicerContext.disable_next_message_compression()
+ServicerContext.invocation_metadata()
+ServicerContext.peer()
+ServicerContext.peer_identities()
+ServicerContext.peer_identity_key()
+ServicerContext.send_initial_metadata()
+ServicerContext.set_code()
+ServicerContext.set_compression()
+ServicerContext.set_details()
+ServicerContext.set_trailing_metadata()
+ServicerContext.trailing_metadata()
+[Service-Side Handler](grpc.html#service-side-handler)[Service-Side Interceptor](grpc.html#service-side-interceptor)[Multi-Callable Interfaces](grpc.html#multi-callable-interfaces)[Future Interfaces](grpc.html#future-interfaces)[Compression](grpc.html#compression)[Runtime Protobuf Parsing](grpc.html#runtime-protobuf-parsing)
+[gRPC AsyncIO API](grpc_asyncio.html)[Overview](grpc_asyncio.html#overview)[Caveats](grpc_asyncio.html#caveats)[Blocking Code in AsyncIO](grpc_asyncio.html#blocking-code-in-asyncio)[Module Contents](grpc_asyncio.html#module-contents)[Create Channel](grpc_asyncio.html#create-channel)[Channel Object](grpc_asyncio.html#channel-object)[Create Server](grpc_asyncio.html#create-server)[Server Object](grpc_asyncio.html#server-object)[gRPC Exceptions](grpc_asyncio.html#grpc-exceptions)[gRPC Metadata](grpc_asyncio.html#grpc-metadata)[RPC Context](grpc_asyncio.html#rpc-context)[Client-Side Context](grpc_asyncio.html#client-side-context)[Server-Side Context](grpc_asyncio.html#server-side-context)ServicerContext
+ServicerContext.abort()
+ServicerContext.add_done_callback()
+ServicerContext.auth_context()
+ServicerContext.cancelled()
+ServicerContext.code()
+ServicerContext.details()
+ServicerContext.disable_next_message_compression()
+ServicerContext.done()
+ServicerContext.invocation_metadata()
+ServicerContext.peer()
+ServicerContext.peer_identities()
+ServicerContext.peer_identity_key()
+ServicerContext.read()
+ServicerContext.send_initial_metadata()
+ServicerContext.set_code()
+ServicerContext.set_compression()
+ServicerContext.set_details()
+ServicerContext.set_trailing_metadata()
+ServicerContext.time_remaining()
+ServicerContext.trailing_metadata()
+ServicerContext.write()
+[Client-Side Interceptor](grpc_asyncio.html#client-side-interceptor)[Server-Side Interceptor](grpc_asyncio.html#server-side-interceptor)[Multi-Callable Interfaces](grpc_asyncio.html#multi-callable-interfaces)
+[gRPC Admin](grpc_admin.html)[gRPC Channelz](grpc_channelz.html)[gRPC CSDS](grpc_csds.html)[gRPC Health Checking](grpc_health_checking.html)[gRPC Reflection](grpc_reflection.html)[gRPC Status](grpc_status.html)[gRPC Testing](grpc_testing.html)[gRPC Python Observability](grpc_observability.html)[Glossary](glossary.html)

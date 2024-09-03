@@ -1,3 +1,5 @@
-URL: https://zookeeper.apache.org/irc.html
+Source: zookeeper_apache
+URL: https://zookeeper.apache.org/git.html
 
-Apache ZooKeeper™ProjectNewsReleasesWikiCreditsBylawsLicensePrivacy PolicySecurityThanksDocumentationRelease 3.9.2Release 3.8.4Release 3.7.2Release 3.6.4Older VersionsDevelopersMailing ListsIRC ChannelVersion ControlIssue TrackerEventsASFApache Software FoundationHow Apache WorksSponsoring ApacheZooKeeper IRC ChannelThere is an IRC channel dedicated to zookeeper at irc.freenode.org. The name of the channel is #zookeeper.The IRC channel can be used for online discussion about zookeeper related stuff, but developers should be careful to transfer all the official decisions or useful discussions to the issue tracking system.Copyright © 2010-2020The Apache Software Foundation, Licensed under theApache License, Version 2.0.Apache ZooKeeper, ZooKeeper, Apache, the Apache feather logo, and the Apache ZooKeeper project logo are trademarks of The Apache Software Foundation.
+The ZooKeeper source code resides in the Apache Git repository: https://gitbox.apache.org/repos/asf/zookeeper.git All commits and releases are done on this repository.
+There is also a github mirror at: https://github.com/apache/zookeeper

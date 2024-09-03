@@ -1,3 +1,43 @@
-URL: https://expanso.io/events
+Source: expanso_io
+URL: https://expanso.io/support/
 
-Skip to contentWhy Expanso?Why Choose Expanso?Security and GovernanceProductBacalhauFeaturesSolutionsUse CasesDistributed Data WarehouseLog ProcessingEdge Machine LearningDistributed Fleet ManagementResourcesDocumentationGitHubBacalhau BlogEventsFAQsHelp CenterCompanyWhat We ValueWho We AreCareersNewsroomContactGitHubInstall FreeMenuWhy Expanso?Why Choose Expanso?Security and GovernanceProductBacalhauFeaturesSolutionsUse CasesDistributed Data WarehouseLog ProcessingEdge Machine LearningDistributed Fleet ManagementResourcesDocumentationGitHubBacalhau BlogEventsFAQsHelp CenterCompanyWhat We ValueWho We AreCareersNewsroomContactGitHubInstall FreeInstall FreeEventsHighlightedBacalhau Office HourJoin us for a Bacalhau Office Hour! This is a unique opportunity to engage with our team, gain insights into what’s brewing, and discuss innovative solutions that are shaping the future. Whether you’re a tech enthusiast, a professional in the industry, or just curious about the future of technology, thisRead MoreBacalhau Office HourJoin us for a Bacalhau Office Hour! This is a unique opportunity to engage with our team, gain insights into what’s brewing, and discuss innovative solutions that are shaping the future. Whether you’re a tech enthusiast, a professional in the industry, or just curious about the future of technology, thisRead MoreLoading view.There are no upcoming events.There are no upcoming events.Events Search and Views NavigationSearchEnter Keyword. Search for Events by Keyword.Find EventsEvent Views NavigationListListMonthDayTodayUpcomingUpcomingSelect date.FiltersChanging any of the form inputs will cause the list of events to refresh with the filtered results.DoneClearEvent Category:Open filterClose filterEvent CategoryFeatured Events:Open filterClose filterFeatured EventsShow featured events onlyTags:Open filterClose filterTagsDay:Open filterClose filterDayMondayTuesdayWednesdayThursdayFridaySaturdaySundayTime:Open filterClose filterTimeAll DayMorningAfternoonEveningNightEvent Status:Open filterClose filterEvent StatusHide canceled eventsHide postponed eventsThere are no upcoming events.Upcoming events are listed 3 months in advance. Subscribe to our blog to stay up to date on the latest events.Latest Past EventsDec122023December 12, 2023 @ 4:30 pm-5:30 pmBacalhau Office HourJoin us for a Bacalhau Office Hour! This is a unique opportunity to engage with our team, gain insights into what's brewing, and discuss innovative solutions that are shaping the future. Whether you're a tech enthusiast, a professional in the industry, or just curious about the future of technology, this session is for you! If...Dec122023December 12, 2023 @ 4:30 pm-5:30 pmBacalhau Office HourJoin us for a Bacalhau Office Hour! This is a unique opportunity to engage with our team, gain insights into what's brewing, and discuss innovative solutions that are shaping the future. Whether you're a tech enthusiast, a professional in the industry, or just curious about the future of technology, this session is for you! If...Dec122023December 12, 2023 @ 4:30 pm-5:30 pmBacalhau Office HourJoin us for a Bacalhau Office Hour! This is a unique opportunity to engage with our team, gain insights into what's brewing, and discuss innovative solutions that are shaping the future. Whether you're a tech enthusiast, a professional in the industry, or just curious about the future of technology, this session is for you! If...Stay up to date and sign up to our blog:Visit BlogThe Compute Over Data PlatformCompanyHomeWhat We ValueWho We AreNewsroomContact UsCareersResourcesDocumentationFAQBlogSupportSocialLinkedInYouTubeSlackX ExpansoX BacalhauGitHub© Expanso Inc. All Rights Reserved 2023Privacy PolicyTrademarksTerms & ConditionsPrivacy PolicyTrademarksTerms & Conditions
+[
+Why Expanso ](/why-expanso/)
+Read about how your business can benefit by choosing Expanso.
+[
+FAQ ](/faq/)
+Get answers to the most frequently asked questions.
+[
+Bacalhau Project ](/bacalhau/)
+Explore the open source Bacalhau Project.
+[
+Community ](https://bacalhauproject.slack.com/)
+Discuss, share and network with users and experts.
+[
+Events ](/events/)
+Get up to speed by joining our office hours, webinars, workshops and other events.
+[
+GET HELP ](/contact)
+Can’t find the answer you’re looking for? Let our support team help.
+What’s new at Expanso.
+![VentureBeat Logo](https://expanso.io/wp-content/uploads/2023/12/Newsroom-Preview-Pic-Website-2.avif)
+[
+VentureBeat: The end of centralized data? Samsung teams with Expanso on distributed processing ](https://expanso.io/newsroom/venturebeat-samsung-next-teams-with-expanso/)
+May 17, 2024
+Read the Article on
+[Read More](https://expanso.io/newsroom/venturebeat-samsung-next-teams-with-expanso/)
+![](https://expanso.io/wp-content/uploads/2024/05/no-background-newsroom-samsung.avif)
+[
+Why we invested in Expanso, a distributed compute platform that reduces latency and enhances data governance capabilities ](https://expanso.io/newsroom/why-samsung-next-invested-in-expanso-a-distributed-compute-platform/)
+May 17, 2024
+Read the article on
+[Read More](https://expanso.io/newsroom/why-samsung-next-invested-in-expanso-a-distributed-compute-platform/)
+![Expanso](https://expanso.io/wp-content/uploads/2023/11/Logo.jpg)
+Enterprise support.
+Expanso offers a number of plans that provide you with verified binaries, commercial licenses, and dedicated and timely support for the Bacalhau Platform.
+Getting started.
+Explore our blog series on how to get started with Bacalhau.
+Create a more robust business today
+Ready to get started?
+Ready to get started?
+General questions? [Contact us](/contact) or check the [community](https://bacalhauproject.slack.com/).

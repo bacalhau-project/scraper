@@ -1,3 +1,19 @@
-URL: https://www.consul.io/use-cases/api-gateway
+Source: consul_io
+URL: https://www.consul.io/use-cases/load-balancing
 
-HashiDaysGet certified in HashiCorp products for free at HashiDays 2024Register nowDismiss alertOverviewUse CasesEnterpriseTutorialsDocsAPICLICommunityGitHubDownloadTry HCP ConsulUse caseControl access with Consul API GatewayThe API gateway enables external network clients to access applications and services running in a Consul service mesh.ChallengeConsistently control access to service meshAs use of Consul's service mesh continues to grow, customers are looking for a single control plane to manage both service-to-service traffic (east/west) and inbound requests from external clients (north/south). Consul does offer integrations with many third-party API gateway products, but some customers may prefer a single solution that is directly integrated into their service mesh.SolutionConsul API Gateway to control access to servicesThe Consul API Gateway detects inbound requests to mesh-based applications, presents those clients with a verifiable certificate from a trusted authority, and facilitates the necessary secure connections to fulfill the requests. By combining the Consul API Gateway with Consul's service mesh, users gain a single control plane that makes it easier to consistently manage both east-west and north-south traffic.TutorialsExplore allTutorialControl service mesh access with Consul API Gateway on KubernetesIn this tutorial, you will go through the steps to install Consul, the Consul API Gateway, and an example application in a Kubernetes environment.TutorialControl service mesh access with Consul API Gateway on VMsThis tutorial uses HashiCups, a demo coffee shop application made up of several microservices running on VMs.Get started with HCP ConsulWe’ve built a series of step-by-step guides to help you deploy HCP Consul and try it for yourself.Try HCP Consul for freePlay videoIntroduction to HashiCorp ConsulHashiCorp Co-Founder and CTO Armon Dadgar gives a whiteboard overview of HashiCorp Consul, a service networking solution to connect, configure, and secure services in dynamic infrastructure.IntroGuidesDocsCommunityPrivacySecurityConsent ManagerManage cookiesHashiCorp uses data collected by cookies and JavaScript libraries to improve your browsing experience, analyze site traffic, and increase the overall performance of our site. By using our website, you’re agreeing to ourPrivacy PolicyandCookie Policy.The categories below outline which companies and tools we use for collecting data. To opt out of a category of data collection, set the toggle to “Off” and save your preferences.Save preferencesAccept all
+Tutorial
+Load balancing services in Consul service mesh with Envoy
+This tutorial will guide you through the steps needed to change the load balancing policy for a service in your mesh.
+Use case
+Consul can help bypass manual processes by automating load balancer updates to reflect the latest changes to your services.
+Challenge
+In a modern environment where multiple replicas of a service exist, load balancers play an important role in ensuring the equal distribution of traffic to backend services. However, as services scale or change over time, load balancers require updates that are typically performed via manual processes which can affect the delivery time of a solution.
+Solution
+Consul helps load balancers automatically adapt to changes in services. Consul has a built-in load balancing feature that allows services to communicate directly with one another. Consul also integrates with many popular load balancers such as NGINX, HAProxy, and F5 to automatically provide service updates, eliminating the need for manual processes.
+Tutorial
+This tutorial will guide you through the steps needed to change the load balancing policy for a service in your mesh.
+Tutorial
+Learn how to use HAProxy's native integration to automatically configure the load balancer with service discovery data from Consul.
+Tutorial
+Use Consul to configure F5 BIG-IP nodes and server pools based on the available service instances registered in Consul's service catalog.
+HashiCorp Co-Founder and CTO Armon Dadgar gives a whiteboard overview of HashiCorp Consul, a service networking solution to connect, configure, and secure services in dynamic infrastructure.

@@ -1,3 +1,9 @@
+Source: apache_kafka
 URL: https://kafka.apache.org/quickstart
 
-Apache KafkaToggle navigationGet StartedIntroductionQuickstartUse CasesBooks & PapersVideosPodcastsDocsKey ConceptsAPIsConfigurationDesignImplementationOperationsSecurityClientsKafka ConnectKafka StreamsPowered ByCommunityBlogKafka SummitProject InfoTrademarkEcosystemEventsContact usApacheLicenseDonateSponsorsSecurityPrivacyApache.orgDownload KafkaApache Kafka QuickstartEverything you need to know about Kafka in 10 minutes(clicking the image will load a video from YouTube)The contents of this website are © 2024Apache Software Foundationunder the terms of theApache License v2.Apache Kafka, Kafka, and the Kafka logo are either registered trademarks or trademarks of The Apache Software Foundationin the United States and other countries.Security|Donate|Thanks|Events|License|Privacy
+Apache Kafka Quickstart
+Everything you need to know about Kafka in 10 minutes
+(clicking the image will load a video from YouTube)
+![](images/what_is_kafka.png)
+Everything you need to know about Kafka in 10 minutes
+(clicking the image will load a video from YouTube)

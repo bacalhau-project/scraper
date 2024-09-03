@@ -1,97 +1,169 @@
-URL: https://kubernetes.io/docs/concepts/architecture/nodes/
+Source: kubernetes_io
+URL: https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-config-file/
 
-DocumentationKubernetes BlogTrainingPartnersCommunityCase StudiesVersionsRelease Informationv1.31v1.30v1.29v1.28v1.27English中文 (Chinese)Français (French)Deutsch (German)Bahasa Indonesia (Indonesian)日本語 (Japanese)한국어 (Korean)Português (Portuguese)Русский (Russian)Español (Spanish)DocumentationAvailable Documentation VersionsGetting startedLearning environmentProduction environmentContainer RuntimesInstalling Kubernetes with deployment toolsBootstrapping clusters with kubeadmInstalling kubeadmTroubleshooting kubeadmCreating a cluster with kubeadmCustomizing components with the kubeadm APIOptions for Highly Available TopologyCreating Highly Available Clusters with kubeadmSet up a High Availability etcd Cluster with kubeadmConfiguring each kubelet in your cluster using kubeadmDual-stack support with kubeadmTurnkey Cloud SolutionsBest practicesConsiderations for large clustersRunning in multiple zonesValidate node setupEnforcing Pod Security StandardsPKI certificates and requirementsConceptsOverviewKubernetes ComponentsObjects In KubernetesKubernetes Object ManagementObject Names and IDsLabels and SelectorsNamespacesAnnotationsField SelectorsFinalizersOwners and DependentsRecommended LabelsThe Kubernetes APICluster ArchitectureNodesCommunication between Nodes and the Control PlaneControllersLeasesCloud Controller ManagerAbout cgroup v2Container Runtime Interface (CRI)Garbage CollectionMixed Version ProxyContainersImagesContainer EnvironmentRuntime ClassContainer Lifecycle HooksWorkloadsPodsPod LifecycleInit ContainersSidecar ContainersEphemeral ContainersDisruptionsPod Quality of Service ClassesUser NamespacesDownward APIWorkload ManagementDeploymentsReplicaSetStatefulSetsDaemonSetJobsAutomatic Cleanup for Finished JobsCronJobReplicationControllerAutoscaling WorkloadsManaging WorkloadsServices, Load Balancing, and NetworkingServiceIngressIngress ControllersGateway APIEndpointSlicesNetwork PoliciesDNS for Services and PodsIPv4/IPv6 dual-stackTopology Aware RoutingNetworking on WindowsService ClusterIP allocationService Internal Traffic PolicyStorageVolumesPersistent VolumesProjected VolumesEphemeral VolumesStorage ClassesVolume Attributes ClassesDynamic Volume ProvisioningVolume SnapshotsVolume Snapshot ClassesCSI Volume CloningStorage CapacityNode-specific Volume LimitsVolume Health MonitoringWindows StorageConfigurationConfiguration Best PracticesConfigMapsSecretsLiveness, Readiness, and Startup ProbesResource Management for Pods and ContainersOrganizing Cluster Access Using kubeconfig FilesResource Management for Windows nodesSecurityCloud Native SecurityPod Security StandardsPod Security AdmissionService AccountsPod Security PoliciesSecurity For Windows NodesControlling Access to the Kubernetes APIRole Based Access Control Good PracticesGood practices for Kubernetes SecretsMulti-tenancyHardening Guide - Authentication MechanismsKubernetes API Server Bypass RisksLinux kernel security constraints for Pods and containersSecurity ChecklistPoliciesLimit RangesResource QuotasProcess ID Limits And ReservationsNode Resource ManagersScheduling, Preemption and EvictionKubernetes SchedulerAssigning Pods to NodesPod OverheadPod Scheduling ReadinessPod Topology Spread ConstraintsTaints and TolerationsScheduling FrameworkDynamic Resource AllocationScheduler Performance TuningResource Bin PackingPod Priority and PreemptionNode-pressure EvictionAPI-initiated EvictionCluster AdministrationNode ShutdownsCertificatesCluster NetworkingLogging ArchitectureMetrics For Kubernetes System ComponentsMetrics for Kubernetes Object StatesSystem LogsTraces For Kubernetes System ComponentsProxies in KubernetesAPI Priority and FairnessCluster AutoscalingInstalling AddonsCoordinated Leader ElectionWindows in KubernetesWindows containers in KubernetesGuide for Running Windows Containers in KubernetesExtending KubernetesCompute, Storage, and Networking ExtensionsNetwork PluginsDevice PluginsExtending the Kubernetes APICustom ResourcesKubernetes API Aggregation LayerOperator patternTasksInstall ToolsInstall and Set Up kubectl on LinuxInstall and Set Up kubectl on macOSInstall and Set Up kubectl on WindowsAdminister a ClusterAdministration with kubeadmCertificate Management with kubeadmConfiguring a cgroup driverReconfiguring a kubeadm clusterUpgrading kubeadm clustersUpgrading Linux nodesUpgrading Windows nodesChanging The Kubernetes Package RepositoryMigrating from dockershimChanging the Container Runtime on a Node from Docker Engine to containerdMigrate Docker Engine nodes from dockershim to cri-dockerdFind Out What Container Runtime is Used on a NodeTroubleshooting CNI plugin-related errorsCheck whether dockershim removal affects youMigrating telemetry and security agents from dockershimGenerate Certificates ManuallyManage Memory, CPU, and API ResourcesConfigure Default Memory Requests and Limits for a NamespaceConfigure Default CPU Requests and Limits for a NamespaceConfigure Minimum and Maximum Memory Constraints for a NamespaceConfigure Minimum and Maximum CPU Constraints for a NamespaceConfigure Memory and CPU Quotas for a NamespaceConfigure a Pod Quota for a NamespaceInstall a Network Policy ProviderUse Antrea for NetworkPolicyUse Calico for NetworkPolicyUse Cilium for NetworkPolicyUse Kube-router for NetworkPolicyRomana for NetworkPolicyWeave Net for NetworkPolicyAccess Clusters Using the Kubernetes APIAdvertise Extended Resources for a NodeAutoscale the DNS Service in a ClusterChange the Access Mode of a PersistentVolume to ReadWriteOncePodChange the default StorageClassSwitching from Polling to CRI Event-based Updates to Container StatusChange the Reclaim Policy of a PersistentVolumeCloud Controller Manager AdministrationConfigure a kubelet image credential providerConfigure Quotas for API ObjectsControl CPU Management Policies on the NodeControl Topology Management Policies on a nodeCustomizing DNS ServiceDebugging DNS ResolutionDeclare Network PolicyDeveloping Cloud Controller ManagerEnable Or Disable A Kubernetes APIEncrypting Confidential Data at RestDecrypt Confidential Data that is Already Encrypted at RestGuaranteed Scheduling For Critical Add-On PodsIP Masquerade Agent User GuideLimit Storage ConsumptionMigrate Replicated Control Plane To Use Cloud Controller ManagerNamespaces WalkthroughOperating etcd clusters for KubernetesReserve Compute Resources for System DaemonsRunning Kubernetes Node Components as a Non-root UserSafely Drain a NodeSecuring a ClusterSet Kubelet Parameters Via A Configuration FileShare a Cluster with NamespacesUpgrade A ClusterUse Cascading Deletion in a ClusterUsing a KMS provider for data encryptionUsing CoreDNS for Service DiscoveryUsing NodeLocal DNSCache in Kubernetes ClustersUsing sysctls in a Kubernetes ClusterUtilizing the NUMA-aware Memory ManagerVerify Signed Kubernetes ArtifactsConfigure Pods and ContainersAssign Memory Resources to Containers and PodsAssign CPU Resources to Containers and PodsConfigure GMSA for Windows Pods and containersResize CPU and Memory Resources assigned to ContainersConfigure RunAsUserName for Windows pods and containersCreate a Windows HostProcess PodConfigure Quality of Service for PodsAssign Extended Resources to a ContainerConfigure a Pod to Use a Volume for StorageConfigure a Pod to Use a PersistentVolume for StorageConfigure a Pod to Use a Projected Volume for StorageConfigure a Security Context for a Pod or ContainerConfigure Service Accounts for PodsPull an Image from a Private RegistryConfigure Liveness, Readiness and Startup ProbesAssign Pods to NodesAssign Pods to Nodes using Node AffinityConfigure Pod InitializationAttach Handlers to Container Lifecycle EventsConfigure a Pod to Use a ConfigMapShare Process Namespace between Containers in a PodUse a User Namespace With a PodUse an Image Volume With a PodCreate static PodsTranslate a Docker Compose File to Kubernetes ResourcesEnforce Pod Security Standards by Configuring the Built-in Admission ControllerEnforce Pod Security Standards with Namespace LabelsMigrate from PodSecurityPolicy to the Built-In PodSecurity Admission ControllerMonitoring, Logging, and DebuggingTroubleshooting ApplicationsDebug PodsDebug ServicesDebug a StatefulSetDetermine the Reason for Pod FailureDebug Init ContainersDebug Running PodsGet a Shell to a Running ContainerTroubleshooting ClustersTroubleshooting kubectlResource metrics pipelineTools for Monitoring ResourcesMonitor Node HealthDebugging Kubernetes nodes with crictlAuditingDebugging Kubernetes Nodes With KubectlDeveloping and debugging services locally using telepresenceWindows debugging tipsManage Kubernetes ObjectsDeclarative Management of Kubernetes Objects Using Configuration FilesDeclarative Management of Kubernetes Objects Using KustomizeManaging Kubernetes Objects Using Imperative CommandsImperative Management of Kubernetes Objects Using Configuration FilesUpdate API Objects in Place Using kubectl patchMigrate Kubernetes Objects Using Storage Version MigrationManaging SecretsManaging Secrets using kubectlManaging Secrets using Configuration FileManaging Secrets using KustomizeInject Data Into ApplicationsDefine a Command and Arguments for a ContainerDefine Dependent Environment VariablesDefine Environment Variables for a ContainerExpose Pod Information to Containers Through Environment VariablesExpose Pod Information to Containers Through FilesDistribute Credentials Securely Using SecretsRun ApplicationsRun a Stateless Application Using a DeploymentRun a Single-Instance Stateful ApplicationRun a Replicated Stateful ApplicationScale a StatefulSetDelete a StatefulSetForce Delete StatefulSet PodsHorizontal Pod AutoscalingHorizontalPodAutoscaler WalkthroughSpecifying a Disruption Budget for your ApplicationAccessing the Kubernetes API from a PodRun JobsRunning Automated Tasks with a CronJobCoarse Parallel Processing Using a Work QueueFine Parallel Processing Using a Work QueueIndexed Job for Parallel Processing with Static Work AssignmentJob with Pod-to-Pod CommunicationParallel Processing using ExpansionsHandling retriable and non-retriable pod failures with Pod failure policyAccess Applications in a ClusterDeploy and Access the Kubernetes DashboardAccessing ClustersConfigure Access to Multiple ClustersUse Port Forwarding to Access Applications in a ClusterUse a Service to Access an Application in a ClusterConnect a Frontend to a Backend Using ServicesCreate an External Load BalancerList All Container Images Running in a ClusterSet up Ingress on Minikube with the NGINX Ingress ControllerCommunicate Between Containers in the Same Pod Using a Shared VolumeConfigure DNS for a ClusterAccess Services Running on ClustersExtend KubernetesConfigure the Aggregation LayerUse Custom ResourcesExtend the Kubernetes API with CustomResourceDefinitionsVersions in CustomResourceDefinitionsSet up an Extension API ServerConfigure Multiple SchedulersUse an HTTP Proxy to Access the Kubernetes APIUse a SOCKS5 Proxy to Access the Kubernetes APISet up Konnectivity serviceTLSConfigure Certificate Rotation for the KubeletManage TLS Certificates in a ClusterManual Rotation of CA CertificatesManage Cluster DaemonsPerform a Rolling Update on a DaemonSetPerform a Rollback on a DaemonSetRunning Pods on Only Some NodesNetworkingAdding entries to Pod /etc/hosts with HostAliasesExtend Service IP RangesValidate IPv4/IPv6 dual-stackExtend kubectl with pluginsManage HugePagesSchedule GPUsTutorialsHello MinikubeLearn Kubernetes BasicsCreate a ClusterUsing Minikube to Create a ClusterDeploy an AppUsing kubectl to Create a DeploymentExplore Your AppViewing Pods and NodesExpose Your App PubliclyUsing a Service to Expose Your AppScale Your AppRunning Multiple Instances of Your AppUpdate Your AppPerforming a Rolling UpdateConfigurationExample: Configuring a Java MicroserviceExternalizing config using MicroProfile, ConfigMaps and SecretsUpdating Configuration via a ConfigMapConfiguring Redis using a ConfigMapAdopting Sidecar ContainersSecurityApply Pod Security Standards at the Cluster LevelApply Pod Security Standards at the Namespace LevelRestrict a Container's Access to Resources with AppArmorRestrict a Container's Syscalls with seccompStateless ApplicationsExposing an External IP Address to Access an Application in a ClusterExample: Deploying PHP Guestbook application with RedisStateful ApplicationsStatefulSet BasicsExample: Deploying WordPress and MySQL with Persistent VolumesExample: Deploying Cassandra with a StatefulSetRunning ZooKeeper, A Distributed System CoordinatorServicesConnecting Applications with ServicesUsing Source IPExplore Termination Behavior for Pods And Their EndpointsReferenceGlossaryAPI OverviewKubernetes API ConceptsServer-Side ApplyClient LibrariesCommon Expression Language in KubernetesKubernetes Deprecation PolicyDeprecated API Migration GuideKubernetes API health endpointsAPI Access ControlAuthenticatingAuthenticating with Bootstrap TokensAuthorizationUsing RBAC AuthorizationUsing Node AuthorizationWebhook ModeUsing ABAC AuthorizationAdmission ControllersDynamic Admission ControlManaging Service AccountsCertificates and Certificate Signing RequestsMapping PodSecurityPolicies to Pod Security StandardsKubelet authentication/authorizationTLS bootstrappingValidating Admission PolicyWell-Known Labels, Annotations and TaintsAudit AnnotationsKubernetes APIWorkload ResourcesPodBindingPodTemplateReplicationControllerReplicaSetDeploymentStatefulSetControllerRevisionDaemonSetJobCronJobHorizontalPodAutoscalerHorizontalPodAutoscalerPriorityClassPodSchedulingContext v1alpha3ResourceClaim v1alpha3ResourceClaimTemplate v1alpha3ResourceSlice v1alpha3Service ResourcesServiceEndpointsEndpointSliceIngressIngressClassConfig and Storage ResourcesConfigMapSecretCSIDriverCSINodeCSIStorageCapacityPersistentVolumeClaimPersistentVolumeStorageClassStorageVersionMigration v1alpha1VolumeVolumeAttachmentVolumeAttributesClass v1beta1Authentication ResourcesServiceAccountTokenRequestTokenReviewCertificateSigningRequestClusterTrustBundle v1alpha1SelfSubjectReviewAuthorization ResourcesLocalSubjectAccessReviewSelfSubjectAccessReviewSelfSubjectRulesReviewSubjectAccessReviewClusterRoleClusterRoleBindingRoleRoleBindingPolicy ResourcesFlowSchemaLimitRangeResourceQuotaNetworkPolicyPodDisruptionBudgetPriorityLevelConfigurationValidatingAdmissionPolicyValidatingAdmissionPolicyBindingExtend ResourcesCustomResourceDefinitionDeviceClass v1alpha3MutatingWebhookConfigurationValidatingWebhookConfigurationCluster ResourcesAPIServiceComponentStatusEventIPAddress v1beta1LeaseLeaseCandidate v1alpha1NamespaceNodeRuntimeClassServiceCIDR v1beta1Common DefinitionsDeleteOptionsLabelSelectorListMetaLocalObjectReferenceNodeSelectorRequirementObjectFieldSelectorObjectMetaObjectReferencePatchQuantityResourceFieldSelectorStatusTypedLocalObjectReferenceCommon ParametersInstrumentationService Level Indicator MetricsCRI Pod & Container MetricsNode metrics dataKubernetes Metrics ReferenceKubernetes Issues and SecurityKubernetes Issue TrackerKubernetes Security and Disclosure InformationCVE feedNode Reference InformationKubelet Checkpoint APILinux Kernel Version RequirementsArticles on dockershim Removal and on Using CRI-compatible RuntimesNode Labels Populated By The KubeletKubelet Configuration Directory MergingKubelet Device Manager API VersionsNode StatusNetworking ReferenceProtocols for ServicesPorts and ProtocolsVirtual IPs and Service ProxiesSetup toolsKubeadmkubeadm initkubeadm joinkubeadm upgradekubeadm configkubeadm resetkubeadm tokenkubeadm versionkubeadm alphakubeadm certskubeadm init phasekubeadm join phasekubeadm kubeconfigkubeadm reset phasekubeadm upgrade phaseImplementation detailsCommand line tool (kubectl)Introduction to kubectlkubectl Quick Referencekubectl referencekubectlkubectl annotatekubectl api-resourceskubectl api-versionskubectl applykubectl apply edit-last-appliedkubectl apply set-last-appliedkubectl apply view-last-appliedkubectl attachkubectl authkubectl auth can-ikubectl auth reconcilekubectl auth whoamikubectl autoscalekubectl certificatekubectl certificate approvekubectl certificate denykubectl cluster-infokubectl cluster-info dumpkubectl completionkubectl configkubectl config current-contextkubectl config delete-clusterkubectl config delete-contextkubectl config delete-userkubectl config get-clusterskubectl config get-contextskubectl config get-userskubectl config rename-contextkubectl config setkubectl config set-clusterkubectl config set-contextkubectl config set-credentialskubectl config unsetkubectl config use-contextkubectl config viewkubectl cordonkubectl cpkubectl createkubectl create clusterrolekubectl create clusterrolebindingkubectl create configmapkubectl create cronjobkubectl create deploymentkubectl create ingresskubectl create jobkubectl create namespacekubectl create poddisruptionbudgetkubectl create priorityclasskubectl create quotakubectl create rolekubectl create rolebindingkubectl create secretkubectl create secret docker-registrykubectl create secret generickubectl create secret tlskubectl create servicekubectl create service clusteripkubectl create service externalnamekubectl create service loadbalancerkubectl create service nodeportkubectl create serviceaccountkubectl create tokenkubectl debugkubectl deletekubectl describekubectl diffkubectl drainkubectl editkubectl eventskubectl execkubectl explainkubectl exposekubectl getkubectl kustomizekubectl labelkubectl logskubectl optionskubectl patchkubectl pluginkubectl plugin listkubectl port-forwardkubectl proxykubectl replacekubectl rolloutkubectl rollout historykubectl rollout pausekubectl rollout restartkubectl rollout resumekubectl rollout statuskubectl rollout undokubectl runkubectl scalekubectl setkubectl set envkubectl set imagekubectl set resourceskubectl set selectorkubectl set serviceaccountkubectl set subjectkubectl taintkubectl topkubectl top nodekubectl top podkubectl uncordonkubectl versionkubectl waitkubectl CommandskubectlJSONPath Supportkubectl for Docker Userskubectl Usage ConventionsComponent toolsFeature GatesFeature Gates (removed)kubeletkube-apiserverkube-controller-managerkube-proxykube-schedulerDebug clusterFlow controlConfiguration APIsClient Authentication (v1)Client Authentication (v1beta1)Event Rate Limit Configuration (v1alpha1)Image Policy API (v1alpha1)kube-apiserver Admission (v1)kube-apiserver Audit Configuration (v1)kube-apiserver Configuration (v1)kube-apiserver Configuration (v1alpha1)kube-apiserver Configuration (v1beta1)kube-controller-manager Configuration (v1alpha1)kube-proxy Configuration (v1alpha1)kube-scheduler Configuration (v1)kubeadm Configuration (v1beta3)kubeadm Configuration (v1beta4)kubeconfig (v1)Kubelet Configuration (v1)Kubelet Configuration (v1alpha1)Kubelet Configuration (v1beta1)Kubelet CredentialProvider (v1)WebhookAdmission Configuration (v1)External APIsKubernetes Custom Metrics (v1beta2)Kubernetes External Metrics (v1beta1)Kubernetes Metrics (v1beta1)SchedulingScheduler ConfigurationScheduling PoliciesOther ToolsMapping from dockercli to crictlContributeContribute to Kubernetes DocumentationSuggesting content improvementsContributing new contentOpening a pull requestDocumenting for a releaseBlogs and case studiesReviewing changesReviewing pull requestsFor approvers and reviewersLocalizing Kubernetes documentationParticipating in SIG DocsRoles and responsibilitiesIssue WranglersPR wranglersDocumentation style overviewContent guideStyle guideDiagram guideWriting a new topicPage content typesContent organizationCustom Hugo ShortcodesUpdating Reference DocumentationQuickstartContributing to the Upstream Kubernetes CodeGenerating Reference Documentation for the Kubernetes APIGenerating Reference Documentation for kubectl CommandsGenerating Reference Documentation for MetricsGenerating Reference Pages for Kubernetes Components and ToolsAdvanced contributingViewing Site AnalyticsDocs smoke test pageKubernetes DocumentationConceptsCluster ArchitectureNodesNodesKubernetes runs yourworkloadby placing containers into Pods to run onNodes.
-A node may be a virtual or physical machine, depending on the cluster. Each node
-is managed by thecontrol planeand contains the services necessary to runPods.Typically you have several nodes in a cluster; in a learning or resource-limited
-environment, you might have only one node.Thecomponentson a node include thekubelet, acontainer runtime, and thekube-proxy.ManagementThere are two main ways to have Nodes added to theAPI server:The kubelet on a node self-registers to the control planeYou (or another human user) manually add a Node objectAfter you create a Nodeobject,
-or the kubelet on a node self-registers, the control plane checks whether the new Node object
-is valid. For example, if you try to create a Node from the following JSON manifest:{"kind":"Node","apiVersion":"v1","metadata": {"name":"10.240.79.157","labels": {"name":"my-first-k8s-node"}}}Kubernetes creates a Node object internally (the representation). Kubernetes checks
-that a kubelet has registered to the API server that matches themetadata.namefield of the Node. If the node is healthy (i.e. all necessary services are running),
-then it is eligible to run a Pod. Otherwise, that node is ignored for any cluster activity
-until it becomes healthy.Note:Kubernetes keeps the object for the invalid Node and continues checking to see whether
-it becomes healthy.You, or acontroller, must explicitly
-delete the Node object to stop that health checking.The name of a Node object must be a validDNS subdomain name.Node name uniquenessThenameidentifies a Node. Two Nodes
-cannot have the same name at the same time. Kubernetes also assumes that a resource with the same
-name is the same object. In case of a Node, it is implicitly assumed that an instance using the
-same name will have the same state (e.g. network settings, root disk contents) and attributes like
-node labels. This may lead to inconsistencies if an instance was modified without changing its name.
-If the Node needs to be replaced or updated significantly, the existing Node object needs to be
-removed from API server first and re-added after the update.Self-registration of NodesWhen the kubelet flag--register-nodeis true (the default), the kubelet will attempt to
-register itself with the API server. This is the preferred pattern, used by most distros.For self-registration, the kubelet is started with the following options:--kubeconfig- Path to credentials to authenticate itself to the API server.--cloud-provider- How to talk to acloud providerto read metadata about itself.--register-node- Automatically register with the API server.--register-with-taints- Register the node with the given list oftaints(comma separated<key>=<value>:<effect>).No-op ifregister-nodeis false.--node-ip- Optional comma-separated list of the IP addresses for the node.
-You can only specify a single address for each address family.
-For example, in a single-stack IPv4 cluster, you set this value to be the IPv4 address that the
-kubelet should use for the node.
-Seeconfigure IPv4/IPv6 dual stackfor details of running a dual-stack cluster.If you don't provide this argument, the kubelet uses the node's default IPv4 address, if any;
-if the node has no IPv4 addresses then the kubelet uses the node's default IPv6 address.--node-labels-Labelsto add when registering the node
-in the cluster (see label restrictions enforced by theNodeRestriction admission plugin).--node-status-update-frequency- Specifies how often kubelet posts its node status to the API server.When theNode authorization modeandNodeRestriction admission pluginare enabled, kubelets are only authorized to create/modify their own Node resource.Note:As mentioned in theNode name uniquenesssection,
-when Node configuration needs to be updated, it is a good practice to re-register
-the node with the API server. For example, if the kubelet is being restarted with
-a new set of--node-labels, but the same Node name is used, the change will
-not take effect, as labels are only set (or modified) upon Node registration with the API server.Pods already scheduled on the Node may misbehave or cause issues if the Node
-configuration will be changed on kubelet restart. For example, already running
-Pod may be tainted against the new labels assigned to the Node, while other
-Pods, that are incompatible with that Pod will be scheduled based on this new
-label. Node re-registration ensures all Pods will be drained and properly
-re-scheduled.Manual Node administrationYou can create and modify Node objects usingkubectl.When you want to create Node objects manually, set the kubelet flag--register-node=false.You can modify Node objects regardless of the setting of--register-node.
-For example, you can set labels on an existing Node or mark it unschedulable.You can use labels on Nodes in conjunction with node selectors on Pods to control
-scheduling. For example, you can constrain a Pod to only be eligible to run on
-a subset of the available nodes.Marking a node as unschedulable prevents the scheduler from placing new pods onto
-that Node but does not affect existing Pods on the Node. This is useful as a
-preparatory step before a node reboot or other maintenance.To mark a Node unschedulable, run:kubectl cordon$NODENAMESeeSafely Drain a Nodefor more details.Note:Pods that are part of aDaemonSettolerate
-being run on an unschedulable Node. DaemonSets typically provide node-local services
-that should run on the Node even if it is being drained of workload applications.Node statusA Node's status contains the following information:AddressesConditionsCapacity and AllocatableInfoYou can usekubectlto view a Node's status and other details:kubectl describe node <insert-node-name-here>SeeNode Statusfor more details.Node heartbeatsHeartbeats, sent by Kubernetes nodes, help your cluster determine the
-availability of each node, and to take action when failures are detected.For nodes there are two forms of heartbeats:Updates to the.statusof a Node.Leaseobjects
-within thekube-node-leasenamespace.
-Each Node has an associated Lease object.Node controllerThe nodecontrolleris a
-Kubernetes control plane component that manages various aspects of nodes.The node controller has multiple roles in a node's life. The first is assigning a
-CIDR block to the node when it is registered (if CIDR assignment is turned on).The second is keeping the node controller's internal list of nodes up to date with
-the cloud provider's list of available machines. When running in a cloud
-environment and whenever a node is unhealthy, the node controller asks the cloud
-provider if the VM for that node is still available. If not, the node
-controller deletes the node from its list of nodes.The third is monitoring the nodes' health. The node controller is
-responsible for:In the case that a node becomes unreachable, updating theReadycondition
-in the Node's.statusfield. In this case the node controller sets theReadycondition toUnknown.If a node remains unreachable: triggeringAPI-initiated evictionfor all of the Pods on the unreachable node. By default, the node controller
-waits 5 minutes between marking the node asUnknownand submitting
-the first eviction request.By default, the node controller checks the state of each node every 5 seconds.
-This period can be configured using the--node-monitor-periodflag on thekube-controller-managercomponent.Rate limits on evictionIn most cases, the node controller limits the eviction rate to--node-eviction-rate(default 0.1) per second, meaning it won't evict pods
-from more than 1 node per 10 seconds.The node eviction behavior changes when a node in a given availability zone
-becomes unhealthy. The node controller checks what percentage of nodes in the zone
-are unhealthy (theReadycondition isUnknownorFalse) at the same time:If the fraction of unhealthy nodes is at least--unhealthy-zone-threshold(default 0.55), then the eviction rate is reduced.If the cluster is small (i.e. has less than or equal to--large-cluster-size-thresholdnodes - default 50), then evictions are stopped.Otherwise, the eviction rate is reduced to--secondary-node-eviction-rate(default 0.01) per second.The reason these policies are implemented per availability zone is because one
-availability zone might become partitioned from the control plane while the others remain
-connected. If your cluster does not span multiple cloud provider availability zones,
-then the eviction mechanism does not take per-zone unavailability into account.A key reason for spreading your nodes across availability zones is so that the
-workload can be shifted to healthy zones when one entire zone goes down.
-Therefore, if all nodes in a zone are unhealthy, then the node controller evicts at
-the normal rate of--node-eviction-rate. The corner case is when all zones are
-completely unhealthy (none of the nodes in the cluster are healthy). In such a
-case, the node controller assumes that there is some problem with connectivity
-between the control plane and the nodes, and doesn't perform any evictions.
-(If there has been an outage and some nodes reappear, the node controller does
-evict pods from the remaining nodes that are unhealthy or unreachable).The node controller is also responsible for evicting pods running on nodes withNoExecutetaints, unless those pods tolerate that taint.
-The node controller also addstaintscorresponding to node problems like node unreachable or not ready. This means
-that the scheduler won't place Pods onto unhealthy nodes.Resource capacity trackingNode objects track information about the Node's resource capacity: for example, the amount
-of memory available and the number of CPUs.
-Nodes thatself registerreport their capacity during
-registration. If youmanuallyadd a Node, then
-you need to set the node's capacity information when you add it.The Kubernetesschedulerensures that
-there are enough resources for all the Pods on a Node. The scheduler checks that the sum
-of the requests of containers on the node is no greater than the node's capacity.
-That sum of requests includes all containers managed by the kubelet, but excludes any
-containers started directly by the container runtime, and also excludes any
-processes running outside of the kubelet's control.Note:If you want to explicitly reserve resources for non-Pod processes, seereserve resources for system daemons.Node topologyFEATURE STATE:Kubernetes v1.27 [stable]If you have enabled theTopologyManagerfeature gate, then
-the kubelet can use topology hints when making resource assignment decisions.
-SeeControl Topology Management Policies on a Nodefor more information.Swap memory managementFEATURE STATE:Kubernetes v1.30 [beta]To enable swap on a node, theNodeSwapfeature gate must be enabled on
-the kubelet (default is true), and the--fail-swap-oncommand line flag orfailSwapOnconfiguration settingmust be set to false.
-To allow Pods to utilize swap,swapBehaviorshould not be set toNoSwap(which is the default behavior) in the kubelet config.Warning:When the memory swap feature is turned on, Kubernetes data such as the content
-of Secret objects that were written to tmpfs now could be swapped to disk.A user can also optionally configurememorySwap.swapBehaviorin order to
-specify how a node will use swap memory. For example,memorySwap:swapBehavior:LimitedSwapNoSwap(default): Kubernetes workloads will not use swap.LimitedSwap: The utilization of swap memory by Kubernetes workloads is subject to limitations.
-Only Pods of Burstable QoS are permitted to employ swap.If configuration formemorySwapis not specified and the feature gate is
-enabled, by default the kubelet will apply the same behaviour as theNoSwapsetting.WithLimitedSwap, Pods that do not fall under the Burstable QoS classification (i.e.BestEffort/GuaranteedQos Pods) are prohibited from utilizing swap memory.
-To maintain the aforementioned security and node health guarantees, these Pods
-are not permitted to use swap memory whenLimitedSwapis in effect.Prior to detailing the calculation of the swap limit, it is necessary to define the following terms:nodeTotalMemory: The total amount of physical memory available on the node.totalPodsSwapAvailable: The total amount of swap memory on the node that is available for use by Pods
-(some swap memory may be reserved for system use).containerMemoryRequest: The container's memory request.Swap limitation is configured as:(containerMemoryRequest / nodeTotalMemory) * totalPodsSwapAvailable.It is important to note that, for containers within Burstable QoS Pods, it is possible to
-opt-out of swap usage by specifying memory requests that are equal to memory limits.
-Containers configured in this manner will not have access to swap memory.Swap is supported only withcgroup v2, cgroup v1 is not supported.For more information, and to assist with testing and provide feedback, please
-see the blog-post aboutKubernetes 1.28: NodeSwap graduates to Beta1,KEP-2400and itsdesign proposal.What's nextLearn more about the following:Componentsthat make up a node.API definition for Node.Nodesection of the architecture design document.Graceful/non-graceful node shutdown.Cluster autoscalingto
-manage the number and size of nodes in your cluster.Taints and Tolerations.Node Resource Managers.Resource Management for Windows nodes.FeedbackWas this page helpful?YesNoThanks for the feedback. If you have a specific, answerable question about how to use Kubernetes, ask it onStack Overflow.
-Open an issue in theGitHub Repositoryif you want toreport a problemorsuggest an improvement.Last modified September 01, 2024 at 1:54 AM PST:Fix broken links from "overview/components/#..." to "architecture/#..." (#47724) (7e64c2db82)Node API referenceEdit this pageCreate child pageCreate documentation issuePrint entire sectionManagementNode name uniquenessSelf-registration of NodesManual Node administrationNode statusNode heartbeatsNode controllerRate limits on evictionResource capacity trackingNode topologySwap memory managementWhat's nextDocumentationBlogTrainingPartnersCommunityCase Studies© 2024 The Kubernetes Authors | Documentation Distributed underCC BY 4.0Copyright © 2024 The Linux Foundation ®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see ourTrademark Usage pageICP license: 京ICP备17074266号-3
+Managing Secrets using Configuration File
+Before you begin
+You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. It is recommended to run this tutorial on a cluster with at least two nodes that are not acting as control plane hosts. If you do not already have a
+cluster, you can create one by using
+[minikube](https://minikube.sigs.k8s.io/docs/tutorials/multi_node/)
+or you can use one of these Kubernetes playgrounds:
+Create the Secret
+You can define the Secret
+object in a manifest first, in JSON or YAML format,
+and then create that object. The
+[Secret](/docs/reference/generated/kubernetes-api/v1.31/#secret-v1-core)
+resource contains two maps: data
+and stringData
+.
+The data
+field is used to store arbitrary data, encoded using base64. The
+stringData
+field is provided for convenience, and it allows you to provide
+the same data as unencoded strings.
+The keys of data
+and stringData
+must consist of alphanumeric characters,
+-
+, _
+or .
+.
+The following example stores two strings in a Secret using the data
+field.
+Convert the strings to base64:
+echo -n 'admin' | base64 echo -n '1f2d1e2e67df' | base64
+Note:
+The serialized JSON and YAML values of Secret data are encoded as base64 strings. Newlines are not valid within these strings and must be omitted. When using thebase64
+utility on Darwin/macOS, users should avoid using the-b
+option to split long lines. Conversely, Linux users should add the option-w 0
+tobase64
+commands or the pipelinebase64 | tr -d '\n'
+if the-w
+option is not available.The output is similar to:
+YWRtaW4= MWYyZDFlMmU2N2Rm
+Create the manifest:
+apiVersion: v1 kind: Secret metadata: name: mysecret type: Opaque data: username: YWRtaW4= password: MWYyZDFlMmU2N2Rm
+Note that the name of a Secret object must be a valid
+[DNS subdomain name](/docs/concepts/overview/working-with-objects/names/#dns-subdomain-names).Create the Secret using
+:kubectl apply
+kubectl apply -f ./secret.yaml
+The output is similar to:
+secret/mysecret created
+To verify that the Secret was created and to decode the Secret data, refer to
+[Managing Secrets using kubectl](/docs/tasks/configmap-secret/managing-secret-using-kubectl/#verify-the-secret).
+Specify unencoded data when creating a Secret
+For certain scenarios, you may wish to use the stringData
+field instead. This
+field allows you to put a non-base64 encoded string directly into the Secret,
+and the string will be encoded for you when the Secret is created or updated.
+A practical example of this might be where you are deploying an application that uses a Secret to store a configuration file, and you want to populate parts of that configuration file during your deployment process.
+For example, if your application uses the following configuration file:
+apiUrl: "https://my.api.com/api/v1"
+username: "<user>"
+password: "<password>"
+You could store this in a Secret using the following definition:
+apiVersion: v1
+kind: Secret
+metadata:
+name: mysecret
+type: Opaque
+stringData:
+config.yaml: |
+apiUrl: "https://my.api.com/api/v1"
+username: <user>
+password: <password>
+Note:
+ThestringData
+field for a Secret does not work well with server-side apply.When you retrieve the Secret data, the command returns the encoded values,
+and not the plaintext values you provided in stringData
+.
+For example, if you run the following command:
+kubectl get secret mysecret -o yaml
+The output is similar to:
+apiVersion: v1
+data:
+config.yaml: YXBpVXJsOiAiaHR0cHM6Ly9teS5hcGkuY29tL2FwaS92MSIKdXNlcm5hbWU6IHt7dXNlcm5hbWV9fQpwYXNzd29yZDoge3twYXNzd29yZH19
+kind: Secret
+metadata:
+creationTimestamp: 2018-11-15T20:40:59Z
+name: mysecret
+namespace: default
+resourceVersion: "7225"
+uid: c280ad2e-e916-11e8-98f2-025000000001
+type: Opaque
+Specify both data
+and stringData
+If you specify a field in both data
+and stringData
+, the value from stringData
+is used.
+For example, if you define the following Secret:
+apiVersion: v1
+kind: Secret
+metadata:
+name: mysecret
+type: Opaque
+data:
+username: YWRtaW4=
+stringData:
+username: administrator
+Note:
+ThestringData
+field for a Secret does not work well with server-side apply.The Secret
+object is created as follows:
+apiVersion: v1
+data:
+username: YWRtaW5pc3RyYXRvcg==
+kind: Secret
+metadata:
+creationTimestamp: 2018-11-15T20:46:46Z
+name: mysecret
+namespace: default
+resourceVersion: "7579"
+uid: 91460ecb-e917-11e8-98f2-025000000001
+type: Opaque
+YWRtaW5pc3RyYXRvcg==
+decodes to administrator
+.
+Edit a Secret
+To edit the data in the Secret you created using a manifest, modify the data
+or stringData
+field in your manifest and apply the file to your
+cluster. You can edit an existing Secret
+object unless it is
+[immutable](/docs/concepts/configuration/secret/#secret-immutable).
+For example, if you want to change the password from the previous example to
+birdsarentreal
+, do the following:
+Encode the new password string:
+echo -n 'birdsarentreal' | base64
+The output is similar to:
+YmlyZHNhcmVudHJlYWw=
+Update the
+data
+field with your new password string:apiVersion: v1 kind: Secret metadata: name: mysecret type: Opaque data: username: YWRtaW4= password: YmlyZHNhcmVudHJlYWw=
+Apply the manifest to your cluster:
+kubectl apply -f ./secret.yaml
+The output is similar to:
+secret/mysecret configured
+Kubernetes updates the existing Secret
+object. In detail, the kubectl
+tool
+notices that there is an existing Secret
+object with the same name. kubectl
+fetches the existing object, plans changes to it, and submits the changed
+Secret
+object to your cluster control plane.
+If you specified kubectl apply --server-side
+instead, kubectl
+uses
+[Server Side Apply](/docs/reference/using-api/server-side-apply/) instead.
+Clean up
+To delete the Secret you have created:
+kubectl delete secret mysecret
+What's next
+- Read more about the
+[Secret concept](/docs/concepts/configuration/secret/) - Learn how to
+[manage Secrets using kubectl](/docs/tasks/configmap-secret/managing-secret-using-kubectl/) - Learn how to
+[manage Secrets using kustomize](/docs/tasks/configmap-secret/managing-secret-using-kustomize/)
+[Update managing-secret-using-config-file.md (cf83760309)](https://github.com/kubernetes/website/commit/cf837603093dee27329b8e4a965e61d1d481ba2f)

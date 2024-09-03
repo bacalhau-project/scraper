@@ -1,5 +1,28 @@
 Source: nats_io
-URL: https://nats.io/community
+URL: https://nats.io/support
 
-AboutDownloadDocumentationBlogCommunitySupportPrivacyCommunityOur NATS community consists of company end-users, partners, and OSS contributors that make up a vibrant ecosystem.
-If you’d like to help make NATS and its resources better, check out theWays to Contributebelow. Chances are, if you find a feature useful, others will too.SocialJoin us on any of our social platforms to learn, share, and connect with NATS.Ways to ContributeThe best way to get started contributing to NATS is to read ourContributor’s Guide. Here are some examples of how you can contribute:Report or fix bugsAdd or propose new featuresImprove our documentationAdd or update client librariesHost a MeetupImprove this websitePleasecontact uswith any other suggestions.BrandingNATS is an open source project hosted by the CNCF. All colors, logos, and styles should be used as governed by the Linux Foundation/CNCF.NATS Logo Colors and ImagesCNCF Style GuideNATS NewsletterStay up to date with the latest information on NATS.Coming EventsJoin us at our upcoming events and talks. Have a suggested event or want us to join yours? Let us knowinfo@nats.io.KubeCon + CloudNativeCon North America 2024When: Friday November 15, 2:55pm MSTWho: Byron Ruth & Kevin Hoffman, SynadiaWhat: Nothing but NATS: Going Beyond Cloud NativeWhere: Salt Lake City, UtahMore InformationNATS Ambassador ProgramThe NATS Ambassador Program celebrates people who have demonstrated significant value in the NATS community, by developing a track record of providing valuable help through community channels as well as contributing to issues and discussions, reporting detailed bugs, suggesting code changes, and improving the NATS documentation.How to become an ambassadorCurrent NATS maintainers and ambassadors can suggest a candidateA semi-annual vote occurs among the maintainers and ambassadorsThe person is elected and voted in as a NATS AmbassadorOnce you are chosen as an ambassadorYou will -Be added to theAMBASSADORS.mdfile in the nats-io/nats-server repoBe added to the NATS community page with your picture and bioReceive unique ambassador swag 😊Receive a complimentary conference registrationParticipate in an optional review of the NATS roadmapParticipate in an optional quarterly call with the NATS maintainersCurrent NATS AmbassadorsMaurice van VeenGitHub|LinkedIn"After first stumbling upon NATS, I quickly fell in love with it. I had contributed to the Java client, and afterwards I justhadto learn Go to be able to contribute to the server too! Happy to be a part of the community.I am interested in distributed computing, fault tolerance, open source, being challenged during my work and having loads of fun while doing it!"Check out ourinterviewwith Maurice van Veen.PartnersWe work with a variety of companies to ensure NATS is delivered in a broad range of solutions used by our community.Contact us to Partner.Copyright © NATS Authors 2024NATS is aCloud Native Computing Foundationincubating projectThe Linux Foundation has registered trademarks and uses trademarks.For a list of trademarks of The Linux Foundation, please seeTrademark Usage page.
+Support
+Community Support for NATS and Clients
+You can ask questions in our community forums in [Slack](https://slack.nats.io) or [Google Groups](https://groups.google.com/g/natsio), both of which have many knowledgeable users.
+Commercial Support and Services
+[Synadia](https://synadia.com)
+One of the lead corporate stewards of NATS.io, offers two enterprise-grade offerings.
+[Synadia Cloud](https://www.synadia.com/cloud)- A global, multi-cloud, multi-geo and extensible connectivity fabric for messaging, streaming, pub/sub, key-value, and object storage services. Synadia Cloud is powered by NATS.io and fully managed by Synadia.[Synadia Platform](https://www.synadia.com/platform)- An all-in-one control plane for your NATS infrastructure, designed, built, and supported by Synadia. Available via self-hosted or[managed cloud](https://www.synadia.com/#managedcloud)deployment options.
+Includes:
+- Expert support for your NATS deployment by the core contributors and maintainers of NATS.io.
+- 24/7/365 support and troubleshooting on your specific issues from the expert engineers who know NATS inside and out.
+- Architecture Design reviews and recommendations to scale, secure and operate your NATS infrastructure.
+[Luxant Solutions](https://luxantsolutions.com)
+NATS is the first choice that
+[Luxant Solutions](https://luxantsolutions.com)
+uses when enabling businesses to best leverage their distributed computing and communication technologies.
+Services include:
+- Strategy and guidance around NATS enabled distributed applications, microservices, and devices
+- Architectural guidance and assessments
+- POCs / Benchmarks
+- Implementation or Advisory roles
+Whether your environment is cloud, edge, device, or on-premise, Luxant can help. Luxant Solutions is owned and operated by a NATS maintainer.
+Reporting bugs
+If you’d like to report a bug/defect, please open a GitHub Issue on the relevant NATS repository. We’ve provided some guidelines for doing so
+[here](/contributing/)
+.

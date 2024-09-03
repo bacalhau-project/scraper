@@ -1,57 +1,57 @@
 Source: apache_hadoop
 URL: https://hadoop.apache.org/
 
-Toggle navigationApache HadoopDownloadDocumentationCurrent (trunk)LatestStable3.4.03.3.62.10.2WikiCommunityBylawsCriteria for CommittershipMailing listsPublished CVEsWho We areDevelopmentHow to ContributeIssue TrackingVersion ControlVersioningHelpBuy StuffSponsorshipThanksApache Software FoundationApache HadoopThe ApacheÂ® HadoopÂ® project develops open-source software for reliable, scalable, distributed computing.The Apache Hadoop software library is a framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models. It is designed to scale up from single servers to thousands of machines, each offering local computation and storage. Rather than rely on hardware to deliver high-availability, the library itself is designed to detect and handle failures at the application layer, so delivering a highly-available service on top of a cluster of computers, each of which may be prone to failures.Learn more »Download »Getting started »Latest newsRelease 3.4.0 available2024 Mar 17This is the first release of Apache Hadoop 3.4 line. It contains 2888 bug fixes, improvements and enhancements since 3.3.Users are encouraged to read theoverview of major changes.
-For details of please checkrelease notesandchangelog.Release 3.3.6 available2023 Jun 23This is a release of Apache Hadoop 3.3 line.It contains 117 bug fixes, improvements and enhancements since 3.3.5.
-Users of Apache Hadoop 3.3.5 and earlier should upgrade to this release.Feature highlights:SBOM artifactsStarting from this release, Hadoop publishes Software Bill of Materials (SBOM) using
-CycloneDX Maven plugin. For more information on SBOM, please go toSBOM.HDFS RBF: RDBMS based token storage supportHDFS Router-Router Based Federation now supports storing delegation tokens on MySQL,HADOOP-18535which improves token operation through over the original Zookeeper-based implementation.New File System APIsHADOOP-18671moved a number of
+Apache Hadoop
+The Apache® Hadoop® project develops open-source software for reliable, scalable, distributed computing.
+The Apache Hadoop software library is a framework that allows for the distributed processing of large data sets across clusters of computers using simple programming models. It is designed to scale up from single servers to thousands of machines, each offering local computation and storage. Rather than rely on hardware to deliver high-availability, the library itself is designed to detect and handle failures at the application layer, so delivering a highly-available service on top of a cluster of computers, each of which may be prone to failures.
+This is the first release of Apache Hadoop 3.4 line. It contains 2888 bug fixes, improvements and enhancements since 3.3.
+Users are encouraged to read the [overview of major changes](/docs/r3.4.0/index.html).
+For details of please check [release notes](http://hadoop.apache.org/docs/r3.4.0/hadoop-project-dist/hadoop-common/release/3.4.0/RELEASENOTES.3.4.0.html) and [changelog](http://hadoop.apache.org/docs/r3.4.0/hadoop-project-dist/hadoop-common/release/3.4.0/CHANGELOG.3.4.0.html).
+This is a release of Apache Hadoop 3.3 line.
+It contains 117 bug fixes, improvements and enhancements since 3.3.5. Users of Apache Hadoop 3.3.5 and earlier should upgrade to this release.
+Feature highlights:
+Starting from this release, Hadoop publishes Software Bill of Materials (SBOM) using
+CycloneDX Maven plugin. For more information on SBOM, please go to
+[SBOM](https://cwiki.apache.org/confluence/display/COMDEV/SBOM).
+HDFS Router-Router Based Federation now supports storing delegation tokens on MySQL,
+[HADOOP-18535](https://issues.apache.org/jira/browse/HADOOP-18535)
+which improves token operation through over the original Zookeeper-based implementation.
+[HADOOP-18671](https://issues.apache.org/jira/browse/HADOOP-18671) moved a number of
 HDFS-specific APIs to Hadoop Common to make it possible for certain applications that
-depend on HDFS semantics to run on other Hadoop compatible file systems.In particular, recoverLease() and isFileClosed() are exposed through LeaseRecoverable
-interface, while setSafeMode() is exposed through SafeMode interface.Users are encouraged to read theoverview of major changessince release 3.3.5.
+depend on HDFS semantics to run on other Hadoop compatible file systems.
+In particular, recoverLease() and isFileClosed() are exposed through LeaseRecoverable interface, while setSafeMode() is exposed through SafeMode interface.
+Users are encouraged to read the [overview of major changes](/docs/r3.3.6/index.html) since release 3.3.5.
 For details of 117 bug fixes, improvements, and other enhancements since the previous 3.3.5 release,
-please checkrelease notesandchangelog.Release 3.3.5 available2023 Mar 22This is a release of Apache Hadoop 3.3 line.Key changes includeA big update of dependencies to try and keep those reports of
-transitive CVEs under control -both genuine and false positives.Critical fix to ABFS input stream prefetching for correct reading.Vectored IO API for all FSDataInputStream implementations, with
-high-performance versions for file:// and s3a:// filesystems.
-file:// through java native IO
-s3a:// parallel GET requests.Arm64 binaries. Note, because the arm64 release was on a different
-platform, the jar files may not match those of the x86
-release -and therefore the maven artifacts.Security fixes in Hadoop’s own code.Users of Apache Hadoop 3.3.4 and earlier should upgrade to
-this release.All users are encouraged to read theoverview of major changessince release 3.3.4.For details of bug fixes, improvements, and other enhancements since
-the previous 3.3.4 release, please checkrelease notesandchangelog.Azure ABFS: Critical Stream Prefetch FixThe ABFS connector has a critical bug fixhttps://issues.apache.org/jira/browse/HADOOP-18546:ABFS. Disable purging list of in-progress reads in abfs stream close().All users of the abfs connector in hadoop releases 3.3.2+ MUST either upgrade
-to this release or disable prefetching by settingfs.azure.readaheadqueue.depthto0.Release 3.3.4 available2022 Aug 8This is a release of Apache Hadoop 3.3 line.It contains a small number security and critical integration fixes since 3.3.3.Users of Apache Hadoop 3.3.3 should upgrade to this release.Users of hadoop 2.x and hadoop 3.2 should also upgrade to the 3.3.x line.
-As well as feature enhancements, this is the sole branch currently
-receiving fixes for anything other than critical security/data integrity
-issues.Users are encouraged to read theoverview of major changessince release 3.3.3.
+please check [release notes](http://hadoop.apache.org/docs/r3.3.6/hadoop-project-dist/hadoop-common/release/3.3.6/RELEASENOTES.3.3.6.html) and [changelog](http://hadoop.apache.org/docs/r3.3.6/hadoop-project-dist/hadoop-common/release/3.3.6/CHANGELOG.3.3.6.html).
+This is a release of Apache Hadoop 3.3 line.
+Key changes include
+Users of Apache Hadoop 3.3.4 and earlier should upgrade to this release.
+All users are encouraged to read the [overview of major changes](http://hadoop.apache.org/docs/r3.3.5/index.html)
+since release 3.3.4.
+For details of bug fixes, improvements, and other enhancements since
+the previous 3.3.4 release, please check [release notes](http://hadoop.apache.org/docs/r3.3.5/hadoop-project-dist/hadoop-common/release/3.3.5/RELEASENOTES.3.3.5.html)
+and [changelog](http://hadoop.apache.org/docs/r3.3.5/hadoop-project-dist/hadoop-common/release/3.3.5/CHANGELOG.3.3.5.html).
+The ABFS connector has a critical bug fix
+[https://issues.apache.org/jira/browse/HADOOP-18546](https://issues.apache.org/jira/browse/HADOOP-18546):
+ABFS. Disable purging list of in-progress reads in abfs stream close().
+All users of the abfs connector in hadoop releases 3.3.2+ MUST either upgrade
+to this release or disable prefetching by setting
+fs.azure.readaheadqueue.depth
+to 0
+.
+This is a release of Apache Hadoop 3.3 line.
+It contains a small number security and critical integration fixes since 3.3.3.
+Users of Apache Hadoop 3.3.3 should upgrade to this release.
+Users of hadoop 2.x and hadoop 3.2 should also upgrade to the 3.3.x line. As well as feature enhancements, this is the sole branch currently receiving fixes for anything other than critical security/data integrity issues.
+Users are encouraged to read the [overview of major changes](/docs/r3.3.4/index.html) since release 3.3.3.
 For details of bug fixes, improvements, and other enhancements since the previous 3.3.3 release,
-please checkrelease notesandchangelog.Release 3.2.4 available2022 Jul 22This is the third stable release of Apache Hadoop 3.2 line.It contains 153 bug fixes, improvements and enhancements since 3.2.3.Users are encouraged to read theoverview of major changessince 3.2.3.
+please check [release notes](http://hadoop.apache.org/docs/r3.3.4/hadoop-project-dist/hadoop-common/release/3.3.4/RELEASENOTES.3.3.4.html) and [changelog](http://hadoop.apache.org/docs/r3.3.4/hadoop-project-dist/hadoop-common/release/3.3.4/CHANGELOG.3.3.4.html).
+This is the third stable release of Apache Hadoop 3.2 line.
+It contains 153 bug fixes, improvements and enhancements since 3.2.3.
+Users are encouraged to read the [overview of major changes](/docs/r3.2.4/index.html) since 3.2.3.
 For details of 153 bug fixes, improvements, and other enhancements since the previous 3.2.3 release,
-please checkrelease notesandchangelog.Release archive →News archive →ModulesThe project includes these modules:Hadoop Common: The common utilities that support the other Hadoop modules.Hadoop Distributed File System (HDFSâ¢): A distributed file system that provides high-throughput access to application data.Hadoop YARN: A framework for job scheduling and cluster resource management.Hadoop MapReduce: A YARN-based system for parallel processing of large data sets.Who Uses Hadoop?A wide variety of companies and organizations use Hadoop for both research and production.
-             Users are encouraged to add themselves to the HadoopPoweredBy wiki page.Related projectsOther Hadoop-related projects at Apache include:Ambariâ¢: A web-based tool for provisioning,
-managing, and monitoring Apache Hadoop clusters which includes
-support for Hadoop HDFS, Hadoop MapReduce, Hive, HCatalog, HBase,
-ZooKeeper, Oozie, Pig and Sqoop. Ambari also provides a dashboard
-for viewing cluster health such as heatmaps and ability to view
-MapReduce, Pig and Hive applications visually alongwith features to
-diagnose their performance characteristics in a user-friendly
-manner.Avroâ¢: A data serialization system.Cassandraâ¢: A scalable multi-master database
-with no single points of failure.Chukwaâ¢: A data collection system for managing
-large distributed systems.HBaseâ¢: A scalable, distributed database that
-supports structured data storage for large tables.Hiveâ¢: A data warehouse infrastructure that provides
-data summarization and ad hoc querying.Mahoutâ¢: A Scalable machine learning and data
-mining library.Ozoneâ¢: A scalable, redundant, and
-distributed object store for Hadoop.Pigâ¢: A high-level data-flow language and execution
-framework for parallel computation.Sparkâ¢: A fast and general compute engine for
-Hadoop data. Spark provides a simple and expressive programming
-model that supports a wide range of applications, including ETL,
-machine learning, stream processing, and graph computation.Submarine: A unified AI platform which allows
-engineers and data scientists to run Machine Learning and Deep Learning workload in
-distributed cluster.Tezâ¢: A generalized data-flow programming framework,
-built on Hadoop YARN, which provides a powerful and flexible engine
-to execute an arbitrary DAG of tasks to process data for both batch
-and interactive use-cases. Tez is being adopted by Hiveâ¢, Pigâ¢ and
-other frameworks in the Hadoop ecosystem, and also by other
-commercial software (e.g. ETL tools), to replace Hadoopâ¢ MapReduce
-as the underlying execution engine.ZooKeeperâ¢: A high-performance coordination
-service for distributed applications.Apache Hadoop, Hadoop, Apache, the Apache feather logo,
-    and the Apache Hadoop project logo are either registered trademarks or trademarks of the Apache Software Foundation
-     in the United States and other countriesCopyright Â© 2006-2024 The Apache Software FoundationPrivacy policy
+please check [release notes](http://hadoop.apache.org/docs/r3.2.4/hadoop-project-dist/hadoop-common/release/3.2.4/RELEASENOTES.3.2.4.html) and [changelog](http://hadoop.apache.org/docs/r3.2.4/hadoop-project-dist/hadoop-common/release/3.2.4/CHANGELOG.3.2.4.html).
+The project includes these modules:
+A wide variety of companies and organizations use Hadoop for both research and production.
+Users are encouraged to add themselves to the Hadoop [PoweredBy wiki page](https://wiki.apache.org/hadoop2/PoweredBy).
+Other Hadoop-related projects at Apache include:

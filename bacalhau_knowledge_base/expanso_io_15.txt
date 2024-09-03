@@ -1,3 +1,57 @@
-URL: https://expanso.io/what-we-value/
+Source: expanso_io
+URL: https://expanso.io/newsroom/
 
-Skip to contentWhy Expanso?Why Choose Expanso?Security and GovernanceProductBacalhauFeaturesSolutionsUse CasesDistributed Data WarehouseLog ProcessingEdge Machine LearningDistributed Fleet ManagementResourcesDocumentationGitHubBacalhau BlogEventsFAQsHelp CenterCompanyWhat We ValueWho We AreCareersNewsroomContactGitHubInstall FreeMenuWhy Expanso?Why Choose Expanso?Security and GovernanceProductBacalhauFeaturesSolutionsUse CasesDistributed Data WarehouseLog ProcessingEdge Machine LearningDistributed Fleet ManagementResourcesDocumentationGitHubBacalhau BlogEventsFAQsHelp CenterCompanyWhat We ValueWho We AreCareersNewsroomContactGitHubInstall FreeInstall FreeWhat We ValueOur mission.We at Expanso are building upon our open-source project, Bacalhau, to change the way data processing is done. Our platform runs computations where the data is created, instead of moving large volumes of data around. This means faster, cheaper, and more secure data processing.Today data is growing fast, but network growth is slow. This is where Expanso comes in. By reducing unnecessary data transfers, we’re making data processing more resource-efficient, which contributes to responsible consumption and production of resources.We’re not just about technology though; we’re about community. We strongly believe in collaboration and ensuring organizations can excel. Our platform is designed to work well with existing compute providers, like Azure, GCP, AWS, and distributed platforms, like Kubernetes, Airflow, Flyte, and Spark. We offer a generous free tier from our open-source roots, showing our commitment to helping the industry advance together.Expanso also makes it easy for developers to work with data using the tools they know like Python, R, and DuckDB. They can focus on getting insights from data without worrying about the infrastructure.Our approach makes data management simpler, more secure, and ready for the future where data is generated and stored in many places – across clouds, regions, and on different devices.We think an exclusively centralized approach won’t solve all the new challenges with data-heavy applications like machine learning and generative AI. That’s why we’ve built a distributed platform with Expanso. Our platform is ready to handle the next generation of data challenges, and we believe it will have a significant, long-lasting, positive impact on the industry.What Drives Our VisionEmpowering everyone.Expanso is more than a technology company – we are a platform and an ecosystem. Our ambition is to revolutionize data processing for organizations of all sizes around the globe, and to be the engine for millions of developers to build the next greatest thing.Commitment to excellenceWe don’t just promise; we deliver. Our unwavering accountability ensures we stand by our word.Growth as a habitEvery day, every challenge is an opportunity. We continuously learn, evolve, innovate, and redefine the boundaries of what's possible.Default positivityWe view challenges through a lens of optimism. Turning obstacles into opportunities is how we drive forward.Precision in innovationIn our pursuit of redefining the status quo, every detail matters. We are meticulous in our approach, ensuring accuracy at every turn.Trust and transparencyIn a digital age, trust is our currency. We foster it through openness, honesty, and clear communication.Stay up to date and sign up to our blog:Visit BlogThe Compute Over Data PlatformCompanyHomeWhat We ValueWho We AreNewsroomContact UsCareersResourcesDocumentationFAQBlogSupportSocialLinkedInYouTubeSlackX ExpansoX BacalhauGitHub© Expanso Inc. All Rights Reserved 2023Privacy PolicyTrademarksTerms & ConditionsPrivacy PolicyTrademarksTerms & Conditions
+Highlighted
+![VentureBeat Logo](https://expanso.io/wp-content/uploads/2023/12/Newsroom-Preview-Pic-Website-2.avif)
+[
+VentureBeat: The end of centralized data? Samsung teams with Expanso on distributed processing ](https://expanso.io/newsroom/venturebeat-samsung-next-teams-with-expanso/)
+Read the Article on VentureBeat
+[Read More](https://expanso.io/newsroom/venturebeat-samsung-next-teams-with-expanso/)
+![](https://expanso.io/wp-content/uploads/2024/05/no-background-newsroom-samsung.avif)
+[
+Why we invested in Expanso, a distributed compute platform that reduces latency and enhances data governance capabilities ](https://expanso.io/newsroom/why-samsung-next-invested-in-expanso-a-distributed-compute-platform/)
+Read the article on the Samsung Next blog.
+[Read More](https://expanso.io/newsroom/why-samsung-next-invested-in-expanso-a-distributed-compute-platform/)
+![bacalhau v1.2](https://expanso.io/wp-content/uploads/2023/12/Newsroom-Preview-Pic-Website-3.avif)
+[
+Announcing Bacalhau 1.2 ](https://expanso.io/newsroom/bacalhau1-2/)
+We are thrilled to announce the release of Bacalhau 1.2! Following the Bacalhau 1.1 release in September 2023, we’ve explored a variety of innovative and groundbreaking use
+[Read More](https://expanso.io/newsroom/bacalhau1-2/)
+Press releases.
+[
+Expanso Secures Strategic Investment from Samsung Next to Transform Distributed Computing ](https://expanso.io/newsroom/expanso-secures-strategic-investment-by-samsung-next/)
+SEATTLE–(BUSINESS WIRE)- Expanso, the distributed compute company based in Seattle, Washington has secured a strategic investment from Samsung Next that signals big ambitions to transform how data is being managed and processed worldwide. Expanso, founded in early 2023 by tech
+[Read More](https://expanso.io/newsroom/expanso-secures-strategic-investment-by-samsung-next/)
+[
+Announcing Bacalhau 1.2 ](https://expanso.io/newsroom/bacalhau1-2/)
+We are thrilled to announce the release of Bacalhau 1.2! Following the Bacalhau 1.1 release in September 2023, we’ve explored a variety of innovative and groundbreaking use cases, such as: We are also proud to announce that the U.S. Navy chose Bacalhau to manage predictive
+[Read More](https://expanso.io/newsroom/bacalhau1-2/)
+[
+Expanso Lands $7.5M Seed Investment Led by General Catalyst and Hetz Ventures to Revolutionize Distributed Data Processing ](https://expanso.io/newsroom/seed-funding-announcement/)
+Expanso secures $7.5M for it’s open-source software Bacalhau, advancing edge data processing for enterprises, backed by General Catalyst & Hetz Ventures.
+[Read More](https://expanso.io/newsroom/seed-funding-announcement/)
+Headlines and features.
+![VentureBeat Logo](https://expanso.io/wp-content/uploads/2023/12/Newsroom-Preview-Pic-Website-2.avif)
+[
+VentureBeat: The end of centralized data? Samsung teams with Expanso on distributed processing ](https://expanso.io/newsroom/venturebeat-samsung-next-teams-with-expanso/)
+Read the Article on VentureBeat
+[Read More](https://expanso.io/newsroom/venturebeat-samsung-next-teams-with-expanso/)
+![](https://expanso.io/wp-content/uploads/2024/05/no-background-newsroom-samsung.avif)
+[
+Why we invested in Expanso, a distributed compute platform that reduces latency and enhances data governance capabilities ](https://expanso.io/newsroom/why-samsung-next-invested-in-expanso-a-distributed-compute-platform/)
+Read the article on the Samsung Next blog.
+[Read More](https://expanso.io/newsroom/why-samsung-next-invested-in-expanso-a-distributed-compute-platform/)
+![5G OI Lab Logo](https://expanso.io/wp-content/uploads/2023/09/Untitled-design-7.avif)
+[
+Expanso Brings Data Processing to the Edge ](https://expanso.io/newsroom/expanso-brings-data-processing-to-the-edge/)
+With the volume, velocity, and variety of data produced by enterprises growing at 42 percent year over year, the world’s data storage capacity will exceed 175 zettabytes by 2025. Management
+[Read More](https://expanso.io/newsroom/expanso-brings-data-processing-to-the-edge/)
+![Color Swatch](https://expanso.io/wp-content/uploads/2023/11/color-swatch.png)
+Get Assets
+For permissions related to the use of Expanso (and in extension, Bacalhau) materials, please reach out to us at press@expanso.io with the details below:
+- Your name and title.
+- Company name and location.
+- Description of request.
+![Chat](https://expanso.io/wp-content/uploads/2023/11/chat-alt.png)
+Contact
+For PR inquiries contact: [press@expanso.io](mailto:press@expanso.io)

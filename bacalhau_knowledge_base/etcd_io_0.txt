@@ -1,9 +1,24 @@
 Source: etcd_io
 URL: https://etcd.io/
 
-etcdDocsBlogCommunityInstallPlayVersionsv3.6v3.5v3.4v3.3v3.2v3.1v2.3A distributed, reliable key-value store for the most critical data of a distributed systemLearn moreQuickstartWhat is etcd?etcdis a strongly consistent, distributed key-value store that
+What is etcd?
+etcd is a strongly consistent, distributed key-value store that
 provides a reliable way to store data that needs to be accessed by a
 distributed system or cluster of machines. It gracefully handles leader
 elections during network partitions and can tolerate machine failure, even
-in the leader node.Learn moreFeaturesSimple interfaceRead and write values using standard HTTP tools, such as curlKey-value storageStore data in hierarchically organized directories, as in a standard filesystemWatch for changesWatch specific keys or directories for changes and react to changes in valuesOptional SSL client certificate authenticationBenchmarked at 1000s of writes/s per instanceOptional TTLs for keys expirationProperly distributed via Raft protocolUsed byetcd is aCNCFproject©
-2013–2024etcd AuthorsTerms|Privacy|Trademarks|LicenseAll Rights Reserved
+in the leader node.
+[Learn more](/docs/v3.5/)
+Features
+Simple interface
+Read and write values using standard HTTP tools, such as curl
+Key-value storage
+Store data in hierarchically organized directories, as in a standard filesystem
+Watch for changes
+Watch specific keys or directories for changes and react to changes in values
+Optional SSL client certificate authentication
+Benchmarked at 1000s of writes/s per instance
+Optional TTLs for keys expiration
+Properly distributed via Raft protocol
+Used by
+etcd is a [CNCF](https://cncf.io) project
+![Cloud Native Computing Foundation logo](https://raw.githubusercontent.com/cncf/artwork/master/other/cncf/horizontal/color/cncf-color.png)

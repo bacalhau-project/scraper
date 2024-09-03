@@ -1,90 +1,16 @@
-URL: https://nats.io/blog/nats-recover-quorum/
+Source: nats_io
+URL: https://nats.io/blog/nascar-nats-blog/
 
-AboutDownloadDocumentationBlogCommunitySupportPrivacyRecovering Quorum After Renaming ServersJohn Weldon— January 20, 2024Back to BlogOccasionally, a NATS cluster can lose quorum for various reasons.
-Here, we’ll look at one specific case, and how to recover from it.ContextHow To Rename Servers in a ClusterThe recommended way to rename NATS servers in a cluster is to rename one at a time.
-After each rename, the cluster will have a record of both the old name and the new name.
-The former will appear offline, and the latter should appear online.
-You should remove the record of the old name before renaming the next server, otherwise, the
-cluster may, sooner or later, end up with too many faux-offline servers, and will consider
-itself to have lost quorum.NATS Helm Chart Caveats -A Brief DiversionThevalues.yamlfile for theNATS Helm Charthas an option
-to set aserverNamePrefix, which you might be tempted to use to
-rename the servers in a helm chart deployed cluster.This setting should only be changed before the first installation.
-Once the cluster is up and running, if you change this value, and then upgrade the
-helm release, you’ll cause all of the servers in the cluster to be simultaneously renamed.
-This will double the number of recorded servers in the cluster (half with the old name, and
-half with the new name, per the changedserverNamePrefix).
-Consequently, there will not be enough servers active in the cluster to retain quorum.A Case StudyFor the sake of this article, we’ll assume a helm chart1deployed cluster of three servers.2We start by “breaking” this cluster, simply modifying theserverNamePrefixto rename the
-servers, and update the release.First Indication of TroubleLogsThe first indication of trouble is when you see thisWRNwarning andINFmessage in the logs:[WRN]Healthcheck failed:"JetStream has not established contact with a meta leader"[INF]JetStream cluster no metadata leaderEventsAnother indication is that the NATS pods fail to progress to a ready state;
-the NATS container specifically shows that it’s running, but the readiness is false.The events will show a warning with the messageReadiness probe failed: HTTP probe failed with statuscode:503NATS CLIUsing the NATS CLI, running thenats server report jetstreamwill also show an error;
-depending on the cluster state it could be any one of the following:Before Quorum is LostAt first, you’ll just see half the servers (with the old name) as being offline:$ nats server report jetstream
-╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│                                                 JetStream Summary                                                 │
-├─────────────────────┬────────────────┬─────────┬───────────┬──────────┬───────┬────────┬──────┬─────────┬─────────┤
-│ Server              │ Cluster        │ Streams │ Consumers │ Messages │ Bytes │ Memory │ File │ API Req │ API Err │
-├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
-│ x-nats-helm-kind-0  │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-│ x-nats-helm-kind-1  │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-│ x-nats-helm-kind-2* │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
-│                     │                │0│0│0│0B   │0B    │0B  │0│0│
-╰─────────────────────┴────────────────┴─────────┴───────────┴──────────┴───────┴────────┴──────┴─────────┴─────────╯
-
-╭───────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│                                        RAFT Meta Group Information                                        │
-├─────────────────────────────────────────────────────┬──────────┬────────┬─────────┬────────┬────────┬─────┤
-│ Name                                                │ ID       │ Leader │ Current │ Online │ Active │ Lag │
-├─────────────────────────────────────────────────────┼──────────┼────────┼─────────┼────────┼────────┼─────┤
-│ Server name unknown at thistime(peerID: Wp0X92Zu)│ Wp0X92Zu │        │false│false│ 0s     │0│
-│ nats-helm-kind-0                                    │ YMpQSy04 │        │false│false│ 19.53s │1│
-│ nats-helm-kind-1                                    │ MGRogjE4 │        │false│false│ 0s     │13│
-│ x-nats-helm-kind-0                                  │ svvjmHnE │        │true│true│ 526ms  │0│
-│ x-nats-helm-kind-1                                  │ XCzEfWSa │        │true│true│ 525ms  │0│
-│ x-nats-helm-kind-2                                  │ XGX0cX6V │ yes    │true│true│ 0s     │0│
-╰─────────────────────────────────────────────────────┴──────────┴────────┴─────────┴────────┴────────┴─────╯After Quorum is LostAfter the quorum is lost, but before the readiness probes cause the servers to stop responding,
-for a brief window of time you’ll see the error in the jetstream report:$ nats server report jetstream
-╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│                                                 JetStream Summary                                                │
-├────────────────────┬────────────────┬─────────┬───────────┬──────────┬───────┬────────┬──────┬─────────┬─────────┤
-│ Server             │ Cluster        │ Streams │ Consumers │ Messages │ Bytes │ Memory │ File │ API Req │ API Err │
-├────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
-│ x-nats-helm-kind-0 │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-│ x-nats-helm-kind-1 │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-│ x-nats-helm-kind-2 │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-├────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
-│                    │                │0│0│0│0B   │0B    │0B  │0│0│
-╰────────────────────┴────────────────┴─────────┴───────────┴──────────┴───────┴────────┴──────┴─────────┴─────────╯
-
-
-WARNING: No cluster meta leader found. The cluster expects6nodes but only3responded. JetStream operation require at least4up nodes.After Servers Stop RespondingFinally, the servers will possibly stop responding, giving you the general error:$ nats server report jetstream
-nats: error: nats: no servers availableforconnectioncommandterminated withexitcode1How To RecoverRegain QuorumTo recover, the cluster must first regain quorum.
-In this case, the cluster thinks that there are six nodes3in the cluster,
-so to regain quorum there needs to be a minimum of four nodes3reachable from each other.The way to do this is to add one more server, which will allow quorum to be regained.
-You can do this by scaling the stateful set:$ kubectl scale --replicas=4statefulset/nats-helm-kindWhich, once complete, should result in quorum being regained:$ nats server report jetstream
-╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│                                                 JetStream Summary                                                 │
-├─────────────────────┬────────────────┬─────────┬───────────┬──────────┬───────┬────────┬──────┬─────────┬─────────┤
-│ Server              │ Cluster        │ Streams │ Consumers │ Messages │ Bytes │ Memory │ File │ API Req │ API Err │
-├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
-│ x-nats-helm-kind-0  │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-│ x-nats-helm-kind-1  │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-│ x-nats-helm-kind-2* │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-│ x-nats-helm-kind-3  │ nats-helm-kind │0│0│0│0B   │0B    │0B  │0│0│
-├─────────────────────┼────────────────┼─────────┼───────────┼──────────┼───────┼────────┼──────┼─────────┼─────────┤
-│                     │                │0│0│0│0B   │0B    │0B  │0│0│
-╰─────────────────────┴────────────────┴─────────┴───────────┴──────────┴───────┴────────┴──────┴─────────┴─────────╯
-
-╭───────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│                                        RAFT Meta Group Information                                        │
-├─────────────────────────────────────────────────────┬──────────┬────────┬─────────┬────────┬────────┬─────┤
-│ Name                                                │ ID       │ Leader │ Current │ Online │ Active │ Lag │
-├─────────────────────────────────────────────────────┼──────────┼────────┼─────────┼────────┼────────┼─────┤
-│ Server name unknown at thistime(peerID: Wp0X92Zu)│ Wp0X92Zu │        │false│false│ 0s     │0│
-│ nats-helm-kind-0                                    │ YMpQSy04 │        │false│false│ 47m27s │6│
-│ nats-helm-kind-1                                    │ MGRogjE4 │        │false│false│ 0s     │18│
-│ x-nats-helm-kind-0                                  │ svvjmHnE │        │true│true│ 461ms  │0│
-│ x-nats-helm-kind-1                                  │ XCzEfWSa │        │true│true│ 461ms  │0│
-│ x-nats-helm-kind-2                                  │ XGX0cX6V │ yes    │true│true│ 0s     │0│
-│ x-nats-helm-kind-3                                  │ G7oD67bf │        │true│true│ 461ms  │0│
-╰─────────────────────────────────────────────────────┴──────────┴────────┴─────────┴────────┴────────┴─────╯Remove Offline/Old ServersNow you can begin cleaning up the old server records.
-You can do this either with the CLI or by using NATS directly.CLIUsing the CLI4:$ nats server cluster peer-remove -f <peer ID>Using NATS DirectlyYou can also remove a peer directly by publishing to the JetStream API subjects:$ nats publish'$JS.API.SERVER.REMOVE''{"peer":"","peer_id":"YMpQSy04"}'Which will send a response message on the same channel that confirms the action:{"type":"io.nats.jetstream.api.v1.meta_server_remove_response","success":true}Remove Temporarily Added ServerScale Back Down to Three ServersNow that the number of servers is four instead of six, it’s safe to scale back down to three servers,
-and then remove the record of the server we temporarily added.$ kubectl scale --replicas=3statefulset/nats-helm-kindRemove Peer$ nats server cluster peer-remove -f G7oD67bfSuccess!Finally, the state of the cluster should be restored now, with three servers.About The AuthorJohn Weldon is a Customer Solutions Architect atSynadia Communications.The name of the helm release in this article isnats-helm-kind; it could be anything, often the default is justnats↩︎You can replicate thekindenvironment I used in this article, by referring tothisrepository.↩︎NATS Servers are also called “nodes” - sometimes interchangeably.↩︎Throughout this article I use nats-box to execute nats commands; the simple way to do it from the command line is:kubectl exec -it deployment/nats-helm-kind-box -- nats <command> <args>nats-box is deployed by default in the nats helm chart.For simplicity, I’ll just show the plain NATS command in the examples.↩︎Back to BlogCopyright © NATS Authors 2024NATS is aCloud Native Computing Foundationincubating projectThe Linux Foundation has registered trademarks and uses trademarks.For a list of trademarks of The Linux Foundation, please seeTrademark Usage page.
+[Back to Blog](/blog)
+NASCAR uses NATS to distribute real-time telemetry data
+Jean-Noël Moyne — July 31, 2023
+![](https://d2908q01vomqb2.cloudfront.net/fb644351560d8296fe6da332236b1f8d61b2828a/2023/06/24/NASCAR-1-scaled.jpg)
+Pushing the boundaries from the edge to the cloud at ultra-low latency: how NASCAR uses NATS to deliver real-time racing data to broadcasters, racing teams, and fans.
+Distributing live telemetry data
+NASCAR’s NextGen cars feature a host of changes including being fitted with sensors generating 60 data points hundreds of times per second for the duration of the race. This telemetry data is transmitted over UHF radio waves to the NASCAR mobile data center (literally a data center in a semi-truck trailer that goes to each track venue), where it is then ingested and retransmitted both to the racing teams and broadcasters on-site at the track but also to the AWS cloud where it is both stored for historical analysis and re-distributed in real-time to the team’s back offices and to racing fans.
+Why NATS
+This real-time data is generated at a high rate of speed (literally! 😄) and it is imperative to transmit it safely and with the lowest latency possible to the teams (amongst many other things, streaming sensor data can for example be used to predict mechanical failures as they are about to happen) both on-site and over the cloud to their home-bases.
+Besides latency and throughput, security is another important aspect: “One key feature of NATS incorporated in this design is isolation of the data between different subscribers (multi-tenancy). Ensuring that a given racing team is the only recipient of their car’s telemetry data is essential for competition integrity. Thus, teams who connect to the ERDP to receive live telemetry data are only able to access the appropriate data set for them, in real time.”
+The article
+Learn more about how NASCAR uses NATS in the full AWS blog:
+[Back to Blog](/blog)

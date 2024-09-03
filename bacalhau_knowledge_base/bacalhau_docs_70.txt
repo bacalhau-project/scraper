@@ -1,4 +1,89 @@
 Source: bacalhau_docs
-URL: https://docs.bacalhau.org/examples/molecular-dynamics
+URL: https://docs.bacalhau.org/examples/data-engineering/using-bacalhau-with-duckdb
 
-Bacalhau Docsv.1.4.0v.1.3.0v.1.3.1v.1.3.2v.1.4.0GitHubSlackContactMoreGitHubSlackContactAsk or SearchCtrl+ KWelcomeGetting StartedHow Bacalhau WorksInstallationCreate NetworkHardware SetupContainer OnboardingDocker WorkloadsWebAssembly (Wasm) WorkloadsSetting UpRunning NodesNode OnboardingGPU InstallationJob selection policyAccess ManagementNode persistenceConnect StorageConfiguration ManagementConfiguring Transport Level SecurityLimits and TimeoutsTest Network LocallyBacalhau WebUIWorkload OnboardingContainerDocker Workload OnboardingWebAssembly (Wasm) WorkloadsBacalhau Docker ImageHow To Work With Custom Containers in BacalhauPythonBuilding and Running Custom Python ContainerRunning Pandas on BacalhauRunning a Python ScriptRunning Jupyter Notebooks on BacalhauScripting Bacalhau with PythonR (language)Building and Running your Custom R Containers on BacalhauRunning a Simple R Script on BacalhauRun CUDA programs on BacalhauRunning a Prolog ScriptReading Data from Multiple S3 Buckets using BacalhauRunning Rust programs as WebAssembly (WASM)Generate Synthetic Data using Sparkov Data Generation techniqueData IngestionCopy Data from URL to Public StoragePinning DataRunning a Job over S3 dataNetworking InstructionsAccessing the Internet from JobsUtilizing NATS.io within BacalhauGPU Workloads SetupAutomatic Update CheckingMarketplace DeploymentsGoogle Cloud MarketplaceGuidesWrite a config.yamlWrite a SpecConfigExamplesData EngineeringUsing Bacalhau with DuckDBEthereum Blockchain Analysis with Ethereum-ETL and BacalhauConvert CSV To Parquet Or AvroSimple Image ProcessingOceanography - Data ConversionVideo ProcessingModel InferenceEasyOCR (Optical Character Recognition) on BacalhauRunning Inference on Dolly 2.0 Model with Hugging FaceSpeech Recognition using WhisperStable Diffusion on a GPUStable Diffusion on a CPUObject Detection with YOLOv5 on BacalhauGenerate Realistic Images using StyleGAN3 and BacalhauStable Diffusion Checkpoint InferenceRunning Inference on a Model stored on S3Model TrainingTraining Pytorch Model with BacalhauTraining Tensorflow ModelStable Diffusion Dreambooth (Finetuning)Molecular DynamicsRunning BIDS Apps on BacalhauCoresets On BacalhauGenomics Data GenerationGromacs for AnalysisMolecular Simulation with OpenMM and BacalhauReferencesJobs GuideJob SpecificationJob TypesTask SpecificationEnginesDocker Engine SpecificationWebAssembly (WASM) Engine SpecificationPublishersIPFS Publisher SpecificationLocal Publisher SpecificationS3 Publisher SpecificationSourcesIPFS Source SpecificationLocal Source SpecificationS3 Source SpecificationURL Source SpecificationNetwork SpecificationInput Source SpecificationResources SpecificationResultPath SpecificationConstraint SpecificationLabels SpecificationMeta SpecificationJob TemplatesQueuing & TimeoutsJob QueuingTimeouts SpecificationJob ResultsStateCLI GuideSingle CLI commandsAgentAgent OverviewAgent AliveAgent NodeAgent VersionConfigConfig OverviewConfig Auto-ResourcesConfig DefaultConfig ListConfig SetJobJob OverviewJob DescribeJob ExecJob ExecutionsJob HistoryJob ListJob LogsJob RunJob StopNodeNode OverviewNode ApproveNode DeleteNode ListNode DescribeNode RejectCLI Commands OverviewCommand MigrationAPI GuideBacalhau API overviewBest PracticesAgent EndpointOrchestrator EndpointMigration APINode ManagementAuthentication & AuthorizationDatabase IntegrationDebuggingDebugging Failed JobsDebugging LocallyOpen Telemetry in BacalhauRunning locally in 'devstack'Setting up Dev EnvironmentHelp & FAQBacalhau FAQsRelease NotesGlossaryIntegrationsApache Airflow Provider for BacalhauLilypadBacalhau Python SDKObservability for WebAssembly WorkloadsCommunitySocial MediaStyle GuideWays to ContributePowered by GitBookMolecular DynamicsRunning BIDS Apps on BacalhauCoresets On BacalhauGenomics Data GenerationGromacs for AnalysisMolecular Simulation with OpenMM and BacalhauPreviousStable Diffusion Dreambooth (Finetuning)NextRunning BIDS Apps on BacalhauOn this pageWas this helpful?Edit on GitHubExport as PDFGet SupportExpansoSupportUse CasesDistributed ETLEdge MLDistributed Data WarehousingFlett ManagementAbout UsWho we areWhat we valueNews & BlogBlogNewsExpanso (2024). All Rights Reserved.
+Using Bacalhau with DuckDB
+DuckDB is a relational table-oriented database management system that supports SQL queries for producing analytical results. It also comes with various features that are useful for data analytics.
+DuckDB is suited for the following use cases:
+Processing and storing tabular datasets, e.g. from CSV or Parquet files
+Interactive data analysis, e.g. Joining & aggregate multiple large tables
+Concurrent large changes, to multiple large tables, e.g. appending rows, adding/removing/updating columns
+Large result set transfer to client
+In this example tutorial, we will show how to use DuckDB with Bacalhau. The advantage of using DuckDB with Bacalhau is that you don’t need to install, and there is no need to download the datasets since the datasets are already there on IPFS or on the web.
+Overview
+How to run a relational database (like DUCKDB) on Bacalhau
+Prerequisites
+To get started, you need to install the Bacalhau client, see more information [here](/getting-started/installation)
+Containerize Script using Docker
+You can skip this entirely and directly go to running on Bacalhau.
+If you want any additional dependencies to be installed along with DuckDB, you need to build your own container.
+To build your own docker container, create a Dockerfile
+, which contains instructions to build your DuckDB docker container.
+See more information on how to containerize your script/app [here](https://docs.docker.com/get-started/02_our_app/)
+Build the container
+We will run docker build
+command to build the container:
+Before running the command replace:
+hub-user with your docker hub username, If you don’t have a docker hub account [follow these instructions to create docker account](https://docs.docker.com/docker-id/), and use the username of the account you created
+repo-name with the name of the container, you can name it anything you want
+tag this is not required, but you can use the latest tag
+In our case:
+Push the container
+Next, upload the image to the registry. This can be done by using the Docker hub username, repo name or tag.
+In our case:
+Running a Bacalhau Job
+After the repo image has been pushed to Docker Hub, we can now use the container for running on Bacalhau. To submit a job, run the following Bacalhau command:
+Structure of the command
+Let's look closely at the command above:
+bacalhau docker run
+: call to bacalhaudavidgasquez/datadex:v0.2.0
+: the name and the tag of the docker image we are usingduckdb -s "select 1"
+: execute DuckDB
+When a job is submitted, Bacalhau prints out the related job_id
+. We store that in an environment variable so that we can reuse it later on.
+Declarative job description
+The same job can be presented in the [declarative](/references/jobs/job) format. In this case, the description will look like this:
+The job description should be saved in .yaml
+format, e.g. duckdb1.yaml
+, and then run with the command:
+Checking the State of your Jobs
+Job status: You can check the status of the job using bacalhau job list
+.
+When it says Published
+or Completed
+, that means the job is done, and we can get the results.
+Job information: You can find out more information about your job by using bacalhau job describe
+.
+Job download: You can download your job results directly by using bacalhau job get
+. Alternatively, you can choose to create a directory to store your results. In the command below, we created a directory and downloaded our job output to be stored in that directory.
+Viewing your Job Output
+Each job creates 3 subfolders: the combined_results,per_shard files, and the raw directory. To view the file, run the following command:
+Expected output:
+Running Arbitrary SQL commands
+Below is the bacalhau docker run
+command to to run arbitrary SQL commands over the yellow taxi trips dataset
+Structure of the command
+Let's look closely at the command above:
+bacalhau docker run
+: call to bacalhau-i ipfs://bafybeiejgmdpwlfgo3dzfxfv3cn55qgnxmghyv7vcarqe3onmtzczohwaq \
+: CIDs to use on the job. Mounts them at '/inputs' in the execution.davidgasquez/duckdb:latest
+: the name and the tag of the docker image we are using/inputs
+: path to input datasetduckdb -s
+: execute DuckDB
+Declarative job description
+The same job can be presented in the [declarative](/references/jobs/job) format. In this case, the description will look like this:
+The job description should be saved in .yaml
+format, e.g. duckdb2.yaml
+, and then run with the command:
+When a job is submitted, Bacalhau prints out the related job_id
+. We store that in an environment variable so that we can reuse it later on.
+Job status: You can check the status of the job using bacalhau job list
+.
+Job information: You can find out more information about your job by using bacalhau job describe
+.
+Job download: You can download your job results directly by using bacalhau job get
+. Alternatively, you can choose to create a directory to store your results. In the command below, we created a directory and downloaded our job output to be stored in that directory.
+Viewing your Job Output
+Each job creates 3 subfolders: the combined_results, per_shard files, and the raw directory. To view the file, run the following command:
+Need Support?
+If you have questions or need support or guidance, please reach out to the [Bacalhau team via Slack](https://bacalhauproject.slack.com/ssb/redirect) (#general channel).
+Last updated

@@ -1,109 +1,15 @@
-URL: https://etcd.io/docs/v3.6/op-guide/container/
+Source: etcd_io
+URL: https://etcd.io/docs/v3.4/upgrades/
 
-etcdDocsBlogCommunityInstallPlayVersionsv3.6v3.5v3.4v3.3v3.2v3.1v2.3Versionsv3.6-DRAFTQuickstartDemoTutorialsHow to Set Up a Demo etcd ClusterReading from etcdWriting to etcdHow to get keys by prefixHow to delete keysHow to make multiple writes in a transactionHow to watch keysHow to create leaseHow to create locksHow to conduct leader election in etcd clusterHow to check Cluster statusHow to save the databaseHow to migrate etcd from v2 to v3How to Add and Remove MembersInstallFAQLibraries and toolsMetricsReporting bugsTuningDiscovery service protocolLogging conventionsGolang modulesLearningData modeletcd client designetcd learner designetcd v3 authentication designetcd APIetcd persistent storage filesetcd API guaranteesetcd versus other key-value storesGlossaryDeveloper guideDiscovery service protocolSet up a local clusterInteracting with etcdWhy gRPC gatewaygRPC naming and discoverySystem limitsetcd featuresAPI referenceAPI reference: concurrencyOperations guideAuthentication GuidesRole-based access controlAuthenticationConfiguration optionsTransport security modelClustering GuideRun etcd clusters as a Kubernetes StatefulSetRun etcd clusters inside containersFailure modesDisaster recoveryetcd gatewaygRPC proxyHardware recommendationsMaintenanceMonitoring etcdPerformanceDesign of runtime reconfigurationRuntime reconfigurationSupported platformsVersioningData CorruptionBenchmarksStorage Memory Usage BenchmarkWatch Memory Usage BenchmarkBenchmarking etcd v3Benchmarking etcd v2.2.0-rc-memoryBenchmarking etcd v2.2.0-rcBenchmarking etcd v2.2.0Benchmarking etcd v2.1.0UpgradingUpgrading etcd clusters and applicationsUpgrade etcd from 3.4 to 3.5Upgrade etcd from 3.3 to 3.4Upgrade etcd from 3.2 to 3.3Upgrade etcd from 3.1 to 3.2Upgrade etcd from 3.0 to 3.1Upgrade etcd from 2.3 to 3.0TriageIssue triage guidelinesPR managementv3.5QuickstartDemoTutorialsHow to Set Up a Demo etcd ClusterReading from etcdWriting to etcdHow to get keys by prefixHow to delete keysHow to make multiple writes in a transactionHow to watch keysHow to create leaseHow to create locksHow to conduct leader election in etcd clusterHow to check Cluster statusHow to save the databaseHow to migrate etcd from v2 to v3How to Add and Remove MembersInstallFAQLibraries and toolsMetricsReporting bugsTuningDiscovery service protocolLogging conventionsGolang modulesLearningData modeletcd client designetcd learner designetcd v3 authentication designetcd APIetcd persistent storage filesetcd API guaranteesetcd versus other key-value storesGlossaryDeveloper guideDiscovery service protocolSet up a local clusterInteracting with etcdWhy gRPC gatewaygRPC naming and discoverySystem limitsetcd featuresAPI referenceAPI reference: concurrencyOperations guideAuthentication GuidesRole-based access controlAuthenticationConfiguration optionsTransport security modelClustering GuideRun etcd clusters as a Kubernetes StatefulSetRun etcd clusters inside containersFailure modesDisaster recoveryetcd gatewaygRPC proxyHardware recommendationsMaintenanceMonitoring etcdPerformanceDesign of runtime reconfigurationRuntime reconfigurationSupported platformsVersioningData CorruptionBenchmarksStorage Memory Usage BenchmarkWatch Memory Usage BenchmarkBenchmarking etcd v3Benchmarking etcd v2.2.0-rc-memoryBenchmarking etcd v2.2.0-rcBenchmarking etcd v2.2.0Benchmarking etcd v2.1.0DowngradingDowngrading etcd clusters and applicationsDowngrade etcd from 3.5 to 3.4UpgradingUpgrading etcd clusters and applicationsUpgrade etcd from 3.4 to 3.5Upgrade etcd from 3.3 to 3.4Upgrade etcd from 3.2 to 3.3Upgrade etcd from 3.1 to 3.2Upgrade etcd from 3.0 to 3.1Upgrade etcd from 2.3 to 3.0TriageIssue triage guidelinesPR managementv3.4QuickstartOverviewDemoInstallFAQLibraries and toolsMetricsReporting bugsTuningDiscovery service protocolLogging conventionsLearningData modeletcd client designetcd learner designetcd v3 authentication designetcd3 APIetcd API guaranteesetcd versus other key-value storesGlossaryDeveloper guideDiscovery service protocolSet up a local clusterInteracting with etcdWhy gRPC gatewaygRPC naming and discoverySystem limitsetcd featuresAPI referenceAPI reference: concurrencyOperations guideConfiguration optionsRole-based access controlTransport security modelClustering GuideRun etcd clusters inside containersFailure modesDisaster recoveryetcd gatewaygRPC proxyHardware recommendationsMaintenancePerformanceDesign of runtime reconfigurationRuntime reconfigurationSupported platformsMigrate applications from using API v2 to API v3VersioningData CorruptionMonitoring etcdBenchmarksStorage Memory Usage BenchmarkWatch Memory Usage BenchmarkBenchmarking etcd v3Benchmarking etcd v2.2.0-rc-memoryBenchmarking etcd v2.2.0-rcBenchmarking etcd v2.2.0Benchmarking etcd v2.1.0UpgradingUpgrading etcd clusters and applicationsUpgrade etcd from 3.4 to 3.5Upgrade etcd from 3.3 to 3.4Upgrade etcd from 3.2 to 3.3Upgrade etcd from 3.1 to 3.2Upgrade etcd from 3.0 to 3.1Upgrade etcd from 2.3 to 3.0PlatformsAmazon Web ServicesContainer Linux with systemdFreeBSDTriageIssue Triage Guidelinesv3.3InstallLibraries and toolsMetricsBenchmarksBenchmarking etcd v2.1.0Benchmarking etcd v2.2.0Benchmarking etcd v2.2.0-rcBenchmarking etcd v2.2.0-rc-memoryBenchmarking etcd v3Storage Memory Usage BenchmarkWatch Memory Usage BenchmarkDemoDeveloper guideDiscovery service protocoletcd API Referenceetcd concurrency API ReferenceExperimental APIs and featuresgRPC naming and discoveryInteracting with etcdSet up a local clusterSystem limitsWhy gRPC gatewayDiscovery service protocoletcd v3 APIFrequently Asked Questions (FAQ)Learningetcd client architectureClient feature matrixData modeletcd v3 authentication designetcd versus other key-value storesetcd3 APIGlossaryKV API guaranteesLearnerLogging conventionsOperations guideMonitoring etcdVersioningClustering GuideConfiguration flagsDesign of runtime reconfigurationDisaster recoveryetcd gatewayFailure modesgRPC proxyHardware recommendationsMaintenanceMigrate applications from using API v2 to API v3PerformanceRole-based access controlRun etcd clusters inside containersRuntime reconfigurationSupported systemsTransport security modelPlatformsAmazon Web ServicesContainer Linux with systemdFreeBSDProduction usersReporting bugsTuningUpgradingUpgrade etcd from 2.3 to 3.0Upgrade etcd from 3.0 to 3.1Upgrade etcd from 3.1 to 3.2Upgrade etcd from 3.2 to 3.3Upgrade etcd from 3.3 to 3.4Upgrade etcd from 3.4 to 3.5Upgrading etcd clusters and applicationsv3.2BenchmarksBenchmarking etcd v2.1.0Benchmarking etcd v2.2.0Benchmarking etcd v2.2.0-rcBenchmarking etcd v2.2.0-rc-memoryBenchmarking etcd v3-demoStorage Memory Usage BenchmarkWatch Memory Usage BenchmarkData modelDemoDeveloper guideDiscovery service protocoletcd API referenceetcd concurrency API ReferenceExperimental APIs and featuresgRPC gatewaygRPC naming and discoveryInteracting with etcdSet up a local clusterSystem limitsetcd dev internalDiscovery service protocolLogging conventionsetcd operations guideAuthentication GuideClustering GuideConfiguration flagsDesign of runtime reconfigurationDisaster recoveryetcd gatewaygRPC proxyHardware recommendationsMaintenanceMigrate applications from using API v2 to API v3Monitoring etcdPerformanceRun etcd clusters inside containersRuntime reconfigurationSecurity modelSupported platformsUnderstand failuresVersioningetcd upgradesUpgrade etcd from 2.3 to 3.0Upgrade etcd from 3.0 to 3.1Upgrade etcd from 3.1 to 3.2Upgrade etcd from 3.2 to 3.3Upgrade etcd from 3.3 to 3.4Upgrading etcd clusters and applicationsetcd v3 authentication designetcd versus other key-value storesetcd3 APIFrequently Asked Questions (FAQ)GlossaryInstallKV API guaranteesLibraries and toolsMetricsPlatformsAmazon Web ServicesFreeBSDRun etcd on Container Linux with systemdProduction usersReporting bugsRFCetcd v3 APITuningv3.1Data modelDemoetcd benchmarksetcd v2.1.0-alpha benchmarksetcd v2.2.0 benchmarksetcd v2.2.0-rc benchmarksetcd v2.2.0-rc-memory benchmarksetcd v3-demo benchmarksStorage Memory Usage BenchmarkWatch Memory Usage Benchmarketcd developer guideDiscovery service protocoletcd API ReferenceExperimental APIs and featuresgRPC GatewaygRPC naming and discoveryInteracting with etcdSetup a local clusterSystem limitsetcd internal devDiscovery service protocolLogging conventionsetcd operations guideClustering GuideConfiguration flagsDesign of runtime reconfigurationDisaster recoveryetcd gatewaygRPC proxyHardware recommendationsMaintenanceMigrate applications from using API v2 to API v3Monitoring etcdPerformanceRun etcd clusters inside containersRuntime reconfigurationSecurity modelSupported platformsUnderstand failuresVersioningetcd3 APIFrequently Asked Questions (FAQ)GlossaryInstallKV API guaranteesLibraries and toolsMetricsPlatformsFreeBSDProduction usersReporting bugsRFCetcd v3 APITuningUpgrading etcd clusters and applicationsUpgrade etcd from 2.3 to 3.0Upgrade etcd from 3.0 to 3.1Upgrade etcd from 3.1 to 3.2Upgrade etcd from 3.2 to 3.3Upgrade etcd from 3.3 to 3.4Why etcdv2.3AdministrationAuthentication GuideBackward CompatibilityBenchmarksBenchmarking etcd v2.2.0etcd 2.1.0-alpha benchmarksetcd 2.2.0-rc benchmarksetcd 2.2.0-rc memory benchmarksetcd 3 demo benchmarksStorage Memory Usage BenchmarkWatch Memory Usage BenchmarkClustering GuideConfiguration FlagsDesign of Runtime ReconfigurationDevelopmentDiscovery Service ProtocolError Codeetcd APIetcd v3 APIFAQGlossaryLibraries and ToolsMembers APIMetricsMiscellaneous APIsPlatformsFreeBSProduction UsersProxyReporting BugsRunning etcd under DockerRuntime ReconfigurationSecurity ModelSnapshot MigrationTuningUpgrade etcd from 2.1 to 2.2Upgrade etcd from 2.1 to 2.2Upgrade etcd from 2.2 to 2.3v2 Auth and SecurityVersioningView page sourceEdit this pageCreate child pageCreate documentation issueCreate project issuerktRunning a single node etcdRunning a 3 node etcd clusterDNSDockerRunning a single node etcdRunning a 3 node etcd clusterBare MetalMounting a certificate volumeVersionsv3.6-DRAFTOperations guideRun etcd clusters inside containersRun etcd clusters inside containersRunning etcd with rkt and Docker using static bootstrappingThe following guide shows how to run etcd with rkt and Docker using thestatic bootstrap process.rktRunning a single node etcdThe following rkt run command will expose the etcd client API on port 2379 and expose the peer API on port 2380.Use the host IP address when configuring etcd.export NODE1=192.168.1.21Trust the CoreOSApp Signing Key.sudo rkt trust --prefix quay.io/coreos/etcd
-# gpg key fingerprint is: 18AD 5014 C99E F7E3 BA5F  6CE9 50BD D3E0 FC8A 365ERun thev3.2version of etcd or specify another release version.sudo rkt run --net=default:IP=${NODE1} quay.io/coreos/etcd:v3.2 -- -name=node1 -advertise-client-urls=http://${NODE1}:2379 -initial-advertise-peer-urls=http://${NODE1}:2380 -listen-client-urls=http://0.0.0.0:2379 -listen-peer-urls=http://${NODE1}:2380 -initial-cluster=node1=http://${NODE1}:2380List the cluster member.etcdctl --endpoints=http://192.168.1.21:2379 member listRunning a 3 node etcd clusterSetup a 3 node cluster with rkt locally, using the-initial-clusterflag.exportNODE1=172.16.28.21exportNODE2=172.16.28.22exportNODE3=172.16.28.23# node 1
-sudo rkt run --net=default:IP=${NODE1} quay.io/coreos/etcd:v3.2 -- -name=node1 -advertise-client-urls=http://${NODE1}:2379 -initial-advertise-peer-urls=http://${NODE1}:2380 -listen-client-urls=http://0.0.0.0:2379 -listen-peer-urls=http://${NODE1}:2380 -initial-cluster=node1=http://${NODE1}:2380,node2=http://${NODE2}:2380,node3=http://${NODE3}:2380
-
-# node 2
-sudo rkt run --net=default:IP=${NODE2} quay.io/coreos/etcd:v3.2 -- -name=node2 -advertise-client-urls=http://${NODE2}:2379 -initial-advertise-peer-urls=http://${NODE2}:2380 -listen-client-urls=http://0.0.0.0:2379 -listen-peer-urls=http://${NODE2}:2380 -initial-cluster=node1=http://${NODE1}:2380,node2=http://${NODE2}:2380,node3=http://${NODE3}:2380
-
-# node 3
-sudo rkt run --net=default:IP=${NODE3} quay.io/coreos/etcd:v3.2 -- -name=node3 -advertise-client-urls=http://${NODE3}:2379 -initial-advertise-peer-urls=http://${NODE3}:2380 -listen-client-urls=http://0.0.0.0:2379 -listen-peer-urls=http://${NODE3}:2380 -initial-cluster=node1=http://${NODE1}:2380,node2=http://${NODE2}:2380,node3=http://${NODE3}:2380Verify the cluster is healthy and can be reached.ETCDCTL_API=3 etcdctl --endpoints=http://172.16.28.21:2379,http://172.16.28.22:2379,http://172.16.28.23:2379 endpoint healthDNSProduction clusters which refer to peers by DNS name known to the local resolver must mount thehost’s DNS configuration.DockerIn order to expose the etcd API to clients outside of Docker host, use the host IP address of the container. Please seedocker inspectfor more detail on how to get the IP address. Alternatively, specify--net=hostflag todocker runcommand to skip placing the container inside of a separate network stack.Running a single node etcdUse the host IP address when configuring etcd:export NODE1=192.168.1.21Configure a Docker volume to store etcd data:docker volume create --name etcd-data
-export DATA_DIR="etcd-data"Run the latest version of etcd:REGISTRY=quay.io/coreos/etcd
-# available from v3.2.5
-REGISTRY=gcr.io/etcd-development/etcd
-
-docker run \
-  -p 2379:2379 \
-  -p 2380:2380 \
-  --volume=${DATA_DIR}:/etcd-data \
-  --name etcd ${REGISTRY}:latest \
-  /usr/local/bin/etcd \
-  --data-dir=/etcd-data --name node1 \
-  --initial-advertise-peer-urls http://${NODE1}:2380 --listen-peer-urls http://0.0.0.0:2380 \
-  --advertise-client-urls http://${NODE1}:2379 --listen-client-urls http://0.0.0.0:2379 \
-  --initial-cluster node1=http://${NODE1}:2380List the cluster member:etcdctl --endpoints=http://${NODE1}:2379 member listRunning a 3 node etcd clusterREGISTRY=quay.io/coreos/etcd
-# available from v3.2.5
-REGISTRY=gcr.io/etcd-development/etcd
-
-# For each machine
-ETCD_VERSION=latest
-TOKEN=my-etcd-token
-CLUSTER_STATE=new
-NAME_1=etcd-node-0
-NAME_2=etcd-node-1
-NAME_3=etcd-node-2
-HOST_1=10.20.30.1
-HOST_2=10.20.30.2
-HOST_3=10.20.30.3
-CLUSTER=${NAME_1}=http://${HOST_1}:2380,${NAME_2}=http://${HOST_2}:2380,${NAME_3}=http://${HOST_3}:2380
-DATA_DIR=/var/lib/etcd
-
-# For node 1
-THIS_NAME=${NAME_1}
-THIS_IP=${HOST_1}
-docker run \
-  -p 2379:2379 \
-  -p 2380:2380 \
-  --volume=${DATA_DIR}:/etcd-data \
-  --name etcd ${REGISTRY}:${ETCD_VERSION} \
-  /usr/local/bin/etcd \
-  --data-dir=/etcd-data --name ${THIS_NAME} \
-  --initial-advertise-peer-urls http://${THIS_IP}:2380 --listen-peer-urls http://0.0.0.0:2380 \
-  --advertise-client-urls http://${THIS_IP}:2379 --listen-client-urls http://0.0.0.0:2379 \
-  --initial-cluster ${CLUSTER} \
-  --initial-cluster-state ${CLUSTER_STATE} --initial-cluster-token ${TOKEN}
-
-# For node 2
-THIS_NAME=${NAME_2}
-THIS_IP=${HOST_2}
-docker run \
-  -p 2379:2379 \
-  -p 2380:2380 \
-  --volume=${DATA_DIR}:/etcd-data \
-  --name etcd ${REGISTRY}:${ETCD_VERSION} \
-  /usr/local/bin/etcd \
-  --data-dir=/etcd-data --name ${THIS_NAME} \
-  --initial-advertise-peer-urls http://${THIS_IP}:2380 --listen-peer-urls http://0.0.0.0:2380 \
-  --advertise-client-urls http://${THIS_IP}:2379 --listen-client-urls http://0.0.0.0:2379 \
-  --initial-cluster ${CLUSTER} \
-  --initial-cluster-state ${CLUSTER_STATE} --initial-cluster-token ${TOKEN}
-
-# For node 3
-THIS_NAME=${NAME_3}
-THIS_IP=${HOST_3}
-docker run \
-  -p 2379:2379 \
-  -p 2380:2380 \
-  --volume=${DATA_DIR}:/etcd-data \
-  --name etcd ${REGISTRY}:${ETCD_VERSION} \
-  /usr/local/bin/etcd \
-  --data-dir=/etcd-data --name ${THIS_NAME} \
-  --initial-advertise-peer-urls http://${THIS_IP}:2380 --listen-peer-urls http://0.0.0.0:2380 \
-  --advertise-client-urls http://${THIS_IP}:2379 --listen-client-urls http://0.0.0.0:2379 \
-  --initial-cluster ${CLUSTER} \
-  --initial-cluster-state ${CLUSTER_STATE} --initial-cluster-token ${TOKEN}To runetcdctlusing API version 3:docker exec etcd /usr/local/bin/etcdctl put foo barBare MetalTo provision a 3 node etcd cluster on bare-metal, the examples in thebaremetal repomay be useful.Mounting a certificate volumeThe etcd release container does not include default root certificates. To use HTTPS with certificates trusted by a root authority (e.g., for discovery), mount a certificate directory into the etcd container:REGISTRY=quay.io/coreos/etcd
-# available from v3.2.5
-REGISTRY=docker://gcr.io/etcd-development/etcd
-
-rkt run \
-  --insecure-options=image \
-  --volume etcd-ssl-certs-bundle,kind=host,source=/etc/ssl/certs/ca-certificates.crt \
-  --mount volume=etcd-ssl-certs-bundle,target=/etc/ssl/certs/ca-certificates.crt \
-  ${REGISTRY}:latest -- --name my-name \
-  --initial-advertise-peer-urls http://localhost:2380 --listen-peer-urls http://localhost:2380 \
-  --advertise-client-urls http://localhost:2379 --listen-client-urls http://localhost:2379 \
-  --discovery https://discovery.etcd.io/c11fbcdc16972e45253491a24fcf45e1REGISTRY=quay.io/coreos/etcd
-# available from v3.2.5
-REGISTRY=gcr.io/etcd-development/etcd
-
-docker run \
-  -p 2379:2379 \
-  -p 2380:2380 \
-  --volume=/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt \
-  ${REGISTRY}:latest \
-  /usr/local/bin/etcd --name my-name \
-  --initial-advertise-peer-urls http://localhost:2380 --listen-peer-urls http://localhost:2380 \
-  --advertise-client-urls http://localhost:2379 --listen-client-urls http://localhost:2379 \
-  --discovery https://discovery.etcd.io/86a9ff6c8cb8b4c4544c1a2f88f8b801FeedbackWas this page helpful?YesNoGlad to hear it! Pleasetell us how we can improve.Sorry to hear that. Pleasetell us how we can improve.Last modified January 24, 2023:removed /bin/sh (1be83b2)©
-2013–2024etcd AuthorsTerms|Privacy|Trademarks|LicenseAll Rights Reserved
+[Upgrading etcd clusters and applications](/docs/v3.4/upgrades/upgrading-etcd/)
+Documentation list for upgrading etcd clusters and applications
+Documentation list for upgrading etcd clusters and applications
+Processes, checklists, and notes on upgrading etcd from 3.4 to 3.5
+Processes, checklists, and notes on upgrading etcd from 3.3 to 3.4
+Processes, checklists, and notes on upgrading etcd from 3.2 to 3.3
+Processes, checklists, and notes on upgrading etcd from 3.1 to 3.2
+Processes, checklists, and notes on upgrading etcd from 3.0 to 3.1
+Processes, checklists, and notes on upgrading etcd from 2.3 to 3.0
+Was this page helpful?
+Glad to hear it! Please [tell us how we can improve](https://github.com/etcd-io/website/issues/new).
+Sorry to hear that. Please [tell us how we can improve](https://github.com/etcd-io/website/issues/new).

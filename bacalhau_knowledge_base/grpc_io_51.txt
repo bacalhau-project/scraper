@@ -1,9 +1,47 @@
-URL: https://grpc.io/docs/languages/kotlin/
+Source: grpc_io
+URL: https://grpc.io/docs/guides/reflection/
 
-gRPCAboutMeetDocsGuidesShowcaseBlogCommunitygRPConf 2024 is happening NEXT WEEK onAug. 27th!-Register nowand get 25% off with the code GOOGLE25.DocsWhat is gRPC?IntroductionCore conceptsFAQLanguagesC# / .NETAPI (legacy)Daily builds (legacy)C++Quick startBasics tutorialAsync-API tutorialAsynchronous Callback API TutorialBest Practices for gRPC C++ API and FAQALTSAPIDartQuick startBasics tutorialAPIGoQuick startBasics tutorialALTSAPIGenerated codeJavaQuick startBasics tutorialALTSAPIGenerated codeKotlinQuick startBasics tutorialAPINodeQuick startBasics tutorialAPIObjective-CQuick startBasics tutorialOAuth2APIPHPQuick startBasics tutorialAPIDaily buildsPythonQuick startBasics tutorialALTSGenerated codeAPIDaily buildsRubyQuick startBasics tutorialAPIDaily buildsPlatformsAndroidJavaQuick startBasics tutorialAPIKotlinQuick startAPIWebQuick startBasics tutorialGuidesAuthenticationBenchmarkingCancellationCompressionCustom Backend MetricsCustom Load Balancing PoliciesCustom Name ResolutionDeadlinesDebuggingError handlingFlow ControlHealth CheckingInterceptorsKeepaliveMetadataOpenTelemetry MetricsPerformance Best PracticesReflectionRequest HedgingRetryService ConfigStatus CodesWait-for-ReadyView page sourceEdit this pageCreate child pageCreate documentation issueCreate project issueLearn moreReferenceOtherJoin the conversationDeveloper stories and talksDocsLanguagesKotlinKotlinQuick startRun your first Kotlin gRPC app in minutes!Basics tutorialLearn about Kotlin gRPC basics.Learn moreExamplesReferenceAPIOtherKotlin for Androidgrpc-kotlin repoDownloadJoin the conversationThe JetBrainsKotlin Slackhas agRPC channelwhere you can ask technical
-questions specific to gRPC Kotlin and chat with other developers. If you would
-like an invitation to join the Kotlin Slack, complete and submit theKotlin
-Slack Sign-upform.For more community resources, see the gRPCCommunityand theKotlin
-communitypages.Developer stories and talksExpedia Group Case Study: Bootiful APIs With GraphQL and Kotlin,
-byAnton Arhipov,JetBrains,December 2020.DoorDash Case Study: Building Scalable Backend Services with Kotlin,
-byAlina Dolgikh,JetBrains,December 2020.Next Level gRPC With Kotlin and CoroutinesAgRPC Conf 2020 presentationby Marco Ferrer, OfferUp.Last modified March 11, 2021:Add Kotlin gRPC case studies (#721) (587657c)View page sourceEdit this pageCreate child pageCreate documentation issueCreate project issue© 2024 gRPC AuthorsTerms|Privacy|Trademarks|License|About
+Reflection
+Explains how reflection can be used to improve the transparency and interpretability of RPCs.
+Reflection
+Overview
+Reflection is [a
+protocol](https://github.com/grpc/grpc-proto/blob/master/grpc/reflection/v1/reflection.proto)
+that gRPC servers can use to declare the protobuf-defined APIs they export over
+a standardized RPC service, including all types referenced by the request and
+response messages. Clients can then use this information to encode requests and
+decode responses in human-readable manner.
+Reflection is used heavily by debugging tools such as
+[ grpcurl](https://github.com/fullstorydev/grpcurl) and
+[Postman](https://learning.postman.com/docs/sending-requests/grpc/grpc-client-overview/). One coming from the REST world might compare the gRPC reflection API to serving an OpenAPI document on the HTTP server presenting the REST API being described.
+Transparency and Interpretability
+A big contributor to gRPC’s stellar performance is the use of Protobuf for
+serialization – a binary non-human-readable protocol. While this greatly
+speeds up an RPC, it can also make it more difficult to manually interact with a
+server. Hypothetically, in order to manually send a gRPC request to a server
+over HTTP/2 using curl
+, you would have to:
+- Know which RPC services the server exposed.
+- Know the protobuf definition of the request message and all types it references.
+- Know the protobuf definition of the response message all the types it references.
+Then, you’d have to use that knowledge to hand-craft your request message(s) into binary and painstakingly decode the response message(s). This would be time consuming, frustrating, and error prone. Instead, the reflection protocol enables tools to automate this whole process, making it invisible.
+Enabling Reflection on a gRPC Server
+Reflection is not automatically enabled on a gRPC server. The server author
+must call a few additional functions to add a reflection service. These API calls
+differ slightly from language to language and, in some languages, require adding
+a dependency on a separate package, named something like grpc-reflection
+Follow these links below for details on your specific language:
+Language | Guide |
+---|---|
+Java |
+|
+[Go example](https://github.com/grpc/grpc-go/tree/master/examples/features/reflection)[C++ example](https://github.com/grpc/grpc/tree/master/examples/cpp/reflection)[Python example](https://github.com/grpc/grpc/blob/master/examples/python/helloworld/greeter_server_with_reflection.py)[Javascript example](https://github.com/grpc/grpc-node/blob/master/examples/reflection/server.js)Tips
+Reflection works so seamlessly with tools such as grpcurl
+that oftentimes,
+people aren’t even aware that it’s happening under the hood. However, if
+reflection isn’t exposed, things won’t work seamlessly at all. Instead, the
+client will fail with nasty errors. People often run into this when writing the
+routing configuration for a gRPC service. The reflection service must be
+routed to the appropriate backend as well as the application’s main RPC service.
+If your gRPC API is accessible to public users, you may not want to expose the reflection service, as you may consider this a security issue. Ultimately, you will need to make a call here that strikes the best balance between security and ease-of-use for you and your users.
+[Add link to javascript reflection example (#1292) (de015fd)](https://github.com/grpc/grpc.io/commit/de015fd98ea2004bf5e202b269d78dca19406138)

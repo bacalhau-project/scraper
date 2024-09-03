@@ -1,14 +1,141 @@
-URL: https://nats.io/blog/i-flow-case-study/
+Source: nats_io
+URL: https://nats.io/blog/jetstream-eventual-consistency/
 
-AboutDownloadDocumentationBlogCommunitySupportPrivacyReal-time analytics from Edge to multiple factories with NATS and i-flowJan Strehl— July 22, 2024Back to BlogIn the competitive landscape of the manufacturing industry (e.g., automotive), achieving efficient and scalable operations across multiple factory locations is critical. This case study examines the implementation of a real-time analytics solution using NATS and i-flow to overcome common challenges such as data silos, real-time processing requirements, scalability, and communication inefficiencies in OT/IT environments. The primary design goal was to seamlessly scale real-time analytics across various factory locations.ChallengeThere are several critical challenges that typically hinder operational efficiency and scalability through real-time analytics:Data Silos
-Integration Difficulties: Integrating data from disparate sources and systems is challenging, especially when dealing with a wide array of equipment and software.
-Fragmented OT Data: OT data is fragmented across various factory systems, leading to inconsistencies and difficulties in data management.
-Legacy Systems: The presence of legacy systems further complicates the integration process, requiring customized solutions.No Real-Time Processing: There is an urgent need for real-time data processing and analysis to optimize manufacturing operations. Delays in data availability hinders timely decision-making and operational adjustments.No Scalability: Integrating operations including thousands of machines and dozens of IT systems increases the volume of data. Existing infrastructures struggle to manage this growth efficiently while maintaining the flexibility to adapt.Unreliable Communication: Ensuring reliable and effective communication between factory systems and enterprise-level applications is key. Today’s fragmented OT/IT infrastructures across sites hinder seamless connectivity and real-time data processing.SolutionNATS serves as the edge and enterprise-level messaging system, ensuring seamless and reliable communication across all levels of the organization. i-flow functions as the connectivity, harmonization, and NATS publishing layer for OT data, effectively integrating and standardizing data from various sources before publishing it to NATS for real-time processing and analysis.Why NATS?High throughput
-NATS is capable of handling high volumes of data, which is essential for scaling operations across multiple factory locations. This high throughput capability supports the increasing data demands as more machines and systems are integrated.Reliable Communication
-NATS ensures reliable communication between different components of the manufacturing system and across all enterprise levels. This reliability is vital for maintaining seamless operations and ensuring data integrity.Scalability
-The architecture of NATS allows for easy scalability, accommodating the growth of the company’s manufacturing operations. As new factories and use cases are added, NATS can integrate them into the existing system without significant reconfiguration.100% deployed on premise
-NATS is easy to deploy and scale with the need for black boxed Cloud based services. This provides maximum confidentiality to the end user.Implementation StepsOT Connectivity with i-flow:i-flow is deployed at Factory Edge level to provide bidirectional connectivity for real-time data exchange and integration between NATS and various OT systems. This includes PLCs, SCADA systems, MES and sensors.Harmonization with i-flow:i-flow harmonizes the OT data, ensuring it is consistent and standardized across different systems. This process involves cleaning, transforming, formatting and normalizing the data.Publishing and Subscribing Data with i-flow:i-flow publishes harmonized OT data to NATS, enabling real-time data streaming from OT systems to enterprise applications. Additionally, i-flow subscribes to data from NATS, facilitating bidirectional communication between OT systems and enterprise-level applications.Edge and Enterprise-Level Data Processing with NATS:Messaging: NATS acts as the messaging backbone, providing low-latency, high-throughput messaging capabilities. It ensures reliable communication between different components of the manufacturing system and across all enterprise levels.Real-Time Monitoring: Enterprise applications subscribe to relevant topics on NATS to receive real-time updates from the factory floor.Analytics and Reporting: The data is processed and analyzed to generate insights, which are used for decision-making, predictive maintenance, and optimizing production processes.ArchitectureBenefitsThe implementation of NATS and i-flow brings significant benefits to customers and improves key aspects of their digital infrastructure.Improved EfficiencyReal-Time Data Integration and Processing: The integration and real-time processing of data leads to more efficient manufacturing operations by ensuring that critical information was always up-to-date and readily available.
-Faster Decision-Making: Real-time insights from the factory floor enable faster and more informed decisions and optimize the response to operational challenges.Enhanced Data VisibilityCentralized Data: The centralized data repository provides a holistic view of manufacturing operations across multiple locations, enabling better monitoring and management.
-Improved Production Metrics: The enhanced visibility into production metrics and Key Performance Indicators (KPIs) allows for more accurate tracking of performance and identification of areas for improvement.Cost SavingsOptimized Production Processes: Significant cost savings and increased productivity through real-time insights, resulting in reduced downtime and faster decision-making.
-Reduced Data and System Integration Costs: The seamless integration of OT and IT systems through i-flow and NATS reduces the time and resources required for data and system integration.Scalability and FlexibilityScalable Architecture: Combination of NATS and i-flow provides a scalable architecture that grows with the company’s needs. New systems and use-cases can easily be integrated without reconfiguration.
-Flexibility: The solution supports various communication protocols and data formats which ensures compatibility with different OT systems. This provides the flexibility needed to adapt to changing requirements.ConclusionLeveraging NATS for edge & enterprise-level messaging and i-flow for scalable integration significantly enhances manufacturing operations. This integrated solution offers real-time data processing, improved communication, and scalability, resulting in notable efficiency gains and cost savings for manufacturing companies.About i-flowi-flow is dedicated to empowering manufacturers with the world’s most intuitive software to seamlessly integrate factory systems at scale. Over 400 million data operations daily in production-critical environments not only demonstrate the scalability of the software, but also the deep trust our customers place in i-flow. Close cooperation with our customers and partners worldwide, including renowned Fortune 500 companies and industry leaders such as Bosch, Sto and Lenze, is at the heart of our business. Industry 4.0 enthusiasts love i-flow due to:Simplicity by Design: i-flow prioritizes ease-of-use, enabling customers to connect OT and IT systems effortlessly, avoiding technical hurdles.Unlimited Connectivity: The software boasts over 200 connectors for common OT and IT systems, significantly reducing the effort and time required to integrate and connect different systems and processes.Real-time Monitoring: i-flow offers crucial real-time insights and metrics, allowing users to optimize and maintain their digital ecosystems with ease.Back to BlogCopyright © NATS Authors 2024NATS is aCloud Native Computing Foundationincubating projectThe Linux Foundation has registered trademarks and uses trademarks.For a list of trademarks of The Linux Foundation, please seeTrademark Usage page.
+[Back to Blog](/blog)
+Delegate with trust
+Vincent Vermersch — May 21, 2024
+![The problem](/img/blog/jetstream-eventual-consistency.png)
+When speaking about async patterns (messaging, event sourcing, etc.) with other developers, they often seem afraid of eventual consistency. However, it is often expressed in the form of:
+The frontend needs the answer directly
+The business process needs to be validated with perfect data
+My next page needs fresh data to display properly
+With a messaging system, you have to wait for the message to be processed and the state to be updated. Then you can query it with trust. In the happy path, this could be something reasonable like 30ms, but it could be arbitrarily long if there is an interruption in the flow.
+With a classic CRUD system, you write to your database and query it directly with trust.
+How can I delegate the job and be sure that it’ll be done or that I get an error if it can’t be done?
+Let’s dive into use cases and tactics where I can gain the same trust using NATS JetStream.
+There can only be one
+I have a payment system, and in this system, we must withdraw the customer for a given orderID
+only once!
+Sadly, our partner who triggers the payment can call us multiple times with sometimes a 1-day delay.
+Here, we use one subject per order to store its payment log. The subject will contain only one message, the withdrawal. Using publish expectations, I can be sure that there will be only one subject per order payment.
+const nc = connect();
+const js = nc.jetstream();
+// Generate a unique order ID.
+const orderID = shortUID();
+// Using a lastSubjectSequence of 0 requires this message
+// to be the first one for the subject in the stream.
+await js.publish(`payment.${orderID}`, Empty, {
+expect: { lastSubjectSequence: 0 }
+});
+The impatient clicker
+The customer always clicks multiple times on the same button, so it calls the backend and duplicates messages! This triggers side effects multiple times, creating spam and downstream issues for business intelligence.
+NATS JetStream has a built-in deduplication system based on message ID for a given time window. The window is configured in nanoseconds at the stream level.
+const nc = connect();
+const jsm = await nc.jetstreamManager();
+// Create the stream with an explicit 5s deduplication window.
+await jsm.streams.add({
+name: "a",
+subjects: ["a.*"],
+duplicate_window: 5_000_000_000
+});
+const js = nc.jetstream();
+// If this message is published twice within 5s, only the first published will be stored.
+await js.publish("a.b", Empty, { msgID: "a" });
+Business rule
+In my order process, I can’t refund more than the price of the order.
+I can query my order subject like I would query my database. Data is up to date.
+Here, I’ll check the OrderPassed
+event to get the amount and my business rule.
+const nc = connect();
+const jsm = await nc.jetstreamManager();
+const codec = JSONCodec();
+const refund = {
+amount: 10
+};
+// Create a temporary ordered consumer fetching all events for my order ID.
+const c = await js.consumers.get(stream, {
+filterSubject: `*.${orderID}`
+});
+// Get all messages for this order and publish only if the condition matches.
+const messages = await c.consume();
+for await (const m of messages) {
+const event = codec.decode(m.body);
+if(event.name == 'OrderProcessed') {
+if(event.data.price < refund.amount) {
+await js.publish(`refund.${orderID}`, codec.encode(refund));
+break;
+}
+}
+}
+Yes, message processing like this can help to build a state from all previous events. You rebuild the freshest state fetching previous events.
+All these solutions could be elegantly applied in an
+[Aggregate](https://domaincentric.net/blog/event-sourcing-aggregates-vs-projections)
+if you need this tactic.
+Maintain Order
+I have a payment system, and for the refund process, I need first to have double human validation. Then the refund can append. And it must append only once.
+For a refund subject, I will say that the refund must be exactly in 3rd place or fail.
+// connect to NATS
+const nc = connect();
+// create a JetStream client:
+const js = nc.jetstream();
+const orderID = shortUID();
+// The message should be the first on the subject
+await js.publish(`refund.${orderID}`, Empty, {
+expect: { lastSubjectSequence: 2 }
+});
+Hint :
+In NATS, the sequence applies to the whole stream. In this example, I assume I have only one refund in the whole stream (which is not for production).
+For example, if I have in my streams 2 orders the sequences will be :
+- refund.uuid-order-1 -> seq 1
+- refund.uuid-order-1 -> seq 2
+- refund.uuid-order-2 -> seq 3
+- refund.uuid-order-2 -> seq 4
+- refund.uuid-order-2 -> seq 5
+If I write my Refund after all this, the lastSubjectSequence
+should be 6 to maintain ordering.
+To get the current sequence :
+- When subscribing to a subject, the received event contains the sequence. I can store the last subscribed and use it.
+- Fetching the last event metadata before writing (as in the
+Business rule
+example). - Save the sequence of your last write in memory
+Too many events
+I have a boiler that sends an event every 10 milliseconds. To adapt room temperature, I need to compare current temperature with an average water temperature from the last hour.
+To get this average water temperature I will need to read every events from the last hour, it means reading 36 0000 events.
+To make this faster, you can create one snapshot
+event every hour.
+Then read this snapshot stream to validate your business rule.
+const nc = connect();
+const jsm = await nc.jetstreamManager();
+const codec = JSONCodec();
+// Create a temporary ordered consumer fetching events from last hour
+const c = await js.consumers.get(stream, {
+filterSubject: `boiler.${boilerID}`
+});
+let totalTemperature = 0;
+let temperaturePoints = 0;
+let lastSnapshot = Date.now() / 1000 | 0;
+// Subscription to build the snapshot
+const messages = await c.consume();
+for await (const m of messages) {
+const event = codec.decode(m.body);
+totalTemperature+= event.data.temperature;
+temperaturePoints++;
+if(event.data.created_at-lastSnapshot >= 3600) {
+const now = Date.now() / 1000 | 0;
+// Publish to snapshot subject
+await js.publish(`boiler.${boilerID}.hourly-snapshot`, {
+temperature : averageTemperature/temperaturePoints,
+created_at : now,
+temperature_points: temperaturePoints
+});
+totalTemperature = 0;
+temperaturePoints = 0;
+lastSnapshot = now;
+}
+}
+About the Author
+[Vincent Vermersch](https://www.linkedin.com/in/vincent-vermersch)
+, SAAAS Architect. I build digital factories since 2002.
+Mainly for data driven products on marketing and e-commerce industry.
+Event sourcer, event modeler, Wardley mapper and micro phenomenology practitioner.
+[Back to Blog](/blog)

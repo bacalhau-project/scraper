@@ -1,61 +1,114 @@
 Source: grpc_io
-URL: https://grpc.io/docs/guides/request-hedging/
+URL: https://grpc.io/docs/platforms/android/kotlin/quickstart/
 
-gRPCAboutMeetDocsGuidesShowcaseBlogCommunitygRPConf 2024 is happening NEXT WEEK onAug. 27th!-Register nowand get 25% off with the code GOOGLE25.DocsWhat is gRPC?IntroductionCore conceptsFAQLanguagesC# / .NETAPI (legacy)Daily builds (legacy)C++Quick startBasics tutorialAsync-API tutorialAsynchronous Callback API TutorialBest Practices for gRPC C++ API and FAQALTSAPIDartQuick startBasics tutorialAPIGoQuick startBasics tutorialALTSAPIGenerated codeJavaQuick startBasics tutorialALTSAPIGenerated codeKotlinQuick startBasics tutorialAPINodeQuick startBasics tutorialAPIObjective-CQuick startBasics tutorialOAuth2APIPHPQuick startBasics tutorialAPIDaily buildsPythonQuick startBasics tutorialALTSGenerated codeAPIDaily buildsRubyQuick startBasics tutorialAPIDaily buildsPlatformsAndroidJavaQuick startBasics tutorialAPIKotlinQuick startAPIWebQuick startBasics tutorialGuidesAuthenticationBenchmarkingCancellationCompressionCustom Backend MetricsCustom Load Balancing PoliciesCustom Name ResolutionDeadlinesDebuggingError handlingFlow ControlHealth CheckingInterceptorsKeepaliveMetadataOpenTelemetry MetricsPerformance Best PracticesReflectionRequest HedgingRetryService ConfigStatus CodesWait-for-ReadyView page sourceEdit this pageCreate child pageCreate documentation issueCreate project issueOverviewUse casesConfiguring hedging in gRPCHedging policyThrottling Hedged RPCsServer PushbackResourcesLanguage SupportDocsGuidesRequest HedgingRequest HedgingExplains what request hedging is and how you can configure it.ContentsOverviewUse casesConfiguring hedging in gRPCHedging policyThrottling Hedged RPCsServer PushbackResourcesLanguage SupportRequest HedgingExplains what request hedging is and how you can configure it.OverviewHedging is one of two configurable retry policies supported by gRPC. With
-hedging, a gRPC client sends multiple copies of the same request to different
-backends and uses the first response it receives. Subsequently, the client
-cancels any outstanding requests and forwards the response to the application.Use casesHedging is a technique to reduce tail latency in large scale distributed
-systems. While naive implementations could add significant load to the backend
-servers, it is possible to get most of the latency reduction effects while
-increasing load only modestly.For an in-depth discussion on tail latencies, see the seminal article,The Tail
-At Scale, by Jeff Dean and Luiz André
-Barroso.Configuring hedging in gRPCHedging is configurable viagRPC Service Config, at a per-method granularity.
-The configuration contains the following knobs:"hedgingPolicy": {
-  "maxAttempts": INTEGER,
-  "hedgingDelay": JSON proto3 Duration type,
-  "nonFatalStatusCodes": JSON array of grpc status codes (int or string)
-}maxAttempts: maximum number of in-flight requests while waiting for a
-successful response. This is a mandatory field, and must be specified. If the
-specified value is greater than5, gRPC uses a value of5.hedgingDelay: amount of time that needs to elapse before the client sends out
-the next request while waiting for a successful response. This field is
-optional, and if left unspecified, results inmaxAttemptsnumber of requests
-all sent out at the same time.nonFatalStatusCodes: an optional list of grpc status codes. If any of hedged
-requests fails with a status code that is not present in this list, all
-outstanding requests are canceled and the response is returned to the
-application.Hedging policyWhen the application makes an RPC call that contains ahedgingPolicyconfiguration in the Service Config, the original RPC is sent immediately, as
-with a standard non-hedged call. AfterhedgingDelayhas elapsed without a
-successful response, the second RPC will be issued. If neither RPC has received
-a response afterhedgingDelayhas elapsed again, a third RPC is sent, and so
-on, up tomaxAttempts. gRPC call deadlines apply to the entire chain of hedged
-requests. Once the deadline has passed, the operation fails regardless of
-in-flight RPCS, and regardless of the hedging configuration.When a successful response is received (in response to any of the hedged
-requests), all outstanding hedged requests are canceled and the response is
-returned to the client application layer.If an error response with a non-fatal status code (controlled by thenonFatalStatusCodesfield) is received from a hedged request, then the next
-hedged request in line is sent immediately, shortcutting its hedging delay. If
-any other status code is received, all outstanding RPCs are canceled and the
-error is returned to the client application layer.If all instances of a hedged RPC fail, there are no additional retry attempts.
-Essentially, hedging can be seen as retrying the original RPC before a failure
-is even received.If server pushback that specifies not to retry is received in response to a
-hedged request, no further hedged requests should be issued for the call.Throttling Hedged RPCsgRPC provides a way to throttle hedged RPCs to prevent server overload.
-Throttling can be configured via the Service Config as well using theRetryThrottlingPolicymessage. The throttling configuration contains the
-following:"retryThrottling": {
-  "maxTokens": 10,
-  "tokenRatio": 0.1
-}For each server name, the gRPC client maintains atoken_countwhich is
-initially set tomax_tokens. Every outgoing RPC (regardless of service or
-method invoked) changestoken_countas follows:Every failed RPC will decrement thetoken_countby1.Every successful RPC will increment thetoken_countbytoken_ratio.With hedging, the first request is always sent out, but subsequent hedged
-requests are sent only iftoken_countis greater than the threshold (defined
-asmax_tokens / 2). Iftoken_countis less than or equal to the threshold,
-hedged requests do not block. Instead they are canceled, and if there are no
-other already-sent hedged RPCs the failure is returned to the client
-application.The only requests that are counted as failures for the throttling policy are the
-ones that fail with a status code that qualifies as a non-fatal status code, or
-that receive a pushback response indicating not to retry. This avoids conflating
-server failure with responses to malformed requests (such as theINVALID_ARGUMENTstatus code).Server PushbackServers may explicitly pushback by setting metadata in their response to the
-client. If the pushback says not to retry, no further hedged requests will be
-sent. If the pushback says to retry after a given delay, the next hedged request
-(if any) will be issued after the given delay has elapsed.Server pushback is specified using the metadata key,grpc-retry-pushback-ms.
-The value is an ASCII encoded signed 32-bit integer with no unnecessary leading
-zeros that represents how many milliseconds to wait before sending the next
-hedged request. If the value for pushback is negative or unparseble, then it
-will be seen as the server asking the client not to retry at all.ResourcesThe Tail At ScalegRPC Service ConfiggRPC Retry DesignLanguage SupportLanguageExampleJavaJava exampleC++Not yet availableGoNot yet supportedLast modified October 3, 2023:Add a guide for request hedging (#1199) (d357308)View page sourceEdit this pageCreate child pageCreate documentation issueCreate project issue© 2024 gRPC AuthorsTerms|Privacy|Trademarks|License|About
+Quick start
+This guide gets you started with Kotlin gRPC on Android with a simple working example.
+Quick start
+Prerequisites
+[Kotlin](https://kotlinlang.org)version 1.3 or higher[JDK](https://jdk.java.net)version 7 or higherAndroid SDK, API level 16 or higher
+Install
+[Android Studio](https://developer.android.com/studio/index.html#downloads)or the Android[command-line tools](https://developer.android.com/studio/index.html#command-tools).Let other tools and scripts know where to find your Android SDK by setting the following environment variable:
+$ export ANDROID_SDK_ROOT="<path-to-your-android-sdk>"
+An android device set up for
+[USB debugging](https://developer.android.com/studio/command-line/adb.html#Enabling)or an[Android Virtual Device](https://developer.android.com/studio/run/managing-avds.html)
+Note
+gRPC Kotlin does not support running a server on an Android device. For this quick start, the Android client app will connect to a server running on your local (non-Android) computer.Get the example code
+The example code is part of the [grpc-kotlin](https://github.com/grpc/grpc-kotlin) repo.
+[Download the repo as a zip file](https://github.com/grpc/grpc-kotlin/archive/master.zip)and unzip it, or clone the repo:$ git clone https://github.com/grpc/grpc-kotlin
+Change to the examples directory:
+$ cd grpc-kotlin/examples
+Run the example
+Compile the server:
+$ ./gradlew installDist
+Run the server:
+$ ./server/build/install/server/bin/hello-world-server Server started, listening on 50051
+From another terminal, build the client and install it on your device:
+$ ./gradlew :android:installDebug
+Launch the client app from your device.
+Type “Alice” in the Name box and click Send. You’ll see the following response:
+Hello Alice
+Congratulations! You’ve just run a client-server application with gRPC.
+Update the gRPC service
+In this section you’ll update the application by adding an extra server method.
+The gRPC service is defined using [protocol buffers](https://developers.google.com/protocol-buffers). To learn more about
+how to define a service in a .proto
+file see [Basics tutorial](/docs/languages/kotlin/basics/). For now, all
+you need to know is that both the server and the client stub have a SayHello()
+RPC method that takes a HelloRequest
+parameter from the client and returns a
+HelloReply
+from the server, and that the method is defined like this:
+// The greeting service definition.
+service Greeter {
+// Sends a greeting
+rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+// The request message containing the user's name.
+message HelloRequest {
+string name = 1;
+}
+// The response message containing the greetings
+message HelloReply {
+string message = 1;
+}
+Open helloworld/hello_world.proto
+from the
+[protos/src/main/proto/io/grpc/examples](https://github.com/grpc/grpc-kotlin/tree/master/examples/protos/src/main/proto/io/grpc/examples) folder, and add a
+new SayHelloAgain()
+method, with the same request and response types:
+// The greeting service definition.
+service Greeter {
+// Sends a greeting
+rpc SayHello (HelloRequest) returns (HelloReply) {}
+// Sends another greeting
+rpc SayHelloAgain (HelloRequest) returns (HelloReply) {}
+}
+// The request message containing the user's name.
+message HelloRequest {
+string name = 1;
+}
+// The response message containing the greetings
+message HelloReply {
+string message = 1;
+}
+Remember to save the file!
+Update the app
+When you build the example, the build process regenerates HelloWorldProtoGrpcKt.kt
+,
+which contains the generated gRPC client and server classes. This also
+regenerates classes for populating, serializing, and retrieving our request and
+response types.
+However, you still need to implement and call the new method in the hand-written parts of the example app.
+Update the server
+Follow the instructions given in [Update the
+server](/docs/languages/kotlin/quickstart/#update-the-server) of the Kotlin
+quick start page.
+Update the client
+Follow these steps:
+Open
+helloworld/MainActivity.kt
+from the[client/src/main/kotlin/io/grpc/examples](https://github.com/grpc/grpc-kotlin/blob/master/examples/android/src/main/kotlin/io/grpc/examples)folder.Locate the function containing the call to
+sayHello()
+. You’ll see these lines of code:val response = greeter.sayHello(request) responseText.text = response.message
+Add a call to
+sayHelloAgain()
+and change how the response message is created. Replace the lines of code above with the following:val response = greeter.sayHello(request) val againResponse = greeter.sayHelloAgain(request) val message = "${response.message}\n${againResponse.message}" responseText.text = message
+Run the updated app
+Run the client and server like you did before. Execute the following commands
+from the examples
+directory:
+Compile the server:
+$ ./gradlew installDist
+Run the server:
+$ ./server/build/install/server/bin/hello-world-server Server started, listening on 50051
+From another terminal, build the client and install it on your device:
+$ ./gradlew :android:installDebug
+Launch the client app from your device.
+Type “Alice” in the Message box and click Send. You’ll see the following response:
+Hello Alice Hello again Alice
+What’s next
+- Learn how gRPC works in
+[Introduction to gRPC](/docs/what-is-grpc/introduction/)and[Core concepts](/docs/what-is-grpc/core-concepts/). - Work through the
+[Basics tutorial](/docs/languages/kotlin/basics/)for Kotlin/JVM. - Explore the
+[API reference](../api).
+[Fix typo in Kotlin quickstart (#1205) (cad984c)](https://github.com/grpc/grpc.io/commit/cad984c4892484908db3daa9b38ac2b1b81f603d)

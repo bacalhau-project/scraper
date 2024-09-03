@@ -1,3 +1,41 @@
-URL: https://grpc.io/docs/languages/cpp/api/
+Source: grpc_io
+URL: https://grpc.io/docs/guides/cancellation/
 
-GRPC C++1.66.0GRPC CoreThe GRPC Core library is a low-level library designed to be wrapped by higher level libraries. The top-level API is provided ingrpc.h. Security related functionality lives ingrpc_security.h.Generated on Thu Aug 22 2024 20:29:49 for GRPC C++ by1.8.17
+Cancellation
+Explains how and when to cancel RPCs.
+Cancellation
+Overview
+When a gRPC client is no longer interested in the result of an RPC call, it may
+cancel to signal this discontinuation of interest to the server.
+[Deadline](/docs/guides/deadlines/) expiration and I/O errors
+also trigger cancellation. When an RPC is cancelled, the server should stop
+any ongoing computation and end its side of the stream. Often, servers are also
+clients to upstream servers, so that cancellation operation should ideally
+propagate to all ongoing computation in the system that was initiated due to
+the original client RPC call.
+A client may cancel an RPC for several reasons. The data it requested may have been made irrelevant or the author of the client may want to be a good citizen of the server and conserve compute resources.
+sequenceDiagram
+Client ->> Server 1: Cancel
+Server 1 ->> Server 2: Cancel
+Cancelling an RPC Call on the Client Side
+A client cancels an RPC call by calling a method on the call object or, in some languages, on the accompanying context object. While gRPC clients do not provide additional details to the server about the reason for the cancellation, the cancel API call takes a string describing the reason, which will result in a client-side exception and/or log containing the provided reason. When a server is notified of the cancellation of an RPC, the application-provided server handler may be busy processing the request. The gRPC library in general does not have a mechanism to interrupt the application-provided server handler, so the server handler must coordinate with the gRPC library to ensure that local processing of the request ceases. Therefore, if an RPC is long-lived, its server handler must periodically check if the RPC it is servicing has been cancelled and if it has, cease processing. Some languages will also support automatic cancellation of anyoutgoing RPCs, while in others, the author of the server handler is responsible for this.
+flowchart LR
+subgraph Client
+end
+subgraph Server1
+direction TB
+cancelled{cancelled?} -->|false| perform("perform some work")
+perform --> cancelled
+cancelled -->|true| cleanup("cancel upstream RPCs")
+cleanup --> exit("exit RPC handler")
+end
+subgraph Server2
+end
+Client -->|CANCEL| Server1
+Server1 -->|CANCEL| Server2
+Language Support
+Language | Example | Notes |
+---|---|---|
+Java |
+|
+[Example](https://github.com/grpc/grpc-go/tree/master/examples/features/cancellation)[Example](https://github.com/grpc/grpc/tree/master/examples/cpp/cancellation)[Example](https://github.com/grpc/grpc/tree/master/examples/python/cancellation)[Use absolute paths instead of absolute URLs (#1268) (4f733b4)](https://github.com/grpc/grpc.io/commit/4f733b4438ecfacd807c943c9f757a7a55044156)

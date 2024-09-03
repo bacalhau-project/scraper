@@ -62,7 +62,7 @@ The script provides several options:
 
 4. Perform all operations:
    ```bash
-   python artifact_collector.py --download --consolidate --context-consolidate 2048
+   python main.py --download --consolidate --context-consolidate 2048
    ```
 
 ## Configuration
@@ -89,9 +89,9 @@ If you encounter any issues with Ollama or the Llama model:
    ollama list
    ```
 
-3. If the Llama2 model is missing, pull it again:
+3. If the Llama3.1 model is missing, pull it again:
    ```bash
-   ollama pull llama2
+   ollama pull llama3.1:8b
    ```
 
 4. For more detailed Ollama usage, refer to the [Ollama documentation](https://github.com/jmorganca/ollama/tree/main/docs).
