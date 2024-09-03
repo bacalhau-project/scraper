@@ -119,6 +119,7 @@ httpx==0.27.2
 huggingface-hub==0.24.6
     # via
     #   aider-chat
+    #   sentence-transformers
     #   tokenizers
     #   transformers
 idna==3.8
@@ -143,6 +144,8 @@ jiter==0.5.0
     # via
     #   aider-chat
     #   openai
+joblib==1.4.2
+    # via scikit-learn
 json5==0.9.25
     # via aider-chat
 jsonschema==4.23.0
@@ -195,7 +198,9 @@ networkx==3.2.1
 numpy==1.26.4
     # via
     #   aider-chat
+    #   scikit-learn
     #   scipy
+    #   sentence-transformers
     #   transformers
 ollama==0.3.2
 openai==1.42.0
@@ -215,7 +220,9 @@ pathspec==0.12.1
 pexpect==4.9.0
     # via aider-chat
 pillow==10.4.0
-    # via aider-chat
+    # via
+    #   aider-chat
+    #   sentence-transformers
 pip==24.2
 prompt-toolkit==3.0.47
     # via aider-chat
@@ -295,8 +302,14 @@ rpds-py==0.20.0
     #   referencing
 safetensors==0.4.4
     # via transformers
+scikit-learn==1.5.1
+    # via sentence-transformers
 scipy==1.13.1
-    # via aider-chat
+    # via
+    #   aider-chat
+    #   scikit-learn
+    #   sentence-transformers
+sentence-transformers==3.0.1
 setuptools==74.0.0
     # via
     #   setuptools-scm
@@ -326,6 +339,8 @@ soupsieve==2.6
     #   beautifulsoup4
 sympy==1.13.2
     # via torch
+threadpoolctl==3.5.0
+    # via scikit-learn
 tiktoken==0.7.0
     # via
     #   aider-chat
@@ -338,14 +353,17 @@ tokenizers==0.19.1
     #   litellm
     #   transformers
 torch==2.4.0
+    # via sentence-transformers
 tqdm==4.66.5
     # via
     #   aider-chat
     #   huggingface-hub
     #   openai
+    #   sentence-transformers
     #   transformers
 trafilatura==1.12.1
 transformers==4.44.2
+    # via sentence-transformers
 tree-sitter==0.21.3
     # via
     #   aider-chat
